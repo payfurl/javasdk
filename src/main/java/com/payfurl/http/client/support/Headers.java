@@ -3,7 +3,6 @@ package com.payfurl.http.client.support;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -55,20 +54,15 @@ public class Headers {
         }
 
         if (this.headers.containsKey(headerName)) {
-            for (String value : values) {
-                if (value != null) {
-                    this.headers.get(headerName).add(value);
-                }
-            }
+            values.stream()
+                    .filter(Objects::nonNull)
+                    .forEach(value -> this.headers.get(headerName).add(value));
             return;
         }
 
-        List<String> copyOfValues = new ArrayList<>();
-        for (String value : values) {
-            if (value != null) {
-                copyOfValues.add(value);
-            }
-        }
+        List<String> copyOfValues = values.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
         if (!copyOfValues.isEmpty()) {
             this.headers.put(headerName, copyOfValues);
