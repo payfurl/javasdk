@@ -1,14 +1,14 @@
-package com.payfurl.client.support.response;
+package com.payfurl.http.client.support.response;
 
-import com.payfurl.client.support.HeadersData;
+import com.payfurl.http.client.support.Headers;
 
 import java.io.InputStream;
 
 public class HttpStringResponse extends HttpResponse {
     private final String body;
 
-    public HttpStringResponse(int statusCode, HeadersData headersData, InputStream rawBody, String body) {
-        super(statusCode, headersData, rawBody);
+    public HttpStringResponse(int statusCode, Headers headers, InputStream rawBody, String body) {
+        super(statusCode, headers, rawBody);
         this.body = body;
     }
 

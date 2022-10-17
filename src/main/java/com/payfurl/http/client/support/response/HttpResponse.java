@@ -1,17 +1,17 @@
-package com.payfurl.client.support.response;
+package com.payfurl.http.client.support.response;
 
-import com.payfurl.client.support.HeadersData;
+import com.payfurl.http.client.support.Headers;
 
 import java.io.InputStream;
 
 public class HttpResponse {
     private final int statusCode;
-    private final HeadersData headersData;
+    private final Headers headers;
     private final InputStream rawBody;
 
-    public HttpResponse(int statusCode, HeadersData headersData, InputStream rawBody) {
+    public HttpResponse(int statusCode, Headers headers, InputStream rawBody) {
         this.statusCode = statusCode;
-        this.headersData = headersData;
+        this.headers = headers;
         this.rawBody = rawBody;
     }
 
@@ -19,8 +19,8 @@ public class HttpResponse {
         return statusCode;
     }
 
-    public HeadersData getHeaders() {
-        return headersData;
+    public Headers getHeaders() {
+        return headers;
     }
 
     public InputStream getRawBody() {
@@ -31,7 +31,7 @@ public class HttpResponse {
     public String toString() {
         return "HttpResponse{" +
                 "statusCode=" + statusCode +
-                ", headers=" + headersData +
+                ", headers=" + headers +
                 ", rawBody=" + rawBody +
                 '}';
     }

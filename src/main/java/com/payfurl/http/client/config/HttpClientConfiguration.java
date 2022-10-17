@@ -1,7 +1,7 @@
-package com.payfurl.client.config;
+package com.payfurl.http.client.config;
 
 public class HttpClientConfiguration {
-    private long timeout;
+    private final long timeout;
 
     public HttpClientConfiguration(Builder builder) {
         timeout = builder.timeout;

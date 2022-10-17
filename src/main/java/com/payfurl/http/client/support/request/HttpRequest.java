@@ -1,6 +1,6 @@
-package com.payfurl.client.support.request;
+package com.payfurl.http.client.support.request;
 
-import com.payfurl.client.support.HeadersData;
+import com.payfurl.http.client.support.Headers;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -9,17 +9,18 @@ import java.util.List;
 import java.util.Map;
 
 public class HttpRequest {
-    private HttpMethod httpMethod;
-    private HeadersData headersData;
-    private StringBuilder queryUrlBuilder;
-    private List<SimpleEntry<String, Object>> parameters;
+    private final HttpMethod httpMethod;
+    private final Headers headers;
+    private final StringBuilder queryUrlBuilder;
+    private final List<SimpleEntry<String, Object>> parameters;
+
     private Map<String, Object> queryParameters;
 
-    public HttpRequest(HttpMethod method, StringBuilder queryUrlBuilder, HeadersData headersData,
+    public HttpRequest(HttpMethod method, StringBuilder queryUrlBuilder, Headers headers,
                        Map<String, Object> queryParameters, List<SimpleEntry<String, Object>> parameters) {
         this.httpMethod = method;
         this.queryUrlBuilder = queryUrlBuilder;
-        this.headersData = headersData;
+        this.headers = headers;
         this.queryParameters = queryParameters;
         this.parameters = parameters;
     }
@@ -28,8 +29,8 @@ public class HttpRequest {
         return httpMethod;
     }
 
-    public HeadersData getHeaders() {
-        return headersData;
+    public Headers getHeaders() {
+        return headers;
     }
 
     public List<SimpleEntry<String, Object>> getParameters() {
@@ -58,7 +59,12 @@ public class HttpRequest {
 
     @Override
     public String toString() {
-        return String.format("HttpRequest [httpMethod=%s, headers=%s, queryUrlBuilder=%s, queryParameters=%s, parameters=%s]",
-                httpMethod, headersData, queryUrlBuilder, queryParameters, parameters);
+        return "HttpRequest{" +
+                "httpMethod=" + httpMethod +
+                ", headers=" + headers +
+                ", queryUrlBuilder=" + queryUrlBuilder +
+                ", parameters=" + parameters +
+                ", queryParameters=" + queryParameters +
+                '}';
     }
 }

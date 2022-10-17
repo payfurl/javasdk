@@ -1,20 +1,21 @@
-package com.payfurl.client.support.request;
+package com.payfurl.http.client.support.request;
 
-import com.payfurl.client.support.HeadersData;
+import com.payfurl.http.client.support.Headers;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
 public class HttpBodyRequest extends HttpRequest {
-    private Object body;
+    private final Object body;
 
     public HttpBodyRequest(HttpMethod method,
                            StringBuilder queryUrlBuilder,
-                           HeadersData headersData,
+                           Headers headers,
                            Map<String, Object> queryParameters,
                            Object body) {
-        super(method, queryUrlBuilder, headersData, queryParameters, null);
-        this.body = ObjectUtils.defaultIfNull(body, "");
+        super(method, queryUrlBuilder, headers, queryParameters, null);
+        this.body = ObjectUtils.defaultIfNull(body, StringUtils.EMPTY);
     }
 
     public Object getBody() {

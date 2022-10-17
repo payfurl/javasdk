@@ -1,4 +1,4 @@
-package com.payfurl.client.support.request;
+package com.payfurl.http.client.support.request;
 
 public enum HttpMethod {
     GET,
