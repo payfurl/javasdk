@@ -53,17 +53,4 @@ public class ChargeApi extends BaseApi {
         addAuthDataTo(request);
         return request;
     }
-
-    private Headers getPopulatedHeaders() {
-        Headers headers = new Headers();
-        headers.add("content-type", "application/json; charset=utf-8");
-        headers.add("user-agent", internalUserAgent);
-        headers.addAll(config.getAdditionalHeaders());
-        return headers;
-    }
-
-    private void addAuthDataTo(HttpRequest request) {
-        AuthHandler authHandler = authHandlers.get(AuthType.SECRET_KEY);
-        authHandler.apply(request);
-    }
 }

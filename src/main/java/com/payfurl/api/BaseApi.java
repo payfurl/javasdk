@@ -5,6 +5,8 @@ import com.payfurl.api.support.ApiException;
 import com.payfurl.auth.AuthHandler;
 import com.payfurl.auth.AuthType;
 import com.payfurl.http.client.HttpClient;
+import com.payfurl.http.client.support.Headers;
+import com.payfurl.http.client.support.request.HttpRequest;
 import com.payfurl.http.client.support.response.HttpResponse;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +46,19 @@ public class BaseApi {
         if (!Range.between(200, 208).contains(responseCode)) {
             throw new ApiException("Response status is not OK");
         }
+    }
+
+    protected Headers getPopulatedHeaders() {
+        Headers headers = new Headers();
+        headers.add("content-type", "application/json; charset=utf-8");
+        headers.add("user-agent", internalUserAgent);
+        headers.addAll(config.getAdditionalHeaders());
+        return headers;
+    }
+
+    protected void addAuthDataTo(HttpRequest request) {
+        AuthHandler authHandler = authHandlers.get(AuthType.SECRET_KEY);
+        authHandler.apply(request);
     }
 
     private void updateUserAgent() {
