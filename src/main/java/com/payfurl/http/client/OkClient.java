@@ -1,5 +1,6 @@
 package com.payfurl.http.client;
 
+import com.payfurl.http.client.config.Environment;
 import com.payfurl.http.client.config.HttpClientConfiguration;
 import com.payfurl.http.client.support.ApiUtils;
 import com.payfurl.http.client.support.Headers;
@@ -14,9 +15,17 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +37,11 @@ public class OkClient implements HttpClient {
     private static final int DEFAULT_CALL_TIMEOUT_SECONDS = 60;
     private static volatile OkHttpClient defaultOkHttpClient;
     private OkHttpClient client;
+    private Environment environment;
 
     public OkClient(HttpClientConfiguration httpClientConfiguration) {
+        this.environment = httpClientConfiguration.getEnvironment();
+
         OkHttpClient okClientInstance = getDefaultOkHttpClient();
         if (okClientInstance != null) {
             this.client = okClientInstance;
@@ -53,15 +65,59 @@ public class OkClient implements HttpClient {
 
         synchronized (SIMPLE_SYNC_OBJECT) {
             if (defaultOkHttpClient == null) {
-                defaultOkHttpClient = new OkHttpClient.Builder()
-                        .retryOnConnectionFailure(false)
-                        .callTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                        .followSslRedirects(true)
-                        .build();
+                defaultOkHttpClient = initializeOkClient();
             }
         }
 
         return defaultOkHttpClient;
+    }
+
+    private OkHttpClient initializeOkClient() {
+        OkHttpClient.Builder okClientBuilder = new OkHttpClient.Builder()
+                .retryOnConnectionFailure(false)
+                .callTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .followSslRedirects(true);
+
+        if (Environment.LOCAL == environment) {
+            TrustManager[] trustAllCertsManager = getTrustAllCertsManager();
+            SSLSocketFactory sslSocketFactory = getSslSocketFactory(trustAllCertsManager);
+
+            okClientBuilder
+                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCertsManager[0])
+                    .hostnameVerifier((hostname, session) -> true);
+        }
+
+        return okClientBuilder.build();
+    }
+
+    private static TrustManager[] getTrustAllCertsManager() {
+        return new TrustManager[]{
+                new X509TrustManager() {
+
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) {
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) {
+                    }
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[]{};
+                    }
+                }
+        };
+    }
+
+    private static SSLSocketFactory getSslSocketFactory(TrustManager[] trustAllCertsManager) {
+        try {
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCertsManager, new SecureRandom());
+            return sslContext.getSocketFactory();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void shutdown() {

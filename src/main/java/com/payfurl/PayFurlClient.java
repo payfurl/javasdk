@@ -35,6 +35,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private final HttpClientConfiguration httpClientConfiguration;
     private final SecretKeyAuthHandler secretKeyAuthHandler;
     private final Map<AuthType, AuthHandler> authHandlerMap;
+    private final String userAgentDetails;
 
     private ChargeApi chargeApi;
 
@@ -43,6 +44,7 @@ public class PayFurlClient implements PayFurlClientSdk {
                           HttpClient httpClient,
                           HttpClientConfiguration httpClientConfiguration,
                           Map<AuthType, AuthHandler> authHandlerMap,
+                          String userAgentDetails,
                           String accessToken) {
         this.environment = environment;
         this.additionalHeaders = additionalHeaders;
@@ -52,6 +54,8 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.authHandlerMap = MapUtils.isNotEmpty(authHandlerMap)
                 ? new HashMap<>(authHandlerMap)
                 : new HashMap<>();
+
+        this.userAgentDetails = userAgentDetails;
 
         this.secretKeyAuthHandler = new SecretKeyAuthHandler(accessToken);
         this.authHandlerMap.put(AuthType.SECRET_KEY, secretKeyAuthHandler);
@@ -88,7 +92,7 @@ public class PayFurlClient implements PayFurlClientSdk {
 
     @Override
     public String getUserAgentDetail() {
-        return null;
+        return userAgentDetails;
     }
 
     @Override
@@ -122,6 +126,7 @@ public class PayFurlClient implements PayFurlClientSdk {
         private Headers additionalHeaders = new Headers();
         private final HttpClientConfiguration.Builder httpClientConfigurationBuilder = new HttpClientConfiguration.Builder();
         private Map<AuthType, AuthHandler> authHandlerMap = null;
+        private String userAgentDetails = null;
         private String accessToken = StringUtils.EMPTY;
 
         public Builder withEnvironment(Environment environment) {
@@ -145,7 +150,9 @@ public class PayFurlClient implements PayFurlClientSdk {
         }
 
         public PayFurlClient build() {
-            HttpClientConfiguration httpClientConfig = httpClientConfigurationBuilder.build();
+            HttpClientConfiguration httpClientConfig = httpClientConfigurationBuilder
+                    .environment(environment)
+                    .build();
             HttpClient httpClient = new OkClient(httpClientConfig);
 
             return new PayFurlClient(environment,
@@ -153,6 +160,7 @@ public class PayFurlClient implements PayFurlClientSdk {
                     httpClient,
                     httpClientConfig,
                     authHandlerMap,
+                    userAgentDetails,
                     accessToken);
         }
     }

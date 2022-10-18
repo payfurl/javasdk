@@ -1,9 +1,15 @@
 package com.payfurl.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.payfurl.Configuration;
 import com.payfurl.auth.AuthHandler;
 import com.payfurl.auth.AuthType;
 import com.payfurl.http.client.HttpClient;
+import com.payfurl.http.client.support.ApiUtils;
+import com.payfurl.http.client.support.Headers;
+import com.payfurl.http.client.support.request.HttpRequest;
+import com.payfurl.http.client.support.response.HttpResponse;
+import com.payfurl.http.client.support.response.HttpStringResponse;
 import com.payfurl.models.ChargeData;
 import com.payfurl.models.NewChargeCardRequest;
 
@@ -23,6 +29,28 @@ public class ChargeApi extends BaseApi {
     }
 
     public ChargeData createWithCard(NewChargeCardRequest newChargeCardRequest) throws IOException {
-        throw new UnsupportedOperationException();
+        HttpRequest request = createNewChargeCardRequestFrom(newChargeCardRequest);
+
+        HttpResponse response = getClientInstance().execute(request);
+
+        return getChargeDataFrom(response);
+    }
+
+    private ChargeData getChargeDataFrom(HttpResponse response) throws JsonProcessingException {
+        validateResponse(response);
+        String responseBody = ((HttpStringResponse) response).getBody();
+        return ApiUtils.deserialize(responseBody, ChargeData.class);
+    }
+
+    private HttpRequest createNewChargeCardRequestFrom(NewChargeCardRequest newChargeCardRequest) throws JsonProcessingException {
+        StringBuilder queryBuilder = new StringBuilder(chargeApiBaseEndpoint + "/card");
+
+        Headers headers = getPopulatedHeaders();
+
+        String bodyJson = ApiUtils.serialize(newChargeCardRequest);
+        HttpRequest request = getClientInstance().preparePostBodyRequest(queryBuilder, headers, null, bodyJson);
+
+        addAuthDataTo(request);
+        return request;
     }
 }
