@@ -165,13 +165,12 @@ public class OkClient implements HttpClient {
         }
 
         StringBuilder urlBuilder = new StringBuilder(httpRequest.getQueryUrl());
+
+        ApiUtils.appendUrlWithQueryParameters(urlBuilder, httpRequest.getQueryParameters());
+
         String url = ApiUtils.cleanUrl(urlBuilder);
 
-        String contentType = httpRequest.getHeaders().value("content-type");
-
-        Object body = ((HttpBodyRequest) httpRequest).getBody();
-        RequestBody requestBody = RequestBody.create(((String) body).getBytes(),
-                okhttp3.MediaType.parse(contentType));
+        RequestBody requestBody = createRequestBodyFrom(httpRequest);
 
         return new Request.Builder()
                 .method(httpRequest.getHttpMethod().toString(), requestBody)
@@ -179,6 +178,20 @@ public class OkClient implements HttpClient {
                 .url(url)
                 .build();
 
+    }
+
+    private static RequestBody createRequestBodyFrom(HttpRequest httpRequest) {
+        HttpMethod httpMethod = httpRequest.getHttpMethod();
+
+        if (httpMethod == HttpMethod.GET || !(httpRequest instanceof HttpBodyRequest)) {
+            return null;
+        }
+
+        Object body = ((HttpBodyRequest) httpRequest).getBody();
+        String contentType = httpRequest.getHeaders().value("content-type");
+
+        return RequestBody.create(((String) body).getBytes(),
+                okhttp3.MediaType.parse(contentType));
     }
 
     private static okhttp3.Headers.Builder createRequestHeaders(Headers headers) {

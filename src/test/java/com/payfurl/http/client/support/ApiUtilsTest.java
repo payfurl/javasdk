@@ -1,19 +1,23 @@
 package com.payfurl.http.client.support;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.collect.ImmutableMap;
 import com.payfurl.models.CardData;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 class ApiUtilsTest {
+    private static final String SAMPLE_URL_PART = "url";
     private static final String SAMPLE_SERIALIZED_STRING =
             "{\"cardNumber\":\"11111\",\"expiryDate\":\"2022-12-22\",\"cardholder\":\"cardHolder\",\"type\":\"type\"}";
     private static final String PAYFURL_URL_PART = "payfurl.com";
@@ -58,6 +62,37 @@ class ApiUtilsTest {
         );
     }
 
+    private static Stream<Arguments> provideDataForTestAppendUrlWithQueryParameters() {
+        return Stream.of(
+                Arguments.of("Query params with one key-value is passed",
+                        SAMPLE_URL_PART,
+                        ImmutableMap.of("k1", "v1"),
+                        String.format("%s?%s=%s", SAMPLE_URL_PART, "k1", "v1")
+                ),
+
+                Arguments.of("No query params are passed",
+                        SAMPLE_URL_PART,
+                        ImmutableMap.of(),
+                        SAMPLE_URL_PART
+                ),
+
+                Arguments.of("No query params and no URL part are passed",
+                        StringUtils.EMPTY,
+                        ImmutableMap.of(),
+                        StringUtils.EMPTY
+                ),
+
+                Arguments.of("Query params with two different key-value are passed",
+                        SAMPLE_URL_PART,
+                        ImmutableMap.of(
+                                "k1", "v1",
+                                "k2", 25
+                                ),
+                        String.format("%s?%s=%s&%s=%d", SAMPLE_URL_PART, "k1", "v1", "k2", 25)
+                )
+        );
+    }
+
     @ParameterizedTest(name = "{index}: {0}")
     @MethodSource("provideDataForTestSerialize")
     @DisplayName("Given sample card data When serialize is called Then return serialized content")
@@ -99,5 +134,21 @@ class ApiUtilsTest {
 
         assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Invalid Url format.");
+    }
+
+    @DisplayName("Given query parameters When appendUrlWithQueryParameters is Called Then return constructed URL")
+    @ParameterizedTest(name = "{index}: {0}")
+    @MethodSource("provideDataForTestAppendUrlWithQueryParameters")
+    void testAppendUrlWithQueryParameters(String testName,
+                                          String urlPart,
+                                          Map<String, Object> queryParams,
+                                          String expectedFullUrl) {
+        assertThat(testName).isNotEmpty();
+
+        StringBuilder queryBuilder = new StringBuilder(urlPart);
+
+        ApiUtils.appendUrlWithQueryParameters(queryBuilder, queryParams);
+
+        assertThat(queryBuilder.toString()).isEqualTo(expectedFullUrl);
     }
 }
