@@ -4,9 +4,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Preconditions;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +40,43 @@ public class ApiUtils {
         return OBJECT_MAPPER.readValue(jsonString, clazz);
     }
 
+    public static void appendUrlWithQueryParameters(StringBuilder queryBuilder,
+                                                    Map<String, Object> parameters) {
+        Preconditions.checkNotNull(queryBuilder);
+
+        if (MapUtils.isEmpty(parameters)) {
+            return;
+        }
+
+        boolean hasParams = queryBuilder.indexOf("?") > 0;
+        queryBuilder.append(hasParams ? '&' : '?');
+
+        encodeObjectAsQueryString(parameters, queryBuilder);
+    }
+
+    private static void encodeObjectAsQueryString(Map<String, Object> parameters, StringBuilder objBuilder) {
+        if (parameters == null) {
+            return;
+        }
+
+        boolean areParamsPresent = false;
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+            Object value = entry.getValue();
+            if (value == null) {
+                continue;
+            }
+
+            areParamsPresent = true;
+            String key = entry.getKey();
+            String keyValuePair = String.format("%s=%s&", key, tryUrlEncode(value.toString(), false));
+            objBuilder.append(keyValuePair);
+        }
+
+        if (areParamsPresent) {
+            objBuilder.setLength(objBuilder.length() - 1);
+        }
+    }
+
     public static String cleanUrl(StringBuilder urlBuilder) {
         Matcher matcher = ABSOLUTE_URL_VALIDATION_PATTERN.matcher(urlBuilder);
         if (!matcher.find()) {
@@ -51,5 +93,18 @@ public class ApiUtils {
         String query = urlBuilder.substring(httpProtocol.length());
         query = query.replaceAll("//+", "/");
         return query;
+    }
+
+    private static String tryUrlEncode(String value, boolean spaceAsPercentEncoded) {
+        try {
+            String encodedUrl = URLEncoder.encode(value, "UTF-8");
+
+            return spaceAsPercentEncoded
+                    ? encodedUrl.replace("+", "%20")
+                    : encodedUrl;
+
+        } catch (UnsupportedEncodingException ex) {
+            return value;
+        }
     }
 }
