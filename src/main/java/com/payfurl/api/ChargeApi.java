@@ -26,39 +26,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChargeApi extends BaseApi {
-    private static final String CHARGE_API_PATH_PART = "charge";
-
     private final String chargeApiBaseEndpoint;
 
     public ChargeApi(Configuration config, HttpClient httpClient, Map<AuthType, AuthHandler> authHandlers) {
         super(config, httpClient, authHandlers);
 
         String baseUri = config.getBaseUri();
-        chargeApiBaseEndpoint = String.format("%s/%s", baseUri, CHARGE_API_PATH_PART);
+        chargeApiBaseEndpoint = String.format("%s/%s", baseUri, "charge");
     }
 
     public ChargeData createWithCard(NewChargeCardRequest newChargeCardRequest) throws IOException {
-        return executePostRequestWith("/card", newChargeCardRequest);
+        return executePostRequestWith(chargeApiBaseEndpoint + "/card", newChargeCardRequest, ChargeData.class);
     }
 
     public ChargeData createWithCardLeastCost(NewChargeCardLeastCost newChargeCardLeastCost) throws IOException {
-        return executePostRequestWith("/card/least_cost", newChargeCardLeastCost);
+        return executePostRequestWith(chargeApiBaseEndpoint + "/card/least_cost", newChargeCardLeastCost, ChargeData.class);
     }
 
     public ChargeData createWitPaymentMethod(NewChargePaymentMethod newChargePaymentMethod) throws IOException {
-        return executePostRequestWith("/payment_method", newChargePaymentMethod);
+        return executePostRequestWith(chargeApiBaseEndpoint + "/payment_method", newChargePaymentMethod, ChargeData.class);
     }
 
     public ChargeData createWithCustomer(NewChargeCustomer newChargeCustomer) throws IOException {
-        return executePostRequestWith("/customer", newChargeCustomer);
+        return executePostRequestWith(chargeApiBaseEndpoint + "/customer", newChargeCustomer, ChargeData.class);
     }
 
     public ChargeData createWithToken(NewChargeToken newChargeToken) throws IOException {
-        return executePostRequestWith("/token", newChargeToken);
+        return executePostRequestWith(chargeApiBaseEndpoint + "/token", newChargeToken, ChargeData.class);
     }
 
     public ChargeData single(String chargeId) throws IOException {
-        return executeGetRequestWith("/" + chargeId, null, ChargeData.class);
+        return executeGetRequestWith(chargeApiBaseEndpoint + "/" + chargeId, null, ChargeData.class);
     }
 
     public ChargeList search(ChargeSearch searchData) throws IOException {
@@ -75,85 +73,20 @@ public class ChargeApi extends BaseApi {
         queryParameters.put("AddedBefore", searchData.getAddedBefore());
         queryParameters.put("SortBy", searchData.getSortBy());
 
-        return executeGetRequestWith("", queryParameters, ChargeList.class);
+        return executeGetRequestWith(chargeApiBaseEndpoint, queryParameters, ChargeList.class);
     }
 
     public ChargeData refund(NewRefund newRefund) throws IOException {
         Map<String, Object> queryParameters = new HashMap<>();
         queryParameters.put("amount", newRefund.getRefundAmount());
-        return executeDeleteRequestWith("/" + newRefund.getChargeId(), queryParameters);
+        return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + newRefund.getChargeId(), queryParameters, ChargeData.class);
     }
 
     public ChargeData captureCharge(String chargeId, NewChargeCapture newChargeCapture) throws IOException {
-        return executePostRequestWith("/" + chargeId, newChargeCapture);
+        return executePostRequestWith(chargeApiBaseEndpoint + "/" + chargeId, newChargeCapture, ChargeData.class);
     }
 
     public ChargeData voidCharge(String chargeId) throws IOException {
-        return executeDeleteRequestWith("/" + chargeId, null);
-    }
-
-    private <T> ChargeData executePostRequestWith(String urlPath, T chargeApiRequest) throws IOException {
-        HttpRequest request = createNewChargeApiPostRequest(urlPath, chargeApiRequest);
-
-        HttpResponse response = getClientInstance().execute(request);
-
-        return getChargeDataFrom(response, ChargeData.class);
-    }
-
-    private <T> T executeGetRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws IOException {
-        HttpRequest request = createNewChargeApiGetRequest(urlPath, queryParams);
-
-        HttpResponse response = getClientInstance().execute(request);
-
-        return getChargeDataFrom(response, returnType);
-    }
-
-    private ChargeData executeDeleteRequestWith(String urlPath, Map<String, Object> queryParams) throws IOException {
-        HttpRequest request = createNewChargeApiDeleteRequest(urlPath, queryParams);
-
-        HttpResponse response = getClientInstance().execute(request);
-
-        return getChargeDataFrom(response, ChargeData.class);
-    }
-
-    private <T> T getChargeDataFrom(HttpResponse response, Class<T> clazz) throws JsonProcessingException {
-        validateResponse(response);
-
-        String responseBody = ((HttpStringResponse) response).getBody();
-        return ApiUtils.deserialize(responseBody, clazz);
-    }
-
-    private <T> HttpRequest createNewChargeApiPostRequest(String urlPath, T chargeApiRequest) throws JsonProcessingException {
-        StringBuilder queryBuilder = new StringBuilder(chargeApiBaseEndpoint + urlPath);
-
-        Headers headers = getPopulatedHeaders();
-
-        String bodyJson = ApiUtils.serialize(chargeApiRequest);
-        HttpRequest request = getClientInstance().preparePostBodyRequest(queryBuilder, headers, null, bodyJson);
-
-        addAuthDataTo(request);
-        return request;
-    }
-
-    private HttpRequest createNewChargeApiGetRequest(String urlPath, Map<String, Object> queryParams) {
-        StringBuilder queryBuilder = new StringBuilder(chargeApiBaseEndpoint + urlPath);
-
-        Headers headers = getPopulatedHeaders();
-
-        HttpRequest request = getClientInstance().prepareGetRequest(queryBuilder, headers, queryParams, null);
-
-        addAuthDataTo(request);
-        return request;
-    }
-
-    private HttpRequest createNewChargeApiDeleteRequest(String urlPath, Map<String, Object> queryParams) {
-        StringBuilder queryBuilder = new StringBuilder(chargeApiBaseEndpoint + urlPath);
-
-        Headers headers = getPopulatedHeaders();
-
-        HttpRequest request = getClientInstance().prepareDeleteRequest(queryBuilder, headers, queryParams, null);
-
-        addAuthDataTo(request);
-        return request;
+        return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + chargeId, null, ChargeData.class);
     }
 }

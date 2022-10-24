@@ -18,7 +18,8 @@ import java.util.regex.Pattern;
 public class ApiUtils {
     private static final Pattern ABSOLUTE_URL_VALIDATION_PATTERN = Pattern.compile("^(https?://[^/]+)");
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
     static {
         OBJECT_MAPPER.configOverride(BigDecimal.class).setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));

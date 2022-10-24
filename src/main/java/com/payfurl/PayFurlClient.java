@@ -3,6 +3,7 @@ package com.payfurl;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.payfurl.api.ChargeApi;
+import com.payfurl.api.CustomerApi;
 import com.payfurl.auth.AuthHandler;
 import com.payfurl.auth.AuthType;
 import com.payfurl.auth.SecretKeyAuthHandler;
@@ -38,6 +39,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private final String userAgentDetails;
 
     private ChargeApi chargeApi;
+    private CustomerApi customerApi;
 
     private PayFurlClient(Environment environment,
                           Headers additionalHeaders,
@@ -65,6 +67,7 @@ public class PayFurlClient implements PayFurlClientSdk {
 
     private void initializeApis() {
         this.chargeApi = new ChargeApi(this, this.httpClient, this.authHandlerMap);
+        this.customerApi = new CustomerApi(this, this.httpClient, this.authHandlerMap);
     }
 
     public static void shutdown() {
@@ -113,6 +116,11 @@ public class PayFurlClient implements PayFurlClientSdk {
     @Override
     public ChargeApi getChargeApi() {
         return chargeApi;
+    }
+
+    @Override
+    public CustomerApi getCustomerApi() {
+        return customerApi;
     }
 
     @Override
