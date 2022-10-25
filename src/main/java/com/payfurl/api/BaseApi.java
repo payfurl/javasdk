@@ -1,16 +1,20 @@
 package com.payfurl.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.payfurl.Configuration;
 import com.payfurl.api.support.ApiException;
 import com.payfurl.auth.AuthHandler;
 import com.payfurl.auth.AuthType;
 import com.payfurl.http.client.HttpClient;
+import com.payfurl.http.client.support.ApiUtils;
 import com.payfurl.http.client.support.Headers;
 import com.payfurl.http.client.support.request.HttpRequest;
 import com.payfurl.http.client.support.response.HttpResponse;
+import com.payfurl.http.client.support.response.HttpStringResponse;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class BaseApi {
@@ -69,5 +73,70 @@ public class BaseApi {
                 .replace(SDK_VERSION_KEY, config.getPayFurlVersion())
                 .replace(ENGINE_VERSION_KEY, StringUtils.defaultString(engineVersion))
                 .replace(OS_INFO_KEY, osName);
+    }
+
+    protected <T, R> R executePostRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType) throws IOException {
+        HttpRequest request = createNewChargeApiPostRequest(urlPath, chargeApiRequest);
+
+        HttpResponse response = getClientInstance().execute(request);
+
+        return getChargeDataFrom(response, returnType);
+    }
+
+    protected <T> T executeGetRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws IOException {
+        HttpRequest request = createNewChargeApiGetRequest(urlPath, queryParams);
+
+        HttpResponse response = getClientInstance().execute(request);
+
+        return getChargeDataFrom(response, returnType);
+    }
+
+    protected <T> T executeDeleteRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws IOException {
+        HttpRequest request = createNewChargeApiDeleteRequest(urlPath, queryParams);
+
+        HttpResponse response = getClientInstance().execute(request);
+
+        return getChargeDataFrom(response, returnType);
+    }
+
+    private <T> T getChargeDataFrom(HttpResponse response, Class<T> returnType) throws JsonProcessingException {
+        validateResponse(response);
+
+        String responseBody = ((HttpStringResponse) response).getBody();
+        return ApiUtils.deserialize(responseBody, returnType);
+    }
+
+    private <T> HttpRequest createNewChargeApiPostRequest(String urlPath, T chargeApiRequest) throws JsonProcessingException {
+        StringBuilder queryBuilder = new StringBuilder(urlPath);
+
+        Headers headers = getPopulatedHeaders();
+
+        String bodyJson = ApiUtils.serialize(chargeApiRequest);
+        HttpRequest request = getClientInstance().preparePostBodyRequest(queryBuilder, headers, null, bodyJson);
+
+        addAuthDataTo(request);
+        return request;
+    }
+
+    private HttpRequest createNewChargeApiGetRequest(String urlPath, Map<String, Object> queryParams) {
+        StringBuilder queryBuilder = new StringBuilder(urlPath);
+
+        Headers headers = getPopulatedHeaders();
+
+        HttpRequest request = getClientInstance().prepareGetRequest(queryBuilder, headers, queryParams, null);
+
+        addAuthDataTo(request);
+        return request;
+    }
+
+    private HttpRequest createNewChargeApiDeleteRequest(String urlPath, Map<String, Object> queryParams) {
+        StringBuilder queryBuilder = new StringBuilder(urlPath);
+
+        Headers headers = getPopulatedHeaders();
+
+        HttpRequest request = getClientInstance().prepareDeleteRequest(queryBuilder, headers, queryParams, null);
+
+        addAuthDataTo(request);
+        return request;
     }
 }
