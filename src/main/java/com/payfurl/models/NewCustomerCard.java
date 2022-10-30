@@ -81,7 +81,6 @@ public class NewCustomerCard {
     }
 
     public static class Builder {
-
         private String reference;
         private String firstName;
         private String lastName;

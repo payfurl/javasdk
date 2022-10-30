@@ -52,7 +52,6 @@ public class NewCustomerToken {
     }
 
     public static class Builder {
-
         private String reference;
         private String firstName;
         private String lastName;

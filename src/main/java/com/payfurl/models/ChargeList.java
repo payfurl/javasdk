@@ -54,7 +54,6 @@ public class ChargeList {
     }
 
     public static class Builder {
-
         private int limit;
         private int skip;
         private int count;

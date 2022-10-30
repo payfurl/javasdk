@@ -36,7 +36,6 @@ public class NewRefund {
     }
 
     public static class Builder {
-
         private String chargeId;
         private BigDecimal refundAmount;
 

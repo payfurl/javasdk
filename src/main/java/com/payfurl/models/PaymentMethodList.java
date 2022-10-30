@@ -1,26 +1,25 @@
 package com.payfurl.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class CustomerList {
+public class PaymentMethodList {
     private final int limit;
     private final int skip;
     private final int count;
-    private final List<CustomerData> customers;
+    private final List<PaymentMethodData> paymentMethods;
 
     @JsonCreator
-    public CustomerList(@JsonProperty("Limit") int limit,
-                        @JsonProperty("Skip") int skip,
-                        @JsonProperty("Count") int count,
-                        @JsonProperty("Customers") List<CustomerData> customers) {
+    public PaymentMethodList(@JsonProperty("Limit") int limit,
+                             @JsonProperty("Skip") int skip,
+                             @JsonProperty("Count") int count,
+                             @JsonProperty("PaymentMethods") List<PaymentMethodData> paymentMethods) {
         this.limit = limit;
         this.skip = skip;
         this.count = count;
-        this.customers = customers;
+        this.paymentMethods = paymentMethods;
     }
 
     public int getLimit() {
@@ -35,17 +34,17 @@ public class CustomerList {
         return count;
     }
 
-    public List<CustomerData> getCustomers() {
-        return customers;
+    public List<PaymentMethodData> getPaymentMethods() {
+        return paymentMethods;
     }
 
     @Override
     public String toString() {
-        return "ChargeList{" +
+        return "PaymentMethodList{" +
                 "limit=" + limit +
                 ", skip=" + skip +
                 ", count=" + count +
-                ", customers=" + customers +
+                ", paymentMethods=" + paymentMethods +
                 '}';
     }
 
@@ -53,7 +52,7 @@ public class CustomerList {
         private int limit;
         private int skip;
         private int count;
-        private List<CustomerData> customers;
+        private List<PaymentMethodData> paymentMethods;
 
         public Builder withLimit(int limit) {
             this.limit = limit;
@@ -70,13 +69,13 @@ public class CustomerList {
             return this;
         }
 
-        public Builder withCustomers(List<CustomerData> customers) {
-            this.customers = customers;
+        public Builder withPaymentMethods(List<PaymentMethodData> paymentMethods) {
+            this.paymentMethods = paymentMethods;
             return this;
         }
 
-        public CustomerList createChargeList() {
-            return new CustomerList(limit, skip, count, customers);
+        public PaymentMethodList createChargeList() {
+            return new PaymentMethodList(limit, skip, count, paymentMethods);
         }
     }
 }

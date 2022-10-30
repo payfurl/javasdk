@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
 class PayFurlClientTest {
     private static final String SDK_VERSION = "2022.0.1";
@@ -56,19 +56,19 @@ class PayFurlClientTest {
     void testUriBasedOnEnvironmentMapping(String testName,
                                           PayFurlClient payFurlClient,
                                           String expectedBaseUri) {
-        assertThat(testName).isNotEmpty();
-        assertThat(payFurlClient.getBaseUri()).isEqualTo(expectedBaseUri);
+        then(testName).isNotEmpty();
+        then(payFurlClient.getBaseUri()).isEqualTo(expectedBaseUri);
     }
 
     @Test
     @DisplayName("Given PayFurlClient When getSdkVersion is called Then return sdk version")
     void testGetSdkVersion() {
-        assertThat(dummyProdConfiguredClient.getSdkVersion()).isEqualTo(SDK_VERSION);
+        then(dummyProdConfiguredClient.getSdkVersion()).isEqualTo(SDK_VERSION);
     }
 
     @Test
     @DisplayName("Given PayFurlClient When getSecretKeyAuthHandler is called Then return one secret key auth handler")
     void testGetSecretKeyAuthHandler() {
-        assertThat(dummyProdConfiguredClient.getSecretKeyAuthHandler().getAccessToken()).isEmpty();
+        then(dummyProdConfiguredClient.getSecretKeyAuthHandler().getAccessToken()).isEmpty();
     }
 }

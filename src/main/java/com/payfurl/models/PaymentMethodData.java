@@ -1,7 +1,6 @@
 package com.payfurl.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -9,6 +8,7 @@ import java.util.Date;
 public class PaymentMethodData {
     private final String paymentMethodId;
     private final String userId;
+    private final String customerId;
     private final String type;
     private final CardData card;
     private final String providerId;
@@ -19,6 +19,7 @@ public class PaymentMethodData {
     @JsonCreator
     public PaymentMethodData(@JsonProperty("PaymentMethodId") String paymentMethodId,
                              @JsonProperty("UserId") String userId,
+                             @JsonProperty("CustomerId") String customerId,
                              @JsonProperty("Type") String type,
                              @JsonProperty("Card") CardData card,
                              @JsonProperty("ProviderId") String providerId,
@@ -27,6 +28,7 @@ public class PaymentMethodData {
                              @JsonProperty("Email") String email) {
         this.paymentMethodId = paymentMethodId;
         this.userId = userId;
+        this.customerId = customerId;
         this.type = type;
         this.card = card;
         this.providerId = providerId;
@@ -41,6 +43,10 @@ public class PaymentMethodData {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
     }
 
     public String getType() {
@@ -68,9 +74,9 @@ public class PaymentMethodData {
     }
 
     public static class Builder {
-
         private String paymentMethodId;
         private String userId;
+        private String customerId;
         private String type;
         private CardData card;
         private String providerId;
@@ -85,6 +91,11 @@ public class PaymentMethodData {
 
         public Builder withUserId(String userId) {
             this.userId = userId;
+            return this;
+        }
+
+        public Builder withCustomerId(String customerId) {
+            this.customerId = customerId;
             return this;
         }
 
@@ -119,7 +130,7 @@ public class PaymentMethodData {
         }
 
         public PaymentMethodData build() {
-            return new PaymentMethodData(paymentMethodId, userId, type, card, providerId, providerType, dateAdded, email);
+            return new PaymentMethodData(paymentMethodId, userId, customerId, type, card, providerId, providerType, dateAdded, email);
         }
     }
 }

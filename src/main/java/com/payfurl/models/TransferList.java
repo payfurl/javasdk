@@ -1,26 +1,25 @@
 package com.payfurl.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class CustomerList {
+public class TransferList {
     private final int limit;
     private final int skip;
     private final int count;
-    private final List<CustomerData> customers;
+    private final List<TransferData> transfers;
 
     @JsonCreator
-    public CustomerList(@JsonProperty("Limit") int limit,
+    public TransferList(@JsonProperty("Limit") int limit,
                         @JsonProperty("Skip") int skip,
                         @JsonProperty("Count") int count,
-                        @JsonProperty("Customers") List<CustomerData> customers) {
+                        @JsonProperty("Transfers") List<TransferData> transfers) {
         this.limit = limit;
         this.skip = skip;
         this.count = count;
-        this.customers = customers;
+        this.transfers = transfers;
     }
 
     public int getLimit() {
@@ -35,17 +34,17 @@ public class CustomerList {
         return count;
     }
 
-    public List<CustomerData> getCustomers() {
-        return customers;
+    public List<TransferData> getTransfers() {
+        return transfers;
     }
 
     @Override
     public String toString() {
-        return "ChargeList{" +
+        return "TransferList{" +
                 "limit=" + limit +
                 ", skip=" + skip +
                 ", count=" + count +
-                ", customers=" + customers +
+                ", transfers=" + transfers +
                 '}';
     }
 
@@ -53,7 +52,7 @@ public class CustomerList {
         private int limit;
         private int skip;
         private int count;
-        private List<CustomerData> customers;
+        private List<TransferData> transfers;
 
         public Builder withLimit(int limit) {
             this.limit = limit;
@@ -70,13 +69,13 @@ public class CustomerList {
             return this;
         }
 
-        public Builder withCustomers(List<CustomerData> customers) {
-            this.customers = customers;
+        public Builder withTransfers(List<TransferData> transfers) {
+            this.transfers = transfers;
             return this;
         }
 
-        public CustomerList createChargeList() {
-            return new CustomerList(limit, skip, count, customers);
+        public TransferList build() {
+            return new TransferList(limit, skip, count, transfers);
         }
     }
 }

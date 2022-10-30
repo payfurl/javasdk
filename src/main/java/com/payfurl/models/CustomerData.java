@@ -68,7 +68,6 @@ public class CustomerData {
     }
 
     public static class Builder {
-
         private String customerId;
         private String reference;
         private String firstName;

@@ -2,28 +2,31 @@ package com.payfurl.apitesting;
 
 import com.payfurl.PayFurlClient;
 import com.payfurl.api.ChargeApi;
-import com.payfurl.models.ChargeList;
-import com.payfurl.models.ChargeSearch;
+import com.payfurl.api.CustomerApi;
 import com.payfurl.http.client.config.Environment;
 import com.payfurl.models.CardRequestInformation;
 import com.payfurl.models.ChargeData;
+import com.payfurl.models.ChargeList;
+import com.payfurl.models.ChargeSearch;
+import com.payfurl.models.CustomerData;
 import com.payfurl.models.NewChargeCardLeastCost;
 import com.payfurl.models.NewChargeCardRequest;
+import com.payfurl.models.NewChargePaymentMethod;
 import com.payfurl.models.NewChargeToken;
+import com.payfurl.models.NewCustomerCard;
+import com.payfurl.models.PaymentMethodData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
-@ExtendWith(MockitoExtension.class)
 public class ChargeApiTest {
     private static final String LOCAL_ACCESS_TEST_TOKEN = "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     private static final String SUCCESS_MARKER = "SUCCESS";
@@ -34,6 +37,7 @@ public class ChargeApiTest {
             .build();
 
     private ChargeApi chargeApi;
+    private CustomerApi customerApi;
 
     @BeforeEach
     void setUp() {
@@ -43,6 +47,7 @@ public class ChargeApiTest {
                 .build();
 
         chargeApi = payFurlClient.getChargeApi();
+        customerApi = payFurlClient.getCustomerApi();
     }
 
     @Nested
@@ -63,8 +68,8 @@ public class ChargeApiTest {
             ChargeData chargeData = chargeApi.createWithCard(newChargeCardRequest);
 
             // then
-            assertThat(chargeData).isNotNull();
-            assertThat(chargeData.status).isEqualTo(SUCCESS_MARKER);
+            then(chargeData).isNotNull();
+            then(chargeData.status).isEqualTo(SUCCESS_MARKER);
         }
 
         @Test
@@ -80,8 +85,8 @@ public class ChargeApiTest {
             ChargeData chargeData = chargeApi.createWithCardLeastCost(newChargeCardLeastCost);
 
             // then
-            assertThat(chargeData).isNotNull();
-            assertThat(chargeData.status).isEqualTo(SUCCESS_MARKER);
+            then(chargeData).isNotNull();
+            then(chargeData.status).isEqualTo(SUCCESS_MARKER);
         }
 
         @Test
@@ -95,7 +100,31 @@ public class ChargeApiTest {
             ChargeList chargeList = chargeApi.search(chargeSearch);
 
             // then
-            assertThat(chargeList.getSkip()).isEqualTo(0);
+            then(chargeList.getSkip()).isEqualTo(0);
+        }
+
+        @Test
+        @DisplayName("When createWitPaymentMethod request is executed, Then return valid charge data")
+        void testCreateWitPaymentMethod() throws IOException {
+            // given
+            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .build();
+
+            // when
+            CustomerData createdCustomer = customerApi.createWithCard(newCustomerCard);
+            List<PaymentMethodData> paymentMethods = customerApi.getPaymentMethods(createdCustomer.getCustomerId());
+
+            NewChargePaymentMethod newChargePaymentMethod = new NewChargePaymentMethod.Builder()
+                    .withAmount(BigDecimal.valueOf(5))
+                    .withPaymentMethodId(paymentMethods.get(0).getPaymentMethodId())
+                    .build();
+
+            ChargeData chargeDataWithPaymentMethod = chargeApi.createWitPaymentMethod(newChargePaymentMethod);
+
+            // then
+            then(chargeDataWithPaymentMethod.status).isEqualTo(SUCCESS_MARKER);
         }
 
         @Test
@@ -112,8 +141,8 @@ public class ChargeApiTest {
             ChargeData chargeData = chargeApi.createWithToken(newChargeToken);
 
             // then
-            assertThat(chargeData).isNotNull();
-            assertThat(chargeData.status).isEqualTo(SUCCESS_MARKER);
+            then(chargeData).isNotNull();
+            then(chargeData.status).isEqualTo(SUCCESS_MARKER);
         }
     }
 }

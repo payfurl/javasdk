@@ -47,7 +47,6 @@ public class NewPaymentMethodCard {
     }
 
     public static class Builder {
-
         private String providerId;
         private CardRequestInformation paymentInformation;
         private boolean vaultCard;

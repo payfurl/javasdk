@@ -3,55 +3,47 @@ package com.payfurl.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-public class CustomerSearch {
-    private final String paymentMethodId;
+public class TransferSearch {
     private final String reference;
-    private final String customerId;
-    private final String email;
+    private final String providerId;
+    private final String status;
     private final Date addedAfter;
     private final Date addedBefore;
     private final Integer limit;
     private final Integer skip;
-    private final String search;
+    private final String sortBy;
 
     @JsonCreator
-    public CustomerSearch(@JsonProperty("PaymentMethodId") String paymentMethodId,
-                          @JsonProperty("Reference") String reference,
-                          @JsonProperty("CustomerId") String customerId,
-                          @JsonProperty("Email") String email,
+    public TransferSearch(@JsonProperty("Reference") String reference,
+                          @JsonProperty("ProviderId") String providerId,
+                          @JsonProperty("Status") String status,
                           @JsonProperty("AddedAfter") Date addedAfter,
                           @JsonProperty("AddedBefore") Date addedBefore,
                           @JsonProperty("Limit") Integer limit,
                           @JsonProperty("Skip") Integer skip,
-                          @JsonProperty("Search") String search) {
-        this.paymentMethodId = paymentMethodId;
+                          @JsonProperty("SortBy") String sortBy) {
         this.reference = reference;
-        this.customerId = customerId;
-        this.email = email;
+        this.providerId = providerId;
+        this.status = status;
         this.addedAfter = addedAfter;
         this.addedBefore = addedBefore;
         this.limit = limit;
         this.skip = skip;
-        this.search = search;
-    }
-
-    public String getPaymentMethodId() {
-        return paymentMethodId;
+        this.sortBy = sortBy;
     }
 
     public String getReference() {
         return reference;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getProviderId() {
+        return providerId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getStatus() {
+        return status;
     }
 
     public Date getAddedAfter() {
@@ -70,53 +62,46 @@ public class CustomerSearch {
         return skip;
     }
 
-    public String getSearch() {
-        return search;
+    public String getSortBy() {
+        return sortBy;
     }
 
     @Override
     public String toString() {
-        return "ChargeSearch{" +
-                "paymentMethodId='" + paymentMethodId + '\'' +
-                ", reference='" + reference + '\'' +
-                ", customerId='" + customerId + '\'' +
-                ", email='" + email + '\'' +
+        return "TransferSearch{" +
+                "reference='" + reference + '\'' +
+                ", providerId='" + providerId + '\'' +
+                ", status='" + status + '\'' +
                 ", addedAfter=" + addedAfter +
                 ", addedBefore=" + addedBefore +
                 ", limit=" + limit +
                 ", skip=" + skip +
-                ", search='" + search + '\'' +
+                ", sortBy='" + sortBy + '\'' +
                 '}';
     }
 
     public static class Builder {
-        private String paymentMethodId;
         private String reference;
-        private String customerId;
-        private String email;
+        private String providerId;
+        private String status;
         private Date addedAfter;
         private Date addedBefore;
         private Integer limit;
         private Integer skip;
-        private String search;
-
-        public Builder withPaymentMethodId(String paymentMethodId) {
-            this.paymentMethodId = paymentMethodId;
-            return this;
-        }
+        private String sortBy;
 
         public Builder withReference(String reference) {
             this.reference = reference;
             return this;
         }
 
-        public Builder withCustomerId(String customerId) {
-            this.customerId = customerId;
+        public Builder withProviderId(String providerId) {
+            this.providerId = providerId;
             return this;
         }
 
-        public Builder withEmail(String email) {
-            this.email = email;
+        public Builder withStatus(String status) {
+            this.status = status;
             return this;
         }
 
@@ -140,13 +125,13 @@ public class CustomerSearch {
             return this;
         }
 
-        public Builder withSearch(String search) {
-            this.search = search;
+        public Builder withSortBy(String sortBy) {
+            this.sortBy = sortBy;
             return this;
         }
 
-        public CustomerSearch build() {
-            return new CustomerSearch(paymentMethodId, reference, customerId, email, addedAfter, addedBefore, limit, skip, search);
+        public TransferSearch build() {
+            return new TransferSearch(reference, providerId, status, addedAfter, addedBefore, limit, skip, sortBy);
         }
     }
 }

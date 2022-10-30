@@ -3,14 +3,13 @@ package com.payfurl.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-public class CustomerSearch {
-    private final String paymentMethodId;
-    private final String reference;
+public class PaymentMethodSearch {
+    private final String paymentType;
+    private final String providerId;
     private final String customerId;
-    private final String email;
+    private final String sortBy;
     private final Date addedAfter;
     private final Date addedBefore;
     private final Integer limit;
@@ -18,19 +17,19 @@ public class CustomerSearch {
     private final String search;
 
     @JsonCreator
-    public CustomerSearch(@JsonProperty("PaymentMethodId") String paymentMethodId,
-                          @JsonProperty("Reference") String reference,
-                          @JsonProperty("CustomerId") String customerId,
-                          @JsonProperty("Email") String email,
-                          @JsonProperty("AddedAfter") Date addedAfter,
-                          @JsonProperty("AddedBefore") Date addedBefore,
-                          @JsonProperty("Limit") Integer limit,
-                          @JsonProperty("Skip") Integer skip,
-                          @JsonProperty("Search") String search) {
-        this.paymentMethodId = paymentMethodId;
-        this.reference = reference;
+    public PaymentMethodSearch(@JsonProperty("PaymentType") String paymentType,
+                               @JsonProperty("ProviderId") String providerId,
+                               @JsonProperty("CustomerId") String customerId,
+                               @JsonProperty("SortBy") String sortBy,
+                               @JsonProperty("AddedAfter") Date addedAfter,
+                               @JsonProperty("AddedBefore") Date addedBefore,
+                               @JsonProperty("Limit") Integer limit,
+                               @JsonProperty("Skip") Integer skip,
+                               @JsonProperty("Search") String search) {
+        this.paymentType = paymentType;
+        this.providerId = providerId;
         this.customerId = customerId;
-        this.email = email;
+        this.sortBy = sortBy;
         this.addedAfter = addedAfter;
         this.addedBefore = addedBefore;
         this.limit = limit;
@@ -38,20 +37,20 @@ public class CustomerSearch {
         this.search = search;
     }
 
-    public String getPaymentMethodId() {
-        return paymentMethodId;
+    public String getPaymentType() {
+        return paymentType;
     }
 
-    public String getReference() {
-        return reference;
+    public String getProviderId() {
+        return providerId;
     }
 
     public String getCustomerId() {
         return customerId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSortBy() {
+        return sortBy;
     }
 
     public Date getAddedAfter() {
@@ -77,10 +76,10 @@ public class CustomerSearch {
     @Override
     public String toString() {
         return "ChargeSearch{" +
-                "paymentMethodId='" + paymentMethodId + '\'' +
-                ", reference='" + reference + '\'' +
+                "paymentType='" + paymentType + '\'' +
+                ", providerId='" + providerId + '\'' +
                 ", customerId='" + customerId + '\'' +
-                ", email='" + email + '\'' +
+                ", sortBy='" + sortBy + '\'' +
                 ", addedAfter=" + addedAfter +
                 ", addedBefore=" + addedBefore +
                 ", limit=" + limit +
@@ -90,23 +89,23 @@ public class CustomerSearch {
     }
 
     public static class Builder {
-        private String paymentMethodId;
-        private String reference;
+        private String paymentType;
+        private String providerId;
         private String customerId;
-        private String email;
+        private String sortBy;
         private Date addedAfter;
         private Date addedBefore;
         private Integer limit;
         private Integer skip;
         private String search;
 
-        public Builder withPaymentMethodId(String paymentMethodId) {
-            this.paymentMethodId = paymentMethodId;
+        public Builder withPaymentType(String paymentType) {
+            this.paymentType = paymentType;
             return this;
         }
 
-        public Builder withReference(String reference) {
-            this.reference = reference;
+        public Builder withProviderId(String providerId) {
+            this.providerId = providerId;
             return this;
         }
 
@@ -115,8 +114,8 @@ public class CustomerSearch {
             return this;
         }
 
-        public Builder withEmail(String email) {
-            this.email = email;
+        public Builder withSortBy(String sortBy) {
+            this.sortBy = sortBy;
             return this;
         }
 
@@ -145,8 +144,8 @@ public class CustomerSearch {
             return this;
         }
 
-        public CustomerSearch build() {
-            return new CustomerSearch(paymentMethodId, reference, customerId, email, addedAfter, addedBefore, limit, skip, search);
+        public PaymentMethodSearch build() {
+            return new PaymentMethodSearch(paymentType, providerId, customerId, sortBy, addedAfter, addedBefore, limit, skip, search);
         }
     }
 }

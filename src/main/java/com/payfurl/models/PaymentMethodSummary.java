@@ -75,7 +75,6 @@ public class PaymentMethodSummary {
     }
 
     public static class Builder {
-
         private String paymentMethodId;
         private String customerId;
         private String type;

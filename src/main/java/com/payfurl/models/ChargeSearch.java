@@ -117,7 +117,6 @@ public class ChargeSearch {
     }
 
     public static class Builder {
-
         private String paymentMethodId;
         private String reference;
         private BigDecimal amountGreaterThan;
