@@ -63,7 +63,6 @@ public class NewChargeCardLeastCost {
     }
 
     public static class Builder {
-
         private BigDecimal amount;
         private String currency;
         private String reference;

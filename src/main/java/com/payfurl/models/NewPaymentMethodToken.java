@@ -24,7 +24,6 @@ public class NewPaymentMethodToken {
     }
 
     public static class Builder {
-
         private String token;
 
         public Builder withToken(String token) {

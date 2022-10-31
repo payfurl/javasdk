@@ -27,7 +27,6 @@ public class NewChargeCapture {
     }
 
     public static class Builder {
-
         private BigDecimal amount;
 
         public Builder withAmount(BigDecimal amount) {

@@ -4,6 +4,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.payfurl.api.ChargeApi;
 import com.payfurl.api.CustomerApi;
+import com.payfurl.api.PaymentMethodApi;
+import com.payfurl.api.TransferApi;
+import com.payfurl.api.VaultApi;
 import com.payfurl.auth.AuthHandler;
 import com.payfurl.auth.AuthType;
 import com.payfurl.auth.SecretKeyAuthHandler;
@@ -40,6 +43,9 @@ public class PayFurlClient implements PayFurlClientSdk {
 
     private ChargeApi chargeApi;
     private CustomerApi customerApi;
+    private PaymentMethodApi paymentMethodApi;
+    private TransferApi transferApi;
+    private VaultApi vaultApi;
 
     private PayFurlClient(Environment environment,
                           Headers additionalHeaders,
@@ -68,6 +74,9 @@ public class PayFurlClient implements PayFurlClientSdk {
     private void initializeApis() {
         this.chargeApi = new ChargeApi(this, this.httpClient, this.authHandlerMap);
         this.customerApi = new CustomerApi(this, this.httpClient, this.authHandlerMap);
+        this.paymentMethodApi = new PaymentMethodApi(this, this.httpClient, this.authHandlerMap);
+        this.transferApi = new TransferApi(this, this.httpClient, this.authHandlerMap);
+        this.vaultApi = new VaultApi(this, this.httpClient, this.authHandlerMap);
     }
 
     public static void shutdown() {
@@ -121,6 +130,21 @@ public class PayFurlClient implements PayFurlClientSdk {
     @Override
     public CustomerApi getCustomerApi() {
         return customerApi;
+    }
+
+    @Override
+    public PaymentMethodApi getPaymentMethodApi() {
+        return paymentMethodApi;
+    }
+
+    @Override
+    public TransferApi getTransferApi() {
+        return transferApi;
+    }
+
+    @Override
+    public VaultApi getVaultApi() {
+        return vaultApi;
     }
 
     @Override

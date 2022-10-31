@@ -13,8 +13,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 class ApiUtilsTest {
     private static final String SAMPLE_URL_PART = "url";
@@ -97,22 +97,22 @@ class ApiUtilsTest {
     @MethodSource("provideDataForTestSerialize")
     @DisplayName("Given sample card data When serialize is called Then return serialized content")
     void testSerialize(String testName, CardData cardData, String expectedSerializedString) throws JsonProcessingException {
-        assertThat(testName).isNotEmpty();
+        then(testName).isNotEmpty();
 
         String serializedString = ApiUtils.serialize(cardData);
 
-        assertThat(serializedString).isEqualTo(expectedSerializedString);
+        then(serializedString).isEqualTo(expectedSerializedString);
     }
 
     @ParameterizedTest(name = "{index}: {0}")
     @MethodSource("provideDataForTestDeserialize")
     @DisplayName("Given sample card data When deserialize is called Then return deserialized content")
     void deserialize(String testName, String jsonString, Class<CardData> clazz, CardData expectedData) throws JsonProcessingException {
-        assertThat(testName).isNotEmpty();
+        then(testName).isNotEmpty();
 
         CardData deserializedEntity = ApiUtils.deserialize(jsonString, clazz);
 
-        assertThat(deserializedEntity).usingRecursiveComparison()
+        then(deserializedEntity).usingRecursiveComparison()
                 .isEqualTo(expectedData);
     }
 
@@ -120,11 +120,11 @@ class ApiUtilsTest {
     @ParameterizedTest(name = "{index}: {0}")
     @MethodSource("provideDataForTestCleanUrl")
     void testCleanUrl(String testName, StringBuilder urlBuilder, String expectedCleanedUrl) {
-        assertThat(testName).isNotEmpty();
+        then(testName).isNotEmpty();
 
         String cleanedUrl = ApiUtils.cleanUrl(urlBuilder);
 
-        assertThat(cleanedUrl).isEqualTo(expectedCleanedUrl);
+        then(cleanedUrl).isEqualTo(expectedCleanedUrl);
     }
 
     @DisplayName("Given url without protocol schema When CleanUrl is Called Then throw exception")
@@ -132,7 +132,7 @@ class ApiUtilsTest {
     void testCleanUrlWithoutSchema() {
         Throwable throwable = catchThrowable(() -> ApiUtils.cleanUrl(new StringBuilder(PAYFURL_URL_PART)));
 
-        assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+        then(throwable).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Invalid Url format.");
     }
 
@@ -143,12 +143,12 @@ class ApiUtilsTest {
                                           String urlPart,
                                           Map<String, Object> queryParams,
                                           String expectedFullUrl) {
-        assertThat(testName).isNotEmpty();
+        then(testName).isNotEmpty();
 
         StringBuilder queryBuilder = new StringBuilder(urlPart);
 
         ApiUtils.appendUrlWithQueryParameters(queryBuilder, queryParams);
 
-        assertThat(queryBuilder.toString()).isEqualTo(expectedFullUrl);
+        then(queryBuilder.toString()).isEqualTo(expectedFullUrl);
     }
 }

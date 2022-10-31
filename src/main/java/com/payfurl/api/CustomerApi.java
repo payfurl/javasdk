@@ -68,7 +68,7 @@ public class CustomerApi extends BaseApi {
     }
 
     public List<PaymentMethodData> getPaymentMethods(String customerId) throws IOException {
-        String urlPath = String.format("%s/%s",customerApiBaseEndpoint, customerId);
+        String urlPath = String.format("%s/%s/payment_method",customerApiBaseEndpoint, customerId);
         PaymentMethodData[] paymentMethodData = executeGetRequestWith(urlPath, null, PaymentMethodData[].class);
         return Arrays.asList(paymentMethodData);
     }

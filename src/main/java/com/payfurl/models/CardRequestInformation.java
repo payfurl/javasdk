@@ -8,7 +8,6 @@ public class CardRequestInformation {
     private final String cardNumber;
     private final String expiryDate;
     private final String ccv;
-
     private final String cardHolder;
 
     @JsonCreator

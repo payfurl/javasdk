@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
 class HeadersTest {
     private static final String KEY_1 = "key1";
@@ -58,10 +58,10 @@ class HeadersTest {
     @MethodSource("provideDataForTestValue")
     @DisplayName("Given key for headers When value is called Then return value")
     void testValue(String testName, String key, String expectedValue) {
-        assertThat(testName).isNotEmpty();
+        then(testName).isNotEmpty();
 
         String value = headers.value(key);
-        assertThat(value).isEqualTo(expectedValue);
+        then(value).isEqualTo(expectedValue);
     }
 
     @Test
@@ -70,7 +70,7 @@ class HeadersTest {
         headers.add(KEY_3, VALUE_3);
         String value = headers.value(KEY_3);
 
-        assertThat(value).isEqualTo(VALUE_3);
+        then(value).isEqualTo(VALUE_3);
     }
 
     @Test
@@ -80,8 +80,8 @@ class HeadersTest {
         String value = headers.value(KEY_2);
         Map<String, List<String>> multimap = headers.asMultimap();
 
-        assertThat(value).isEqualTo(VALUE_2);
-        assertThat(multimap).usingRecursiveComparison()
+        then(value).isEqualTo(VALUE_2);
+        then(multimap).usingRecursiveComparison()
                 .isEqualTo(ImmutableMap.of(
                         KEY_1, ImmutableList.of(VALUE_1),
                         KEY_2, ImmutableList.of(VALUE_2, VALUE_3)));
@@ -94,8 +94,8 @@ class HeadersTest {
         String value = headers.value(KEY_2);
         Map<String, List<String>> multimap = headers.asMultimap();
 
-        assertThat(value).isEqualTo(VALUE_2);
-        assertThat(multimap).usingRecursiveComparison()
+        then(value).isEqualTo(VALUE_2);
+        then(multimap).usingRecursiveComparison()
                 .isEqualTo(ImmutableMap.of(
                         KEY_1, ImmutableList.of(VALUE_1),
                         KEY_2, ImmutableList.of(VALUE_2, VALUE_3, VALUE_1)));
@@ -111,7 +111,7 @@ class HeadersTest {
 
         Map<String, List<String>> multimap = headers.asMultimap();
 
-        assertThat(multimap).usingRecursiveComparison()
+        then(multimap).usingRecursiveComparison()
                 .isEqualTo(ImmutableMap.of(
                         KEY_1, ImmutableList.of(VALUE_1),
                         KEY_2, ImmutableList.of(VALUE_2),

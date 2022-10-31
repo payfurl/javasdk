@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.function.BiPredicate;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
 class SecretKeyAuthHandlerTest {
     private static final String DUMMY_ACCESS_KEY = "dog-food-123";
@@ -43,7 +43,7 @@ class SecretKeyAuthHandlerTest {
         headers.add("Expect", "100-continue");
         headers.add("x-secretkey", DUMMY_ACCESS_KEY);
         HttpRequest expectedHttpRequest = prepareDummyHttpRequest(headers);
-        assertThat(httpRequest).usingRecursiveComparison()
+        then(httpRequest).usingRecursiveComparison()
                 .withEqualsForType(STRING_BUILDER_COMPARE_STRATEGY, StringBuilder.class)
                 .isEqualTo(expectedHttpRequest);
     }

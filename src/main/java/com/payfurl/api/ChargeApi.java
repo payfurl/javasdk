@@ -1,15 +1,9 @@
 package com.payfurl.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.payfurl.Configuration;
 import com.payfurl.auth.AuthHandler;
 import com.payfurl.auth.AuthType;
 import com.payfurl.http.client.HttpClient;
-import com.payfurl.http.client.support.ApiUtils;
-import com.payfurl.http.client.support.Headers;
-import com.payfurl.http.client.support.request.HttpRequest;
-import com.payfurl.http.client.support.response.HttpResponse;
-import com.payfurl.http.client.support.response.HttpStringResponse;
 import com.payfurl.models.ChargeData;
 import com.payfurl.models.ChargeList;
 import com.payfurl.models.ChargeSearch;

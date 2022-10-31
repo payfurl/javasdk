@@ -52,7 +52,6 @@ public class NewChargeCustomer {
     }
 
     public static class Builder {
-
         private BigDecimal amount;
         private String currency;
         private String customerId;

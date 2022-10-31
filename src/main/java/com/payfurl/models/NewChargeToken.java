@@ -60,7 +60,6 @@ public class NewChargeToken {
     }
 
     public static class Builder {
-
         private BigDecimal amount;
         private String currency;
         private String reference;

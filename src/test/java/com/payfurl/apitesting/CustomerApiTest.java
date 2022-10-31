@@ -17,16 +17,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
-@ExtendWith(MockitoExtension.class)
 public class CustomerApiTest {
     private static final String LOCAL_ACCESS_TEST_TOKEN = "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
@@ -48,7 +45,7 @@ public class CustomerApiTest {
     }
 
     @Nested
-    @DisplayName("Given valid request to customer API")
+    @DisplayName("Given valid request to Customer API")
     class SuccessFlow {
         @Test
         @DisplayName("When createWithCard request is executed, Then return valid CustomerData")
@@ -65,7 +62,7 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithCard(newCustomerCard);
 
             // then
-            assertThat(customerData.getCustomerId()).isNotNull();
+            then(customerData.getCustomerId()).isNotNull();
         }
 
         @Test
@@ -91,8 +88,8 @@ public class CustomerApiTest {
             CustomerList customerList = customerApi.search(customerSearch);
 
             // then
-            assertThat(customerData).isNotNull();
-            assertThat(customerList.getCount()).isEqualTo(1);
+            then(customerData).isNotNull();
+            then(customerList.getCount()).isEqualTo(1);
         }
 
         @Test
@@ -117,7 +114,7 @@ public class CustomerApiTest {
             PaymentMethodData paymentMethodData = customerApi.createPaymentMethodWithCard(customerData.getCustomerId(), newPaymentMethodCard);
 
             // then
-            assertThat(paymentMethodData.getPaymentMethodId()).isNotNull();
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
         }
 
         @Test
@@ -142,7 +139,7 @@ public class CustomerApiTest {
             PaymentMethodData paymentMethodData = customerApi.createWitPaymentMethodWithToken(customerData.getCustomerId(), newPaymentMethodCard);
 
             // then
-            assertThat(paymentMethodData.getPaymentMethodId()).isNotNull();
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
         }
 
         @Test
@@ -160,7 +157,7 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithToken(newCustomerToken);
 
             // then
-            assertThat(customerData.getCustomerId()).isNotNull();
+            then(customerData.getCustomerId()).isNotNull();
         }
 
         @Test
@@ -189,8 +186,8 @@ public class CustomerApiTest {
             List<PaymentMethodData> paymentMethodDataList = customerApi.getPaymentMethods(customerId);
 
             // then
-            assertThat(customerData).isNotNull();
-            assertThat(paymentMethodDataList).hasSize(1);
+            then(customerData).isNotNull();
+            then(paymentMethodDataList).hasSize(1);
         }
 
         @Test
@@ -210,9 +207,9 @@ public class CustomerApiTest {
             CustomerData foundCustomerData = customerApi.single(customerData.getCustomerId());
 
             // then
-            assertThat(customerData.getCustomerId()).isEqualTo(foundCustomerData.getCustomerId());
-            assertThat(customerData.getFirstName()).isEqualTo(foundCustomerData.getFirstName());
-            assertThat(customerData.getLastName()).isEqualTo(foundCustomerData.getLastName());
+            then(customerData.getCustomerId()).isEqualTo(foundCustomerData.getCustomerId());
+            then(customerData.getFirstName()).isEqualTo(foundCustomerData.getFirstName());
+            then(customerData.getLastName()).isEqualTo(foundCustomerData.getLastName());
         }
     }
 }

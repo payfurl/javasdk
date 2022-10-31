@@ -1,73 +1,67 @@
 package com.payfurl.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
-public class NewChargeCardRequest {
+public class NewCheckout {
     private final BigDecimal amount;
     private final String currency;
     private final String providerId;
     private final String reference;
-    private final CardRequestInformation paymentInformation;
-    private final boolean capture;
+    private final CheckoutTransfer checkoutTransfer;
+    private final Map<String, String> options;
 
     @JsonCreator
-    public NewChargeCardRequest(@JsonProperty("Amount") BigDecimal amount,
-                                @JsonProperty("Currency") String currency,
-                                @JsonProperty("ProviderId") String providerId,
-                                @JsonProperty("Reference") String reference,
-                                @JsonProperty("PaymentInformation") CardRequestInformation paymentInformation,
-                                @JsonProperty("Capture") boolean capture) {
+    public NewCheckout(@JsonProperty("Amount") BigDecimal amount,
+                       @JsonProperty("Currency") String currency,
+                       @JsonProperty("ProviderId") String providerId,
+                       @JsonProperty("Reference") String reference,
+                       @JsonProperty("Transfer") CheckoutTransfer checkoutTransfer,
+                       @JsonProperty("Options") Map<String, String> options) {
         this.amount = amount;
         this.currency = currency;
         this.providerId = providerId;
         this.reference = reference;
-        this.paymentInformation = paymentInformation;
-        this.capture = capture;
+        this.checkoutTransfer = checkoutTransfer;
+        this.options = options;
     }
 
-    @JsonGetter("Amount")
     public BigDecimal getAmount() {
         return amount;
     }
 
-    @JsonGetter("Currency")
     public String getCurrency() {
         return currency;
     }
 
-    @JsonGetter("ProviderId")
     public String getProviderId() {
         return providerId;
     }
 
-    @JsonGetter("Reference")
     public String getReference() {
         return reference;
     }
 
-    @JsonGetter("PaymentInformation")
-    public CardRequestInformation getPaymentInformation() {
-        return paymentInformation;
+    public CheckoutTransfer getCheckoutTransfer() {
+        return checkoutTransfer;
     }
 
-    @JsonGetter("Capture")
-    public boolean isCapture() {
-        return capture;
+    public Map<String, String> getOptions() {
+        return options;
     }
 
     @Override
     public String toString() {
-        return "NewChargeCardRequest{" +
+        return "NewCheckout{" +
                 "amount=" + amount +
                 ", currency='" + currency + '\'' +
                 ", providerId='" + providerId + '\'' +
                 ", reference='" + reference + '\'' +
-                ", paymentInformation=" + paymentInformation +
-                ", capture=" + capture +
+                ", paymentInformation=" + checkoutTransfer +
+                ", options=" + options +
                 '}';
     }
 
@@ -76,8 +70,8 @@ public class NewChargeCardRequest {
         private String currency;
         private String providerId;
         private String reference;
-        private CardRequestInformation paymentInformation;
-        private boolean capture = true;
+        private CheckoutTransfer transfer;
+        private Map<String, String> options;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -99,18 +93,18 @@ public class NewChargeCardRequest {
             return this;
         }
 
-        public Builder withPaymentInformation(CardRequestInformation paymentInformation) {
-            this.paymentInformation = paymentInformation;
+        public Builder withPaymentInformation(CheckoutTransfer transfer) {
+            this.transfer = transfer;
             return this;
         }
 
-        public Builder withCapture(boolean capture) {
-            this.capture = capture;
+        public Builder withOptions(Map<String, String> options) {
+            this.options = options;
             return this;
         }
 
-        public NewChargeCardRequest build() {
-            return new NewChargeCardRequest(amount, currency, providerId, reference, paymentInformation, capture);
+        public NewCheckout build() {
+            return new NewCheckout(amount, currency, providerId, reference, transfer, options);
         }
     }
 }
