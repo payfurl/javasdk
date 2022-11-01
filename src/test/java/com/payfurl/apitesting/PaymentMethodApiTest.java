@@ -2,9 +2,9 @@ package com.payfurl.apitesting;
 
 import com.google.common.collect.ImmutableMap;
 import com.payfurl.PayFurlClient;
+import com.payfurl.TestConfigProvider;
 import com.payfurl.api.CustomerApi;
 import com.payfurl.api.PaymentMethodApi;
-import com.payfurl.http.client.config.Environment;
 import com.payfurl.models.CardRequestInformation;
 import com.payfurl.models.Checkout;
 import com.payfurl.models.CustomerData;
@@ -26,7 +26,6 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class PaymentMethodApiTest {
-    private static final String LOCAL_ACCESS_TEST_TOKEN = "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
             .withExpiryDate("12/22")
@@ -39,8 +38,8 @@ public class PaymentMethodApiTest {
     @BeforeEach
     void setUp() {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
-                .withEnvironment(Environment.LOCAL)
-                .withAccessToken(LOCAL_ACCESS_TEST_TOKEN)
+                .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
+                .withAccessToken(TestConfigProvider.getKeyWithFallback())
                 .build();
 
         paymentMethodApi = payFurlClient.getPaymentMethodApi();

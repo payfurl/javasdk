@@ -1,8 +1,8 @@
 package com.payfurl.apitesting;
 
 import com.payfurl.PayFurlClient;
+import com.payfurl.TestConfigProvider;
 import com.payfurl.api.VaultApi;
-import com.payfurl.http.client.config.Environment;
 import com.payfurl.models.NewVault;
 import com.payfurl.models.VaultData;
 import com.payfurl.models.VaultDataWithPci;
@@ -16,15 +16,13 @@ import java.io.IOException;
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class VaultApiTest {
-    private static final String LOCAL_ACCESS_TEST_TOKEN = "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-
     private VaultApi vaultApi;
 
     @BeforeEach
     void setUp() {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
-                .withEnvironment(Environment.LOCAL)
-                .withAccessToken(LOCAL_ACCESS_TEST_TOKEN)
+                .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
+                .withAccessToken(TestConfigProvider.getKeyWithFallback())
                 .build();
 
         vaultApi = payFurlClient.getVaultApi();
