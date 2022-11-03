@@ -28,26 +28,56 @@ public class PaymentMethodApi extends BaseApi {
         paymentMethodApiBaseEndpoint = String.format("%s/%s", baseUri, "payment_method");
     }
 
+    /**
+     * Creates a new checkout
+     * @param newCheckout
+     * @return
+     * @throws IOException
+     */
     public Checkout checkout(NewCheckout newCheckout) throws IOException {
         String urlPath = paymentMethodApiBaseEndpoint + "/checkout";
         return executePostRequestWith(urlPath, newCheckout, Checkout.class);
     }
 
+    /**
+     * Add a payment method using a vault
+     * @param newPaymentMethodVault
+     * @return
+     * @throws IOException
+     */
     public PaymentMethodData createPaymentMethodWithVault(NewPaymentMethodVault newPaymentMethodVault) throws IOException {
         String urlPath = paymentMethodApiBaseEndpoint + "/vault";
         return executePostRequestWith(urlPath, newPaymentMethodVault, PaymentMethodData.class);
     }
 
+    /**
+     * Add a payment method using a card
+     * @param newPaymentMethodCard
+     * @return
+     * @throws IOException
+     */
     public PaymentMethodData createPaymentMethodWithCard(NewPaymentMethodCard newPaymentMethodCard) throws IOException {
         String urlPath = paymentMethodApiBaseEndpoint + "/card";
         return executePostRequestWith(urlPath, newPaymentMethodCard, PaymentMethodData.class);
     }
 
+    /**
+     * Retrieve a single payment method
+     * @param paymentMethodId
+     * @return
+     * @throws IOException
+     */
     public PaymentMethodData single(String paymentMethodId) throws IOException {
         String urlPath = String.format("%s/%s",paymentMethodApiBaseEndpoint, paymentMethodId);
         return executeGetRequestWith(urlPath, null, PaymentMethodData.class);
     }
 
+    /**
+     * Search for payment methods
+     * @param searchData
+     * @return
+     * @throws IOException
+     */
     public PaymentMethodList search(PaymentMethodSearch searchData) throws IOException {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("Skip", searchData.getSkip());

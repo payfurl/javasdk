@@ -1,7 +1,6 @@
 package com.payfurl.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -17,12 +16,10 @@ public class CheckoutTransfer {
         this.amount = amount;
     }
 
-    @JsonGetter("Account")
     public String getAccount() {
         return account;
     }
 
-    @JsonGetter("Amount")
     public BigDecimal getAmount() {
         return amount;
     }

@@ -25,16 +25,34 @@ public class TransferApi extends BaseApi {
         transferApiBaseEndpoint = String.format("%s/%s", baseUri, "transfer");
     }
 
+    /**
+     * Add a transfer
+     * @param newTransferGroup
+     * @return
+     * @throws IOException
+     */
     public List<TransferData> create(NewTransferGroup newTransferGroup) throws IOException {
         TransferData[] transferData = executePostRequestWith(transferApiBaseEndpoint, newTransferGroup, TransferData[].class);
         return Arrays.asList(transferData);
     }
 
+    /**
+     * Retrieve a single transfer
+     * @param transferId
+     * @return
+     * @throws IOException
+     */
     public TransferData single(String transferId) throws IOException {
         String urlPath = String.format("%s/%s", transferApiBaseEndpoint, transferId);
         return executeGetRequestWith(urlPath, null, TransferData.class);
     }
 
+    /**
+     * Search for transfers
+     * @param searchData
+     * @return
+     * @throws IOException
+     */
     public TransferList search(TransferSearch searchData) throws IOException {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("Skip", searchData.getSkip());

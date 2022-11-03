@@ -12,6 +12,38 @@
     <name>PayFURL</name>
     <url>https://github.com/payfurl/payfurl</url>
     <description>Java SDK for the PayFURL API</description>
+    <scm>
+        <connection>scm:git:https://github.com/payfurl/javasdk.git</connection>
+        <developerConnection>scm:git:git@github.com:payfurl/javasdk.git</developerConnection>
+        <url>https://github.com/payfurl/javasdk/</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>PayFURL</name>
+            <email>developers@payfurl.com</email>
+            <organization>PayFURL Developers</organization>
+            <organizationUrl>https://payfurl.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <jackson.version>2.12.3</jackson.version>

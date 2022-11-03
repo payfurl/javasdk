@@ -1,7 +1,6 @@
 package com.payfurl.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -29,32 +28,26 @@ public class NewChargeCardRequest {
         this.capture = capture;
     }
 
-    @JsonGetter("Amount")
     public BigDecimal getAmount() {
         return amount;
     }
 
-    @JsonGetter("Currency")
     public String getCurrency() {
         return currency;
     }
 
-    @JsonGetter("ProviderId")
     public String getProviderId() {
         return providerId;
     }
 
-    @JsonGetter("Reference")
     public String getReference() {
         return reference;
     }
 
-    @JsonGetter("PaymentInformation")
     public CardRequestInformation getPaymentInformation() {
         return paymentInformation;
     }
 
-    @JsonGetter("Capture")
     public boolean isCapture() {
         return capture;
     }

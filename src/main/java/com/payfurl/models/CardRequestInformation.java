@@ -1,7 +1,6 @@
 package com.payfurl.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CardRequestInformation {
@@ -21,22 +20,18 @@ public class CardRequestInformation {
         this.cardHolder = cardHolder;
     }
 
-    @JsonGetter("CardNumber")
     public String getCardNumber() {
         return cardNumber;
     }
 
-    @JsonGetter("ExpiryDate")
     public String getExpiryDate() {
         return expiryDate;
     }
 
-    @JsonGetter("Ccv")
     public String getCcv() {
         return ccv;
     }
 
-    @JsonGetter("CardHolder")
     public String getCardHolder() {
         return cardHolder;
     }
