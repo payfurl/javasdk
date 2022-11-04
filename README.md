@@ -46,9 +46,8 @@ mvn install -DskipTests
 An example of creating a PayFURL client with **sandbox** environment.
 
 ```java
-import com.payfurl.api.ChargeApi;
-import com.payfurl.api.CustomerApi;
-import com.payfurl.models.NewChargeToken;
+import com.payfurl.payfurlsdk.api.ChargeApi;
+import com.payfurl.payfurlsdk.models.NewChargeToken;
 
 import java.math.BigDecimal;
 
