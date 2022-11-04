@@ -1,7 +1,6 @@
 package com.payfurl.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -23,22 +22,18 @@ public class ChargeList {
         this.charges = charges;
     }
 
-    @JsonGetter("Limit")
     public int getLimit() {
         return limit;
     }
 
-    @JsonGetter("Skip")
     public int getSkip() {
         return skip;
     }
 
-    @JsonGetter("Count")
     public int getCount() {
         return count;
     }
 
-    @JsonGetter("Charges")
     public List<ChargeData> getCharges() {
         return charges;
     }
@@ -79,7 +74,7 @@ public class ChargeList {
             return this;
         }
 
-        public ChargeList createChargeList() {
+        public ChargeList build() {
             return new ChargeList(limit, skip, count, charges);
         }
     }

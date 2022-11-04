@@ -21,15 +21,33 @@ public class VaultApi extends BaseApi {
         vaultApiBaseEndpoint = String.format("%s/%s", baseUri, "vault");
     }
 
+    /**
+     * Create a new vault item
+     * @param newVault
+     * @return
+     * @throws IOException
+     */
     public VaultData create(NewVault newVault) throws IOException {
         return executePostRequestWith(vaultApiBaseEndpoint, newVault, VaultData.class);
     }
 
+    /**
+     * Delete a vault item
+     * @param vaultId
+     * @return
+     * @throws IOException
+     */
     public VaultData delete(String vaultId) throws IOException {
         String urlPath = String.format("%s/%s", vaultApiBaseEndpoint, vaultId);
         return executeDeleteRequestWith(urlPath, null, VaultData.class);
     }
 
+    /**
+     * Get a vault item
+     * @param vaultId
+     * @return
+     * @throws IOException
+     */
     public VaultDataWithPci single(String vaultId) throws IOException {
         String urlPath = String.format("%s/%s", vaultApiBaseEndpoint, vaultId);
         return executeGetRequestWith(urlPath, null, VaultDataWithPci.class);
