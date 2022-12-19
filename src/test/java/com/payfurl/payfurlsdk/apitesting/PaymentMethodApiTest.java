@@ -28,7 +28,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 public class PaymentMethodApiTest {
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
-            .withExpiryDate("12/22")
+            .withExpiryDate("12/35")
             .withCcv("123")
             .build();
 
