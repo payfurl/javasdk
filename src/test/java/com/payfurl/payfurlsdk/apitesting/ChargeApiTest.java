@@ -31,7 +31,7 @@ public class ChargeApiTest {
     private static final String SUCCESS_MARKER = "SUCCESS";
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
-            .withExpiryDate("12/22")
+            .withExpiryDate("12/35")
             .withCcv("123")
             .build();
 
