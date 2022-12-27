@@ -10,7 +10,7 @@ public class NewChargePaymentMethod {
     private final String currency;
     private final String paymentMethodId;
     private final String reference;
-
+    private final Address address;
     private final boolean capture;
 
     @JsonCreator
@@ -18,11 +18,14 @@ public class NewChargePaymentMethod {
                                   @JsonProperty("Currency") String currency,
                                   @JsonProperty("Reference") String reference,
                                   @JsonProperty("PaymentMethodId") String paymentMethodId,
+                                  @JsonProperty("Address") Address address,
+                                  @JsonProperty("Order") Order order,
                                   @JsonProperty("Capture") boolean capture) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
         this.paymentMethodId = paymentMethodId;
+        this.address = address;
         this.capture = capture;
     }
 
@@ -42,6 +45,10 @@ public class NewChargePaymentMethod {
         return paymentMethodId;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public boolean isCapture() {
         return capture;
     }
@@ -52,6 +59,7 @@ public class NewChargePaymentMethod {
         private String currency;
         private String reference;
         private String paymentMethodId;
+        private Address address;
         private boolean capture = true;
 
         public Builder withAmount(BigDecimal amount) {
@@ -74,13 +82,18 @@ public class NewChargePaymentMethod {
             return this;
         }
 
+        public Builder withAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
         public Builder withCapture(boolean capture) {
             this.capture = capture;
             return this;
         }
 
         public NewChargePaymentMethod build() {
-            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, capture);
+            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, capture);
         }
     }
 }

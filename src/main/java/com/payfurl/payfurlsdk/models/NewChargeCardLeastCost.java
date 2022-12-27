@@ -10,6 +10,8 @@ public class NewChargeCardLeastCost {
     private final String currency;
     private final String reference;
     private final CardRequestInformation paymentInformation;
+    private final Address address;
+    private final Order order;
     private final boolean capture;
 
     @JsonCreator
@@ -17,11 +19,15 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("Currency") String currency,
                                   @JsonProperty("Reference") String reference,
                                   @JsonProperty("PaymentInformation") CardRequestInformation paymentInformation,
+                                  @JsonProperty("Address") Address address,
+                                  @JsonProperty("Order") Order order,
                                   @JsonProperty("Capture") boolean capture) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
         this.paymentInformation = paymentInformation;
+        this.address = address;
+        this.order = order;
         this.capture = capture;
     }
 
@@ -41,6 +47,14 @@ public class NewChargeCardLeastCost {
         return paymentInformation;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
     public boolean isCapture() {
         return capture;
     }
@@ -52,6 +66,8 @@ public class NewChargeCardLeastCost {
                 ", currency='" + currency + '\'' +
                 ", reference='" + reference + '\'' +
                 ", paymentInformation=" + paymentInformation +
+                ", address=" + address +
+                ", order=" + order +
                 ", capture=" + capture +
                 '}';
     }
@@ -61,6 +77,8 @@ public class NewChargeCardLeastCost {
         private String currency;
         private String reference;
         private CardRequestInformation paymentInformation;
+        private Address address;
+        private Order order;
         private boolean capture = true;
 
         public Builder withAmount(BigDecimal amount) {
@@ -83,13 +101,23 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
+        public Builder withAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder withOrder(Order order) {
+            this.order = order;
+            return this;
+        }
+
         public Builder withCapture(boolean capture) {
             this.capture = capture;
             return this;
         }
 
         public NewChargeCardLeastCost build() {
-            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, capture);
+            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, capture);
         }
     }
 }

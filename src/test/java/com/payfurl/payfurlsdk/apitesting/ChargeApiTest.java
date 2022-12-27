@@ -4,17 +4,7 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.ChargeApi;
 import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.models.CardRequestInformation;
-import com.payfurl.payfurlsdk.models.ChargeData;
-import com.payfurl.payfurlsdk.models.ChargeList;
-import com.payfurl.payfurlsdk.models.ChargeSearch;
-import com.payfurl.payfurlsdk.models.CustomerData;
-import com.payfurl.payfurlsdk.models.NewChargeCardLeastCost;
-import com.payfurl.payfurlsdk.models.NewChargeCardRequest;
-import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
-import com.payfurl.payfurlsdk.models.NewChargeToken;
-import com.payfurl.payfurlsdk.models.NewCustomerCard;
-import com.payfurl.payfurlsdk.models.PaymentMethodData;
+import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +23,15 @@ public class ChargeApiTest {
             .withCardNumber("4111111111111111")
             .withExpiryDate("12/35")
             .withCcv("123")
+            .build();
+
+    private static final Address SAMPLE_ADDRESS = new Address.Builder()
+            .withLine1("91  Gloucester Avenue")
+            .withLine2("Apartment 2")
+            .withCity("Melbourne")
+            .withSate("Victoria")
+            .withPostalCode("5006")
+            .withCountry("Australia")
             .build();
 
     private ChargeApi chargeApi;
@@ -61,6 +60,7 @@ public class ChargeApiTest {
                     .withCurrency("USD")
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
                     .build();
 
             // when
@@ -78,6 +78,7 @@ public class ChargeApiTest {
             NewChargeCardLeastCost newChargeCardLeastCost = new NewChargeCardLeastCost.Builder()
                     .withAmount(BigDecimal.valueOf(20))
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
                     .build();
 
             // when
@@ -109,6 +110,7 @@ public class ChargeApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
                     .build();
 
             // when

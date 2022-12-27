@@ -11,6 +11,8 @@ public class NewChargeCardRequest {
     private final String providerId;
     private final String reference;
     private final CardRequestInformation paymentInformation;
+    private final Address address;
+    private final Order order;
     private final boolean capture;
 
     @JsonCreator
@@ -19,12 +21,16 @@ public class NewChargeCardRequest {
                                 @JsonProperty("ProviderId") String providerId,
                                 @JsonProperty("Reference") String reference,
                                 @JsonProperty("PaymentInformation") CardRequestInformation paymentInformation,
+                                @JsonProperty("Address") Address address,
+                                @JsonProperty("Order") Order order,
                                 @JsonProperty("Capture") boolean capture) {
         this.amount = amount;
         this.currency = currency;
         this.providerId = providerId;
         this.reference = reference;
         this.paymentInformation = paymentInformation;
+        this.address = address;
+        this.order = order;
         this.capture = capture;
     }
 
@@ -48,8 +54,16 @@ public class NewChargeCardRequest {
         return paymentInformation;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public boolean isCapture() {
         return capture;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 
     @Override
@@ -60,6 +74,8 @@ public class NewChargeCardRequest {
                 ", providerId='" + providerId + '\'' +
                 ", reference='" + reference + '\'' +
                 ", paymentInformation=" + paymentInformation +
+                ", address=" + address +
+                ", order=" + order +
                 ", capture=" + capture +
                 '}';
     }
@@ -70,6 +86,8 @@ public class NewChargeCardRequest {
         private String providerId;
         private String reference;
         private CardRequestInformation paymentInformation;
+        private Address address;
+        private Order order;
         private boolean capture = true;
 
         public Builder withAmount(BigDecimal amount) {
@@ -102,8 +120,18 @@ public class NewChargeCardRequest {
             return this;
         }
 
+        public Builder withAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder withOrder(Order order) {
+            this.order = order;
+            return this;
+        }
+
         public NewChargeCardRequest build() {
-            return new NewChargeCardRequest(amount, currency, providerId, reference, paymentInformation, capture);
+            return new NewChargeCardRequest(amount, currency, providerId, reference, paymentInformation, address, order, capture);
         }
     }
 }
