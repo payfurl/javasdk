@@ -61,8 +61,10 @@ public class BaseApi {
     }
 
     protected void addAuthDataTo(HttpRequest request) {
-        AuthHandler authHandler = authHandlers.get(AuthType.SECRET_KEY);
-        authHandler.apply(request);
+        AuthHandler secretKeyHandler = authHandlers.get(AuthType.SECRET_KEY);
+        AuthHandler publicHandler = authHandlers.get(AuthType.PUBLIC_KEY);
+        secretKeyHandler.apply(request);
+        publicHandler.apply(request);
     }
 
     private void updateUserAgent() {

@@ -1,6 +1,5 @@
 package com.payfurl.payfurlsdk;
 
-import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.http.client.config.Environment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -70,6 +69,6 @@ class PayFurlClientTest {
     @Test
     @DisplayName("Given PayFurlClient When getSecretKeyAuthHandler is called Then return one secret key auth handler")
     void testGetSecretKeyAuthHandler() {
-        then(dummyProdConfiguredClient.getSecretKeyAuthHandler().getAccessToken()).isEmpty();
+        then(dummyProdConfiguredClient.getSecretKeyAuthHandler().getSecretKey()).isEmpty();
     }
 }

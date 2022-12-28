@@ -39,7 +39,7 @@ public class PaymentMethodApiTest {
     void setUp() {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
                 .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
-                .withAccessToken(TestConfigProvider.getKeyWithFallback())
+                .withSecretKey(TestConfigProvider.getSecretKeyWithFallback())
                 .build();
 
         paymentMethodApi = payFurlClient.getPaymentMethodApi();

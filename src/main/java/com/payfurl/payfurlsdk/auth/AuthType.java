@@ -1,5 +1,6 @@
 package com.payfurl.payfurlsdk.auth;
 
 public enum AuthType {
-    SECRET_KEY
+    SECRET_KEY,
+    PUBLIC_KEY
 }

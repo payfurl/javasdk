@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class ChargeApiTest {
     void setUp() {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
                 .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
-                .withAccessToken(TestConfigProvider.getKeyWithFallback())
+                .withSecretKey(TestConfigProvider.getSecretKeyWithFallback())
                 .build();
 
         chargeApi = payFurlClient.getChargeApi();
