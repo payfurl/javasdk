@@ -26,9 +26,9 @@ public class ProductItem {
         this.productCode = productCode;
         this.commodityCode = commodityCode;
         this.description = description;
-        this.quantity = quantity;
+        this.quantity = quantity == null ? BigDecimal.valueOf(0) : quantity;
         this.unitOfMeasure = unitOfMeasure;
-        this.amount = amount;
+        this.amount = amount == null ? BigDecimal.valueOf(0) : amount;
     }
 
     public String getProductCode() {
@@ -105,7 +105,7 @@ public class ProductItem {
             return this;
         }
 
-        public ProductItem createProductItem() {
+        public ProductItem build() {
             return new ProductItem(productCode, commodityCode, description, quantity, unitOfMeasure, amount);
         }
     }

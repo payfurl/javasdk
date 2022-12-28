@@ -3,15 +3,7 @@ package com.payfurl.payfurlsdk.apitesting;
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.models.CardRequestInformation;
-import com.payfurl.payfurlsdk.models.CustomerData;
-import com.payfurl.payfurlsdk.models.CustomerList;
-import com.payfurl.payfurlsdk.models.CustomerSearch;
-import com.payfurl.payfurlsdk.models.NewCustomerCard;
-import com.payfurl.payfurlsdk.models.NewCustomerToken;
-import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
-import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
-import com.payfurl.payfurlsdk.models.PaymentMethodData;
+import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +21,24 @@ public class CustomerApiTest {
             .withCardNumber("4111111111111111")
             .withExpiryDate("12/35")
             .withCcv("123")
+            .build();
+
+    private static final Address SAMPLE_ADDRESS = new Address.Builder()
+            .withLine1("91  Gloucester Avenue")
+            .withLine2("Apartment 2")
+            .withCity("Melbourne")
+            .withSate("Victoria")
+            .withPostalCode("5006")
+            .withCountry("Australia")
+            .build();
+
+    private static final Address SAMPLE_ADDRESS_UPDATED = new Address.Builder()
+            .withLine1("91  Gloucester Avenue Updated")
+            .withLine2("Apartment 2 Updated")
+            .withCity("Melbourne  Updated")
+            .withSate("Victoria Updated")
+            .withPostalCode("50061")
+            .withCountry("Australia  Updated")
             .build();
 
     private CustomerApi customerApi;
@@ -62,6 +72,69 @@ public class CustomerApiTest {
 
             // then
             then(customerData.getCustomerId()).isNotNull();
+        }
+
+        @Test
+        @DisplayName("When createWithCard request is executed then execute UpdateCustomer, Then return valid CustomerData")
+        void testCreateWithCardAndUpdate() throws IOException {
+            String reference = UUID.randomUUID().toString();
+            // given
+            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+                    .withFirstName("test")
+                    .withLastName("test")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withEmail("test"+reference+"@payfurl.com")
+                    .withPhone("+61311111111")
+                    .build();
+
+            UpdateCustomer updateCustomer = new UpdateCustomer.Builder()
+                    .withAddress(SAMPLE_ADDRESS_UPDATED)
+                    .withPhone("+61311111112")
+                    .withEmail("updated"+reference+"@payfurl.com")
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithCard(newCustomerCard);
+
+            CustomerData updatedCustomer = customerApi.updateCustomer(customerData.getCustomerId(), updateCustomer);
+
+            // then
+            then(customerData.getCustomerId()).isNotNull();
+            then(updatedCustomer.getCustomerId()).isNotNull();
+            then(updatedCustomer.getCustomerId()).isEqualTo(customerData.getCustomerId());
+            then(updatedCustomer.getPhone()).isEqualTo("+61311111112");
+            then(updatedCustomer.getEmail()).isEqualTo("updated"+reference+"@payfurl.com");
+        }
+
+        @Test
+        @DisplayName("Delete Customer")
+        void testDeleteCustomer() throws IOException {
+            String reference = UUID.randomUUID().toString();
+            // given
+            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+                    .withFirstName("test")
+                    .withLastName("test")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withEmail("test"+reference+"@payfurl.com")
+                    .withPhone("+61311111111")
+                    .build();
+
+
+            // when
+            CustomerData customerData = customerApi.createWithCard(newCustomerCard);
+
+            CustomerData updatedCustomer = customerApi.deleteCustomer(customerData.getCustomerId());
+
+            // then
+            then(customerData.getCustomerId()).isNotNull();
+            then(updatedCustomer.getCustomerId()).isNotNull();
+            then(updatedCustomer.getCustomerId()).isEqualTo(customerData.getCustomerId());
+            then(updatedCustomer.getPhone()).isEqualTo("deleted");
+            then(updatedCustomer.getEmail()).isEqualTo("deleted");
         }
 
         @Test

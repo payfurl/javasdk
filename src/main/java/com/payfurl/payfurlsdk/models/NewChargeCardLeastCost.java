@@ -12,6 +12,9 @@ public class NewChargeCardLeastCost {
     private final CardRequestInformation paymentInformation;
     private final Address address;
     private final Order order;
+    private final BigDecimal taxAmount;
+    private final String customerCode;
+    private final String invoiceNumber;
     private final boolean capture;
 
     @JsonCreator
@@ -21,6 +24,9 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("PaymentInformation") CardRequestInformation paymentInformation,
                                   @JsonProperty("Address") Address address,
                                   @JsonProperty("Order") Order order,
+                                  @JsonProperty("TaxAmount") BigDecimal taxAmount,
+                                  @JsonProperty("CustomerCode") String customerCode,
+                                  @JsonProperty("InvoiceNumber") String invoiceNumber,
                                   @JsonProperty("Capture") boolean capture) {
         this.amount = amount;
         this.currency = currency;
@@ -28,6 +34,9 @@ public class NewChargeCardLeastCost {
         this.paymentInformation = paymentInformation;
         this.address = address;
         this.order = order;
+        this.taxAmount = taxAmount == null ? BigDecimal.valueOf(0) : taxAmount;
+        this.customerCode = customerCode;
+        this.invoiceNumber = invoiceNumber;
         this.capture = capture;
     }
 
@@ -68,8 +77,23 @@ public class NewChargeCardLeastCost {
                 ", paymentInformation=" + paymentInformation +
                 ", address=" + address +
                 ", order=" + order +
+                ", taxAmount=" + taxAmount +
+                ", customerCode=" + customerCode +
+                ", invoiceNumber=" + invoiceNumber +
                 ", capture=" + capture +
                 '}';
+    }
+
+    public BigDecimal getTaxAmount() {
+        return taxAmount;
+    }
+
+    public String getCustomerCode() {
+        return customerCode;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
     }
 
     public static class Builder {
@@ -79,6 +103,9 @@ public class NewChargeCardLeastCost {
         private CardRequestInformation paymentInformation;
         private Address address;
         private Order order;
+        private BigDecimal taxAmount;
+        private String customerCode;
+        private String invoiceNumber;
         private boolean capture = true;
 
         public Builder withAmount(BigDecimal amount) {
@@ -111,13 +138,28 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
+        public Builder withTaxAmount(BigDecimal taxAmount) {
+            this.taxAmount = taxAmount;
+            return this;
+        }
+
+        public Builder withCustomerCode(String customerCode) {
+            this.customerCode = customerCode;
+            return this;
+        }
+
+        public Builder withInvoiceNumber(String invoiceNumber) {
+            this.invoiceNumber = invoiceNumber;
+            return this;
+        }
+
         public Builder withCapture(boolean capture) {
             this.capture = capture;
             return this;
         }
 
         public NewChargeCardLeastCost build() {
-            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, capture);
+            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, taxAmount, customerCode, invoiceNumber, capture);
         }
     }
 }

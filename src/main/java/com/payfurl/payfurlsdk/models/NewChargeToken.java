@@ -12,6 +12,10 @@ public class NewChargeToken {
     private final String token;
     private final CheckoutTransfer checkoutTransfer;
     private final Address address;
+    private final Order order;
+    private final BigDecimal taxAmount;
+    private final String customerCode;
+    private final String invoiceNumber;
     private final boolean capture;
 
     @JsonCreator
@@ -21,6 +25,10 @@ public class NewChargeToken {
                           @JsonProperty("PaymentMethodId") String token,
                           @JsonProperty("CheckoutTransfer") CheckoutTransfer checkoutTransfer,
                           @JsonProperty("Address") Address address,
+                          @JsonProperty("Order") Order order,
+                          @JsonProperty("TaxAmount") BigDecimal taxAmount,
+                          @JsonProperty("CustomerCode") String customerCode,
+                          @JsonProperty("InvoiceNumber") String invoiceNumber,
                           @JsonProperty("Capture") boolean capture) {
         this.amount = amount;
         this.currency = currency;
@@ -28,6 +36,10 @@ public class NewChargeToken {
         this.token = token;
         this.checkoutTransfer = checkoutTransfer;
         this.address = address;
+        this.order = order;
+        this.taxAmount = taxAmount == null ? BigDecimal.valueOf(0) : taxAmount;
+        this.customerCode = customerCode;
+        this.invoiceNumber = invoiceNumber;
         this.capture = capture;
     }
 
@@ -51,12 +63,45 @@ public class NewChargeToken {
         return address;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
     public boolean isCapture() {
         return capture;
     }
 
     public CheckoutTransfer getCheckoutTransfer() {
         return checkoutTransfer;
+    }
+
+    @Override
+    public String toString() {
+        return "NewChargeToken{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", paymentMethodId='" + token + '\'' +
+                ", reference='" + reference + '\'' +
+                ", checkoutTransfer='" + checkoutTransfer + '\'' +
+                ", address=" + address +
+                ", order=" + order +
+                ", taxAmount=" + taxAmount +
+                ", customerCode=" + customerCode +
+                ", invoiceNumber=" + invoiceNumber +
+                ", capture=" + capture +
+                '}';
+    }
+
+    public BigDecimal getTaxAmount() {
+        return taxAmount;
+    }
+
+    public String getCustomerCode() {
+        return customerCode;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
     }
 
     public static class Builder {
@@ -66,6 +111,10 @@ public class NewChargeToken {
         private String token;
         private CheckoutTransfer checkoutTransfer;
         private Address address;
+        private Order order;
+        private BigDecimal taxAmount;
+        private String customerCode;
+        private String invoiceNumber;
         private boolean capture = true;
 
         public Builder withAmount(BigDecimal amount) {
@@ -98,13 +147,33 @@ public class NewChargeToken {
             return this;
         }
 
+        public Builder withOrder(Order order) {
+            this.order = order;
+            return this;
+        }
+
+        public Builder withTaxAmount(BigDecimal taxAmount) {
+            this.taxAmount = taxAmount;
+            return this;
+        }
+
+        public Builder withCustomerCode(String customerCode) {
+            this.customerCode = customerCode;
+            return this;
+        }
+
+        public Builder withInvoiceNumber(String invoiceNumber) {
+            this.invoiceNumber = invoiceNumber;
+            return this;
+        }
+
         public Builder withCapture(boolean capture) {
             this.capture = capture;
             return this;
         }
 
         public NewChargeToken build() {
-            return new NewChargeToken(amount, currency, reference, token, checkoutTransfer, address, capture);
+            return new NewChargeToken(amount, currency, reference, token, checkoutTransfer, address, order, taxAmount, customerCode, invoiceNumber, capture);
         }
     }
 }

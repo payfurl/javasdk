@@ -19,8 +19,8 @@ public class Order {
                  @JsonProperty("Items") List<ProductItem> items) {
 
         this.orderNumber = orderNumber;
-        this.freightAmount = freightAmount;
-        this.dutyAmount = dutyAmount;
+        this.freightAmount = freightAmount == null ? BigDecimal.valueOf(0) : freightAmount;
+        this.dutyAmount = dutyAmount == null ? BigDecimal.valueOf(0) : dutyAmount;
         this.items = items;
     }
 

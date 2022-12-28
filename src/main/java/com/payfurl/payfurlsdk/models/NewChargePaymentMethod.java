@@ -11,6 +11,10 @@ public class NewChargePaymentMethod {
     private final String paymentMethodId;
     private final String reference;
     private final Address address;
+    private final Order order;
+    private final BigDecimal taxAmount;
+    private final String customerCode;
+    private final String invoiceNumber;
     private final boolean capture;
 
     @JsonCreator
@@ -20,12 +24,19 @@ public class NewChargePaymentMethod {
                                   @JsonProperty("PaymentMethodId") String paymentMethodId,
                                   @JsonProperty("Address") Address address,
                                   @JsonProperty("Order") Order order,
+                                  @JsonProperty("TaxAmount") BigDecimal taxAmount,
+                                  @JsonProperty("CustomerCode") String customerCode,
+                                  @JsonProperty("InvoiceNumber") String invoiceNumber,
                                   @JsonProperty("Capture") boolean capture) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
         this.paymentMethodId = paymentMethodId;
         this.address = address;
+        this.order = order;
+        this.taxAmount = taxAmount == null ? BigDecimal.valueOf(0) : taxAmount;
+        this.customerCode = customerCode;
+        this.invoiceNumber = invoiceNumber;
         this.capture = capture;
     }
 
@@ -53,6 +64,38 @@ public class NewChargePaymentMethod {
         return capture;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    @Override
+    public String toString() {
+        return "NewChargePaymentMethod{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", paymentMethodId='" + paymentMethodId + '\'' +
+                ", reference='" + reference + '\'' +
+                ", address=" + address +
+                ", order=" + order +
+                ", taxAmount=" + taxAmount +
+                ", customerCode=" + customerCode +
+                ", invoiceNumber=" + invoiceNumber +
+                ", capture=" + capture +
+                '}';
+    }
+
+    public BigDecimal getTaxAmount() {
+        return taxAmount;
+    }
+
+    public String getCustomerCode() {
+        return customerCode;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
 
     public static class Builder {
         private BigDecimal amount;
@@ -60,6 +103,10 @@ public class NewChargePaymentMethod {
         private String reference;
         private String paymentMethodId;
         private Address address;
+        private Order order;
+        private BigDecimal taxAmount;
+        private String customerCode;
+        private String invoiceNumber;
         private boolean capture = true;
 
         public Builder withAmount(BigDecimal amount) {
@@ -87,13 +134,33 @@ public class NewChargePaymentMethod {
             return this;
         }
 
+        public Builder withOrder(Order order) {
+            this.order = order;
+            return this;
+        }
+
+        public Builder withTaxAmount(BigDecimal taxAmount) {
+            this.taxAmount = taxAmount;
+            return this;
+        }
+
+        public Builder withCustomerCode(String customerCode) {
+            this.customerCode = customerCode;
+            return this;
+        }
+
+        public Builder withInvoiceNumber(String invoiceNumber) {
+            this.invoiceNumber = invoiceNumber;
+            return this;
+        }
+
         public Builder withCapture(boolean capture) {
             this.capture = capture;
             return this;
         }
 
         public NewChargePaymentMethod build() {
-            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, capture);
+            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, order, taxAmount, customerCode, invoiceNumber, capture);
         }
     }
 }

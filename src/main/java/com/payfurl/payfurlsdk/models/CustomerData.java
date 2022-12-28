@@ -14,6 +14,7 @@ public class CustomerData {
     private final String phone;
     private final Date dateAdded;
     private final PaymentMethodSummary defaultPaymentMethod;
+    private final Address address;
 
     @JsonCreator
     public CustomerData(@JsonProperty("CustomerId") String customerId,
@@ -23,7 +24,8 @@ public class CustomerData {
                         @JsonProperty("Email") String email,
                         @JsonProperty("Phone") String phone,
                         @JsonProperty("DateAdded") Date dateAdded,
-                        @JsonProperty("DefaultPaymentMethod") PaymentMethodSummary defaultPaymentMethod) {
+                        @JsonProperty("DefaultPaymentMethod") PaymentMethodSummary defaultPaymentMethod,
+                        @JsonProperty("Address") Address address) {
         this.customerId = customerId;
         this.reference = reference;
         this.firstName = firstName;
@@ -32,6 +34,7 @@ public class CustomerData {
         this.phone = phone;
         this.dateAdded = dateAdded;
         this.defaultPaymentMethod = defaultPaymentMethod;
+        this.address = address;
     }
 
     public String getCustomerId() {
@@ -66,6 +69,10 @@ public class CustomerData {
         return defaultPaymentMethod;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public static class Builder {
         private String customerId;
         private String reference;
@@ -74,6 +81,7 @@ public class CustomerData {
         private String email;
         private String phone;
         private Date dateAdded;
+        private Address address;
         private PaymentMethodSummary defaultPaymentMethod;
 
         public Builder withCustomerId(String customerId) {
@@ -116,8 +124,13 @@ public class CustomerData {
             return this;
         }
 
+        public Builder withAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
         public CustomerData build() {
-            return new CustomerData(customerId, reference, firstName, lastName, email, phone, dateAdded, defaultPaymentMethod);
+            return new CustomerData(customerId, reference, firstName, lastName, email, phone, dateAdded, defaultPaymentMethod, address);
         }
     }
 }

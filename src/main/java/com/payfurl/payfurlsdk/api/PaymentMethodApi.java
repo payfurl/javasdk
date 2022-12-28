@@ -73,6 +73,17 @@ public class PaymentMethodApi extends BaseApi {
     }
 
     /**
+     * Delete payment method
+     * @param paymentMethodId
+     * @return
+     * @throws IOException
+     */
+    public PaymentMethodData deletePaymentMethod(String paymentMethodId) throws IOException {
+        String urlPath = String.format("%s/%s",paymentMethodApiBaseEndpoint, paymentMethodId);
+        return executeDeleteRequestWith(urlPath, null, PaymentMethodData.class);
+    }
+
+    /**
      * Search for payment methods
      * @param searchData
      * @return

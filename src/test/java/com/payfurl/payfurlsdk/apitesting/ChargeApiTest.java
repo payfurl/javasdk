@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -32,6 +34,28 @@ public class ChargeApiTest {
             .withSate("Victoria")
             .withPostalCode("5006")
             .withCountry("Australia")
+            .build();
+    private static final List<ProductItem> Items = Arrays.asList(new ProductItem.Builder()
+            .withAmount(BigDecimal.valueOf(123))
+            .withDescription("First item")
+            .withQuantity(BigDecimal.valueOf(1.4))
+            .withCommodityCode("asdf")
+            .withProductCode("PC1234")
+            .withUnitOfMeasure("kg")
+            .build(),
+            new ProductItem.Builder()
+            .withAmount(BigDecimal.valueOf(33))
+            .withDescription("Second item")
+            .withQuantity(BigDecimal.valueOf(4.6))
+            .withCommodityCode("uuuu")
+            .withProductCode("PC15678")
+            .withUnitOfMeasure("kg")
+            .build());
+    private static final Order SAMPLE_ORER = new Order.Builder()
+            .withOrderNumber("12345ON")
+            .withDutyAmount(BigDecimal.valueOf(1))
+            .withFreightAmount(BigDecimal.valueOf(2))
+            .withItems(Items)
             .build();
 
     private ChargeApi chargeApi;
@@ -61,6 +85,7 @@ public class ChargeApiTest {
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
+                    .withOrder(SAMPLE_ORER)
                     .build();
 
             // when
@@ -78,7 +103,9 @@ public class ChargeApiTest {
             NewChargeCardLeastCost newChargeCardLeastCost = new NewChargeCardLeastCost.Builder()
                     .withAmount(BigDecimal.valueOf(20))
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withOrder(SAMPLE_ORER)
                     .withAddress(SAMPLE_ADDRESS)
+                    .withTaxAmount(BigDecimal.valueOf(7.8))
                     .build();
 
             // when

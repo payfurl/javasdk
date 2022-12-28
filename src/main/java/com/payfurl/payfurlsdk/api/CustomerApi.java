@@ -4,14 +4,7 @@ import com.payfurl.payfurlsdk.Configuration;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
-import com.payfurl.payfurlsdk.models.CustomerData;
-import com.payfurl.payfurlsdk.models.CustomerList;
-import com.payfurl.payfurlsdk.models.CustomerSearch;
-import com.payfurl.payfurlsdk.models.NewCustomerCard;
-import com.payfurl.payfurlsdk.models.NewCustomerToken;
-import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
-import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
-import com.payfurl.payfurlsdk.models.PaymentMethodData;
+import com.payfurl.payfurlsdk.models.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -115,5 +108,26 @@ public class CustomerApi extends BaseApi {
         String urlPath = String.format("%s/%s/payment_method",customerApiBaseEndpoint, customerId);
         PaymentMethodData[] paymentMethodData = executeGetRequestWith(urlPath, null, PaymentMethodData[].class);
         return Arrays.asList(paymentMethodData);
+    }
+
+    /**
+     * Update customer information
+     * @param customerId
+     * @param updateCustomer
+     * @return
+     * @throws IOException
+     */
+    public CustomerData updateCustomer(String customerId, UpdateCustomer updateCustomer) throws IOException {
+        return executePutRequestWith(customerApiBaseEndpoint + "/"+customerId, updateCustomer, CustomerData.class);
+    }
+
+    /**
+     * Delete customer
+     * @param customerId
+     * @return
+     * @throws IOException
+     */
+    public CustomerData deleteCustomer(String customerId) throws IOException {
+        return executeDeleteRequestWith(customerApiBaseEndpoint + "/"+customerId, null, CustomerData.class);
     }
 }
