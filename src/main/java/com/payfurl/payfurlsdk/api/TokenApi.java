@@ -7,9 +7,7 @@ import com.payfurl.payfurlsdk.http.client.HttpClient;
 import com.payfurl.payfurlsdk.models.*;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TokenApi extends BaseApi {
@@ -100,56 +98,21 @@ public class TokenApi extends BaseApi {
 
 
     /**
-     * Search for customers
+     * Search for tokekns
      * @param searchData
      * @return
      * @throws IOException
      */
-    public CustomerList search(CustomerSearch searchData) throws IOException {
+    public TokenList search(TokenSearch searchData) throws IOException {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("Skip", searchData.getSkip());
         queryParams.put("Limit", searchData.getLimit());
-        queryParams.put("Reference", searchData.getReference());
-        queryParams.put("PaymentMethodId", searchData.getPaymentMethodId());
-        queryParams.put("CustomerId", searchData.getCustomerId());
-        queryParams.put("Email", searchData.getEmail());
+        queryParams.put("Status", searchData.getStatus());
+        queryParams.put("ProviderId", searchData.getProviderId());
         queryParams.put("AddedAfter", searchData.getAddedAfter());
         queryParams.put("AddedBefore", searchData.getAddedBefore());
-        queryParams.put("Search", searchData.getSearch());
+        queryParams.put("SortBy", searchData.getSortBy());
 
-        return executeGetRequestWith(tokenApiBaseEndpoint, queryParams, CustomerList.class);
-    }
-
-    /**
-     * Retrieve payment methods for a customer
-     * @param customerId
-     * @return
-     * @throws IOException
-     */
-    public List<PaymentMethodData> getPaymentMethods(String customerId) throws IOException {
-        String urlPath = String.format("%s/%s/payment_method", tokenApiBaseEndpoint, customerId);
-        PaymentMethodData[] paymentMethodData = executeGetRequestWith(urlPath, null, PaymentMethodData[].class);
-        return Arrays.asList(paymentMethodData);
-    }
-
-    /**
-     * Update customer information
-     * @param customerId
-     * @param updateCustomer
-     * @return
-     * @throws IOException
-     */
-    public CustomerData updateCustomer(String customerId, UpdateCustomer updateCustomer) throws IOException {
-        return executePutRequestWith(tokenApiBaseEndpoint + "/"+customerId, updateCustomer, CustomerData.class);
-    }
-
-    /**
-     * Delete customer
-     * @param customerId
-     * @return
-     * @throws IOException
-     */
-    public CustomerData deleteCustomer(String customerId) throws IOException {
-        return executeDeleteRequestWith(tokenApiBaseEndpoint + "/"+customerId, null, CustomerData.class);
+        return executeGetRequestWith(tokenApiBaseEndpoint, queryParams, TokenList.class);
     }
 }

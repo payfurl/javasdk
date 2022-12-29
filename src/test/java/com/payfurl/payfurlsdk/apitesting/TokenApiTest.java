@@ -129,28 +129,21 @@ public class TokenApiTest {
         }
 
         @Test
-        @DisplayName("When Search request is executed, Then return valid PaymentMethodList")
+        @DisplayName("When Search request is executed, Then return valid TokenList")
         void testSearch() throws IOException {
             // given
-            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
-                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
-                    .withVaultCard(true)
-                    .build();
-
-            NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+            NewTokenCardRequest tokenCardRequest = new NewTokenCardRequest.Builder()
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
             // when
-            PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
-            PaymentMethodList paymentMethodList = paymentMethodApi.search(new PaymentMethodSearch.Builder()
-                    .withProviderId(paymentMethodWithCard.getProviderId())
+            PaymentTokenData paymentTokenData = tokenApi.create(tokenCardRequest);
+            TokenList tokenList = tokenApi.search(new TokenSearch.Builder()
+                    .withProviderId(paymentTokenData.getProviderId())
                     .build());
 
             // then
-            then(paymentMethodList.getCount()).isGreaterThan(0);
+            then(tokenList.getCount()).isGreaterThan(0);
         }
     }
 }
