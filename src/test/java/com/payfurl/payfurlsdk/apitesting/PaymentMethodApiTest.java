@@ -137,7 +137,6 @@ public class PaymentMethodApiTest {
             NewPaymentMethodVault newPaymentMethodVault = new NewPaymentMethodVault.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentMethodId(customer.getDefaultPaymentMethod().getPaymentMethodId())
-                    .withVaultId(customer.getDefaultPaymentMethod().getVaultId())
                     .build();
             PaymentMethodData paymentMethodWithVault = paymentMethodApi.createPaymentMethodWithVault(newPaymentMethodVault);
 
