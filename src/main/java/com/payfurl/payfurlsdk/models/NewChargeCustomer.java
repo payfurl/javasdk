@@ -16,6 +16,8 @@ public class NewChargeCustomer {
     private final BigDecimal taxAmount;
     private final String customerCode;
     private final String invoiceNumber;
+    private final String email;
+    private final String phone;
     private final boolean capture;
 
     @JsonCreator
@@ -28,6 +30,8 @@ public class NewChargeCustomer {
                              @JsonProperty("TaxAmount") BigDecimal taxAmount,
                              @JsonProperty("CustomerCode") String customerCode,
                              @JsonProperty("InvoiceNumber") String invoiceNumber,
+                             @JsonProperty("Email") String email,
+                             @JsonProperty("Phone") String phone,
                              @JsonProperty("Capture") boolean capture) {
         this.amount = amount;
         this.currency = currency;
@@ -38,6 +42,8 @@ public class NewChargeCustomer {
         this.taxAmount = taxAmount == null ? BigDecimal.valueOf(0) : taxAmount;
         this.customerCode = customerCode;
         this.invoiceNumber = invoiceNumber;
+        this.email = email;
+        this.phone = phone;
         this.capture = capture;
     }
 
@@ -81,6 +87,8 @@ public class NewChargeCustomer {
                 ", taxAmount=" + taxAmount +
                 ", customerCode=" + customerCode +
                 ", invoiceNumber=" + invoiceNumber +
+                ", email=" + email +
+                ", phone=" + phone +
                 ", capture=" + capture +
                 '}';
     }
@@ -97,6 +105,14 @@ public class NewChargeCustomer {
         return invoiceNumber;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
 
     public static class Builder {
         private BigDecimal amount;
@@ -108,6 +124,8 @@ public class NewChargeCustomer {
         private BigDecimal taxAmount;
         private String customerCode;
         private String invoiceNumber;
+        private String email;
+        private String phone;
         private boolean capture = true;
 
         public Builder withAmount(BigDecimal amount) {
@@ -150,6 +168,16 @@ public class NewChargeCustomer {
             return this;
         }
 
+        public Builder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder withPhone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
         public Builder withCustomerId(String customerId) {
             this.customerId = customerId;
             return this;
@@ -161,7 +189,7 @@ public class NewChargeCustomer {
         }
 
         public NewChargeCustomer build() {
-            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, taxAmount, customerCode, invoiceNumber, capture);
+            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture);
         }
     }
 }
