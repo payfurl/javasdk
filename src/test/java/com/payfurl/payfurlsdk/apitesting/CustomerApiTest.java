@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -270,7 +272,6 @@ public class CustomerApiTest {
                     .withFirstName("test")
                     .withLastName("test")
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
-                    //      .withReference(reference)
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -282,6 +283,24 @@ public class CustomerApiTest {
             then(customerData.getCustomerId()).isEqualTo(foundCustomerData.getCustomerId());
             then(customerData.getFirstName()).isEqualTo(foundCustomerData.getFirstName());
             then(customerData.getLastName()).isEqualTo(foundCustomerData.getLastName());
+        }
+
+        @Test
+        @DisplayName("Create customer with provider token, Then return valid CustomerData")
+        void testCustomerWithProviderToken() throws IOException {
+            // given
+            NewCustomerProviderToken customerProviderToken = new NewCustomerProviderToken.Builder()
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderToken("some_test_token")
+                    .withProviderTokenData(new HashMap<String, String>(){{ put("test","test"); }})
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithProviderToken(customerProviderToken);
+            CustomerData foundCustomerData = customerApi.single(customerData.getCustomerId());
+
+            // then
+            then(customerData.getCustomerId()).isEqualTo(foundCustomerData.getCustomerId());
         }
     }
 }

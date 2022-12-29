@@ -86,6 +86,22 @@ public class NewCustomerCard {
     public Integer getVaultExpireSeconds() {
         return vaultExpireSeconds;
     }
+    @Override
+    public String toString() {
+        return "NewCustomerCard{" +
+                "reference=" + reference +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                ", providerId=" + providerId +
+                ", paymentInformation=" + paymentInformation +
+                ", address=" + address +
+                ", vaultCard=" + vaultCard +
+                ", vaultExpireDate=" + vaultExpireDate +
+                ", vaultExpireSeconds=" + vaultExpireSeconds +
+                '}';
+    }
 
     public static class Builder {
         private String reference;

@@ -130,4 +130,14 @@ public class CustomerApi extends BaseApi {
     public CustomerData deleteCustomer(String customerId) throws IOException {
         return executeDeleteRequestWith(customerApiBaseEndpoint + "/"+customerId, null, CustomerData.class);
     }
+
+    /**
+     * Add a customer with provider token
+     * @param customerProviderToken
+     * @return
+     * @throws IOException
+     */
+    public CustomerData createWithProviderToken(NewCustomerProviderToken customerProviderToken) throws IOException {
+        return executePostRequestWith(customerApiBaseEndpoint + "/provider_token", customerProviderToken, CustomerData.class);
+    }
 }
