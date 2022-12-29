@@ -12,19 +12,22 @@ public class PaymentTokenData {
     private final Date dateAdded;
     private final String vaultId;
     private final String type;
+    private final String payToStatus;
 
     @JsonCreator
     public PaymentTokenData(@JsonProperty("TokenId") String tokenId,
                             @JsonProperty("ProviderId") String providerId,
                             @JsonProperty("DateAdded") Date dateAdded,
                             @JsonProperty("VaultId") String vaultId,
-                            @JsonProperty("Type") String type) {
+                            @JsonProperty("Type") String type,
+                            @JsonProperty("PayToStatus") String payToStatus) {
 
         this.tokenId = tokenId;
         this.providerId = providerId;
         this.dateAdded = dateAdded;
         this.vaultId = vaultId;
         this.type = type;
+        this.payToStatus = payToStatus;
     }
 
     public String getTokenId() {
@@ -47,6 +50,10 @@ public class PaymentTokenData {
         return type;
     }
 
+    public String getPayToStatus() {
+        return payToStatus;
+    }
+
 
     @Override
     public String toString() {
@@ -56,6 +63,7 @@ public class PaymentTokenData {
                 ", dateAdded=" + dateAdded +
                 ", vaultId=" + vaultId +
                 ", type=" + type +
+                ", payToStatus=" + payToStatus +
                 '}';
     }
 
@@ -65,6 +73,8 @@ public class PaymentTokenData {
         private Date dateAdded;
         private String vaultId;
         private String type;
+
+        private String payToStatus;
 
         public Builder withTokenId(String tokenId) {
             this.tokenId = tokenId;
@@ -91,8 +101,13 @@ public class PaymentTokenData {
             return this;
         }
 
+        public Builder withPayToStatus(String payToStatus) {
+            this.payToStatus = payToStatus;
+            return this;
+        }
+
         public PaymentTokenData build() {
-            return new PaymentTokenData(tokenId, providerId, dateAdded, vaultId, type);
+            return new PaymentTokenData(tokenId, providerId, dateAdded, vaultId, type, payToStatus);
         }
     }
 }
