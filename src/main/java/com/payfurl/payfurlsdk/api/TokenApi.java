@@ -26,7 +26,7 @@ public class TokenApi extends BaseApi {
      * @return
      * @throws IOException
      */
-    public PaymentTokenData create(NewTokenCardRequest newTokenCardRequest) throws IOException {
+    public PaymentTokenData createWithCard(NewTokenCardRequest newTokenCardRequest) throws IOException {
         return executePostRequestWith(tokenApiBaseEndpoint + "/card", newTokenCardRequest, PaymentTokenData.class);
     }
 
@@ -36,18 +36,8 @@ public class TokenApi extends BaseApi {
      * @return
      * @throws IOException
      */
-    public PaymentTokenData createLeastCost(NewTokenCardLeastCostRequest newTokenCardLeastCostRequest) throws IOException {
+    public PaymentTokenData createWithCardLeastCost(NewTokenCardLeastCostRequest newTokenCardLeastCostRequest) throws IOException {
         return executePostRequestWith(tokenApiBaseEndpoint + "/card/least_cost", newTokenCardLeastCostRequest, PaymentTokenData.class);
-    }
-
-    /**
-     * Get Token by checkout referenceId
-     * @param referenceId
-     * @return
-     * @throws IOException
-     */
-    public PaymentTokenData getByReferenceId(String referenceId) throws IOException {
-        return executePostRequestWith(tokenApiBaseEndpoint + "/checkout?ReferenceId="+referenceId, null, PaymentTokenData.class);
     }
 
     /**
@@ -61,44 +51,9 @@ public class TokenApi extends BaseApi {
         return executeGetRequestWith(urlPath, null, TokenData.class);
     }
 
-    /**
-     * Add a customer using a payment token
-     * @param newCustomerToken
-     * @return
-     * @throws IOException
-     */
-    public CustomerData createWithToken(NewCustomerToken newCustomerToken) throws IOException {
-        return executePostRequestWith(tokenApiBaseEndpoint + "/token", newCustomerToken, CustomerData.class);
-    }
 
     /**
-     * Add a payment method using a card
-     * @param customerId
-     * @param newPaymentMethodCard
-     * @return
-     * @throws IOException
-     */
-    public PaymentMethodData createPaymentMethodWithCard(String customerId, NewPaymentMethodCard newPaymentMethodCard) throws IOException {
-        String urlPath = String.format("%s/%s/payment_method/card", tokenApiBaseEndpoint, customerId);
-        return executePostRequestWith(urlPath, newPaymentMethodCard, PaymentMethodData.class);
-    }
-
-    /**
-     * Add a payment method using a token
-     * @param customerId
-     * @param newPaymentMethodToken
-     * @return
-     * @throws IOException
-     */
-    public PaymentMethodData createWitPaymentMethodWithToken(String customerId, NewPaymentMethodToken newPaymentMethodToken) throws IOException {
-        String urlPath = String.format("%s/%s/payment_method/token", tokenApiBaseEndpoint, customerId);
-        return executePostRequestWith(urlPath, newPaymentMethodToken, PaymentMethodData.class);
-    }
-
-
-
-    /**
-     * Search for tokekns
+     * Search for tokens
      * @param searchData
      * @return
      * @throws IOException

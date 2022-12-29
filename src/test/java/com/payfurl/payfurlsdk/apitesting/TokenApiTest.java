@@ -2,9 +2,6 @@ package com.payfurl.payfurlsdk.apitesting;
 
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
-import com.payfurl.payfurlsdk.api.ChargeApi;
-import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.api.PaymentMethodApi;
 import com.payfurl.payfurlsdk.api.TokenApi;
 import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -26,11 +22,7 @@ public class TokenApiTest {
             .withCardHolder("James Mason")
             .build();
 
-    private PaymentMethodApi paymentMethodApi;
-    private CustomerApi customerApi;
     private TokenApi tokenApi;
-
-    private ChargeApi chargeApi;
 
     @BeforeEach
     void setUp() {
@@ -40,10 +32,7 @@ public class TokenApiTest {
                 .withPublicKey(TestConfigProvider.getPublicKeyWithFallback())
                 .build();
 
-        paymentMethodApi = payFurlClient.getPaymentMethodApi();
-        customerApi = payFurlClient.getCustomerApi();
         tokenApi = payFurlClient.getTokenApi();
-        chargeApi = payFurlClient.getChargeApi();
 
     }
 
@@ -59,7 +48,7 @@ public class TokenApiTest {
                     .build();
 
             // when
-            PaymentTokenData tokenData = tokenApi.create(tokenCardRequest);
+            PaymentTokenData tokenData = tokenApi.createWithCard(tokenCardRequest);
 
             // then
             then(tokenData.getTokenId()).isNotNull();
@@ -76,37 +65,13 @@ public class TokenApiTest {
                     .build();
 
             // when
-            PaymentTokenData tokenData = tokenApi.createLeastCost(tokenCardRequest);
+            PaymentTokenData tokenData = tokenApi.createWithCardLeastCost(tokenCardRequest);
 
             // then
             then(tokenData.getTokenId()).isNotNull();
         }
 
-        @Test
-        @DisplayName("Get token by reference ID")
-        void getTokenByReferenceId() throws IOException {
-            // given
-            NewTokenCardRequest tokenCardRequest = new NewTokenCardRequest.Builder()
-                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
-                    .build();
 
-            PaymentTokenData tokenData = tokenApi.create(tokenCardRequest);
-
-            NewChargeToken newChargeToken = new NewChargeToken.Builder()
-                    .withAmount(BigDecimal.valueOf(20))
-                    .withToken(tokenData.getTokenId())
-                    .build();
-
-            ChargeData chargeWithToken = chargeApi.createWithToken(newChargeToken);
-
-            String referenceId = chargeWithToken.getProviderChargeId();
-
-            // when
-            PaymentTokenData tokenDataByReferenceId = tokenApi.getByReferenceId(referenceId);
-
-            // then
-            then(tokenDataByReferenceId.getTokenId()).isNotNull();
-        }
 
         @Test
         @DisplayName("Get token by ID")
@@ -116,7 +81,7 @@ public class TokenApiTest {
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
-            PaymentTokenData tokenData = tokenApi.create(tokenCardRequest);
+            PaymentTokenData tokenData = tokenApi.createWithCard(tokenCardRequest);
 
             String tokenID = tokenData.getTokenId();
 
@@ -137,7 +102,7 @@ public class TokenApiTest {
                     .build();
 
             // when
-            PaymentTokenData paymentTokenData = tokenApi.create(tokenCardRequest);
+            PaymentTokenData paymentTokenData = tokenApi.createWithCard(tokenCardRequest);
             TokenList tokenList = tokenApi.search(new TokenSearch.Builder()
                     .withProviderId(paymentTokenData.getProviderId())
                     .build());
