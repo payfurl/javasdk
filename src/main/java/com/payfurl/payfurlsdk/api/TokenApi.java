@@ -21,26 +21,6 @@ public class TokenApi extends BaseApi {
     }
 
     /**
-     * Add a token
-     * @param newTokenCardRequest
-     * @return
-     * @throws IOException
-     */
-    public PaymentTokenData createWithCard(NewTokenCardRequest newTokenCardRequest) throws IOException {
-        return executePostRequestWith(tokenApiBaseEndpoint + "/card", newTokenCardRequest, PaymentTokenData.class);
-    }
-
-    /**
-     * Add a token with least cost
-     * @param newTokenCardLeastCostRequest
-     * @return
-     * @throws IOException
-     */
-    public PaymentTokenData createWithCardLeastCost(NewTokenCardLeastCostRequest newTokenCardLeastCostRequest) throws IOException {
-        return executePostRequestWith(tokenApiBaseEndpoint + "/card/least_cost", newTokenCardLeastCostRequest, PaymentTokenData.class);
-    }
-
-    /**
      * Get Token by id
      * @param tokenId
      * @return

@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.payfurl.payfurlsdk.api.*;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
-import com.payfurl.payfurlsdk.auth.PublicKeyAuthHandler;
 import com.payfurl.payfurlsdk.auth.SecretKeyAuthHandler;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
 import com.payfurl.payfurlsdk.http.client.OkClient;
@@ -35,9 +34,6 @@ public class PayFurlClient implements PayFurlClientSdk {
     private final HttpClient httpClient;
     private final HttpClientConfiguration httpClientConfiguration;
     private final SecretKeyAuthHandler secretKeyAuthHandler;
-
-    private final PublicKeyAuthHandler publicKeyAuthHandler;
-
     private final Map<AuthType, AuthHandler> authHandlerMap;
     private final String userAgentDetails;
 
@@ -54,8 +50,7 @@ public class PayFurlClient implements PayFurlClientSdk {
                           HttpClientConfiguration httpClientConfiguration,
                           Map<AuthType, AuthHandler> authHandlerMap,
                           String userAgentDetails,
-                          String secretKey,
-                          String publicKey) {
+                          String secretKey) {
         this.environment = environment;
         this.additionalHeaders = additionalHeaders;
         this.httpClientConfiguration = httpClientConfiguration;
@@ -68,9 +63,7 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.userAgentDetails = userAgentDetails;
 
         this.secretKeyAuthHandler = new SecretKeyAuthHandler(secretKey);
-        this.publicKeyAuthHandler = new PublicKeyAuthHandler(publicKey);
         this.authHandlerMap.put(AuthType.SECRET_KEY, secretKeyAuthHandler);
-        this.authHandlerMap.put(AuthType.PUBLIC_KEY, publicKeyAuthHandler);
 
         initializeApis();
     }
@@ -193,11 +186,6 @@ public class PayFurlClient implements PayFurlClientSdk {
             return this;
         }
 
-        public Builder withPublicKey(String publicKey) {
-            this.publicKey = Preconditions.checkNotNull(publicKey);
-            return this;
-        }
-
         public PayFurlClient build() {
             HttpClientConfiguration httpClientConfig = httpClientConfigurationBuilder
                     .environment(environment)
@@ -210,8 +198,7 @@ public class PayFurlClient implements PayFurlClientSdk {
                     httpClientConfig,
                     authHandlerMap,
                     userAgentDetails,
-                    secretKey,
-                    publicKey);
+                    secretKey);
         }
     }
 }
