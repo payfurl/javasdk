@@ -131,7 +131,7 @@ public class ChargeApiTest {
 
         @Test
         @DisplayName("When createWitPaymentMethod request is executed, Then return valid charge data")
-        void testCreateWitPaymentMethod() throws IOException {
+        void testCreateWithPaymentMethod() throws IOException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
@@ -148,7 +148,7 @@ public class ChargeApiTest {
                     .withPaymentMethodId(paymentMethods.get(0).getPaymentMethodId())
                     .build();
 
-            ChargeData chargeDataWithPaymentMethod = chargeApi.createWitPaymentMethod(newChargePaymentMethod);
+            ChargeData chargeDataWithPaymentMethod = chargeApi.createWithPaymentMethod(newChargePaymentMethod);
 
             // then
             then(chargeDataWithPaymentMethod.status).isEqualTo(SUCCESS_MARKER);
