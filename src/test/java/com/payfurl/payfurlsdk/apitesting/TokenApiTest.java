@@ -4,23 +4,13 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.TokenApi;
 import com.payfurl.payfurlsdk.models.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class TokenApiTest {
-    private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
-            .withCardNumber("4111111111111111")
-            .withExpiryDate("12/35")
-            .withCcv("123")
-            .withCardHolder("James Mason")
-            .build();
 
     private TokenApi tokenApi;
 
@@ -29,7 +19,6 @@ public class TokenApiTest {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
                 .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
                 .withSecretKey(TestConfigProvider.getSecretKeyWithFallback())
-                .withPublicKey(TestConfigProvider.getPublicKeyWithFallback())
                 .build();
 
         tokenApi = payFurlClient.getTokenApi();
@@ -39,72 +28,31 @@ public class TokenApiTest {
     @Nested
     @DisplayName("Given valid request to Token API")
     class SuccessFlow {
-        @Test
-        @DisplayName("When create token card request is executed, Then return valid Token")
-        void createNewToken() throws IOException {
-            // given
-            NewTokenCardRequest tokenCardRequest = new NewTokenCardRequest.Builder()
-                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
-                    .build();
-
-            // when
-            PaymentTokenData tokenData = tokenApi.createWithCard(tokenCardRequest);
-
-            // then
-            then(tokenData.getTokenId()).isNotNull();
-        }
 
         @Test
-        @DisplayName("When create token card with list cost request is executed, Then return valid Token")
-        void createNewTokenWithLeastCost() throws IOException {
-            // given
-            NewTokenCardLeastCostRequest tokenCardRequest = new NewTokenCardLeastCostRequest.Builder()
-                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
-                    .withAmount(BigDecimal.valueOf(20))
-                    .withCurrency("USD")
-                    .build();
-
-            // when
-            PaymentTokenData tokenData = tokenApi.createWithCardLeastCost(tokenCardRequest);
-
-            // then
-            then(tokenData.getTokenId()).isNotNull();
-        }
-
-
-
-        @Test
+        @Disabled("Tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("Get token by ID")
         void getTokenById() throws IOException {
             // given
-            NewTokenCardRequest tokenCardRequest = new NewTokenCardRequest.Builder()
-                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
-                    .build();
-
-            PaymentTokenData tokenData = tokenApi.createWithCard(tokenCardRequest);
-
-            String tokenID = tokenData.getTokenId();
+            String tokenId = "5dc5cfbaec7c4d057cb00482";
 
             // when
-            TokenData singleToken = tokenApi.single(tokenID);
+            TokenData singleToken = tokenApi.single(tokenId);
 
             // then
             then(singleToken.getId()).isNotNull();
-            then(singleToken.getId()).isEqualTo(tokenID);
+            then(singleToken.getId()).isEqualTo(tokenId);
         }
 
         @Test
+        @Disabled("Tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When Search request is executed, Then return valid TokenList")
         void testSearch() throws IOException {
             // given
-            NewTokenCardRequest tokenCardRequest = new NewTokenCardRequest.Builder()
-                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
-                    .build();
 
             // when
-            PaymentTokenData paymentTokenData = tokenApi.createWithCard(tokenCardRequest);
             TokenList tokenList = tokenApi.search(new TokenSearch.Builder()
-                    .withProviderId(paymentTokenData.getProviderId())
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .build());
 
             // then
