@@ -8,7 +8,7 @@ import java.util.Date;
 public class TokenData {
 
     private final String gatewayTokenId;
-    private final String id;
+    private final String tokenId;
     private final String userId;
     private final CardData card;
     private final ProviderSummary provider;
@@ -18,7 +18,7 @@ public class TokenData {
 
     @JsonCreator
     public TokenData(@JsonProperty("GatewayTokenId") String gatewayTokenId,
-                     @JsonProperty("Id") String id,
+                     @JsonProperty("TokenId") String tokenId,
                      @JsonProperty("UserId") String userId,
                      @JsonProperty("Card") CardData card,
                      @JsonProperty("Provider") ProviderSummary provider,
@@ -27,7 +27,7 @@ public class TokenData {
                      @JsonProperty("PayToStatus") String payToStatus)
     {
         this.gatewayTokenId = gatewayTokenId;
-        this.id = id;
+        this.tokenId = tokenId;
         this.userId = userId;
         this.card = card;
         this.provider = provider;
@@ -41,7 +41,7 @@ public class TokenData {
     }
 
     public String getId() {
-        return id;
+        return tokenId;
     }
 
     public String getUserId() {
@@ -71,7 +71,7 @@ public class TokenData {
     @Override
     public String toString() {
         return "TokenData{" +
-                "id=" + id +
+                "tokenId=" + tokenId +
                 ", gatewayTokenId=" + gatewayTokenId +
                 ", userId=" + userId +
                 ", card=" + card +
