@@ -8,12 +8,15 @@ import java.math.BigDecimal;
 public class NewRefund {
     private final String chargeId;
     private final BigDecimal refundAmount;
+    private final String comment;
 
     @JsonCreator
     public NewRefund(@JsonProperty("ChargeId") String chargeId,
-                     @JsonProperty("RefundAmount") BigDecimal refundAmount) {
+                     @JsonProperty("RefundAmount") BigDecimal refundAmount,
+                     @JsonProperty("Comment") String comment) {
         this.chargeId = chargeId;
         this.refundAmount = refundAmount;
+        this.comment = comment;
     }
 
     public String getChargeId() {
@@ -24,17 +27,23 @@ public class NewRefund {
         return refundAmount;
     }
 
+    public String comment() {
+        return comment;
+    }
+
     @Override
     public String toString() {
         return "NewRefund{" +
                 "chargeId='" + chargeId + '\'' +
                 ", refundAmount=" + refundAmount +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 
     public static class Builder {
         private String chargeId;
         private BigDecimal refundAmount;
+        private String comment;
 
         public Builder withChargeId(String chargeId) {
             this.chargeId = chargeId;
@@ -46,8 +55,13 @@ public class NewRefund {
             return this;
         }
 
+        public Builder withComment(String comment) {
+            this.comment = comment;
+            return this;
+        }
+
         public NewRefund build() {
-            return new NewRefund(chargeId, refundAmount);
+            return new NewRefund(chargeId, refundAmount, comment);
         }
     }
 }
