@@ -27,7 +27,7 @@ public class NewRefund {
         return refundAmount;
     }
 
-    public String comment() {
+    public String getComment() {
         return comment;
     }
 
