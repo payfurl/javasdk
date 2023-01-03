@@ -55,7 +55,7 @@ public class ChargeApi extends BaseApi {
      * @return
      * @throws IOException
      */
-    public ChargeData createWitPaymentMethod(NewChargePaymentMethod newChargePaymentMethod) throws IOException {
+    public ChargeData createWithPaymentMethod(NewChargePaymentMethod newChargePaymentMethod) throws IOException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/payment_method", newChargePaymentMethod, ChargeData.class);
     }
 

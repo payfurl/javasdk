@@ -9,6 +9,6 @@ public interface Configuration {
     Headers getAdditionalHeaders();
     String getUserAgentDetail();
     long timeout();
-    String getAccessToken();
+    String getSecretKey();
     String getBaseUri();
 }

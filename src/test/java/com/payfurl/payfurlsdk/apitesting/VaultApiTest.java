@@ -22,7 +22,7 @@ public class VaultApiTest {
     void setUp() {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
                 .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
-                .withAccessToken(TestConfigProvider.getKeyWithFallback())
+                .withSecretKey(TestConfigProvider.getSecretKeyWithFallback())
                 .build();
 
         vaultApi = payFurlClient.getVaultApi();

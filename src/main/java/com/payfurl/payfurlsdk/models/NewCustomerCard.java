@@ -13,6 +13,7 @@ public class NewCustomerCard {
     private final String phone;
     private final String providerId;
     private final CardRequestInformation paymentInformation;
+    private final Address address;
     private final boolean vaultCard;
     private final Date vaultExpireDate;
     private final Integer vaultExpireSeconds;
@@ -25,6 +26,7 @@ public class NewCustomerCard {
                            @JsonProperty("Phone") String phone,
                            @JsonProperty("ProviderId") String providerId,
                            @JsonProperty("PaymentInformation") CardRequestInformation paymentInformation,
+                           @JsonProperty("Address") Address address,
                            @JsonProperty("VaultCard") boolean vaultCard,
                            @JsonProperty("VaultExpireDate") Date vaultExpireDate,
                            @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds) {
@@ -35,6 +37,7 @@ public class NewCustomerCard {
         this.phone = phone;
         this.providerId = providerId;
         this.paymentInformation = paymentInformation;
+        this.address = address;
         this.vaultCard = vaultCard;
         this.vaultExpireDate = vaultExpireDate;
         this.vaultExpireSeconds = vaultExpireSeconds;
@@ -68,6 +71,10 @@ public class NewCustomerCard {
         return paymentInformation;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public boolean isVaultCard() {
         return vaultCard;
     }
@@ -79,6 +86,22 @@ public class NewCustomerCard {
     public Integer getVaultExpireSeconds() {
         return vaultExpireSeconds;
     }
+    @Override
+    public String toString() {
+        return "NewCustomerCard{" +
+                "reference=" + reference +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                ", providerId=" + providerId +
+                ", paymentInformation=" + paymentInformation +
+                ", address=" + address +
+                ", vaultCard=" + vaultCard +
+                ", vaultExpireDate=" + vaultExpireDate +
+                ", vaultExpireSeconds=" + vaultExpireSeconds +
+                '}';
+    }
 
     public static class Builder {
         private String reference;
@@ -88,6 +111,7 @@ public class NewCustomerCard {
         private String phone;
         private String providerId;
         private CardRequestInformation paymentInformation;
+        private Address address;
         private boolean vaultCard;
         private Date vaultExpireDate;
         private Integer vaultExpireSeconds;
@@ -127,6 +151,11 @@ public class NewCustomerCard {
             return this;
         }
 
+        public Builder withAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
         public Builder withVaultCard(boolean vaultCard) {
             this.vaultCard = vaultCard;
             return this;
@@ -143,7 +172,7 @@ public class NewCustomerCard {
         }
 
         public NewCustomerCard build() {
-            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds);
+            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds);
         }
     }
 }

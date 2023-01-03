@@ -4,17 +4,8 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.ChargeApi;
 import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.models.CardRequestInformation;
-import com.payfurl.payfurlsdk.models.ChargeData;
-import com.payfurl.payfurlsdk.models.ChargeList;
-import com.payfurl.payfurlsdk.models.ChargeSearch;
-import com.payfurl.payfurlsdk.models.CustomerData;
-import com.payfurl.payfurlsdk.models.NewChargeCardLeastCost;
-import com.payfurl.payfurlsdk.models.NewChargeCardRequest;
-import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
-import com.payfurl.payfurlsdk.models.NewChargeToken;
-import com.payfurl.payfurlsdk.models.NewCustomerCard;
-import com.payfurl.payfurlsdk.models.PaymentMethodData;
+import com.payfurl.payfurlsdk.api.support.ApiException;
+import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -35,6 +27,43 @@ public class ChargeApiTest {
             .withCcv("123")
             .build();
 
+    private static final CardRequestInformation SAMPLE_FAILED_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
+            .withCardNumber("4000000000000000")
+            .withExpiryDate("12/35")
+            .withCcv("123")
+            .build();
+
+    private static final Address SAMPLE_ADDRESS = new Address.Builder()
+            .withLine1("91  Gloucester Avenue")
+            .withLine2("Apartment 2")
+            .withCity("Melbourne")
+            .withSate("Victoria")
+            .withPostalCode("5006")
+            .withCountry("Australia")
+            .build();
+    private static final List<ProductItem> Items = Arrays.asList(new ProductItem.Builder()
+            .withAmount(BigDecimal.valueOf(123))
+            .withDescription("First item")
+            .withQuantity(BigDecimal.valueOf(1.4))
+            .withCommodityCode("asdf")
+            .withProductCode("PC1234")
+            .withUnitOfMeasure("kg")
+            .build(),
+            new ProductItem.Builder()
+            .withAmount(BigDecimal.valueOf(33))
+            .withDescription("Second item")
+            .withQuantity(BigDecimal.valueOf(4.6))
+            .withCommodityCode("uuuu")
+            .withProductCode("PC15678")
+            .withUnitOfMeasure("kg")
+            .build());
+    private static final Order SAMPLE_ORER = new Order.Builder()
+            .withOrderNumber("12345ON")
+            .withDutyAmount(BigDecimal.valueOf(1))
+            .withFreightAmount(BigDecimal.valueOf(2))
+            .withItems(Items)
+            .build();
+
     private ChargeApi chargeApi;
     private CustomerApi customerApi;
 
@@ -42,7 +71,7 @@ public class ChargeApiTest {
     void setUp() {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
                 .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
-                .withAccessToken(TestConfigProvider.getKeyWithFallback())
+                .withSecretKey(TestConfigProvider.getSecretKeyWithFallback())
                 .build();
 
         chargeApi = payFurlClient.getChargeApi();
@@ -61,6 +90,8 @@ public class ChargeApiTest {
                     .withCurrency("USD")
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withOrder(SAMPLE_ORER)
                     .build();
 
             // when
@@ -72,12 +103,47 @@ public class ChargeApiTest {
         }
 
         @Test
+        @DisplayName("When createWithCard request is executed with failed credit card, Then throw ApiException")
+        void testCreateWithCardMethodThrowApiException() throws IOException {
+            // given
+            NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
+                    .withAmount(BigDecimal.valueOf(20))
+                    .withCurrency("USD")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_FAILED_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withOrder(SAMPLE_ORER)
+                    .build();
+
+            ApiException exception = null;
+            // when
+            try {
+                ChargeData chargeData = chargeApi.createWithCard(newChargeCardRequest);
+            }
+            catch (ApiException apiException)
+            {
+                exception = apiException;
+            }
+
+            // then
+            then(exception).isNotNull();
+            then(exception.getCode()).isEqualTo(5);
+            then(exception.getMessage()).isEqualTo("Invalid Card Number");
+            then(exception.getResource()).isEqualTo("/charge/card");
+            then(exception.isRetryable()).isEqualTo(false);
+            then(exception.getType()).isEqualTo("https://docs.payfurl.com/errorcodes.html#5");
+        }
+
+        @Test
         @DisplayName("When createWithCardLeastCost request is executed, Then return valid charge data")
         void testCreateWithCardLeastCost() throws IOException {
             // given
             NewChargeCardLeastCost newChargeCardLeastCost = new NewChargeCardLeastCost.Builder()
                     .withAmount(BigDecimal.valueOf(20))
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withOrder(SAMPLE_ORER)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withTaxAmount(BigDecimal.valueOf(7.8))
                     .build();
 
             // when
@@ -104,11 +170,12 @@ public class ChargeApiTest {
 
         @Test
         @DisplayName("When createWitPaymentMethod request is executed, Then return valid charge data")
-        void testCreateWitPaymentMethod() throws IOException {
+        void testCreateWithPaymentMethod() throws IOException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
                     .build();
 
             // when
@@ -120,7 +187,7 @@ public class ChargeApiTest {
                     .withPaymentMethodId(paymentMethods.get(0).getPaymentMethodId())
                     .build();
 
-            ChargeData chargeDataWithPaymentMethod = chargeApi.createWitPaymentMethod(newChargePaymentMethod);
+            ChargeData chargeDataWithPaymentMethod = chargeApi.createWithPaymentMethod(newChargePaymentMethod);
 
             // then
             then(chargeDataWithPaymentMethod.status).isEqualTo(SUCCESS_MARKER);

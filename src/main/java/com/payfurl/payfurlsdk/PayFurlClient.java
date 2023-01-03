@@ -2,11 +2,7 @@ package com.payfurl.payfurlsdk;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.payfurl.payfurlsdk.api.ChargeApi;
-import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.api.PaymentMethodApi;
-import com.payfurl.payfurlsdk.api.TransferApi;
-import com.payfurl.payfurlsdk.api.VaultApi;
+import com.payfurl.payfurlsdk.api.*;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.auth.SecretKeyAuthHandler;
@@ -46,6 +42,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private PaymentMethodApi paymentMethodApi;
     private TransferApi transferApi;
     private VaultApi vaultApi;
+    private TokenApi tokenApi;
 
     private PayFurlClient(Environment environment,
                           Headers additionalHeaders,
@@ -53,7 +50,7 @@ public class PayFurlClient implements PayFurlClientSdk {
                           HttpClientConfiguration httpClientConfiguration,
                           Map<AuthType, AuthHandler> authHandlerMap,
                           String userAgentDetails,
-                          String accessToken) {
+                          String secretKey) {
         this.environment = environment;
         this.additionalHeaders = additionalHeaders;
         this.httpClientConfiguration = httpClientConfiguration;
@@ -65,7 +62,7 @@ public class PayFurlClient implements PayFurlClientSdk {
 
         this.userAgentDetails = userAgentDetails;
 
-        this.secretKeyAuthHandler = new SecretKeyAuthHandler(accessToken);
+        this.secretKeyAuthHandler = new SecretKeyAuthHandler(secretKey);
         this.authHandlerMap.put(AuthType.SECRET_KEY, secretKeyAuthHandler);
 
         initializeApis();
@@ -77,6 +74,7 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.paymentMethodApi = new PaymentMethodApi(this, this.httpClient, this.authHandlerMap);
         this.transferApi = new TransferApi(this, this.httpClient, this.authHandlerMap);
         this.vaultApi = new VaultApi(this, this.httpClient, this.authHandlerMap);
+        this.tokenApi = new TokenApi(this, this.httpClient, this.authHandlerMap);
     }
 
     public static void shutdown() {
@@ -113,8 +111,8 @@ public class PayFurlClient implements PayFurlClientSdk {
     }
 
     @Override
-    public String getAccessToken() {
-        return getSecretKeyAuthHandler().getAccessToken();
+    public String getSecretKey() {
+        return getSecretKeyAuthHandler().getSecretKey();
     }
 
     @Override
@@ -148,6 +146,11 @@ public class PayFurlClient implements PayFurlClientSdk {
     }
 
     @Override
+    public TokenApi getTokenApi() {
+        return tokenApi;
+    }
+
+    @Override
     public String getSdkVersion() {
         return SDK_VERSION;
     }
@@ -159,7 +162,9 @@ public class PayFurlClient implements PayFurlClientSdk {
         private final HttpClientConfiguration.Builder httpClientConfigurationBuilder = new HttpClientConfiguration.Builder();
         private Map<AuthType, AuthHandler> authHandlerMap = null;
         private String userAgentDetails = null;
-        private String accessToken = StringUtils.EMPTY;
+        private String secretKey = StringUtils.EMPTY;
+
+        private String publicKey = StringUtils.EMPTY;
 
         public Builder withEnvironment(Environment environment) {
             this.environment = environment;
@@ -176,8 +181,8 @@ public class PayFurlClient implements PayFurlClientSdk {
             return this;
         }
 
-        public Builder withAccessToken(String accessToken) {
-            this.accessToken = Preconditions.checkNotNull(accessToken);
+        public Builder withSecretKey(String secretKey) {
+            this.secretKey = Preconditions.checkNotNull(secretKey);
             return this;
         }
 
@@ -193,7 +198,7 @@ public class PayFurlClient implements PayFurlClientSdk {
                     httpClientConfig,
                     authHandlerMap,
                     userAgentDetails,
-                    accessToken);
+                    secretKey);
         }
     }
 }

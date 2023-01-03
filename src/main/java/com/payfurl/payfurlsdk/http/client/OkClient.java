@@ -227,6 +227,14 @@ public class OkClient implements HttpClient {
     }
 
     @Override
+    public HttpBodyRequest preparePutBodyRequest(StringBuilder queryUrlBuilder,
+                                                  Headers headers,
+                                                  Map<String, Object> queryParams,
+                                                  Object body) {
+        return new HttpBodyRequest(HttpMethod.PUT, queryUrlBuilder, headers, queryParams, body);
+    }
+
+    @Override
     public HttpRequest prepareDeleteRequest(StringBuilder queryUrlBuilder,
                                             Headers headers,
                                             Map<String, Object> queryParams,

@@ -3,20 +3,21 @@ package com.payfurl.payfurlsdk.auth;
 import com.payfurl.payfurlsdk.http.client.support.request.HttpRequest;
 
 public class SecretKeyAuthHandler implements AuthHandler {
-    private final String accessToken;
+    private final String secretKey;
 
-    public SecretKeyAuthHandler(String accessToken) {
-        this.accessToken = accessToken;
+    public SecretKeyAuthHandler(String secretKey) {
+        this.secretKey = secretKey;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getSecretKey() {
+        return secretKey;
     }
 
     @Override
     public HttpRequest apply(HttpRequest httpRequest) {
-        httpRequest.getHeaders().add("x-secretkey", accessToken);
+        httpRequest.getHeaders().add("x-secretkey", secretKey);
         httpRequest.getHeaders().add("Expect", "100-continue");
         return httpRequest;
     }
 }
+

@@ -11,6 +11,7 @@ import com.payfurl.payfurlsdk.http.client.support.Headers;
 import com.payfurl.payfurlsdk.http.client.support.request.HttpRequest;
 import com.payfurl.payfurlsdk.http.client.support.response.HttpResponse;
 import com.payfurl.payfurlsdk.http.client.support.response.HttpStringResponse;
+import com.payfurl.payfurlsdk.models.ApiError;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,10 +46,12 @@ public class BaseApi {
         return httpClient;
     }
 
-    protected void validateResponse(HttpResponse response) {
+    protected void validateResponse(HttpResponse response) throws JsonProcessingException {
         int responseCode = response.getStatusCode();
         if (!Range.between(200, 208).contains(responseCode)) {
-            throw new ApiException("Response status is not OK");
+            String responseBody = ((HttpStringResponse) response).getBody();
+            ApiError error = ApiUtils.deserialize(responseBody, ApiError.class);
+            throw new ApiException(error);
         }
     }
 
@@ -61,8 +64,8 @@ public class BaseApi {
     }
 
     protected void addAuthDataTo(HttpRequest request) {
-        AuthHandler authHandler = authHandlers.get(AuthType.SECRET_KEY);
-        authHandler.apply(request);
+        AuthHandler secretKeyHandler = authHandlers.get(AuthType.SECRET_KEY);
+        secretKeyHandler.apply(request);
     }
 
     private void updateUserAgent() {
@@ -76,37 +79,45 @@ public class BaseApi {
     }
 
     protected <T, R> R executePostRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType) throws IOException {
-        HttpRequest request = createNewChargeApiPostRequest(urlPath, chargeApiRequest);
+        HttpRequest request = createApiPostRequest(urlPath, chargeApiRequest);
 
         HttpResponse response = getClientInstance().execute(request);
 
-        return getChargeDataFrom(response, returnType);
+        return getDataFrom(response, returnType);
+    }
+
+    protected <T, R> R executePutRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType) throws IOException {
+        HttpRequest request = createApiPutRequest(urlPath, chargeApiRequest);
+
+        HttpResponse response = getClientInstance().execute(request);
+
+        return getDataFrom(response, returnType);
     }
 
     protected <T> T executeGetRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws IOException {
-        HttpRequest request = createNewChargeApiGetRequest(urlPath, queryParams);
+        HttpRequest request = createApiGetRequest(urlPath, queryParams);
 
         HttpResponse response = getClientInstance().execute(request);
 
-        return getChargeDataFrom(response, returnType);
+        return getDataFrom(response, returnType);
     }
 
     protected <T> T executeDeleteRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws IOException {
-        HttpRequest request = createNewChargeApiDeleteRequest(urlPath, queryParams);
+        HttpRequest request = createApiDeleteRequest(urlPath, queryParams);
 
         HttpResponse response = getClientInstance().execute(request);
 
-        return getChargeDataFrom(response, returnType);
+        return getDataFrom(response, returnType);
     }
 
-    private <T> T getChargeDataFrom(HttpResponse response, Class<T> returnType) throws JsonProcessingException {
+    private <T> T getDataFrom(HttpResponse response, Class<T> returnType) throws JsonProcessingException {
         validateResponse(response);
 
         String responseBody = ((HttpStringResponse) response).getBody();
         return ApiUtils.deserialize(responseBody, returnType);
     }
 
-    private <T> HttpRequest createNewChargeApiPostRequest(String urlPath, T chargeApiRequest) throws JsonProcessingException {
+    private <T> HttpRequest createApiPostRequest(String urlPath, T chargeApiRequest) throws JsonProcessingException {
         StringBuilder queryBuilder = new StringBuilder(urlPath);
 
         Headers headers = getPopulatedHeaders();
@@ -118,7 +129,19 @@ public class BaseApi {
         return request;
     }
 
-    private HttpRequest createNewChargeApiGetRequest(String urlPath, Map<String, Object> queryParams) {
+    private <T> HttpRequest createApiPutRequest(String urlPath, T apiRequest) throws JsonProcessingException {
+        StringBuilder queryBuilder = new StringBuilder(urlPath);
+
+        Headers headers = getPopulatedHeaders();
+
+        String bodyJson = ApiUtils.serialize(apiRequest);
+        HttpRequest request = getClientInstance().preparePutBodyRequest(queryBuilder, headers, null, bodyJson);
+
+        addAuthDataTo(request);
+        return request;
+    }
+
+    private HttpRequest createApiGetRequest(String urlPath, Map<String, Object> queryParams) {
         StringBuilder queryBuilder = new StringBuilder(urlPath);
 
         Headers headers = getPopulatedHeaders();
@@ -129,7 +152,7 @@ public class BaseApi {
         return request;
     }
 
-    private HttpRequest createNewChargeApiDeleteRequest(String urlPath, Map<String, Object> queryParams) {
+    private HttpRequest createApiDeleteRequest(String urlPath, Map<String, Object> queryParams) {
         StringBuilder queryBuilder = new StringBuilder(urlPath);
 
         Headers headers = getPopulatedHeaders();

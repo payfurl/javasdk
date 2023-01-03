@@ -39,7 +39,7 @@ public class PaymentMethodApiTest {
     void setUp() {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
                 .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
-                .withAccessToken(TestConfigProvider.getKeyWithFallback())
+                .withSecretKey(TestConfigProvider.getSecretKeyWithFallback())
                 .build();
 
         paymentMethodApi = payFurlClient.getPaymentMethodApi();
@@ -101,6 +101,27 @@ public class PaymentMethodApiTest {
         }
 
         @Test
+        @DisplayName("When single request is executed, Then return valid PaymentMethodData")
+        void testDeletePaymentMethod() throws IOException {
+            // given
+            NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .build();
+            // when
+            PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+
+            PaymentMethodData deletePaymentMethod = paymentMethodApi.deletePaymentMethod(paymentMethodWithCard.getPaymentMethodId());
+
+            PaymentMethodData paymentMethodData = paymentMethodApi.single(paymentMethodWithCard.getPaymentMethodId());
+
+            // then
+            then(paymentMethodData.getPaymentMethodId()).isEqualTo(paymentMethodWithCard.getPaymentMethodId());
+            then(deletePaymentMethod.getPaymentMethodId()).isEqualTo(paymentMethodWithCard.getPaymentMethodId());
+            then(paymentMethodData.getEmail()).isEqualTo("deleted");
+        }
+
+        @Test
         @DisplayName("When createPaymentMethodWithVault request is executed, Then return valid PaymentMethodData")
         void testCreatePaymentMethodWithVault() throws IOException {
             // given
@@ -116,7 +137,6 @@ public class PaymentMethodApiTest {
             NewPaymentMethodVault newPaymentMethodVault = new NewPaymentMethodVault.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentMethodId(customer.getDefaultPaymentMethod().getPaymentMethodId())
-                    .withVaultId(customer.getDefaultPaymentMethod().getVaultId())
                     .build();
             PaymentMethodData paymentMethodWithVault = paymentMethodApi.createPaymentMethodWithVault(newPaymentMethodVault);
 
