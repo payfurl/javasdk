@@ -11,6 +11,7 @@ import com.payfurl.payfurlsdk.http.client.support.Headers;
 import com.payfurl.payfurlsdk.http.client.support.request.HttpRequest;
 import com.payfurl.payfurlsdk.http.client.support.response.HttpResponse;
 import com.payfurl.payfurlsdk.http.client.support.response.HttpStringResponse;
+import com.payfurl.payfurlsdk.models.ApiError;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,10 +46,12 @@ public class BaseApi {
         return httpClient;
     }
 
-    protected void validateResponse(HttpResponse response) {
+    protected void validateResponse(HttpResponse response) throws JsonProcessingException {
         int responseCode = response.getStatusCode();
         if (!Range.between(200, 208).contains(responseCode)) {
-            throw new ApiException("Response status is not OK");
+            String responseBody = ((HttpStringResponse) response).getBody();
+            ApiError error = ApiUtils.deserialize(responseBody, ApiError.class);
+            throw new ApiException(error);
         }
     }
 

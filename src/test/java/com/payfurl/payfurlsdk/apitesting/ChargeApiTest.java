@@ -4,6 +4,7 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.ChargeApi;
 import com.payfurl.payfurlsdk.api.CustomerApi;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -22,6 +23,12 @@ public class ChargeApiTest {
     private static final String SUCCESS_MARKER = "SUCCESS";
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
+            .withExpiryDate("12/35")
+            .withCcv("123")
+            .build();
+
+    private static final CardRequestInformation SAMPLE_FAILED_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
+            .withCardNumber("4000000000000000")
             .withExpiryDate("12/35")
             .withCcv("123")
             .build();
@@ -93,6 +100,38 @@ public class ChargeApiTest {
             // then
             then(chargeData).isNotNull();
             then(chargeData.status).isEqualTo(SUCCESS_MARKER);
+        }
+
+        @Test
+        @DisplayName("When createWithCard request is executed with failed credit card, Then throw ApiException")
+        void testCreateWithCardMethodThrowApiException() throws IOException {
+            // given
+            NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
+                    .withAmount(BigDecimal.valueOf(20))
+                    .withCurrency("USD")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_FAILED_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withOrder(SAMPLE_ORER)
+                    .build();
+
+            ApiException exception = null;
+            // when
+            try {
+                ChargeData chargeData = chargeApi.createWithCard(newChargeCardRequest);
+            }
+            catch (ApiException apiException)
+            {
+                exception = apiException;
+            }
+
+            // then
+            then(exception).isNotNull();
+            then(exception.getCode()).isEqualTo(5);
+            then(exception.getMessage()).isEqualTo("Invalid Card Number");
+            then(exception.getResource()).isEqualTo("/charge/card");
+            then(exception.isRetryable()).isEqualTo(false);
+            then(exception.getType()).isEqualTo("https://docs.payfurl.com/errorcodes.html#5");
         }
 
         @Test
