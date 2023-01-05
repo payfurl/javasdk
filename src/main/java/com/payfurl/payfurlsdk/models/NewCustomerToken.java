@@ -10,6 +10,7 @@ public class NewCustomerToken {
     private final String email;
     private final String phone;
     private final String token;
+    private final Address address;
 
     @JsonCreator
     public NewCustomerToken(@JsonProperty("Reference") String reference,
@@ -17,6 +18,7 @@ public class NewCustomerToken {
                             @JsonProperty("LastName") String lastName,
                             @JsonProperty("Email") String email,
                             @JsonProperty("Phone") String phone,
+                            @JsonProperty("Address") Address address,
                             @JsonProperty("Token") String token) {
         this.reference = reference;
         this.firstName = firstName;
@@ -24,6 +26,7 @@ public class NewCustomerToken {
         this.email = email;
         this.phone = phone;
         this.token = token;
+        this.address = address;
     }
 
     public String getReference() {
@@ -50,6 +53,10 @@ public class NewCustomerToken {
         return token;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public static class Builder {
         private String reference;
         private String firstName;
@@ -57,6 +64,7 @@ public class NewCustomerToken {
         private String email;
         private String phone;
         private String token;
+        private Address address;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -88,8 +96,13 @@ public class NewCustomerToken {
             return this;
         }
 
+        public Builder withAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
         public NewCustomerToken build() {
-            return new NewCustomerToken(reference, firstName, lastName, email, phone, token);
+            return new NewCustomerToken(reference, firstName, lastName, email, phone, address, token);
         }
     }
 }
