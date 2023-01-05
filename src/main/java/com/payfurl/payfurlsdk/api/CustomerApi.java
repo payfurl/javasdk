@@ -1,12 +1,12 @@
 package com.payfurl.payfurlsdk.api;
 
 import com.payfurl.payfurlsdk.Configuration;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
 import com.payfurl.payfurlsdk.models.*;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +26,9 @@ public class CustomerApi extends BaseApi {
      * Add a customer using a card number
      * @param newCustomerCard
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public CustomerData createWithCard(NewCustomerCard newCustomerCard) throws IOException {
+    public CustomerData createWithCard(NewCustomerCard newCustomerCard) throws ApiException {
         return executePostRequestWith(customerApiBaseEndpoint + "/card", newCustomerCard, CustomerData.class);
     }
 
@@ -36,9 +36,9 @@ public class CustomerApi extends BaseApi {
      * Add a customer using a payment token
      * @param newCustomerToken
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public CustomerData createWithToken(NewCustomerToken newCustomerToken) throws IOException {
+    public CustomerData createWithToken(NewCustomerToken newCustomerToken) throws ApiException {
         return executePostRequestWith(customerApiBaseEndpoint + "/token", newCustomerToken, CustomerData.class);
     }
 
@@ -47,9 +47,9 @@ public class CustomerApi extends BaseApi {
      * @param customerId
      * @param newPaymentMethodCard
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public PaymentMethodData createPaymentMethodWithCard(String customerId, NewPaymentMethodCard newPaymentMethodCard) throws IOException {
+    public PaymentMethodData createPaymentMethodWithCard(String customerId, NewPaymentMethodCard newPaymentMethodCard) throws ApiException {
         String urlPath = String.format("%s/%s/payment_method/card", customerApiBaseEndpoint, customerId);
         return executePostRequestWith(urlPath, newPaymentMethodCard, PaymentMethodData.class);
     }
@@ -59,9 +59,9 @@ public class CustomerApi extends BaseApi {
      * @param customerId
      * @param newPaymentMethodToken
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public PaymentMethodData createWitPaymentMethodWithToken(String customerId, NewPaymentMethodToken newPaymentMethodToken) throws IOException {
+    public PaymentMethodData createWitPaymentMethodWithToken(String customerId, NewPaymentMethodToken newPaymentMethodToken) throws ApiException {
         String urlPath = String.format("%s/%s/payment_method/token", customerApiBaseEndpoint, customerId);
         return executePostRequestWith(urlPath, newPaymentMethodToken, PaymentMethodData.class);
     }
@@ -70,9 +70,9 @@ public class CustomerApi extends BaseApi {
      * Retrieve a single customer
      * @param customerId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public CustomerData single(String customerId) throws IOException {
+    public CustomerData single(String customerId) throws ApiException {
         String urlPath = String.format("%s/%s",customerApiBaseEndpoint, customerId);
         return executeGetRequestWith(urlPath, null, CustomerData.class);
     }
@@ -81,9 +81,9 @@ public class CustomerApi extends BaseApi {
      * Search for customers
      * @param searchData
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public CustomerList search(CustomerSearch searchData) throws IOException {
+    public CustomerList search(CustomerSearch searchData) throws ApiException {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("Skip", searchData.getSkip());
         queryParams.put("Limit", searchData.getLimit());
@@ -102,9 +102,9 @@ public class CustomerApi extends BaseApi {
      * Retrieve payment methods for a customer
      * @param customerId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public List<PaymentMethodData> getPaymentMethods(String customerId) throws IOException {
+    public List<PaymentMethodData> getPaymentMethods(String customerId) throws ApiException {
         String urlPath = String.format("%s/%s/payment_method",customerApiBaseEndpoint, customerId);
         PaymentMethodData[] paymentMethodData = executeGetRequestWith(urlPath, null, PaymentMethodData[].class);
         return Arrays.asList(paymentMethodData);
@@ -115,9 +115,9 @@ public class CustomerApi extends BaseApi {
      * @param customerId
      * @param updateCustomer
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public CustomerData updateCustomer(String customerId, UpdateCustomer updateCustomer) throws IOException {
+    public CustomerData updateCustomer(String customerId, UpdateCustomer updateCustomer) throws ApiException {
         return executePutRequestWith(customerApiBaseEndpoint + "/"+customerId, updateCustomer, CustomerData.class);
     }
 
@@ -125,9 +125,9 @@ public class CustomerApi extends BaseApi {
      * Delete customer
      * @param customerId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public CustomerData deleteCustomer(String customerId) throws IOException {
+    public CustomerData deleteCustomer(String customerId) throws ApiException {
         return executeDeleteRequestWith(customerApiBaseEndpoint + "/"+customerId, null, CustomerData.class);
     }
 
@@ -135,9 +135,9 @@ public class CustomerApi extends BaseApi {
      * Add a customer with provider token
      * @param customerProviderToken
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public CustomerData createWithProviderToken(NewCustomerProviderToken customerProviderToken) throws IOException {
+    public CustomerData createWithProviderToken(NewCustomerProviderToken customerProviderToken) throws ApiException {
         return executePostRequestWith(customerApiBaseEndpoint + "/provider_token", customerProviderToken, CustomerData.class);
     }
 }

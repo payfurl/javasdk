@@ -2,9 +2,11 @@ package com.payfurl.payfurlsdk.api.support;
 
 import com.payfurl.payfurlsdk.models.ApiError;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class ApiException extends RuntimeException {
+    private static final int UNKNOWN_ERROR = 1;
     private final String message;
     private final Map<String, String> details;
     private final String resource;
@@ -22,6 +24,17 @@ public class ApiException extends RuntimeException {
         this.code = apiError.getCode();
         this.isRetryable = apiError.isRetryable();
         this.type = apiError.getType();
+    }
+
+    public ApiException(IOException ioException) {
+        this.message = ioException.getMessage();
+        this.details = null;
+        this.resource = null;
+        this.gatewayCode = null;
+        this.gatewayMessage = null;
+        this.code = UNKNOWN_ERROR;
+        this.isRetryable = false;
+        this.type = String.format("https://docs.payfurl.com/errorcodes.html#%d", UNKNOWN_ERROR);
     }
 
     @Override

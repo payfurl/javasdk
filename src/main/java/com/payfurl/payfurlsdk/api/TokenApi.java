@@ -1,12 +1,12 @@
 package com.payfurl.payfurlsdk.api;
 
 import com.payfurl.payfurlsdk.Configuration;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
 import com.payfurl.payfurlsdk.models.*;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,9 +24,9 @@ public class TokenApi extends BaseApi {
      * Get Token by id
      * @param tokenId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public TokenData single(String tokenId) throws IOException {
+    public TokenData single(String tokenId) throws ApiException {
         String urlPath = String.format("%s/%s", tokenApiBaseEndpoint, tokenId);
         return executeGetRequestWith(urlPath, null, TokenData.class);
     }
@@ -36,9 +36,9 @@ public class TokenApi extends BaseApi {
      * Search for tokens
      * @param searchData
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public TokenList search(TokenSearch searchData) throws IOException {
+    public TokenList search(TokenSearch searchData) throws ApiException {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("Skip", searchData.getSkip());
         queryParams.put("Limit", searchData.getLimit());
