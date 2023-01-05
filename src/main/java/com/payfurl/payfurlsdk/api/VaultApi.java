@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.api;
 
 import com.payfurl.payfurlsdk.Configuration;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
@@ -8,7 +9,6 @@ import com.payfurl.payfurlsdk.models.NewVault;
 import com.payfurl.payfurlsdk.models.VaultData;
 import com.payfurl.payfurlsdk.models.VaultDataWithPci;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class VaultApi extends BaseApi {
@@ -25,9 +25,9 @@ public class VaultApi extends BaseApi {
      * Create a new vault item
      * @param newVault
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public VaultData create(NewVault newVault) throws IOException {
+    public VaultData create(NewVault newVault) throws ApiException {
         return executePostRequestWith(vaultApiBaseEndpoint, newVault, VaultData.class);
     }
 
@@ -35,9 +35,9 @@ public class VaultApi extends BaseApi {
      * Delete a vault item
      * @param vaultId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public VaultData delete(String vaultId) throws IOException {
+    public VaultData delete(String vaultId) throws ApiException {
         String urlPath = String.format("%s/%s", vaultApiBaseEndpoint, vaultId);
         return executeDeleteRequestWith(urlPath, null, VaultData.class);
     }
@@ -46,9 +46,9 @@ public class VaultApi extends BaseApi {
      * Get a vault item
      * @param vaultId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public VaultDataWithPci single(String vaultId) throws IOException {
+    public VaultDataWithPci single(String vaultId) throws ApiException {
         String urlPath = String.format("%s/%s", vaultApiBaseEndpoint, vaultId);
         return executeGetRequestWith(urlPath, null, VaultDataWithPci.class);
     }

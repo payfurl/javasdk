@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.api;
 
 import com.payfurl.payfurlsdk.Configuration;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
@@ -15,7 +16,6 @@ import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
 import com.payfurl.payfurlsdk.models.NewChargeToken;
 import com.payfurl.payfurlsdk.models.NewRefund;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,9 +33,9 @@ public class ChargeApi extends BaseApi {
      * Accept a payment using a card number
      * @param newChargeCardRequest parameter for creating payment with card
      * @return ChargeData object details
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData createWithCard(NewChargeCardRequest newChargeCardRequest) throws IOException {
+    public ChargeData createWithCard(NewChargeCardRequest newChargeCardRequest) throws ApiException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/card", newChargeCardRequest, ChargeData.class);
     }
 
@@ -43,9 +43,9 @@ public class ChargeApi extends BaseApi {
      * Accept a payment using a card number using the least cost provider
      * @param newChargeCardLeastCost
      * @return ChargeData object details
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData createWithCardLeastCost(NewChargeCardLeastCost newChargeCardLeastCost) throws IOException {
+    public ChargeData createWithCardLeastCost(NewChargeCardLeastCost newChargeCardLeastCost) throws ApiException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/card/least_cost", newChargeCardLeastCost, ChargeData.class);
     }
 
@@ -53,9 +53,9 @@ public class ChargeApi extends BaseApi {
      * Accept a payment for a saved payment method
      * @param newChargePaymentMethod
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData createWithPaymentMethod(NewChargePaymentMethod newChargePaymentMethod) throws IOException {
+    public ChargeData createWithPaymentMethod(NewChargePaymentMethod newChargePaymentMethod) throws ApiException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/payment_method", newChargePaymentMethod, ChargeData.class);
     }
 
@@ -63,9 +63,9 @@ public class ChargeApi extends BaseApi {
      * Accept a payment for a customer
      * @param newChargeCustomer
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData createWithCustomer(NewChargeCustomer newChargeCustomer) throws IOException {
+    public ChargeData createWithCustomer(NewChargeCustomer newChargeCustomer) throws ApiException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/customer", newChargeCustomer, ChargeData.class);
     }
 
@@ -73,9 +73,9 @@ public class ChargeApi extends BaseApi {
      * Accept a payment for payment token
      * @param newChargeToken
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData createWithToken(NewChargeToken newChargeToken) throws IOException {
+    public ChargeData createWithToken(NewChargeToken newChargeToken) throws ApiException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/token", newChargeToken, ChargeData.class);
     }
 
@@ -83,9 +83,9 @@ public class ChargeApi extends BaseApi {
      * Retrieve a single charge
      * @param chargeId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData single(String chargeId) throws IOException {
+    public ChargeData single(String chargeId) throws ApiException {
         return executeGetRequestWith(chargeApiBaseEndpoint + "/" + chargeId, null, ChargeData.class);
     }
 
@@ -93,9 +93,9 @@ public class ChargeApi extends BaseApi {
      * Search for charges
      * @param searchData
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeList search(ChargeSearch searchData) throws IOException {
+    public ChargeList search(ChargeSearch searchData) throws ApiException {
         Map<String, Object> queryParameters = new HashMap<>();
         queryParameters.put("Skip", searchData.getSkip());
         queryParameters.put("Limit", searchData.getLimit());
@@ -116,9 +116,9 @@ public class ChargeApi extends BaseApi {
      * Refund a charge
      * @param newRefund
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData refund(NewRefund newRefund) throws IOException {
+    public ChargeData refund(NewRefund newRefund) throws ApiException {
         Map<String, Object> queryParameters = new HashMap<>();
         queryParameters.put("amount", newRefund.getRefundAmount());
         return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + newRefund.getChargeId(), queryParameters, ChargeData.class);
@@ -129,9 +129,9 @@ public class ChargeApi extends BaseApi {
      * @param chargeId
      * @param newChargeCapture
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData captureCharge(String chargeId, NewChargeCapture newChargeCapture) throws IOException {
+    public ChargeData captureCharge(String chargeId, NewChargeCapture newChargeCapture) throws ApiException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/" + chargeId, newChargeCapture, ChargeData.class);
     }
 
@@ -139,9 +139,9 @@ public class ChargeApi extends BaseApi {
      * Void/cancel charge
      * @param chargeId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public ChargeData voidCharge(String chargeId) throws IOException {
+    public ChargeData voidCharge(String chargeId) throws ApiException {
         return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + chargeId, null, ChargeData.class);
     }
 }

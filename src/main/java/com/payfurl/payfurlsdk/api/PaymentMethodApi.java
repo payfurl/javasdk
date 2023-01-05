@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.api;
 
 import com.payfurl.payfurlsdk.Configuration;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
@@ -12,7 +13,6 @@ import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.PaymentMethodList;
 import com.payfurl.payfurlsdk.models.PaymentMethodSearch;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,9 +32,9 @@ public class PaymentMethodApi extends BaseApi {
      * Creates a new checkout
      * @param newCheckout
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public Checkout checkout(NewCheckout newCheckout) throws IOException {
+    public Checkout checkout(NewCheckout newCheckout) throws ApiException {
         String urlPath = paymentMethodApiBaseEndpoint + "/checkout";
         return executePostRequestWith(urlPath, newCheckout, Checkout.class);
     }
@@ -43,9 +43,9 @@ public class PaymentMethodApi extends BaseApi {
      * Add a payment method using a vault
      * @param newPaymentMethodVault
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public PaymentMethodData createPaymentMethodWithVault(NewPaymentMethodVault newPaymentMethodVault) throws IOException {
+    public PaymentMethodData createPaymentMethodWithVault(NewPaymentMethodVault newPaymentMethodVault) throws ApiException {
         String urlPath = paymentMethodApiBaseEndpoint + "/vault";
         return executePostRequestWith(urlPath, newPaymentMethodVault, PaymentMethodData.class);
     }
@@ -54,9 +54,9 @@ public class PaymentMethodApi extends BaseApi {
      * Add a payment method using a card
      * @param newPaymentMethodCard
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public PaymentMethodData createPaymentMethodWithCard(NewPaymentMethodCard newPaymentMethodCard) throws IOException {
+    public PaymentMethodData createPaymentMethodWithCard(NewPaymentMethodCard newPaymentMethodCard) throws ApiException {
         String urlPath = paymentMethodApiBaseEndpoint + "/card";
         return executePostRequestWith(urlPath, newPaymentMethodCard, PaymentMethodData.class);
     }
@@ -65,9 +65,9 @@ public class PaymentMethodApi extends BaseApi {
      * Retrieve a single payment method
      * @param paymentMethodId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public PaymentMethodData single(String paymentMethodId) throws IOException {
+    public PaymentMethodData single(String paymentMethodId) throws ApiException {
         String urlPath = String.format("%s/%s",paymentMethodApiBaseEndpoint, paymentMethodId);
         return executeGetRequestWith(urlPath, null, PaymentMethodData.class);
     }
@@ -76,9 +76,9 @@ public class PaymentMethodApi extends BaseApi {
      * Delete payment method
      * @param paymentMethodId
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public PaymentMethodData deletePaymentMethod(String paymentMethodId) throws IOException {
+    public PaymentMethodData deletePaymentMethod(String paymentMethodId) throws ApiException {
         String urlPath = String.format("%s/%s",paymentMethodApiBaseEndpoint, paymentMethodId);
         return executeDeleteRequestWith(urlPath, null, PaymentMethodData.class);
     }
@@ -87,9 +87,9 @@ public class PaymentMethodApi extends BaseApi {
      * Search for payment methods
      * @param searchData
      * @return
-     * @throws IOException
+     * @throws ApiException
      */
-    public PaymentMethodList search(PaymentMethodSearch searchData) throws IOException {
+    public PaymentMethodList search(PaymentMethodSearch searchData) throws ApiException {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("Skip", searchData.getSkip());
         queryParams.put("Limit", searchData.getLimit());

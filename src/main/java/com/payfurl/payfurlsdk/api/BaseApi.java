@@ -23,6 +23,8 @@ public class BaseApi {
     private static final String ENGINE_KEY = "{engine}";
     private static final String ENGINE_VERSION_KEY = "{engine-version}";
     private static final String OS_INFO_KEY = "{os-info}";
+
+    private static final int UNKNOWN_ERROR = 1;
     private static final String USER_AGENT = String.format("PayFURL-Java-SDK-v.%s %s/%s (%s)",
             SDK_VERSION_KEY, ENGINE_KEY, ENGINE_VERSION_KEY, OS_INFO_KEY);
     protected String internalUserAgent;
@@ -46,11 +48,22 @@ public class BaseApi {
         return httpClient;
     }
 
-    protected void validateResponse(HttpResponse response) throws JsonProcessingException {
+    protected void validateResponse(HttpResponse response) throws ApiException {
         int responseCode = response.getStatusCode();
         if (!Range.between(200, 208).contains(responseCode)) {
             String responseBody = ((HttpStringResponse) response).getBody();
-            ApiError error = ApiUtils.deserialize(responseBody, ApiError.class);
+            ApiError error;
+            try {
+                error = ApiUtils.deserialize(responseBody, ApiError.class);
+            }
+            catch (JsonProcessingException e)
+            {
+                throw new ApiException(new ApiError.Builder()
+                        .withMessage(responseBody)
+                        .withIsRetryable(false)
+                        .withCode(UNKNOWN_ERROR)
+                        .withType("https://docs.payfurl.com/errorcodes.html#1").build());
+            }
             throw new ApiException(error);
         }
     }
@@ -78,36 +91,54 @@ public class BaseApi {
                 .replace(OS_INFO_KEY, osName);
     }
 
-    protected <T, R> R executePostRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType) throws IOException {
-        HttpRequest request = createApiPostRequest(urlPath, chargeApiRequest);
+    protected <T, R> R executePostRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType) throws ApiException {
+        try {
+            HttpRequest request = createApiPostRequest(urlPath, chargeApiRequest);
 
-        HttpResponse response = getClientInstance().execute(request);
+            HttpResponse response = getClientInstance().execute(request);
 
-        return getDataFrom(response, returnType);
+            return getDataFrom(response, returnType);
+        }
+        catch (IOException exception)
+        {
+            throw new ApiException(exception);
+        }
     }
 
-    protected <T, R> R executePutRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType) throws IOException {
-        HttpRequest request = createApiPutRequest(urlPath, chargeApiRequest);
+    protected <T, R> R executePutRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType) throws ApiException {
+        try {
+            HttpRequest request = createApiPutRequest(urlPath, chargeApiRequest);
 
-        HttpResponse response = getClientInstance().execute(request);
+            HttpResponse response = getClientInstance().execute(request);
 
-        return getDataFrom(response, returnType);
+            return getDataFrom(response, returnType);
+        } catch (IOException exception) {
+            throw new ApiException(exception);
+        }
     }
 
-    protected <T> T executeGetRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws IOException {
-        HttpRequest request = createApiGetRequest(urlPath, queryParams);
+    protected <T> T executeGetRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws ApiException {
+        try {
+            HttpRequest request = createApiGetRequest(urlPath, queryParams);
 
-        HttpResponse response = getClientInstance().execute(request);
+            HttpResponse response = getClientInstance().execute(request);
 
-        return getDataFrom(response, returnType);
+            return getDataFrom(response, returnType);
+        } catch (IOException exception) {
+            throw new ApiException(exception);
+        }
     }
 
-    protected <T> T executeDeleteRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws IOException {
-        HttpRequest request = createApiDeleteRequest(urlPath, queryParams);
+    protected <T> T executeDeleteRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws ApiException {
+        try {
+            HttpRequest request = createApiDeleteRequest(urlPath, queryParams);
 
-        HttpResponse response = getClientInstance().execute(request);
+            HttpResponse response = getClientInstance().execute(request);
 
-        return getDataFrom(response, returnType);
+            return getDataFrom(response, returnType);
+        } catch (IOException exception) {
+            throw new ApiException(exception);
+        }
     }
 
     private <T> T getDataFrom(HttpResponse response, Class<T> returnType) throws JsonProcessingException {
