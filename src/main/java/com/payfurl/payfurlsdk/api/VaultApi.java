@@ -23,6 +23,7 @@ public class VaultApi extends BaseApi {
 
     /**
      * Create a new vault item
+     *
      * @param newVault
      * @return
      * @throws ApiException
@@ -33,6 +34,7 @@ public class VaultApi extends BaseApi {
 
     /**
      * Delete a vault item
+     *
      * @param vaultId
      * @return
      * @throws ApiException
@@ -44,6 +46,7 @@ public class VaultApi extends BaseApi {
 
     /**
      * Get a vault item
+     *
      * @param vaultId
      * @return
      * @throws ApiException

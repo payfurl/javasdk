@@ -5,10 +5,16 @@ import com.payfurl.payfurlsdk.http.client.support.Headers;
 
 public interface Configuration {
     Environment getEnvironment();
+
     String getPayFurlVersion();
+
     Headers getAdditionalHeaders();
+
     String getUserAgentDetail();
+
     long timeout();
+
     String getSecretKey();
+
     String getBaseUri();
 }

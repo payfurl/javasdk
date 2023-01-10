@@ -7,6 +7,7 @@ Library for integrating with PayFURL payments in your app. It includes the follo
 3. PaymentMethod API
 4. Transfer API
 5. Vault API
+6. Token API
 
 ## 📄 Requirements
 
@@ -19,7 +20,9 @@ Use of the PayFURL Java SDK requires:
 
 To use the PayFURL Java SDK in your project please do the following steps:
 
-1. Edit the `pom.xml` file and add a new dependency:
+1. Install PayFURL Java SDK:
+
+- Edit the `pom.xml` file:
 
 ```xml
 <dependency>
@@ -29,6 +32,16 @@ To use the PayFURL Java SDK in your project please do the following steps:
     <scope>compile</scope>
 </dependency>
 ```
+or 
+
+- Edit the `build.gradle` file:
+
+```groovy
+dependencies {
+    implementation 'com.payfurl:payfurlsdk:SDK_VERSION'
+}
+```
+
 
 2. Replace `SDK_VERSION` with the latest version of the PayFURL Java SDK.
 
@@ -55,7 +68,7 @@ class Example {
     // Initialize
     PayFurlClient payFurlClient = new PayFurlClient.Builder()
             .withEnvironment(Environment.SANDBOX)
-            .withAccessToken(PAYFURL_ACCESS_TEST_TOKEN)
+            .withSecretKey(PAYFURL_SECRET_KEY)
             .build();
     ChargeApi chargeApi = payFurlClient.getChargeApi();
 
@@ -89,7 +102,7 @@ variable.
 
 ```sh
 export PAYFURL_ENVIRONMENT=sandbox
-export PAYFURL_ACCESS_TEST_TOKEN=YOUR_SANDBOX_ACCESS_TOKEN
+export PAYFURL_LOCAL_ACCESS_SECRET_KEY=YOUR_SANDBOX_ACCESS_TOKEN
 ```
 
 If you are using Maven, run the tests with below command

@@ -5,7 +5,16 @@ import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
-import com.payfurl.payfurlsdk.models.*;
+import com.payfurl.payfurlsdk.models.CustomerData;
+import com.payfurl.payfurlsdk.models.CustomerList;
+import com.payfurl.payfurlsdk.models.CustomerSearch;
+import com.payfurl.payfurlsdk.models.NewCustomerCard;
+import com.payfurl.payfurlsdk.models.NewCustomerProviderToken;
+import com.payfurl.payfurlsdk.models.NewCustomerToken;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
+import com.payfurl.payfurlsdk.models.PaymentMethodData;
+import com.payfurl.payfurlsdk.models.UpdateCustomer;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +33,7 @@ public class CustomerApi extends BaseApi {
 
     /**
      * Add a customer using a card number
+     *
      * @param newCustomerCard
      * @return
      * @throws ApiException
@@ -34,6 +44,7 @@ public class CustomerApi extends BaseApi {
 
     /**
      * Add a customer using a payment token
+     *
      * @param newCustomerToken
      * @return
      * @throws ApiException
@@ -44,6 +55,7 @@ public class CustomerApi extends BaseApi {
 
     /**
      * Add a payment method using a card
+     *
      * @param customerId
      * @param newPaymentMethodCard
      * @return
@@ -56,6 +68,7 @@ public class CustomerApi extends BaseApi {
 
     /**
      * Add a payment method using a token
+     *
      * @param customerId
      * @param newPaymentMethodToken
      * @return
@@ -68,17 +81,19 @@ public class CustomerApi extends BaseApi {
 
     /**
      * Retrieve a single customer
+     *
      * @param customerId
      * @return
      * @throws ApiException
      */
     public CustomerData single(String customerId) throws ApiException {
-        String urlPath = String.format("%s/%s",customerApiBaseEndpoint, customerId);
+        String urlPath = String.format("%s/%s", customerApiBaseEndpoint, customerId);
         return executeGetRequestWith(urlPath, null, CustomerData.class);
     }
 
     /**
      * Search for customers
+     *
      * @param searchData
      * @return
      * @throws ApiException
@@ -100,39 +115,43 @@ public class CustomerApi extends BaseApi {
 
     /**
      * Retrieve payment methods for a customer
+     *
      * @param customerId
      * @return
      * @throws ApiException
      */
     public List<PaymentMethodData> getPaymentMethods(String customerId) throws ApiException {
-        String urlPath = String.format("%s/%s/payment_method",customerApiBaseEndpoint, customerId);
+        String urlPath = String.format("%s/%s/payment_method", customerApiBaseEndpoint, customerId);
         PaymentMethodData[] paymentMethodData = executeGetRequestWith(urlPath, null, PaymentMethodData[].class);
         return Arrays.asList(paymentMethodData);
     }
 
     /**
      * Update customer information
+     *
      * @param customerId
      * @param updateCustomer
      * @return
      * @throws ApiException
      */
     public CustomerData updateCustomer(String customerId, UpdateCustomer updateCustomer) throws ApiException {
-        return executePutRequestWith(customerApiBaseEndpoint + "/"+customerId, updateCustomer, CustomerData.class);
+        return executePutRequestWith(customerApiBaseEndpoint + "/" + customerId, updateCustomer, CustomerData.class);
     }
 
     /**
      * Delete customer
+     *
      * @param customerId
      * @return
      * @throws ApiException
      */
     public CustomerData deleteCustomer(String customerId) throws ApiException {
-        return executeDeleteRequestWith(customerApiBaseEndpoint + "/"+customerId, null, CustomerData.class);
+        return executeDeleteRequestWith(customerApiBaseEndpoint + "/" + customerId, null, CustomerData.class);
     }
 
     /**
      * Add a customer with provider token
+     *
      * @param customerProviderToken
      * @return
      * @throws ApiException

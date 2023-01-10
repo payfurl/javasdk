@@ -19,19 +19,19 @@ class SecretKeyAuthHandlerTest {
 
     private SecretKeyAuthHandler secretKeyAuthHandler;
 
-    @BeforeEach
-    void setUp() {
-        secretKeyAuthHandler = new SecretKeyAuthHandler(DUMMY_ACCESS_KEY);
-    }
-
     private static HttpRequest prepareDummyHttpRequest(Headers headers) {
         return new HttpRequest(
                 HttpMethod.POST,
-                new StringBuilder(""),
+                new StringBuilder(),
                 headers,
                 Collections.emptyMap(),
                 Collections.emptyList()
         );
+    }
+
+    @BeforeEach
+    void setUp() {
+        secretKeyAuthHandler = new SecretKeyAuthHandler(DUMMY_ACCESS_KEY);
     }
 
     @Test

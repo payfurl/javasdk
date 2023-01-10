@@ -25,8 +25,7 @@ public class NewCustomerProviderToken {
                                     @JsonProperty("Address") Address address,
                                     @JsonProperty("ProviderId") String providerId,
                                     @JsonProperty("ProviderToken") String providerToken,
-                                    @JsonProperty("ProviderTokenData") Map<String,String> providerTokenData)
-    {
+                                    @JsonProperty("ProviderTokenData") Map<String, String> providerTokenData) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -53,7 +52,7 @@ public class NewCustomerProviderToken {
     @Override
     public String toString() {
         return "NewCustomerProviderToken{" +
-                "providerId='" + providerId  + '\'' +
+                "providerId='" + providerId + '\'' +
                 ", providerToken='" + providerToken + '\'' +
                 ", reference='" + reference + '\'' +
                 ", firstName='" + firstName + '\'' +

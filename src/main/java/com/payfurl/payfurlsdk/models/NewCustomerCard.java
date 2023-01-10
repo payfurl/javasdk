@@ -86,6 +86,7 @@ public class NewCustomerCard {
     public Integer getVaultExpireSeconds() {
         return vaultExpireSeconds;
     }
+
     @Override
     public String toString() {
         return "NewCustomerCard{" +

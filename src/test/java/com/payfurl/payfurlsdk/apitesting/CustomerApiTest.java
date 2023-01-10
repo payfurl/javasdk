@@ -3,7 +3,18 @@ package com.payfurl.payfurlsdk.apitesting;
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.models.*;
+import com.payfurl.payfurlsdk.models.Address;
+import com.payfurl.payfurlsdk.models.CardRequestInformation;
+import com.payfurl.payfurlsdk.models.CustomerData;
+import com.payfurl.payfurlsdk.models.CustomerList;
+import com.payfurl.payfurlsdk.models.CustomerSearch;
+import com.payfurl.payfurlsdk.models.NewCustomerCard;
+import com.payfurl.payfurlsdk.models.NewCustomerProviderToken;
+import com.payfurl.payfurlsdk.models.NewCustomerToken;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
+import com.payfurl.payfurlsdk.models.PaymentMethodData;
+import com.payfurl.payfurlsdk.models.UpdateCustomer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -87,14 +97,14 @@ public class CustomerApiTest {
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
-                    .withEmail("test"+reference+"@payfurl.com")
+                    .withEmail("test" + reference + "@payfurl.com")
                     .withPhone("+61311111111")
                     .build();
 
             UpdateCustomer updateCustomer = new UpdateCustomer.Builder()
                     .withAddress(SAMPLE_ADDRESS_UPDATED)
                     .withPhone("+61311111112")
-                    .withEmail("updated"+reference+"@payfurl.com")
+                    .withEmail("updated" + reference + "@payfurl.com")
                     .build();
 
             // when
@@ -107,7 +117,7 @@ public class CustomerApiTest {
             then(updatedCustomer.getCustomerId()).isNotNull();
             then(updatedCustomer.getCustomerId()).isEqualTo(customerData.getCustomerId());
             then(updatedCustomer.getPhone()).isEqualTo("+61311111112");
-            then(updatedCustomer.getEmail()).isEqualTo("updated"+reference+"@payfurl.com");
+            then(updatedCustomer.getEmail()).isEqualTo("updated" + reference + "@payfurl.com");
         }
 
         @Test
@@ -121,7 +131,7 @@ public class CustomerApiTest {
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
-                    .withEmail("test"+reference+"@payfurl.com")
+                    .withEmail("test" + reference + "@payfurl.com")
                     .withPhone("+61311111111")
                     .build();
 
@@ -292,7 +302,9 @@ public class CustomerApiTest {
             NewCustomerProviderToken customerProviderToken = new NewCustomerProviderToken.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withProviderToken("some_test_token")
-                    .withProviderTokenData(new HashMap<String, String>(){{ put("test","test"); }})
+                    .withProviderTokenData(new HashMap<String, String>() {{
+                        put("test", "test");
+                    }})
                     .build();
 
             // when

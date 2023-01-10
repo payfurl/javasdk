@@ -5,7 +5,9 @@ import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
-import com.payfurl.payfurlsdk.models.*;
+import com.payfurl.payfurlsdk.models.TokenData;
+import com.payfurl.payfurlsdk.models.TokenList;
+import com.payfurl.payfurlsdk.models.TokenSearch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class TokenApi extends BaseApi {
 
     /**
      * Get Token by id
+     *
      * @param tokenId
      * @return
      * @throws ApiException
@@ -34,6 +37,7 @@ public class TokenApi extends BaseApi {
 
     /**
      * Search for tokens
+     *
      * @param searchData
      * @return
      * @throws ApiException

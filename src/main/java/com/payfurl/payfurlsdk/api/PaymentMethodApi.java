@@ -30,6 +30,7 @@ public class PaymentMethodApi extends BaseApi {
 
     /**
      * Creates a new checkout
+     *
      * @param newCheckout
      * @return
      * @throws ApiException
@@ -41,6 +42,7 @@ public class PaymentMethodApi extends BaseApi {
 
     /**
      * Add a payment method using a vault
+     *
      * @param newPaymentMethodVault
      * @return
      * @throws ApiException
@@ -52,6 +54,7 @@ public class PaymentMethodApi extends BaseApi {
 
     /**
      * Add a payment method using a card
+     *
      * @param newPaymentMethodCard
      * @return
      * @throws ApiException
@@ -63,28 +66,31 @@ public class PaymentMethodApi extends BaseApi {
 
     /**
      * Retrieve a single payment method
+     *
      * @param paymentMethodId
      * @return
      * @throws ApiException
      */
     public PaymentMethodData single(String paymentMethodId) throws ApiException {
-        String urlPath = String.format("%s/%s",paymentMethodApiBaseEndpoint, paymentMethodId);
+        String urlPath = String.format("%s/%s", paymentMethodApiBaseEndpoint, paymentMethodId);
         return executeGetRequestWith(urlPath, null, PaymentMethodData.class);
     }
 
     /**
      * Delete payment method
+     *
      * @param paymentMethodId
      * @return
      * @throws ApiException
      */
     public PaymentMethodData deletePaymentMethod(String paymentMethodId) throws ApiException {
-        String urlPath = String.format("%s/%s",paymentMethodApiBaseEndpoint, paymentMethodId);
+        String urlPath = String.format("%s/%s", paymentMethodApiBaseEndpoint, paymentMethodId);
         return executeDeleteRequestWith(urlPath, null, PaymentMethodData.class);
     }
 
     /**
      * Search for payment methods
+     *
      * @param searchData
      * @return
      * @throws ApiException

@@ -27,13 +27,10 @@ public class BaseApi {
     private static final int UNKNOWN_ERROR = 1;
     private static final String USER_AGENT = String.format("PayFURL-Java-SDK-v.%s %s/%s (%s)",
             SDK_VERSION_KEY, ENGINE_KEY, ENGINE_VERSION_KEY, OS_INFO_KEY);
-    protected String internalUserAgent;
-
     protected final Configuration config;
-
-    protected Map<AuthType, AuthHandler> authHandlers;
-
     private final HttpClient httpClient;
+    protected String internalUserAgent;
+    protected Map<AuthType, AuthHandler> authHandlers;
 
     protected BaseApi(Configuration config, HttpClient httpClient,
                       Map<AuthType, AuthHandler> authHandlers) {
@@ -55,9 +52,7 @@ public class BaseApi {
             ApiError error;
             try {
                 error = ApiUtils.deserialize(responseBody, ApiError.class);
-            }
-            catch (JsonProcessingException e)
-            {
+            } catch (JsonProcessingException e) {
                 throw new ApiException(new ApiError.Builder()
                         .withMessage(responseBody)
                         .withIsRetryable(false)
@@ -98,9 +93,7 @@ public class BaseApi {
             HttpResponse response = getClientInstance().execute(request);
 
             return getDataFrom(response, returnType);
-        }
-        catch (IOException exception)
-        {
+        } catch (IOException exception) {
             throw new ApiException(exception);
         }
     }

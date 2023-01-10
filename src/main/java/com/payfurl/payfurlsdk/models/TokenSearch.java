@@ -22,8 +22,7 @@ public class TokenSearch {
                        @JsonProperty("AddedAfter") Date addedAfter,
                        @JsonProperty("AddedBefore") Date addedBefore,
                        @JsonProperty("Limit") Integer limit,
-                       @JsonProperty("Skip") Integer skip)
-    {
+                       @JsonProperty("Skip") Integer skip) {
         this.providerId = providerId;
         this.status = status;
         this.sortBy = sortBy;

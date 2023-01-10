@@ -31,6 +31,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Accept a payment using a card number
+     *
      * @param newChargeCardRequest parameter for creating payment with card
      * @return ChargeData object details
      * @throws ApiException
@@ -41,6 +42,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Accept a payment using a card number using the least cost provider
+     *
      * @param newChargeCardLeastCost
      * @return ChargeData object details
      * @throws ApiException
@@ -51,6 +53,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Accept a payment for a saved payment method
+     *
      * @param newChargePaymentMethod
      * @return
      * @throws ApiException
@@ -61,6 +64,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Accept a payment for a customer
+     *
      * @param newChargeCustomer
      * @return
      * @throws ApiException
@@ -71,6 +75,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Accept a payment for payment token
+     *
      * @param newChargeToken
      * @return
      * @throws ApiException
@@ -81,6 +86,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Retrieve a single charge
+     *
      * @param chargeId
      * @return
      * @throws ApiException
@@ -91,6 +97,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Search for charges
+     *
      * @param searchData
      * @return
      * @throws ApiException
@@ -114,6 +121,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Refund a charge
+     *
      * @param newRefund
      * @return
      * @throws ApiException
@@ -126,6 +134,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Capture a charge
+     *
      * @param chargeId
      * @param newChargeCapture
      * @return
@@ -137,6 +146,7 @@ public class ChargeApi extends BaseApi {
 
     /**
      * Void/cancel charge
+     *
      * @param chargeId
      * @return
      * @throws ApiException

@@ -3,8 +3,14 @@ package com.payfurl.payfurlsdk.apitesting;
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.TokenApi;
-import com.payfurl.payfurlsdk.models.*;
-import org.junit.jupiter.api.*;
+import com.payfurl.payfurlsdk.models.TokenData;
+import com.payfurl.payfurlsdk.models.TokenList;
+import com.payfurl.payfurlsdk.models.TokenSearch;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 

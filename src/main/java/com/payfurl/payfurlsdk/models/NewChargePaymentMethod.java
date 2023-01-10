@@ -188,7 +188,7 @@ public class NewChargePaymentMethod {
         }
 
         public NewChargePaymentMethod build() {
-            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, order, taxAmount, customerCode, invoiceNumber, email, phone,  capture);
+            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture);
         }
     }
 }

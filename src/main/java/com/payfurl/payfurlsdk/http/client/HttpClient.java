@@ -30,9 +30,9 @@ public interface HttpClient {
                                            Object body);
 
     HttpBodyRequest preparePutBodyRequest(StringBuilder queryUrlBuilder,
-                                           Headers headers,
-                                           Map<String, Object> queryParams,
-                                           Object body);
+                                          Headers headers,
+                                          Map<String, Object> queryParams,
+                                          Object body);
 
     HttpRequest prepareDeleteRequest(StringBuilder queryUrlBuilder,
                                      Headers headers,

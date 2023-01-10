@@ -15,6 +15,7 @@ public class ApiException extends RuntimeException {
     private final Integer code;
     private final Boolean isRetryable;
     private final String type;
+
     public ApiException(ApiError apiError) {
         this.message = apiError.getMessage();
         this.details = apiError.getDetails();
