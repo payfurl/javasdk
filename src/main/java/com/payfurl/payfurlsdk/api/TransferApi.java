@@ -27,6 +27,7 @@ public class TransferApi extends BaseApi {
 
     /**
      * Add a transfer
+     *
      * @param newTransferGroup
      * @return
      * @throws ApiException
@@ -38,6 +39,7 @@ public class TransferApi extends BaseApi {
 
     /**
      * Retrieve a single transfer
+     *
      * @param transferId
      * @return
      * @throws ApiException
@@ -49,6 +51,7 @@ public class TransferApi extends BaseApi {
 
     /**
      * Search for transfers
+     *
      * @param searchData
      * @return
      * @throws ApiException

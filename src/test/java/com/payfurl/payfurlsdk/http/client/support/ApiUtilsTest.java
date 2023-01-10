@@ -87,7 +87,7 @@ class ApiUtilsTest {
                         ImmutableMap.of(
                                 "k1", "v1",
                                 "k2", 25
-                                ),
+                        ),
                         String.format("%s?%s=%s&%s=%d", SAMPLE_URL_PART, "k1", "v1", "k2", 25)
                 )
         );

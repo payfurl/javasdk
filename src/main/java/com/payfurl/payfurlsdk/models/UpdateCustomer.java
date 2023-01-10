@@ -3,8 +3,6 @@ package com.payfurl.payfurlsdk.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
-
 public class UpdateCustomer {
     private final String email;
     private final String phone;
@@ -35,6 +33,7 @@ public class UpdateCustomer {
         private String email;
         private String phone;
         private Address address;
+
         public Builder withEmail(String email) {
             this.email = email;
             return this;

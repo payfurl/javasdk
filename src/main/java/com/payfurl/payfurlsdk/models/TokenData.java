@@ -24,8 +24,7 @@ public class TokenData {
                      @JsonProperty("Provider") ProviderSummary provider,
                      @JsonProperty("DateAdded") Date dateAdded,
                      @JsonProperty("DateUsed") Date dateUsed,
-                     @JsonProperty("PayToStatus") String payToStatus)
-    {
+                     @JsonProperty("PayToStatus") String payToStatus) {
         this.gatewayTokenId = gatewayTokenId;
         this.tokenId = tokenId;
         this.userId = userId;

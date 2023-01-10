@@ -20,12 +20,6 @@ class PayFurlClientTest {
 
     private PayFurlClient dummyProdConfiguredClient;
 
-    @BeforeEach
-    void setUp() {
-        dummyProdConfiguredClient = new PayFurlClient.Builder()
-                .build();
-    }
-
     private static Stream<Arguments> provideDataForTestUriBasedOnEnvironmentMapping() {
         return Stream.of(
                 Arguments.of("Production environment",
@@ -48,6 +42,12 @@ class PayFurlClientTest {
                                 .build(),
                         PRODUCTION_URL)
         );
+    }
+
+    @BeforeEach
+    void setUp() {
+        dummyProdConfiguredClient = new PayFurlClient.Builder()
+                .build();
     }
 
     @DisplayName("Given newly created PayFurlClient When getBaseUri is Called Then return correct base URI")

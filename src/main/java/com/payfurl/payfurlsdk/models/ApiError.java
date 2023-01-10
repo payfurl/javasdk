@@ -18,13 +18,13 @@ public class ApiError {
 
     @JsonCreator
     public ApiError(@JsonProperty("message") String message,
-                    @JsonProperty("details") Map<String,String> details,
+                    @JsonProperty("details") Map<String, String> details,
                     @JsonProperty("resource") String resource,
                     @JsonProperty("gatewayCode") String gatewayCode,
                     @JsonProperty("gatewayMessage") String gatewayMessage,
                     @JsonProperty("code") Integer code,
                     @JsonProperty("isRetryable") Boolean isRetryable,
-                    @JsonProperty("type") String type){
+                    @JsonProperty("type") String type) {
         this.message = message;
         this.details = details;
         this.resource = resource;

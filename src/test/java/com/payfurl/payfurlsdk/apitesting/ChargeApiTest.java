@@ -5,7 +5,20 @@ import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.ChargeApi;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
-import com.payfurl.payfurlsdk.models.*;
+import com.payfurl.payfurlsdk.models.Address;
+import com.payfurl.payfurlsdk.models.CardRequestInformation;
+import com.payfurl.payfurlsdk.models.ChargeData;
+import com.payfurl.payfurlsdk.models.ChargeList;
+import com.payfurl.payfurlsdk.models.ChargeSearch;
+import com.payfurl.payfurlsdk.models.CustomerData;
+import com.payfurl.payfurlsdk.models.NewChargeCardLeastCost;
+import com.payfurl.payfurlsdk.models.NewChargeCardRequest;
+import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
+import com.payfurl.payfurlsdk.models.NewChargeToken;
+import com.payfurl.payfurlsdk.models.NewCustomerCard;
+import com.payfurl.payfurlsdk.models.Order;
+import com.payfurl.payfurlsdk.models.PaymentMethodData;
+import com.payfurl.payfurlsdk.models.ProductItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -42,21 +55,21 @@ public class ChargeApiTest {
             .withCountry("Australia")
             .build();
     private static final List<ProductItem> Items = Arrays.asList(new ProductItem.Builder()
-            .withAmount(BigDecimal.valueOf(123))
-            .withDescription("First item")
-            .withQuantity(BigDecimal.valueOf(1.4))
-            .withCommodityCode("asdf")
-            .withProductCode("PC1234")
-            .withUnitOfMeasure("kg")
-            .build(),
+                    .withAmount(BigDecimal.valueOf(123))
+                    .withDescription("First item")
+                    .withQuantity(BigDecimal.valueOf(1.4))
+                    .withCommodityCode("asdf")
+                    .withProductCode("PC1234")
+                    .withUnitOfMeasure("kg")
+                    .build(),
             new ProductItem.Builder()
-            .withAmount(BigDecimal.valueOf(33))
-            .withDescription("Second item")
-            .withQuantity(BigDecimal.valueOf(4.6))
-            .withCommodityCode("uuuu")
-            .withProductCode("PC15678")
-            .withUnitOfMeasure("kg")
-            .build());
+                    .withAmount(BigDecimal.valueOf(33))
+                    .withDescription("Second item")
+                    .withQuantity(BigDecimal.valueOf(4.6))
+                    .withCommodityCode("uuuu")
+                    .withProductCode("PC15678")
+                    .withUnitOfMeasure("kg")
+                    .build());
     private static final Order SAMPLE_ORER = new Order.Builder()
             .withOrderNumber("12345ON")
             .withDutyAmount(BigDecimal.valueOf(1))
@@ -119,9 +132,7 @@ public class ChargeApiTest {
             // when
             try {
                 ChargeData chargeData = chargeApi.createWithCard(newChargeCardRequest);
-            }
-            catch (ApiException apiException)
-            {
+            } catch (ApiException apiException) {
                 exception = apiException;
             }
 

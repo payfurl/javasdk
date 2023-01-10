@@ -37,7 +37,7 @@ public class OkClient implements HttpClient {
     private static final int DEFAULT_CALL_TIMEOUT_SECONDS = 60;
     private static volatile OkHttpClient defaultOkHttpClient;
     private OkHttpClient client;
-    private Environment environment;
+    private final Environment environment;
 
     public OkClient(HttpClientConfiguration httpClientConfiguration) {
         this.environment = httpClientConfiguration.getEnvironment();
@@ -47,47 +47,6 @@ public class OkClient implements HttpClient {
             this.client = okClientInstance;
             configureHttpClient(okClientInstance, httpClientConfiguration);
         }
-    }
-
-    private void configureHttpClient(OkHttpClient okHttpClient, HttpClientConfiguration httpClientConfiguration) {
-        okHttpClient.newBuilder()
-                .readTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
-                .connectTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
-                .callTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
-                .build();
-    }
-
-    private OkHttpClient getDefaultOkHttpClient() {
-        if (defaultOkHttpClient != null) {
-            return defaultOkHttpClient;
-        }
-
-        synchronized (SIMPLE_SYNC_OBJECT) {
-            if (defaultOkHttpClient == null) {
-                defaultOkHttpClient = initializeOkClient();
-            }
-        }
-
-        return defaultOkHttpClient;
-    }
-
-    private OkHttpClient initializeOkClient() {
-        OkHttpClient.Builder okClientBuilder = new OkHttpClient.Builder()
-                .retryOnConnectionFailure(false)
-                .callTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .followSslRedirects(true);
-
-        if (Environment.LOCAL == environment) {
-            TrustManager[] trustAllCertsManager = getTrustAllCertsManager();
-            SSLSocketFactory sslSocketFactory = getSslSocketFactory(trustAllCertsManager);
-
-            okClientBuilder
-                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCertsManager[0])
-                    .hostnameVerifier((hostname, session) -> true);
-        }
-
-        return okClientBuilder.build();
     }
 
     private static TrustManager[] getTrustAllCertsManager() {
@@ -149,15 +108,6 @@ public class OkClient implements HttpClient {
         return httpResponse;
     }
 
-    @Override
-    public HttpResponse execute(HttpRequest httpRequest) throws IOException {
-        Request okHttpRequest = convertRequest(httpRequest);
-
-        try (Response okHttpResponse = client.newCall(okHttpRequest).execute()) {
-            return convertResponse(okHttpResponse);
-        }
-    }
-
     private static Request convertRequest(HttpRequest httpRequest) {
         okhttp3.Headers.Builder requestHeaders = new okhttp3.Headers.Builder();
         if (httpRequest.getHeaders() != null) {
@@ -202,6 +152,56 @@ public class OkClient implements HttpClient {
         return requestHeaders;
     }
 
+    private void configureHttpClient(OkHttpClient okHttpClient, HttpClientConfiguration httpClientConfiguration) {
+        okHttpClient.newBuilder()
+                .readTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
+                .connectTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
+                .callTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
+                .build();
+    }
+
+    private OkHttpClient getDefaultOkHttpClient() {
+        if (defaultOkHttpClient != null) {
+            return defaultOkHttpClient;
+        }
+
+        synchronized (SIMPLE_SYNC_OBJECT) {
+            if (defaultOkHttpClient == null) {
+                defaultOkHttpClient = initializeOkClient();
+            }
+        }
+
+        return defaultOkHttpClient;
+    }
+
+    private OkHttpClient initializeOkClient() {
+        OkHttpClient.Builder okClientBuilder = new OkHttpClient.Builder()
+                .retryOnConnectionFailure(false)
+                .callTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .followSslRedirects(true);
+
+        if (Environment.LOCAL == environment) {
+            TrustManager[] trustAllCertsManager = getTrustAllCertsManager();
+            SSLSocketFactory sslSocketFactory = getSslSocketFactory(trustAllCertsManager);
+
+            okClientBuilder
+                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCertsManager[0])
+                    .hostnameVerifier((hostname, session) -> true);
+        }
+
+        return okClientBuilder.build();
+    }
+
+    @Override
+    public HttpResponse execute(HttpRequest httpRequest) throws IOException {
+        Request okHttpRequest = convertRequest(httpRequest);
+
+        try (Response okHttpResponse = client.newCall(okHttpRequest).execute()) {
+            return convertResponse(okHttpResponse);
+        }
+    }
+
     @Override
     public HttpRequest prepareGetRequest(StringBuilder queryUrlBuilder,
                                          Headers headers,
@@ -228,9 +228,9 @@ public class OkClient implements HttpClient {
 
     @Override
     public HttpBodyRequest preparePutBodyRequest(StringBuilder queryUrlBuilder,
-                                                  Headers headers,
-                                                  Map<String, Object> queryParams,
-                                                  Object body) {
+                                                 Headers headers,
+                                                 Map<String, Object> queryParams,
+                                                 Object body) {
         return new HttpBodyRequest(HttpMethod.PUT, queryUrlBuilder, headers, queryParams, body);
     }
 

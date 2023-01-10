@@ -2,7 +2,12 @@ package com.payfurl.payfurlsdk;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.payfurl.payfurlsdk.api.*;
+import com.payfurl.payfurlsdk.api.ChargeApi;
+import com.payfurl.payfurlsdk.api.CustomerApi;
+import com.payfurl.payfurlsdk.api.PaymentMethodApi;
+import com.payfurl.payfurlsdk.api.TokenApi;
+import com.payfurl.payfurlsdk.api.TransferApi;
+import com.payfurl.payfurlsdk.api.VaultApi;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.auth.SecretKeyAuthHandler;
@@ -68,6 +73,10 @@ public class PayFurlClient implements PayFurlClientSdk {
         initializeApis();
     }
 
+    public static void shutdown() {
+        OkClient.shutdown();
+    }
+
     private void initializeApis() {
         this.chargeApi = new ChargeApi(this, this.httpClient, this.authHandlerMap);
         this.customerApi = new CustomerApi(this, this.httpClient, this.authHandlerMap);
@@ -75,10 +84,6 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.transferApi = new TransferApi(this, this.httpClient, this.authHandlerMap);
         this.vaultApi = new VaultApi(this, this.httpClient, this.authHandlerMap);
         this.tokenApi = new TokenApi(this, this.httpClient, this.authHandlerMap);
-    }
-
-    public static void shutdown() {
-        OkClient.shutdown();
     }
 
     public SecretKeyAuthHandler getSecretKeyAuthHandler() {
@@ -157,14 +162,14 @@ public class PayFurlClient implements PayFurlClientSdk {
 
     public static final class Builder {
 
+        private final HttpClientConfiguration.Builder httpClientConfigurationBuilder = new HttpClientConfiguration.Builder();
         private Environment environment = Environment.PRODUCTION;
         private Headers additionalHeaders = new Headers();
-        private final HttpClientConfiguration.Builder httpClientConfigurationBuilder = new HttpClientConfiguration.Builder();
-        private Map<AuthType, AuthHandler> authHandlerMap = null;
-        private String userAgentDetails = null;
+        private final Map<AuthType, AuthHandler> authHandlerMap = null;
+        private final String userAgentDetails = null;
         private String secretKey = StringUtils.EMPTY;
 
-        private String publicKey = StringUtils.EMPTY;
+        private final String publicKey = StringUtils.EMPTY;
 
         public Builder withEnvironment(Environment environment) {
             this.environment = environment;
