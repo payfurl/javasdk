@@ -36,8 +36,8 @@ public class OkClient implements HttpClient {
     private static final Object SIMPLE_SYNC_OBJECT = new Object();
     private static final int DEFAULT_CALL_TIMEOUT_SECONDS = 60;
     private static volatile OkHttpClient defaultOkHttpClient;
-    private OkHttpClient client;
     private final Environment environment;
+    private OkHttpClient client;
 
     public OkClient(HttpClientConfiguration httpClientConfiguration) {
         this.environment = httpClientConfiguration.getEnvironment();

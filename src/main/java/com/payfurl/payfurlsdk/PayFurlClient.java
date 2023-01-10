@@ -163,13 +163,12 @@ public class PayFurlClient implements PayFurlClientSdk {
     public static final class Builder {
 
         private final HttpClientConfiguration.Builder httpClientConfigurationBuilder = new HttpClientConfiguration.Builder();
-        private Environment environment = Environment.PRODUCTION;
-        private Headers additionalHeaders = new Headers();
         private final Map<AuthType, AuthHandler> authHandlerMap = null;
         private final String userAgentDetails = null;
-        private String secretKey = StringUtils.EMPTY;
-
         private final String publicKey = StringUtils.EMPTY;
+        private Environment environment = Environment.PRODUCTION;
+        private Headers additionalHeaders = new Headers();
+        private String secretKey = StringUtils.EMPTY;
 
         public Builder withEnvironment(Environment environment) {
             this.environment = environment;
