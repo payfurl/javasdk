@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public final class TestConfigProvider {
     private static final String LOCAL_ACCESS_SECRET_KEY = "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-    private static final String PAYFURL_ACCESS_TEST_SECRET_KEY = "LOCAL_ACCESS_SECRET_KEY";
+    private static final String PAYFURL_ACCESS_TEST_SECRET_KEY = "PAYFURL_LOCAL_ACCESS_SECRET_KEY";
     private static final String PAYFURL_ENVIRONMENT_KEY = "PAYFURL_ENVIRONMENT";
 
     private TestConfigProvider() {
