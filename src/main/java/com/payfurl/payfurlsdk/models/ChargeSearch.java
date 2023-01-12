@@ -18,6 +18,7 @@ public class ChargeSearch {
     private final Integer limit;
     private final Integer skip;
     private final String sortBy;
+    private final String id;
 
     @JsonCreator
     public ChargeSearch(@JsonProperty("PaymentMethodId") String paymentMethodId,
@@ -30,7 +31,8 @@ public class ChargeSearch {
                         @JsonProperty("AddedBefore") Date addedBefore,
                         @JsonProperty("Limit") Integer limit,
                         @JsonProperty("Skip") Integer skip,
-                        @JsonProperty("SortBy") String sortBy) {
+                        @JsonProperty("SortBy") String sortBy,
+                        @JsonProperty("Id") String id) {
         this.paymentMethodId = paymentMethodId;
         this.reference = reference;
         this.amountGreaterThan = amountGreaterThan;
@@ -42,6 +44,7 @@ public class ChargeSearch {
         this.limit = limit;
         this.skip = skip;
         this.sortBy = sortBy;
+        this.id = id;
     }
 
     @JsonProperty("PaymentMethodId")
@@ -99,6 +102,11 @@ public class ChargeSearch {
         return sortBy;
     }
 
+    @JsonProperty("Id")
+    public String getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "ChargeSearch{" +
@@ -113,6 +121,7 @@ public class ChargeSearch {
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", sortBy='" + sortBy + '\'' +
+                ", id='" + id + '\'' +
                 '}';
     }
 
@@ -128,6 +137,7 @@ public class ChargeSearch {
         private Integer limit;
         private Integer skip;
         private String sortBy;
+        private String id;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
@@ -184,8 +194,13 @@ public class ChargeSearch {
             return this;
         }
 
+        public Builder withId(String id) {
+            this.id = id;
+            return this;
+        }
+
         public ChargeSearch build() {
-            return new ChargeSearch(paymentMethodId, reference, amountGreaterThan, amountLessThan, customerId, status, addedAfter, addedBefore, limit, skip, sortBy);
+            return new ChargeSearch(paymentMethodId, reference, amountGreaterThan, amountLessThan, customerId, status, addedAfter, addedBefore, limit, skip, sortBy, id);
         }
     }
 }
