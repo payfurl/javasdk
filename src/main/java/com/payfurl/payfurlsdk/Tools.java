@@ -10,7 +10,7 @@ public class Tools {
 
     public static BigInteger getAmountForIntCurrencies(BigDecimal amount, String currency) {
         if (zeroDecimalCurrencies == null) {
-            initCardTypes();
+            initCurrencyList();
         }
 
         if (zeroDecimalCurrencies.contains(currency.toUpperCase())) {
@@ -22,7 +22,7 @@ public class Tools {
 
     public static BigDecimal getAmountForDecimalCurrencies(BigInteger amount, String currency) {
         if (zeroDecimalCurrencies == null) {
-            initCardTypes();
+            initCurrencyList();
         }
 
         if (zeroDecimalCurrencies.contains(currency.toUpperCase())) {
@@ -32,7 +32,7 @@ public class Tools {
         return new BigDecimal(amount).divide(new BigDecimal(100));
     }
 
-    private static void initCardTypes() {
+    private static void initCurrencyList() {
         //currencies taken from here: https://stripe.com/docs/currencies#zero-decimal on 20/01/2022
         zeroDecimalCurrencies = new HashSet<>();
         zeroDecimalCurrencies.add("BIF");
