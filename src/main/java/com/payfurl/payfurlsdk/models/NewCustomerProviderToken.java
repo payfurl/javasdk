@@ -15,6 +15,7 @@ public class NewCustomerProviderToken {
     private final String providerId;
     private final String providerToken;
     private final Map<String, String> providerTokenData;
+    private final Boolean verify;
 
     @JsonCreator
     public NewCustomerProviderToken(@JsonProperty("Reference") String reference,
@@ -25,7 +26,8 @@ public class NewCustomerProviderToken {
                                     @JsonProperty("Address") Address address,
                                     @JsonProperty("ProviderId") String providerId,
                                     @JsonProperty("ProviderToken") String providerToken,
-                                    @JsonProperty("ProviderTokenData") Map<String, String> providerTokenData) {
+                                    @JsonProperty("ProviderTokenData") Map<String, String> providerTokenData,
+                                    @JsonProperty("Verify") Boolean verify) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,6 +37,7 @@ public class NewCustomerProviderToken {
         this.providerId = providerId;
         this.providerToken = providerToken;
         this.providerTokenData = providerTokenData;
+        this.verify = verify;
     }
 
     public String getProviderId() {
@@ -44,6 +47,8 @@ public class NewCustomerProviderToken {
     public String getProviderToken() {
         return providerToken;
     }
+
+    public Boolean getVerify() { return verify; }
 
     public Map<String, String> getProviderTokenData() {
         return providerTokenData;
@@ -61,6 +66,7 @@ public class NewCustomerProviderToken {
                 ", phone='" + phone + '\'' +
                 ", providerTokenData=" + providerTokenData +
                 ", address=" + address +
+                ", verify=" + verify +
                 '}';
     }
 
@@ -98,6 +104,7 @@ public class NewCustomerProviderToken {
         private String providerId;
         private String providerToken;
         private Map<String, String> providerTokenData;
+        private Boolean verify;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -144,8 +151,13 @@ public class NewCustomerProviderToken {
             return this;
         }
 
+        public Builder withVerify(Boolean verify) {
+            this.verify = verify;
+            return this;
+        }
+
         public NewCustomerProviderToken build() {
-            return new NewCustomerProviderToken(reference, firstName, lastName, email, phone, address, providerId, providerToken, providerTokenData);
+            return new NewCustomerProviderToken(reference, firstName, lastName, email, phone, address, providerId, providerToken, providerTokenData, verify);
         }
     }
 }
