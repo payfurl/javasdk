@@ -15,7 +15,6 @@ public class PaymentMethodSearch {
     private final Integer limit;
     private final Integer skip;
     private final String search;
-    private final String token;
 
 
     @JsonCreator
@@ -27,8 +26,7 @@ public class PaymentMethodSearch {
                                @JsonProperty("AddedBefore") Date addedBefore,
                                @JsonProperty("Limit") Integer limit,
                                @JsonProperty("Skip") Integer skip,
-                               @JsonProperty("Search") String search,
-                               @JsonProperty("Token") String token) {
+                               @JsonProperty("Search") String search) {
         this.paymentType = paymentType;
         this.providerId = providerId;
         this.customerId = customerId;
@@ -38,7 +36,6 @@ public class PaymentMethodSearch {
         this.limit = limit;
         this.skip = skip;
         this.search = search;
-        this.token = token;
     }
 
     public String getPaymentType() {
@@ -77,10 +74,6 @@ public class PaymentMethodSearch {
         return search;
     }
 
-    public String getToken() {
-        return token;
-    }
-
     @Override
     public String toString() {
         return "ChargeSearch{" +
@@ -93,7 +86,6 @@ public class PaymentMethodSearch {
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", search='" + search + '\'' +
-                ", token='" + token + '\'' +
                 '}';
     }
 
@@ -107,7 +99,6 @@ public class PaymentMethodSearch {
         private Integer limit;
         private Integer skip;
         private String search;
-        private String token;
 
         public Builder withPaymentType(String paymentType) {
             this.paymentType = paymentType;
@@ -154,13 +145,8 @@ public class PaymentMethodSearch {
             return this;
         }
 
-        public Builder withToken(String token) {
-            this.token = token;
-            return this;
-        }
-
         public PaymentMethodSearch build() {
-            return new PaymentMethodSearch(paymentType, providerId, customerId, sortBy, addedAfter, addedBefore, limit, skip, search, token);
+            return new PaymentMethodSearch(paymentType, providerId, customerId, sortBy, addedAfter, addedBefore, limit, skip, search);
         }
     }
 }
