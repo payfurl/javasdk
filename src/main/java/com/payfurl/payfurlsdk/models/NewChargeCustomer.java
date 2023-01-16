@@ -19,6 +19,7 @@ public class NewChargeCustomer {
     private final String email;
     private final String phone;
     private final boolean capture;
+    private final Initiator initiator;
 
     @JsonCreator
     public NewChargeCustomer(@JsonProperty("Amount") BigDecimal amount,
@@ -32,7 +33,8 @@ public class NewChargeCustomer {
                              @JsonProperty("InvoiceNumber") String invoiceNumber,
                              @JsonProperty("Email") String email,
                              @JsonProperty("Phone") String phone,
-                             @JsonProperty("Capture") boolean capture) {
+                             @JsonProperty("Capture") boolean capture,
+                             @JsonProperty("Initiator") Initiator initiator) {
         this.amount = amount;
         this.currency = currency;
         this.customerId = customerId;
@@ -45,6 +47,7 @@ public class NewChargeCustomer {
         this.email = email;
         this.phone = phone;
         this.capture = capture;
+        this.initiator = initiator;
     }
 
     public BigDecimal getAmount() {
@@ -75,24 +78,6 @@ public class NewChargeCustomer {
         return capture;
     }
 
-    @Override
-    public String toString() {
-        return "NewChargeCustomer{" +
-                "amount=" + amount +
-                ", currency='" + currency + '\'' +
-                ", customerId='" + customerId + '\'' +
-                ", reference='" + reference + '\'' +
-                ", address=" + address +
-                ", order=" + order +
-                ", taxAmount=" + taxAmount +
-                ", customerCode=" + customerCode +
-                ", invoiceNumber=" + invoiceNumber +
-                ", email=" + email +
-                ", phone=" + phone +
-                ", capture=" + capture +
-                '}';
-    }
-
     public BigDecimal getTaxAmount() {
         return taxAmount;
     }
@@ -113,6 +98,28 @@ public class NewChargeCustomer {
         return phone;
     }
 
+    public Initiator getInitiator() {
+        return initiator;
+    }
+
+    @Override
+    public String toString() {
+        return "NewChargeCustomer{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", reference='" + reference + '\'' +
+                ", address=" + address +
+                ", order=" + order +
+                ", taxAmount=" + taxAmount +
+                ", customerCode=" + customerCode +
+                ", invoiceNumber=" + invoiceNumber +
+                ", email=" + email +
+                ", phone=" + phone +
+                ", capture=" + capture +
+                ", initiator=" + initiator +
+                '}';
+    }
 
     public static class Builder {
         private BigDecimal amount;
@@ -127,6 +134,7 @@ public class NewChargeCustomer {
         private String email;
         private String phone;
         private boolean capture = true;
+        private Initiator initiator;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -188,8 +196,12 @@ public class NewChargeCustomer {
             return this;
         }
 
+        public void withInitiator(Initiator initiator) {
+            this.initiator = initiator;
+        }
+
         public NewChargeCustomer build() {
-            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture);
+            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture, initiator);
         }
     }
 }

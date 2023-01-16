@@ -30,6 +30,7 @@ public class ChargeData {
     public final String threeDsServerTransId;
     public final boolean threeDsVerified;
     public final BigDecimal authorisationAmount;
+    private final Initiator initiator;
 
     @JsonCreator
     public ChargeData(@JsonProperty("ChargeId") String chargeId,
@@ -53,7 +54,8 @@ public class ChargeData {
                       @JsonProperty("Provider") ProviderSummary provider,
                       @JsonProperty("ThreeDsServerTransId") String threeDsServerTransId,
                       @JsonProperty("ThreeDsVerified") boolean threeDsVerified,
-                      @JsonProperty("AuthorisationAmount") BigDecimal authorisationAmount) {
+                      @JsonProperty("AuthorisationAmount") BigDecimal authorisationAmount,
+                      @JsonProperty("Initiator") Initiator initiator) {
         this.chargeId = chargeId;
         this.providerChargeId = providerChargeId;
         this.amount = amount;
@@ -76,6 +78,7 @@ public class ChargeData {
         this.threeDsServerTransId = threeDsServerTransId;
         this.threeDsVerified = threeDsVerified;
         this.authorisationAmount = authorisationAmount;
+        this.initiator = initiator;
     }
 
     public String getChargeId() {
@@ -166,6 +169,10 @@ public class ChargeData {
         return authorisationAmount;
     }
 
+    public Initiator getInitiator() {
+        return initiator;
+    }
+
     @Override
     public String toString() {
         return "ChargeData{" +
@@ -191,6 +198,7 @@ public class ChargeData {
                 ", threeDsServerTransId='" + threeDsServerTransId + '\'' +
                 ", threeDsVerified=" + threeDsVerified +
                 ", authorisationAmount=" + authorisationAmount +
+                ", initiator=" + initiator +
                 '}';
     }
 }

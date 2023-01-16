@@ -18,6 +18,7 @@ public class NewChargeCardLeastCost {
     private final String email;
     private final String phone;
     private final boolean capture;
+    private final Initiator initiator;
 
     @JsonCreator
     public NewChargeCardLeastCost(@JsonProperty("Amount") BigDecimal amount,
@@ -31,7 +32,8 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("InvoiceNumber") String invoiceNumber,
                                   @JsonProperty("Email") String email,
                                   @JsonProperty("Phone") String phone,
-                                  @JsonProperty("Capture") boolean capture) {
+                                  @JsonProperty("Capture") boolean capture,
+                                  @JsonProperty("Initiator") Initiator initiator) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -44,6 +46,7 @@ public class NewChargeCardLeastCost {
         this.email = email;
         this.phone = phone;
         this.capture = capture;
+        this.initiator = initiator;
     }
 
     public BigDecimal getAmount() {
@@ -74,24 +77,6 @@ public class NewChargeCardLeastCost {
         return capture;
     }
 
-    @Override
-    public String toString() {
-        return "NewChargeCardLeastCost{" +
-                "amount=" + amount +
-                ", currency='" + currency + '\'' +
-                ", reference='" + reference + '\'' +
-                ", paymentInformation=" + paymentInformation +
-                ", address=" + address +
-                ", order=" + order +
-                ", taxAmount=" + taxAmount +
-                ", customerCode=" + customerCode +
-                ", invoiceNumber=" + invoiceNumber +
-                ", email=" + email +
-                ", phone=" + phone +
-                ", capture=" + capture +
-                '}';
-    }
-
     public BigDecimal getTaxAmount() {
         return taxAmount;
     }
@@ -112,6 +97,29 @@ public class NewChargeCardLeastCost {
         return phone;
     }
 
+    public Initiator getInitiator() {
+        return initiator;
+    }
+
+    @Override
+    public String toString() {
+        return "NewChargeCardLeastCost{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", reference='" + reference + '\'' +
+                ", paymentInformation=" + paymentInformation +
+                ", address=" + address +
+                ", order=" + order +
+                ", taxAmount=" + taxAmount +
+                ", customerCode=" + customerCode +
+                ", invoiceNumber=" + invoiceNumber +
+                ", email=" + email +
+                ", phone=" + phone +
+                ", capture=" + capture +
+                ", initiator=" + initiator +
+                '}';
+    }
+
     public static class Builder {
         private BigDecimal amount;
         private String currency;
@@ -125,6 +133,7 @@ public class NewChargeCardLeastCost {
         private String email;
         private String phone;
         private boolean capture = true;
+        private Initiator initiator;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -186,8 +195,12 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
+        public void withInitiator(Initiator initiator) {
+            this.initiator = initiator;
+        }
+
         public NewChargeCardLeastCost build() {
-            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture);
+            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture, initiator);
         }
     }
 }

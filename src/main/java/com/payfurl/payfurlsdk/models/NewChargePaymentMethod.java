@@ -18,6 +18,7 @@ public class NewChargePaymentMethod {
     private final String email;
     private final String phone;
     private final boolean capture;
+    private final Initiator initiator;
 
     @JsonCreator
     public NewChargePaymentMethod(@JsonProperty("Amount") BigDecimal amount,
@@ -31,7 +32,8 @@ public class NewChargePaymentMethod {
                                   @JsonProperty("InvoiceNumber") String invoiceNumber,
                                   @JsonProperty("Email") String email,
                                   @JsonProperty("Phone") String phone,
-                                  @JsonProperty("Capture") boolean capture) {
+                                  @JsonProperty("Capture") boolean capture,
+                                  @JsonProperty("Initiator") Initiator initiator) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -44,6 +46,7 @@ public class NewChargePaymentMethod {
         this.email = email;
         this.phone = phone;
         this.capture = capture;
+        this.initiator = initiator;
     }
 
     public BigDecimal getAmount() {
@@ -74,24 +77,6 @@ public class NewChargePaymentMethod {
         return order;
     }
 
-    @Override
-    public String toString() {
-        return "NewChargePaymentMethod{" +
-                "amount=" + amount +
-                ", currency='" + currency + '\'' +
-                ", paymentMethodId='" + paymentMethodId + '\'' +
-                ", reference='" + reference + '\'' +
-                ", address=" + address +
-                ", order=" + order +
-                ", taxAmount=" + taxAmount +
-                ", customerCode=" + customerCode +
-                ", invoiceNumber=" + invoiceNumber +
-                ", email=" + email +
-                ", phone=" + phone +
-                ", capture=" + capture +
-                '}';
-    }
-
     public BigDecimal getTaxAmount() {
         return taxAmount;
     }
@@ -112,6 +97,29 @@ public class NewChargePaymentMethod {
         return phone;
     }
 
+    public Initiator getInitiator() {
+        return initiator;
+    }
+
+    @Override
+    public String toString() {
+        return "NewChargePaymentMethod{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", paymentMethodId='" + paymentMethodId + '\'' +
+                ", reference='" + reference + '\'' +
+                ", address=" + address +
+                ", order=" + order +
+                ", taxAmount=" + taxAmount +
+                ", customerCode=" + customerCode +
+                ", invoiceNumber=" + invoiceNumber +
+                ", email=" + email +
+                ", phone=" + phone +
+                ", capture=" + capture +
+                ", initiator=" + initiator +
+                '}';
+    }
+
 
     public static class Builder {
         private BigDecimal amount;
@@ -126,6 +134,7 @@ public class NewChargePaymentMethod {
         private String email;
         private String phone;
         private boolean capture = true;
+        private Initiator initiator;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -187,8 +196,12 @@ public class NewChargePaymentMethod {
             return this;
         }
 
+        public void withInitiator(Initiator initiator) {
+            this.initiator = initiator;
+        }
+
         public NewChargePaymentMethod build() {
-            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture);
+            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture, initiator);
         }
     }
 }
