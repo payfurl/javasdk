@@ -3,6 +3,7 @@ package com.payfurl.payfurlsdk.apitesting;
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.VaultApi;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.models.NewVault;
 import com.payfurl.payfurlsdk.models.VaultData;
 import com.payfurl.payfurlsdk.models.VaultDataWithPci;
@@ -10,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -33,7 +32,7 @@ public class VaultApiTest {
     class SuccessFlow {
         @Test
         @DisplayName("When create request is executed, Then return valid vault")
-        void testCreate() throws IOException {
+        void testCreate() throws ApiException {
             // when
             VaultData vaultData = createVault();
 
@@ -42,7 +41,7 @@ public class VaultApiTest {
         }
 
         @DisplayName("When single request is executed, Then return valid vaultData")
-        void testSingle() throws IOException {
+        void testSingle() throws ApiException {
             // given
             VaultData vaultData = createVault();
 
@@ -55,7 +54,7 @@ public class VaultApiTest {
 
         @Test
         @DisplayName("When delete request is executed, Then return valid deleted vaultData")
-        void testDelete() throws IOException {
+        void testDelete() throws ApiException {
             // given
             VaultData vaultData = createVault();
 
@@ -66,7 +65,7 @@ public class VaultApiTest {
             then(deletedVaultData.getVaultId()).isEqualTo(vaultData.getVaultId());
         }
 
-        private VaultData createVault() throws IOException {
+        private VaultData createVault() throws ApiException {
             NewVault newVault = new NewVault.Builder()
                     .withCardNumber("4111111111111111")
                     .withCcv("123")

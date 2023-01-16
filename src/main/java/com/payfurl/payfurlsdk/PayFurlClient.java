@@ -2,12 +2,13 @@ package com.payfurl.payfurlsdk;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import com.payfurl.payfurlsdk.api.ProviderApi;
 import com.payfurl.payfurlsdk.api.ChargeApi;
-import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.api.PaymentMethodApi;
 import com.payfurl.payfurlsdk.api.TokenApi;
-import com.payfurl.payfurlsdk.api.TransferApi;
 import com.payfurl.payfurlsdk.api.VaultApi;
+import com.payfurl.payfurlsdk.api.CustomerApi;
+import com.payfurl.payfurlsdk.api.TransferApi;
+import com.payfurl.payfurlsdk.api.PaymentMethodApi;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.auth.SecretKeyAuthHandler;
@@ -48,6 +49,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private TransferApi transferApi;
     private VaultApi vaultApi;
     private TokenApi tokenApi;
+    private ProviderApi providerApi;
 
     private PayFurlClient(Environment environment,
                           Headers additionalHeaders,
@@ -84,6 +86,7 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.transferApi = new TransferApi(this, this.httpClient, this.authHandlerMap);
         this.vaultApi = new VaultApi(this, this.httpClient, this.authHandlerMap);
         this.tokenApi = new TokenApi(this, this.httpClient, this.authHandlerMap);
+        this.providerApi = new ProviderApi(this, this.httpClient, this.authHandlerMap);
     }
 
     public SecretKeyAuthHandler getSecretKeyAuthHandler() {
@@ -143,6 +146,11 @@ public class PayFurlClient implements PayFurlClientSdk {
     @Override
     public TransferApi getTransferApi() {
         return transferApi;
+    }
+
+    @Override
+    public ProviderApi getProviderApi() {
+        return this.providerApi;
     }
 
     @Override

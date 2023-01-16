@@ -3,6 +3,7 @@ package com.payfurl.payfurlsdk.apitesting;
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.CustomerApi;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.models.Address;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
 import com.payfurl.payfurlsdk.models.CustomerData;
@@ -21,7 +22,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -70,7 +70,7 @@ public class CustomerApiTest {
     class SuccessFlow {
         @Test
         @DisplayName("When createWithCard request is executed, Then return valid CustomerData")
-        void testCreateWithCard() throws IOException {
+        void testCreateWithCard() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
@@ -88,7 +88,7 @@ public class CustomerApiTest {
 
         @Test
         @DisplayName("When createWithCard request is executed then execute UpdateCustomer, Then return valid CustomerData")
-        void testCreateWithCardAndUpdate() throws IOException {
+        void testCreateWithCardAndUpdate() throws ApiException {
             String reference = UUID.randomUUID().toString();
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
@@ -122,7 +122,7 @@ public class CustomerApiTest {
 
         @Test
         @DisplayName("Delete Customer")
-        void testDeleteCustomer() throws IOException {
+        void testDeleteCustomer() throws ApiException {
             String reference = UUID.randomUUID().toString();
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
@@ -151,7 +151,7 @@ public class CustomerApiTest {
 
         @Test
         @DisplayName("When search request is executed, Then return valid CustomerList")
-        void testSearch() throws IOException {
+        void testSearch() throws ApiException {
             // given
             String reference = UUID.randomUUID().toString();
 
@@ -178,7 +178,7 @@ public class CustomerApiTest {
 
         @Test
         @DisplayName("When createPaymentMethodWithCard request is executed, Then return valid CustomerList")
-        void testCreatePaymentMethodWithCard() throws IOException {
+        void testCreatePaymentMethodWithCard() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
@@ -204,7 +204,7 @@ public class CustomerApiTest {
         @Test
         @Disabled("tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When createPaymentMethodWithToken request is executed, Then return valid paymentMethodData")
-        void testCreatePaymentMethodWithToken() throws IOException {
+        void testCreatePaymentMethodWithToken() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
@@ -229,7 +229,7 @@ public class CustomerApiTest {
         @Test
         @Disabled("tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When createWithToken request is executed, Then return valid customerData")
-        void testCreateWithToken() throws IOException {
+        void testCreateWithToken() throws ApiException {
             // given
             NewCustomerToken newCustomerToken = new NewCustomerToken.Builder()
                     .withFirstName("test")
@@ -246,7 +246,7 @@ public class CustomerApiTest {
 
         @Test
         @DisplayName("When getPaymentMethods request is executed, Then return valid CustomerList")
-        void testGetPaymentMethods() throws IOException {
+        void testGetPaymentMethods() throws ApiException {
             // given
             String reference = UUID.randomUUID().toString();
 
@@ -276,7 +276,7 @@ public class CustomerApiTest {
 
         @Test
         @DisplayName("When Single request is executed, Then return valid CustomerData")
-        void testSingle() throws IOException {
+        void testSingle() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
@@ -297,7 +297,7 @@ public class CustomerApiTest {
 
         @Test
         @DisplayName("Create customer with provider token, Then return valid CustomerData")
-        void testCustomerWithProviderToken() throws IOException {
+        void testCustomerWithProviderToken() throws ApiException {
             // given
             NewCustomerProviderToken customerProviderToken = new NewCustomerProviderToken.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
