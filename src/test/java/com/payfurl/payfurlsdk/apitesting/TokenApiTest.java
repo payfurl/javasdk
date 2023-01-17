@@ -3,6 +3,7 @@ package com.payfurl.payfurlsdk.apitesting;
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.TokenApi;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.models.TokenData;
 import com.payfurl.payfurlsdk.models.TokenList;
 import com.payfurl.payfurlsdk.models.TokenSearch;
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -38,7 +37,7 @@ public class TokenApiTest {
         @Test
         @Disabled("Tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("Get token by ID")
-        void getTokenById() throws IOException {
+        void getTokenById() throws ApiException {
             // given
             String tokenId = "5dc5cfbaec7c4d057cb00482";
 
@@ -53,7 +52,7 @@ public class TokenApiTest {
         @Test
         @Disabled("Tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When Search request is executed, Then return valid TokenList")
-        void testSearch() throws IOException {
+        void testSearch() throws ApiException {
             // given
 
             // when

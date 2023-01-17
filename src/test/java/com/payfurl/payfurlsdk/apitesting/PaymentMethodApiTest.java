@@ -5,6 +5,7 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.PaymentMethodApi;
+import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
 import com.payfurl.payfurlsdk.models.Checkout;
 import com.payfurl.payfurlsdk.models.CustomerData;
@@ -20,7 +21,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -51,7 +51,7 @@ public class PaymentMethodApiTest {
     class SuccessFlow {
         @Test
         @DisplayName("When checkout request is executed, Then return valid Checkout")
-        void testCheckout() throws IOException {
+        void testCheckout() throws ApiException {
             // given
             NewCheckout newCheckout = new NewCheckout.Builder()
                     .withProviderId("1cf5deda-28cc-4214-adb5-1e597a37228c")
@@ -71,7 +71,7 @@ public class PaymentMethodApiTest {
 
         @Test
         @DisplayName("When createPaymentMethodWithCard request is executed, Then return valid PaymentMethodData")
-        void testCreatePaymentMethodWithCard() throws IOException {
+        void testCreatePaymentMethodWithCard() throws ApiException {
             // given
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
@@ -86,7 +86,7 @@ public class PaymentMethodApiTest {
 
         @Test
         @DisplayName("When single request is executed, Then return valid PaymentMethodData")
-        void testSingle() throws IOException {
+        void testSingle() throws ApiException {
             // given
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
@@ -102,7 +102,7 @@ public class PaymentMethodApiTest {
 
         @Test
         @DisplayName("When single request is executed, Then return valid PaymentMethodData")
-        void testDeletePaymentMethod() throws IOException {
+        void testDeletePaymentMethod() throws ApiException {
             // given
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
@@ -123,7 +123,7 @@ public class PaymentMethodApiTest {
 
         @Test
         @DisplayName("When createPaymentMethodWithVault request is executed, Then return valid PaymentMethodData")
-        void testCreatePaymentMethodWithVault() throws IOException {
+        void testCreatePaymentMethodWithVault() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
@@ -146,7 +146,7 @@ public class PaymentMethodApiTest {
 
         @Test
         @DisplayName("When Search request is executed, Then return valid PaymentMethodList")
-        void testSearch() throws IOException {
+        void testSearch() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
