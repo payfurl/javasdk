@@ -3,6 +3,7 @@ package com.payfurl.payfurlsdk.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.payfurl.payfurlsdk.Configuration;
 import com.payfurl.payfurlsdk.api.support.ApiException;
+import com.payfurl.payfurlsdk.api.support.ErrorCode;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
@@ -24,7 +25,7 @@ public class BaseApi {
     private static final String ENGINE_VERSION_KEY = "{engine-version}";
     private static final String OS_INFO_KEY = "{os-info}";
 
-    private static final int UNKNOWN_ERROR = 1;
+    private static final ErrorCode UNKNOWN_ERROR = ErrorCode.UnknownError;
     private static final String USER_AGENT = String.format("PayFURL-Java-SDK-v.%s %s/%s (%s)",
             SDK_VERSION_KEY, ENGINE_KEY, ENGINE_VERSION_KEY, OS_INFO_KEY);
     protected final Configuration config;

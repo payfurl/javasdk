@@ -5,6 +5,7 @@ import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.ChargeApi;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
+import com.payfurl.payfurlsdk.api.support.ErrorCode;
 import com.payfurl.payfurlsdk.models.Address;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
 import com.payfurl.payfurlsdk.models.ChargeData;
@@ -137,7 +138,7 @@ public class ChargeApiTest {
 
             // then
             then(exception).isNotNull();
-            then(exception.getCode()).isEqualTo(5);
+            then(exception.getCode()).isEqualTo(ErrorCode.InvalidCardNumber);
             then(exception.getMessage()).isEqualTo("Invalid Card Number");
             then(exception.getResource()).isEqualTo("/charge/card");
             then(exception.isRetryable()).isEqualTo(false);

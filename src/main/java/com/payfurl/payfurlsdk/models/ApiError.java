@@ -2,6 +2,7 @@ package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.payfurl.payfurlsdk.api.support.ErrorCode;
 
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class ApiError {
     private final String resource;
     private final String gatewayCode;
     private final String gatewayMessage;
-    private final Integer code;
+    private final ErrorCode code;
     private final Boolean isRetryable;
     private final String type;
 
@@ -22,7 +23,7 @@ public class ApiError {
                     @JsonProperty("resource") String resource,
                     @JsonProperty("gatewayCode") String gatewayCode,
                     @JsonProperty("gatewayMessage") String gatewayMessage,
-                    @JsonProperty("code") Integer code,
+                    @JsonProperty("code") ErrorCode code,
                     @JsonProperty("isRetryable") Boolean isRetryable,
                     @JsonProperty("type") String type) {
         this.message = message;
@@ -55,7 +56,7 @@ public class ApiError {
         return gatewayMessage;
     }
 
-    public Integer getCode() {
+    public ErrorCode getCode() {
         return code;
     }
 
@@ -87,7 +88,7 @@ public class ApiError {
         private String resource;
         private String gatewayCode;
         private String gatewayMessage;
-        private Integer code;
+        private ErrorCode code;
         private Boolean isRetryable;
         private String type;
 
@@ -116,7 +117,7 @@ public class ApiError {
             return this;
         }
 
-        public Builder withCode(Integer code) {
+        public Builder withCode(ErrorCode code) {
             this.code = code;
             return this;
         }
