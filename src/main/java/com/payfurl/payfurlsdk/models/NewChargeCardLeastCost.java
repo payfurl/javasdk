@@ -195,8 +195,9 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
-        public void withInitiator(Initiator initiator) {
+        public Builder withInitiator(Initiator initiator) {
             this.initiator = initiator;
+            return this;
         }
 
         public NewChargeCardLeastCost build() {

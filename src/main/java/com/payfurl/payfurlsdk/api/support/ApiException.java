@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.util.Map;
 
 public class ApiException extends RuntimeException {
-    private static final int UNKNOWN_ERROR = 1;
+    private static final ErrorCode UNKNOWN_ERROR = ErrorCode.UnknownError;
     private final String message;
     private final Map<String, String> details;
     private final String resource;
     private final String gatewayCode;
     private final String gatewayMessage;
-    private final Integer code;
+    private final ErrorCode code;
     private final Boolean isRetryable;
     private final String type;
 
@@ -59,7 +59,7 @@ public class ApiException extends RuntimeException {
         return gatewayMessage;
     }
 
-    public Integer getCode() {
+    public ErrorCode getCode() {
         return code;
     }
 

@@ -6,7 +6,7 @@
 
     <groupId>com.payfurl</groupId>
     <artifactId>payfurlsdk</artifactId>
-    <version>1.0.20230116</version>
+    <version>1.0.20230117.1</version>
     <packaging>jar</packaging>
 
     <name>PayFURL</name>
