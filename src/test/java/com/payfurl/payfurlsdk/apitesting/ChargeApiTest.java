@@ -20,6 +20,7 @@ import com.payfurl.payfurlsdk.models.NewCustomerCard;
 import com.payfurl.payfurlsdk.models.Order;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.ProductItem;
+import com.payfurl.payfurlsdk.models.TransactionStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ import java.util.List;
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class ChargeApiTest {
-    private static final String SUCCESS_MARKER = "SUCCESS";
+    private static final TransactionStatus SUCCESS_MARKER = TransactionStatus.SUCCESS;
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
             .withExpiryDate("12/35")

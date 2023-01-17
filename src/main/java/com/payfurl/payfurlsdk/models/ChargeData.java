@@ -15,7 +15,7 @@ public class ChargeData {
     public final String reference;
     public final PaymentData paymentInformation;
     public final String customerId;
-    public final String status;
+    public final TransactionStatus status;
     public final Date dateAdded;
     public final Date successDate;
     public final Date voidDate;
@@ -40,7 +40,7 @@ public class ChargeData {
                       @JsonProperty("Reference") String reference,
                       @JsonProperty("PaymentInformation") PaymentData paymentInformation,
                       @JsonProperty("CustomerId") String customerId,
-                      @JsonProperty("Status") String status,
+                      @JsonProperty("Status") TransactionStatus status,
                       @JsonProperty("DateAdded") Date dateAdded,
                       @JsonProperty("SuccessDate") Date successDate,
                       @JsonProperty("VoidDate") Date voidDate,
@@ -109,7 +109,7 @@ public class ChargeData {
         return customerId;
     }
 
-    public String getStatus() {
+    public TransactionStatus getStatus() {
         return status;
     }
 
