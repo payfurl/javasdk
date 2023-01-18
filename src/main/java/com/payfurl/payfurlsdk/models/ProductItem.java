@@ -10,7 +10,7 @@ public class ProductItem {
     private final String productCode;
     private final String commodityCode;
     private final String description;
-    private final BigDecimal quantity;
+    private final Integer quantity;
     private final String unitOfMeasure;
     private final BigDecimal amount;
 
@@ -18,7 +18,7 @@ public class ProductItem {
     public ProductItem(@JsonProperty("ProductCode") String productCode,
                        @JsonProperty("CommodityCode") String commodityCode,
                        @JsonProperty("Description") String description,
-                       @JsonProperty("Quantity") BigDecimal quantity,
+                       @JsonProperty("Quantity") Integer quantity,
                        @JsonProperty("UnitOfMeasure") String unitOfMeasure,
                        @JsonProperty("Amount") BigDecimal amount) {
 
@@ -26,7 +26,7 @@ public class ProductItem {
         this.productCode = productCode;
         this.commodityCode = commodityCode;
         this.description = description;
-        this.quantity = quantity == null ? BigDecimal.valueOf(0) : quantity;
+        this.quantity = quantity == null ? Integer.valueOf(0) : quantity;
         this.unitOfMeasure = unitOfMeasure;
         this.amount = amount == null ? BigDecimal.valueOf(0) : amount;
     }
@@ -43,7 +43,7 @@ public class ProductItem {
         return description;
     }
 
-    public BigDecimal getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -71,7 +71,7 @@ public class ProductItem {
         private String productCode;
         private String commodityCode;
         private String description;
-        private BigDecimal quantity;
+        private Integer quantity;
         private String unitOfMeasure;
         private BigDecimal amount;
 
@@ -90,7 +90,7 @@ public class ProductItem {
             return this;
         }
 
-        public Builder withQuantity(BigDecimal quantity) {
+        public Builder withQuantity(Integer quantity) {
             this.quantity = quantity;
             return this;
         }
