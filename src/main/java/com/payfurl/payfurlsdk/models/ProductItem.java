@@ -13,6 +13,7 @@ public class ProductItem {
     private final Integer quantity;
     private final String unitOfMeasure;
     private final BigDecimal amount;
+    private final BigDecimal taxAmount;
 
     @JsonCreator
     public ProductItem(@JsonProperty("ProductCode") String productCode,
@@ -20,7 +21,8 @@ public class ProductItem {
                        @JsonProperty("Description") String description,
                        @JsonProperty("Quantity") Integer quantity,
                        @JsonProperty("UnitOfMeasure") String unitOfMeasure,
-                       @JsonProperty("Amount") BigDecimal amount) {
+                       @JsonProperty("Amount") BigDecimal amount,
+                       @JsonProperty("TaxAmount") BigDecimal taxAmount) {
 
 
         this.productCode = productCode;
@@ -29,6 +31,7 @@ public class ProductItem {
         this.quantity = quantity == null ? Integer.valueOf(0) : quantity;
         this.unitOfMeasure = unitOfMeasure;
         this.amount = amount == null ? BigDecimal.valueOf(0) : amount;
+        this.taxAmount = taxAmount == null ? BigDecimal.valueOf(0) : taxAmount;
     }
 
     public String getProductCode() {
@@ -47,13 +50,12 @@ public class ProductItem {
         return quantity;
     }
 
-    public String getUnitOfMeasure() {
-        return unitOfMeasure;
-    }
+    public String getUnitOfMeasure() { return unitOfMeasure; }
 
     public BigDecimal getAmount() {
         return amount;
     }
+    public BigDecimal getTaxAmount() { return taxAmount; }
 
     @Override
     public String toString() {
@@ -64,6 +66,7 @@ public class ProductItem {
                 ", quantity='" + quantity + '\'' +
                 ", unitOfMeasure='" + unitOfMeasure + '\'' +
                 ", amount='" + amount + '\'' +
+                ", taxAmount='" + taxAmount + '\'' +
                 '}';
     }
 
@@ -74,6 +77,7 @@ public class ProductItem {
         private Integer quantity;
         private String unitOfMeasure;
         private BigDecimal amount;
+        private BigDecimal taxAmount;
 
         public Builder withProductCode(String productCode) {
             this.productCode = productCode;
@@ -105,8 +109,13 @@ public class ProductItem {
             return this;
         }
 
+        public Builder withTaxAmount(BigDecimal taxAmount) {
+            this.taxAmount = taxAmount;
+            return this;
+        }
+
         public ProductItem build() {
-            return new ProductItem(productCode, commodityCode, description, quantity, unitOfMeasure, amount);
+            return new ProductItem(productCode, commodityCode, description, quantity, unitOfMeasure, amount, taxAmount);
         }
     }
 }

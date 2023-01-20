@@ -13,7 +13,6 @@ public class NewChargeCustomer {
     private final Address address;
 
     private final Order order;
-    private final BigDecimal taxAmount;
     private final String customerCode;
     private final String invoiceNumber;
     private final String email;
@@ -28,7 +27,6 @@ public class NewChargeCustomer {
                              @JsonProperty("Reference") String reference,
                              @JsonProperty("Address") Address address,
                              @JsonProperty("Order") Order order,
-                             @JsonProperty("TaxAmount") BigDecimal taxAmount,
                              @JsonProperty("CustomerCode") String customerCode,
                              @JsonProperty("InvoiceNumber") String invoiceNumber,
                              @JsonProperty("Email") String email,
@@ -41,7 +39,6 @@ public class NewChargeCustomer {
         this.reference = reference;
         this.address = address;
         this.order = order;
-        this.taxAmount = taxAmount == null ? BigDecimal.valueOf(0) : taxAmount;
         this.customerCode = customerCode;
         this.invoiceNumber = invoiceNumber;
         this.email = email;
@@ -78,10 +75,6 @@ public class NewChargeCustomer {
         return capture;
     }
 
-    public BigDecimal getTaxAmount() {
-        return taxAmount;
-    }
-
     public String getCustomerCode() {
         return customerCode;
     }
@@ -111,7 +104,6 @@ public class NewChargeCustomer {
                 ", reference='" + reference + '\'' +
                 ", address=" + address +
                 ", order=" + order +
-                ", taxAmount=" + taxAmount +
                 ", customerCode=" + customerCode +
                 ", invoiceNumber=" + invoiceNumber +
                 ", email=" + email +
@@ -128,7 +120,6 @@ public class NewChargeCustomer {
         private String reference;
         private Address address;
         private Order order;
-        private BigDecimal taxAmount;
         private String customerCode;
         private String invoiceNumber;
         private String email;
@@ -158,11 +149,6 @@ public class NewChargeCustomer {
 
         public Builder withOrder(Order order) {
             this.order = order;
-            return this;
-        }
-
-        public Builder withTaxAmount(BigDecimal taxAmount) {
-            this.taxAmount = taxAmount;
             return this;
         }
 
@@ -202,7 +188,7 @@ public class NewChargeCustomer {
         }
 
         public NewChargeCustomer build() {
-            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, taxAmount, customerCode, invoiceNumber, email, phone, capture, initiator);
+            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, customerCode, invoiceNumber, email, phone, capture, initiator);
         }
     }
 }

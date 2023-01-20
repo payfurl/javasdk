@@ -155,7 +155,6 @@ public class ChargeApiTest {
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withOrder(SAMPLE_ORER)
                     .withAddress(SAMPLE_ADDRESS)
-                    .withTaxAmount(BigDecimal.valueOf(7.8))
                     .build();
 
             // when
