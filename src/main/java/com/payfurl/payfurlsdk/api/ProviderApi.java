@@ -7,6 +7,7 @@ import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
 import com.payfurl.payfurlsdk.models.Provider;
 import com.payfurl.payfurlsdk.models.NewProvider;
+import com.payfurl.payfurlsdk.models.UpdateProvider;
 
 import java.util.Map;
 
@@ -29,5 +30,16 @@ public class ProviderApi extends BaseApi {
      */
     public Provider create(NewProvider newProvider) throws ApiException {
         return executePostRequestWith(providerApiBaseEndpoint, newProvider, Provider.class);
+    }
+
+    /**
+     * Update provider
+     *
+     * @param updateProvider parameter for updating provider
+     * @return Provider provider details
+     * @throws ApiException
+     */
+    public Provider update(String providerId, UpdateProvider updateProvider) throws ApiException {
+        return executePutRequestWith(providerApiBaseEndpoint + "/" + providerId, updateProvider, Provider.class);
     }
 }
