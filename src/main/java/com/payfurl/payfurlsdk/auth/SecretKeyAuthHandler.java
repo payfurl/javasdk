@@ -16,7 +16,6 @@ public class SecretKeyAuthHandler implements AuthHandler {
     @Override
     public HttpRequest apply(HttpRequest httpRequest) {
         httpRequest.getHeaders().add("x-secretkey", secretKey);
-        httpRequest.getHeaders().add("Expect", "100-continue");
         return httpRequest;
     }
 }

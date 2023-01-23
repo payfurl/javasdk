@@ -40,7 +40,6 @@ class SecretKeyAuthHandlerTest {
         HttpRequest httpRequest = secretKeyAuthHandler.apply(prepareDummyHttpRequest(new Headers()));
 
         Headers headers = new Headers();
-        headers.add("Expect", "100-continue");
         headers.add("x-secretkey", DUMMY_ACCESS_KEY);
         HttpRequest expectedHttpRequest = prepareDummyHttpRequest(headers);
         then(httpRequest).usingRecursiveComparison()
