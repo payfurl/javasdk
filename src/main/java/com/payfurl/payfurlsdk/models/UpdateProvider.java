@@ -42,7 +42,7 @@ public class UpdateProvider {
 
     @Override
     public String toString() {
-        return "NewProvider{" +
+        return "UpdateProvider{" +
                 "name='" + name + '\'' +
                 ", authenticationParameters='" + authenticationParameters + '\'' +
                 ", providerCountry=" + providerCountry +
