@@ -141,7 +141,7 @@ public class ChargeApi extends BaseApi {
      * @throws ApiException
      */
     public ChargeData captureCharge(String chargeId, NewChargeCapture newChargeCapture) throws ApiException {
-        return executePostRequestWith(chargeApiBaseEndpoint + "/" + chargeId, newChargeCapture, ChargeData.class);
+        return executePostRequestWith(chargeApiBaseEndpoint + "/" + chargeId + "/capture", newChargeCapture, ChargeData.class);
     }
 
     /**
@@ -152,6 +152,6 @@ public class ChargeApi extends BaseApi {
      * @throws ApiException
      */
     public ChargeData voidCharge(String chargeId) throws ApiException {
-        return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + chargeId, null, ChargeData.class);
+        return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + chargeId + "/void", null, ChargeData.class);
     }
 }
