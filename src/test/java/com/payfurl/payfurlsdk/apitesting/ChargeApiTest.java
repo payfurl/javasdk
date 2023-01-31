@@ -144,6 +144,7 @@ public class ChargeApiTest {
             then(exception.getResource()).isEqualTo("/charge/card");
             then(exception.isRetryable()).isEqualTo(false);
             then(exception.getType()).isEqualTo("https://docs.payfurl.com/errorcodes.html#5");
+            then(exception.getHttpCode()).isEqualTo(400);
         }
 
         @Test

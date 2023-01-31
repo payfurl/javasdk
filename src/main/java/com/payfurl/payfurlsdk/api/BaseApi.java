@@ -53,12 +53,15 @@ public class BaseApi {
             ApiError error;
             try {
                 error = ApiUtils.deserialize(responseBody, ApiError.class);
+                error.setHttpCode(responseCode);
             } catch (JsonProcessingException e) {
                 throw new ApiException(new ApiError.Builder()
                         .withMessage(responseBody)
                         .withIsRetryable(false)
                         .withCode(UNKNOWN_ERROR)
-                        .withType("https://docs.payfurl.com/errorcodes.html#1").build());
+                        .withType("https://docs.payfurl.com/errorcodes.html#1")
+                        .withHttpCode(responseCode)
+                        .build());
             }
             throw new ApiException(error);
         }

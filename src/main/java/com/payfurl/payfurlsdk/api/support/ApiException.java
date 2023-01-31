@@ -15,6 +15,8 @@ public class ApiException extends RuntimeException {
     private final ErrorCode code;
     private final Boolean isRetryable;
     private final String type;
+    private final int httpCode;
+
 
     public ApiException(ApiError apiError) {
         this.message = apiError.getMessage();
@@ -25,6 +27,7 @@ public class ApiException extends RuntimeException {
         this.code = apiError.getCode();
         this.isRetryable = apiError.isRetryable();
         this.type = apiError.getType();
+        this.httpCode = apiError.getHttpCode();
     }
 
     public ApiException(IOException ioException) {
@@ -36,6 +39,7 @@ public class ApiException extends RuntimeException {
         this.code = UNKNOWN_ERROR;
         this.isRetryable = false;
         this.type = String.format("https://docs.payfurl.com/errorcodes.html#%d", UNKNOWN_ERROR);
+        this.httpCode = 500;
     }
 
     @Override
@@ -69,5 +73,8 @@ public class ApiException extends RuntimeException {
 
     public String getType() {
         return type;
+    }
+    public int getHttpCode() {
+        return httpCode;
     }
 }

@@ -16,6 +16,7 @@ public class ApiError {
     private final ErrorCode code;
     private final Boolean isRetryable;
     private final String type;
+    private int httpCode;
 
     @JsonCreator
     public ApiError(@JsonProperty("message") String message,
@@ -25,7 +26,8 @@ public class ApiError {
                     @JsonProperty("gatewayMessage") String gatewayMessage,
                     @JsonProperty("code") ErrorCode code,
                     @JsonProperty("isRetryable") Boolean isRetryable,
-                    @JsonProperty("type") String type) {
+                    @JsonProperty("type") String type,
+                    @JsonProperty("httpCode") int httpCode) {
         this.message = message;
         this.details = details;
         this.resource = resource;
@@ -34,6 +36,7 @@ public class ApiError {
         this.code = code;
         this.isRetryable = isRetryable;
         this.type = type;
+        this.httpCode = httpCode;
     }
 
     public String getMessage() {
@@ -68,6 +71,14 @@ public class ApiError {
         return type;
     }
 
+    public int getHttpCode() {
+        return httpCode;
+    }
+
+    public void setHttpCode(int httpCode) {
+        this.httpCode = httpCode;
+    }
+
     @Override
     public String toString() {
         return "ApiError{" +
@@ -79,6 +90,7 @@ public class ApiError {
                 ", code='" + code + '\'' +
                 ", isRetryable='" + isRetryable + '\'' +
                 ", type='" + type + '\'' +
+                ", httpCode='" + httpCode + '\'' +
                 '}';
     }
 
@@ -91,6 +103,7 @@ public class ApiError {
         private ErrorCode code;
         private Boolean isRetryable;
         private String type;
+        private int httpCode;
 
         public Builder withMessage(String message) {
             this.message = message;
@@ -132,8 +145,13 @@ public class ApiError {
             return this;
         }
 
+        public Builder withHttpCode(int httpCode) {
+            this.httpCode = httpCode;
+            return this;
+        }
+
         public ApiError build() {
-            return new ApiError(message, details, resource, gatewayCode, gatewayMessage, code, isRetryable, type);
+            return new ApiError(message, details, resource, gatewayCode, gatewayMessage, code, isRetryable, type, httpCode);
         }
     }
 }
