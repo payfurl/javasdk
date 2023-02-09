@@ -19,6 +19,7 @@ public class NewChargeToken {
     private final String phone;
     private final boolean capture;
     private final Initiator initiator;
+    private final WebhookConfig webhookConfig;
 
     @JsonCreator
     public NewChargeToken(@JsonProperty("Amount") BigDecimal amount,
@@ -33,7 +34,8 @@ public class NewChargeToken {
                           @JsonProperty("Email") String email,
                           @JsonProperty("Phone") String phone,
                           @JsonProperty("Capture") boolean capture,
-                          @JsonProperty("Initiator") Initiator initiator) {
+                          @JsonProperty("Initiator") Initiator initiator,
+                          @JsonProperty("WebhookConfig") WebhookConfig webhookConfig) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -47,6 +49,7 @@ public class NewChargeToken {
         this.phone = phone;
         this.capture = capture;
         this.initiator = initiator;
+        this.webhookConfig = webhookConfig;
     }
 
     public BigDecimal getAmount() {
@@ -101,6 +104,10 @@ public class NewChargeToken {
         return initiator;
     }
 
+    public WebhookConfig getWebhookConfig() {
+        return webhookConfig;
+    }
+
     @Override
     public String toString() {
         return "NewChargeToken{" +
@@ -117,6 +124,7 @@ public class NewChargeToken {
                 ", phone=" + phone +
                 ", capture=" + capture +
                 ", initiator=" + initiator +
+                ", webhookConfig=" + webhookConfig +
                 '}';
     }
 
@@ -134,6 +142,7 @@ public class NewChargeToken {
         private String phone;
         private boolean capture = true;
         private Initiator initiator;
+        private WebhookConfig webhookConfig;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -200,8 +209,13 @@ public class NewChargeToken {
             return this;
         }
 
+        public Builder withWebhookConfig(WebhookConfig webhookConfig) {
+            this.webhookConfig = webhookConfig;
+            return this;
+        }
+
         public NewChargeToken build() {
-            return new NewChargeToken(amount, currency, reference, token, checkoutTransfer, address, order, customerCode, invoiceNumber, email, phone, capture, initiator);
+            return new NewChargeToken(amount, currency, reference, token, checkoutTransfer, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig);
         }
     }
 }
