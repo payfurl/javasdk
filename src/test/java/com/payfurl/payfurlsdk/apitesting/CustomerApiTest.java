@@ -50,7 +50,7 @@ public class CustomerApiTest {
             .withCity("Melbourne  Updated")
             .withSate("Victoria Updated")
             .withPostalCode("50061")
-            .withCountry("Australia  Updated")
+            .withCountry("IN")
             .build();
 
     private CustomerApi customerApi;
@@ -118,6 +118,7 @@ public class CustomerApiTest {
             then(updatedCustomer.getCustomerId()).isEqualTo(customerData.getCustomerId());
             then(updatedCustomer.getPhone()).isEqualTo("+61311111112");
             then(updatedCustomer.getEmail()).isEqualTo("updated" + reference + "@payfurl.com");
+            then(updatedCustomer.getAddress().getCountry()).isEqualTo("India");
         }
 
         @Test

@@ -100,7 +100,7 @@ public class ChargeApiTest {
         void testCreateWithCardMethod() throws ApiException {
             // given
             NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
-                    .withAmount(BigDecimal.valueOf(20))
+                    .withAmount(BigDecimal.valueOf(258))
                     .withCurrency("USD")
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
@@ -121,7 +121,7 @@ public class ChargeApiTest {
         void testCreateWithCardMethodThrowApiException() throws ApiException {
             // given
             NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
-                    .withAmount(BigDecimal.valueOf(20))
+                    .withAmount(BigDecimal.valueOf(258))
                     .withCurrency("USD")
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_FAILED_PAYMENT_INFORMATION)
@@ -152,7 +152,7 @@ public class ChargeApiTest {
         void testCreateWithCardLeastCost() throws ApiException {
             // given
             NewChargeCardLeastCost newChargeCardLeastCost = new NewChargeCardLeastCost.Builder()
-                    .withAmount(BigDecimal.valueOf(20))
+                    .withAmount(BigDecimal.valueOf(258))
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withOrder(SAMPLE_ORER)
                     .withAddress(SAMPLE_ADDRESS)

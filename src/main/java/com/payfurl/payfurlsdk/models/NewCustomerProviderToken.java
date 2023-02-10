@@ -104,7 +104,7 @@ public class NewCustomerProviderToken {
         private String providerId;
         private String providerToken;
         private Map<String, String> providerTokenData;
-        private Boolean verify;
+        private Boolean verify = false;
 
         public Builder withReference(String reference) {
             this.reference = reference;

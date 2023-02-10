@@ -113,7 +113,7 @@ public class NewCustomerCard {
         private String providerId;
         private CardRequestInformation paymentInformation;
         private Address address;
-        private boolean vaultCard;
+        private boolean vaultCard = false;
         private Date vaultExpireDate;
         private Integer vaultExpireSeconds;
 
