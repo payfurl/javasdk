@@ -122,7 +122,7 @@ public class ChargeApiTest {
         void testCreateWithCardMethodWithWebhook() throws ApiException {
             // given
             NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
-                    .withAmount(BigDecimal.valueOf(20))
+                    .withAmount(BigDecimal.valueOf(258))
                     .withCurrency("USD")
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
