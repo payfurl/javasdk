@@ -8,6 +8,7 @@ Library for integrating with PayFURL payments in your app. It includes the follo
 4. Transfer API
 5. Vault API
 6. Token API
+7. Provider API
 
 ## 📄 Requirements
 
@@ -77,6 +78,14 @@ class Example {
                 .withAmount(BigDecimal.valueOf(20))
                 // Collected from payment form using Client SDK
                 .withToken("5db53c06443c8f28c0cba6e5")
+                
+                // Optional webhook
+                .withWebhookConfig(new WebhookConfig.Builder()
+                        .withUrl("https://webhook.site/1da8cac9-fef5-47bf-a276-81856f73d7ca")
+                        
+                        // Optional authorization
+                        .withAuthorization("Basic user:password")
+                        .build())
                 .build();
         
         // Charge a token

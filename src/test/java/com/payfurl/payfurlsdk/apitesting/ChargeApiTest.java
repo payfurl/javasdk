@@ -21,6 +21,7 @@ import com.payfurl.payfurlsdk.models.Order;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.ProductItem;
 import com.payfurl.payfurlsdk.models.TransactionStatus;
+import com.payfurl.payfurlsdk.models.WebhookConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -58,7 +59,7 @@ public class ChargeApiTest {
     private static final List<ProductItem> Items = Arrays.asList(new ProductItem.Builder()
                     .withAmount(BigDecimal.valueOf(123))
                     .withDescription("First item")
-                    .withQuantity(Integer.valueOf(1))
+                    .withQuantity(1)
                     .withCommodityCode("asdf")
                     .withProductCode("PC1234")
                     .withUnitOfMeasure("kg")
@@ -66,7 +67,7 @@ public class ChargeApiTest {
             new ProductItem.Builder()
                     .withAmount(BigDecimal.valueOf(33))
                     .withDescription("Second item")
-                    .withQuantity(Integer.valueOf(4))
+                    .withQuantity(4)
                     .withCommodityCode("uuuu")
                     .withProductCode("PC15678")
                     .withUnitOfMeasure("kg")
@@ -106,6 +107,31 @@ public class ChargeApiTest {
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withOrder(SAMPLE_ORER)
+                    .build();
+
+            // when
+            ChargeData chargeData = chargeApi.createWithCard(newChargeCardRequest);
+
+            // then
+            then(chargeData).isNotNull();
+            then(chargeData.status).isEqualTo(SUCCESS_MARKER);
+        }
+
+        @Test
+        @DisplayName("When createWithCard and with webhook request is executed, Then return valid charge data")
+        void testCreateWithCardMethodWithWebhook() throws ApiException {
+            // given
+            NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
+                    .withAmount(BigDecimal.valueOf(20))
+                    .withCurrency("USD")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withOrder(SAMPLE_ORER)
+                    .withWebhookConfig(new WebhookConfig.Builder()
+                            .withUrl("https://webhook.site/1da8cac9-fef5-47bf-a276-81856f73d7ca")
+                            .withAuthorization("Basic user:password")
+                            .build())
                     .build();
 
             // when

@@ -18,6 +18,7 @@ public class NewChargePaymentMethod {
     private final String phone;
     private final boolean capture;
     private final Initiator initiator;
+    private final WebhookConfig webhookConfig;
 
     @JsonCreator
     public NewChargePaymentMethod(@JsonProperty("Amount") BigDecimal amount,
@@ -31,7 +32,8 @@ public class NewChargePaymentMethod {
                                   @JsonProperty("Email") String email,
                                   @JsonProperty("Phone") String phone,
                                   @JsonProperty("Capture") boolean capture,
-                                  @JsonProperty("Initiator") Initiator initiator) {
+                                  @JsonProperty("Initiator") Initiator initiator,
+                                  @JsonProperty("WebhookConfig") WebhookConfig webhookConfig) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -44,6 +46,7 @@ public class NewChargePaymentMethod {
         this.phone = phone;
         this.capture = capture;
         this.initiator = initiator;
+        this.webhookConfig = webhookConfig;
     }
 
     public BigDecimal getAmount() {
@@ -94,6 +97,10 @@ public class NewChargePaymentMethod {
         return initiator;
     }
 
+    public WebhookConfig getWebhookConfig() {
+        return webhookConfig;
+    }
+
     @Override
     public String toString() {
         return "NewChargePaymentMethod{" +
@@ -109,6 +116,7 @@ public class NewChargePaymentMethod {
                 ", phone=" + phone +
                 ", capture=" + capture +
                 ", initiator=" + initiator +
+                ", webhookConfig=" + webhookConfig +
                 '}';
     }
 
@@ -126,6 +134,7 @@ public class NewChargePaymentMethod {
         private String phone;
         private boolean capture = true;
         private Initiator initiator;
+        private WebhookConfig webhookConfig;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -187,8 +196,13 @@ public class NewChargePaymentMethod {
             return this;
         }
 
+        public Builder withWebhookConfig(WebhookConfig webhookConfig) {
+            this.webhookConfig = webhookConfig;
+            return this;
+        }
+
         public NewChargePaymentMethod build() {
-            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, order, customerCode, invoiceNumber, email, phone, capture, initiator);
+            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig);
         }
     }
 }

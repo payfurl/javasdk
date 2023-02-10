@@ -11,7 +11,6 @@ public class NewChargeCustomer {
     private final String customerId;
     private final String reference;
     private final Address address;
-
     private final Order order;
     private final String customerCode;
     private final String invoiceNumber;
@@ -19,6 +18,7 @@ public class NewChargeCustomer {
     private final String phone;
     private final boolean capture;
     private final Initiator initiator;
+    private final WebhookConfig webhookConfig;
 
     @JsonCreator
     public NewChargeCustomer(@JsonProperty("Amount") BigDecimal amount,
@@ -32,7 +32,8 @@ public class NewChargeCustomer {
                              @JsonProperty("Email") String email,
                              @JsonProperty("Phone") String phone,
                              @JsonProperty("Capture") boolean capture,
-                             @JsonProperty("Initiator") Initiator initiator) {
+                             @JsonProperty("Initiator") Initiator initiator,
+                             @JsonProperty("WebhookConfig") WebhookConfig webhookConfig) {
         this.amount = amount;
         this.currency = currency;
         this.customerId = customerId;
@@ -45,6 +46,7 @@ public class NewChargeCustomer {
         this.phone = phone;
         this.capture = capture;
         this.initiator = initiator;
+        this.webhookConfig = webhookConfig;
     }
 
     public BigDecimal getAmount() {
@@ -95,6 +97,10 @@ public class NewChargeCustomer {
         return initiator;
     }
 
+    public WebhookConfig getWebhookConfig() {
+        return webhookConfig;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCustomer{" +
@@ -110,6 +116,7 @@ public class NewChargeCustomer {
                 ", phone=" + phone +
                 ", capture=" + capture +
                 ", initiator=" + initiator +
+                ", webhookConfig=" + webhookConfig +
                 '}';
     }
 
@@ -126,6 +133,7 @@ public class NewChargeCustomer {
         private String phone;
         private boolean capture = true;
         private Initiator initiator;
+        private WebhookConfig webhookConfig;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -187,8 +195,13 @@ public class NewChargeCustomer {
             return this;
         }
 
+        public Builder withWebhookConfig(WebhookConfig webhookConfig) {
+            this.webhookConfig = webhookConfig;
+            return this;
+        }
+
         public NewChargeCustomer build() {
-            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, customerCode, invoiceNumber, email, phone, capture, initiator);
+            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig);
         }
     }
 }

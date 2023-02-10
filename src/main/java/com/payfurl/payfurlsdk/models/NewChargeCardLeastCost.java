@@ -18,6 +18,7 @@ public class NewChargeCardLeastCost {
     private final String phone;
     private final boolean capture;
     private final Initiator initiator;
+    private final WebhookConfig webhookConfig;
 
     @JsonCreator
     public NewChargeCardLeastCost(@JsonProperty("Amount") BigDecimal amount,
@@ -31,7 +32,8 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("Email") String email,
                                   @JsonProperty("Phone") String phone,
                                   @JsonProperty("Capture") boolean capture,
-                                  @JsonProperty("Initiator") Initiator initiator) {
+                                  @JsonProperty("Initiator") Initiator initiator,
+                                  @JsonProperty("WebhookConfig") WebhookConfig webhookConfig) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -44,6 +46,7 @@ public class NewChargeCardLeastCost {
         this.phone = phone;
         this.capture = capture;
         this.initiator = initiator;
+        this.webhookConfig = webhookConfig;
     }
 
     public BigDecimal getAmount() {
@@ -94,6 +97,10 @@ public class NewChargeCardLeastCost {
         return initiator;
     }
 
+    public WebhookConfig getWebhookConfig() {
+        return webhookConfig;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCardLeastCost{" +
@@ -109,6 +116,7 @@ public class NewChargeCardLeastCost {
                 ", phone=" + phone +
                 ", capture=" + capture +
                 ", initiator=" + initiator +
+                ", webhookConfig=" + webhookConfig +
                 '}';
     }
 
@@ -125,6 +133,7 @@ public class NewChargeCardLeastCost {
         private String phone;
         private boolean capture = true;
         private Initiator initiator;
+        private WebhookConfig webhookConfig;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -186,8 +195,13 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
+        public Builder withWebhookConfig(WebhookConfig webhookConfig) {
+            this.webhookConfig = webhookConfig;
+            return this;
+        }
+
         public NewChargeCardLeastCost build() {
-            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator);
+            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig);
         }
     }
 }
