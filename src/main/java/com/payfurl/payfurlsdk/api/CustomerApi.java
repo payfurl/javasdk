@@ -5,16 +5,7 @@ import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
-import com.payfurl.payfurlsdk.models.CustomerData;
-import com.payfurl.payfurlsdk.models.CustomerList;
-import com.payfurl.payfurlsdk.models.CustomerSearch;
-import com.payfurl.payfurlsdk.models.NewCustomerCard;
-import com.payfurl.payfurlsdk.models.NewCustomerProviderToken;
-import com.payfurl.payfurlsdk.models.NewCustomerToken;
-import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
-import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
-import com.payfurl.payfurlsdk.models.PaymentMethodData;
-import com.payfurl.payfurlsdk.models.UpdateCustomer;
+import com.payfurl.payfurlsdk.models.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -77,6 +68,19 @@ public class CustomerApi extends BaseApi {
     public PaymentMethodData createWitPaymentMethodWithToken(String customerId, NewPaymentMethodToken newPaymentMethodToken) throws ApiException {
         String urlPath = String.format("%s/%s/payment_method/token", customerApiBaseEndpoint, customerId);
         return executePostRequestWith(urlPath, newPaymentMethodToken, PaymentMethodData.class);
+    }
+
+    /**
+     * Add a payment method using a payTo
+     *
+     * @param customerId
+     * @param newPayToAgreement
+     * @return
+     * @throws ApiException
+     */
+    public PaymentMethodData createWitPaymentMethodWithPayTo(String customerId, NewPayToAgreement newPayToAgreement) throws ApiException {
+        String urlPath = String.format("%s/%s/payment_method/payto", customerApiBaseEndpoint, customerId);
+        return executePostRequestWith(urlPath, newPayToAgreement, PaymentMethodData.class);
     }
 
     /**

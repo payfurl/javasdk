@@ -11,18 +11,21 @@ public class NewPaymentMethodCard {
     private final boolean vaultCard;
     private final Date vaultExpireDate;
     private final Integer vaultExpireSeconds;
+    private final boolean setDefault;
 
     @JsonCreator
     public NewPaymentMethodCard(@JsonProperty("ProviderId") String providerId,
                                 @JsonProperty("PaymentInformation") CardRequestInformation paymentInformation,
                                 @JsonProperty("VaultCard") boolean vaultCard,
                                 @JsonProperty("VaultExpireDate") Date vaultExpireDate,
-                                @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds) {
+                                @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds,
+                                @JsonProperty("SetDefault") boolean setDefault) {
         this.providerId = providerId;
         this.paymentInformation = paymentInformation;
         this.vaultCard = vaultCard;
         this.vaultExpireDate = vaultExpireDate;
         this.vaultExpireSeconds = vaultExpireSeconds;
+        this.setDefault = setDefault;
     }
 
     public String getProviderId() {
@@ -45,12 +48,15 @@ public class NewPaymentMethodCard {
         return vaultExpireSeconds;
     }
 
+    public boolean getSetDefault() { return setDefault; }
+
     public static class Builder {
         private String providerId;
         private CardRequestInformation paymentInformation;
         private boolean vaultCard = false;
         private Date vaultExpireDate;
         private Integer vaultExpireSeconds;
+        private boolean setDefault = false;
 
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
@@ -77,8 +83,13 @@ public class NewPaymentMethodCard {
             return this;
         }
 
+        public Builder withSetDefault(boolean setDefault) {
+            this.setDefault = setDefault;
+            return this;
+        }
+
         public NewPaymentMethodCard build() {
-            return new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds);
+            return new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds, setDefault);
         }
     }
 }

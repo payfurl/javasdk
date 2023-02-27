@@ -7,14 +7,17 @@ public class UpdateCustomer {
     private final String email;
     private final String phone;
     private final Address address;
+    private final String defaultPaymentMethodId;
 
     @JsonCreator
     public UpdateCustomer(@JsonProperty("Email") String email,
                           @JsonProperty("Phone") String phone,
-                          @JsonProperty("Address") Address address) {
+                          @JsonProperty("Address") Address address,
+                          @JsonProperty("DefaultPaymentMethodId") String defaultPaymentMethodId) {
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.defaultPaymentMethodId = defaultPaymentMethodId;
     }
 
     public String getEmail() {
@@ -28,11 +31,15 @@ public class UpdateCustomer {
     public Address getAddress() {
         return address;
     }
+    public String getDefaultPaymentMethodId() {
+        return defaultPaymentMethodId;
+    }
 
     public static class Builder {
         private String email;
         private String phone;
         private Address address;
+        private String defaultPaymentMethodId;
 
         public Builder withEmail(String email) {
             this.email = email;
@@ -49,8 +56,13 @@ public class UpdateCustomer {
             return this;
         }
 
+        public Builder withDefaultPaymentMethodId(String defaultPaymentMethodId) {
+            this.defaultPaymentMethodId = defaultPaymentMethodId;
+            return this;
+        }
+
         public UpdateCustomer build() {
-            return new UpdateCustomer(email, phone, address);
+            return new UpdateCustomer(email, phone, address, defaultPaymentMethodId);
         }
     }
 }
