@@ -31,6 +31,7 @@ public class UpdateCustomer {
     public Address getAddress() {
         return address;
     }
+
     public String getDefaultPaymentMethodId() {
         return defaultPaymentMethodId;
     }

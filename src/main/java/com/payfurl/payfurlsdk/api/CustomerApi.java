@@ -11,12 +11,11 @@ import com.payfurl.payfurlsdk.models.CustomerSearch;
 import com.payfurl.payfurlsdk.models.NewCustomerCard;
 import com.payfurl.payfurlsdk.models.NewCustomerProviderToken;
 import com.payfurl.payfurlsdk.models.NewCustomerToken;
+import com.payfurl.payfurlsdk.models.NewPayToAgreement;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
-import com.payfurl.payfurlsdk.models.NewPayToAgreement;
-
 
 import java.util.Arrays;
 import java.util.HashMap;

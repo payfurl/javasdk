@@ -17,6 +17,7 @@ public class PayIdDetails {
     public String getPayId() {
         return payId;
     }
+
     public String getPayIdType() {
         return payIdType;
     }

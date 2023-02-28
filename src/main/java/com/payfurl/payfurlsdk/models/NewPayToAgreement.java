@@ -53,7 +53,9 @@ public class NewPayToAgreement {
         return ip;
     }
 
-    public boolean getSetDefault() { return setDefault; }
+    public boolean getSetDefault() {
+        return setDefault;
+    }
 
     public static class Builder {
         private String providerId;
