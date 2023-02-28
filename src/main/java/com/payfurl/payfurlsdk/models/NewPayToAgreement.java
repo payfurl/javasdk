@@ -3,8 +3,6 @@ package com.payfurl.payfurlsdk.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
-
 public class NewPayToAgreement {
     private final String providerId;
     private final String payerName;

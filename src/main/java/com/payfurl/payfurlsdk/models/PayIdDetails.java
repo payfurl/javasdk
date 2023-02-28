@@ -3,8 +3,6 @@ package com.payfurl.payfurlsdk.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
-
 public class PayIdDetails {
     private final String payId;
     private final String payIdType;
@@ -23,11 +21,9 @@ public class PayIdDetails {
         return payIdType;
     }
 
-
     public static class Builder {
         private String payId;
         private String payIdType;
-
 
         public Builder withPayId(String payId) {
             this.payId = payId;
@@ -38,7 +34,6 @@ public class PayIdDetails {
             this.payIdType = payIdType;
             return this;
         }
-
 
         public PayIdDetails build() {
             return new PayIdDetails(payId, payIdType);
