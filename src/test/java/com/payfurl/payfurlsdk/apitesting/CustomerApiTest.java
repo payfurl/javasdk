@@ -12,8 +12,10 @@ import com.payfurl.payfurlsdk.models.CustomerSearch;
 import com.payfurl.payfurlsdk.models.NewCustomerCard;
 import com.payfurl.payfurlsdk.models.NewCustomerProviderToken;
 import com.payfurl.payfurlsdk.models.NewCustomerToken;
+import com.payfurl.payfurlsdk.models.NewPayToAgreement;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
+import com.payfurl.payfurlsdk.models.PayIdDetails;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
 import org.junit.jupiter.api.BeforeEach;
@@ -122,6 +124,58 @@ public class CustomerApiTest {
         }
 
         @Test
+        @DisplayName("When createWithCard request is executed then execute UpdateCustomer, Then return valid CustomerData, Then verify DefaultPaymentMethodId")
+        void testCreateWithCardAndUpdate_SetDefault() throws ApiException {
+            String reference = UUID.randomUUID().toString();
+            // given
+            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+                    .withFirstName("test")
+                    .withLastName("test")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withEmail("test" + reference + "@payfurl.com")
+                    .withPhone("+61311111111")
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithCard(newCustomerCard);
+
+            // Create payment method for the customer, but do not apply as Default
+            NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .build();
+
+            PaymentMethodData paymentMethodData = customerApi.createPaymentMethodWithCard(customerData.getCustomerId(), newPaymentMethodCard);
+
+            // then
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
+            // Current Customer.DefaultPaymentMethodId is not the same as new payment method id
+            customerData = customerApi.single(customerData.getCustomerId());
+            then(customerData.getDefaultPaymentMethod().getPaymentMethodId()).isNotEqualTo(paymentMethodData.getPaymentMethodId());
+
+            UpdateCustomer updateCustomer = new UpdateCustomer.Builder()
+                    .withAddress(SAMPLE_ADDRESS_UPDATED)
+                    .withPhone("+61311111112")
+                    .withEmail("updated" + reference + "@payfurl.com")
+                    .withDefaultPaymentMethodId(paymentMethodData.getPaymentMethodId())
+                    .build();
+
+            CustomerData updatedCustomer = customerApi.updateCustomer(customerData.getCustomerId(), updateCustomer);
+
+            // then
+            then(customerData.getCustomerId()).isNotNull();
+            then(updatedCustomer.getCustomerId()).isNotNull();
+            then(updatedCustomer.getCustomerId()).isEqualTo(customerData.getCustomerId());
+            then(updatedCustomer.getPhone()).isEqualTo("+61311111112");
+            then(updatedCustomer.getEmail()).isEqualTo("updated" + reference + "@payfurl.com");
+            then(updatedCustomer.getAddress().getCountry()).isEqualTo("India");
+            // Verify if new payment method is default now for the customer
+            then(updatedCustomer.getDefaultPaymentMethod().getPaymentMethodId()).isEqualTo(paymentMethodData.getPaymentMethodId());
+        }
+
+        @Test
         @DisplayName("Delete Customer")
         void testDeleteCustomer() throws ApiException {
             String reference = UUID.randomUUID().toString();
@@ -178,7 +232,7 @@ public class CustomerApiTest {
         }
 
         @Test
-        @DisplayName("When createPaymentMethodWithCard request is executed, Then return valid CustomerList")
+        @DisplayName("When createPaymentMethodWithCard request is executed, Then return valid paymentMethodData")
         void testCreatePaymentMethodWithCard() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
@@ -203,6 +257,36 @@ public class CustomerApiTest {
         }
 
         @Test
+        @DisplayName("When createPaymentMethodWithCard request is executed, Then return valid paymentMethodData")
+        void testCreatePaymentMethodWithCard_SetDefault() throws ApiException {
+            // given
+            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+                    .withFirstName("test")
+                    .withLastName("test")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithCard(newCustomerCard);
+
+            NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withSetDefault(true)
+                    .build();
+
+            PaymentMethodData paymentMethodData = customerApi.createPaymentMethodWithCard(customerData.getCustomerId(), newPaymentMethodCard);
+
+            // then
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
+
+            // Get updated customer and verify default payment method id
+            customerData = customerApi.single(customerData.getCustomerId());
+            then(customerData.getDefaultPaymentMethod().getPaymentMethodId()).isEqualTo(paymentMethodData.getPaymentMethodId());
+        }
+
+        @Test
         @Disabled("tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When createPaymentMethodWithToken request is executed, Then return valid paymentMethodData")
         void testCreatePaymentMethodWithToken() throws ApiException {
@@ -218,13 +302,110 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithCard(newCustomerCard);
 
             NewPaymentMethodToken newPaymentMethodCard = new NewPaymentMethodToken.Builder()
-                    .withToken("4f0fb10355224034a1df949852de34e1")
+                    .withToken("be7d0a5471934068af79e5553ed6acf2")
                     .build();
 
             PaymentMethodData paymentMethodData = customerApi.createWitPaymentMethodWithToken(customerData.getCustomerId(), newPaymentMethodCard);
 
             // then
             then(paymentMethodData.getPaymentMethodId()).isNotNull();
+        }
+
+        @Test
+        @Disabled("tokens expire, so this test needs to be adjusted each time it's run")
+        @DisplayName("When createPaymentMethodWithToken request is executed, Then return valid paymentMethodData")
+        void testCreatePaymentMethodWithToken_SetDefault() throws ApiException {
+            // given
+            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+                    .withFirstName("test")
+                    .withLastName("test")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithCard(newCustomerCard);
+
+            NewPaymentMethodToken newPaymentMethodCard = new NewPaymentMethodToken.Builder()
+                    .withToken("51976f6472d44b7384ef9c9eabc8638f")
+                    .withSetDefault(true)
+                    .build();
+
+            PaymentMethodData paymentMethodData = customerApi.createWitPaymentMethodWithToken(customerData.getCustomerId(), newPaymentMethodCard);
+
+            // then
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
+
+            // Get updated customer and verify default payment method id
+            customerData = customerApi.single(customerData.getCustomerId());
+            then(customerData.getDefaultPaymentMethod().getPaymentMethodId()).isEqualTo(paymentMethodData.getPaymentMethodId());
+        }
+
+        @Test
+        @DisplayName("When createWitPaymentMethodWithPayTo request is executed, Then return valid paymentMethodData")
+        void testCreatePaymentMethodWithPayTo() throws ApiException {
+            // given
+            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+                    .withFirstName("test")
+                    .withLastName("test")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithCard(newCustomerCard);
+
+            NewPayToAgreement newPayToAgreement = new NewPayToAgreement.Builder()
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPayerName("This is a name")
+                    .withDescription("This is a description")
+                    .withMaximumAmount(500)
+                    .withPayerPayIdDetails(new PayIdDetails.Builder()
+                            .withPayId("david_jones@email.com")
+                            .withPayIdType("EMAIL")
+                            .build())
+                    .build();
+
+            PaymentMethodData paymentMethodData = customerApi.createWitPaymentMethodWithPayTo(customerData.getCustomerId(), newPayToAgreement);
+
+            // then
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
+        }
+
+        @Test
+        @DisplayName("When createWitPaymentMethodWithPayTo request is executed, Then return valid paymentMethodData")
+        void testCreatePaymentMethodWithPayTo_SetDefault() throws ApiException {
+            // given
+            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+                    .withFirstName("test")
+                    .withLastName("test")
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithCard(newCustomerCard);
+
+            NewPayToAgreement newPayToAgreement = new NewPayToAgreement.Builder()
+                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withPayerName("This is a name")
+                    .withDescription("This is a description")
+                    .withMaximumAmount(500)
+                    .withPayerPayIdDetails(new PayIdDetails.Builder()
+                            .withPayId("david_jones@email.com")
+                            .withPayIdType("EMAIL")
+                            .build())
+                    .withSetDefault(true)
+                    .build();
+
+            PaymentMethodData paymentMethodData = customerApi.createWitPaymentMethodWithPayTo(customerData.getCustomerId(), newPayToAgreement);
+
+            // then
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
+
+            // Get updated customer and verify default payment method id
+            customerData = customerApi.single(customerData.getCustomerId());
+            then(customerData.getDefaultPaymentMethod().getPaymentMethodId()).isEqualTo(paymentMethodData.getPaymentMethodId());
         }
 
         @Test

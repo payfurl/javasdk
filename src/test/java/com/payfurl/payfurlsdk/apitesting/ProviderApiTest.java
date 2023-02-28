@@ -4,8 +4,13 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.ProviderApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
-import com.payfurl.payfurlsdk.models.*;
-import org.junit.jupiter.api.*;
+import com.payfurl.payfurlsdk.models.Environment;
+import com.payfurl.payfurlsdk.models.NewProvider;
+import com.payfurl.payfurlsdk.models.Provider;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +40,8 @@ public class ProviderApiTest {
         void testCreateProvider() throws ApiException {
             // given
             Map<String, String> authenticationParameters = new HashMap<>();
-            authenticationParameters.put("Password","abcd1234");
-            authenticationParameters.put("MerchantId","XYZ0010");
+            authenticationParameters.put("Password", "abcd1234");
+            authenticationParameters.put("MerchantId", "XYZ0010");
 
             String name = "NabTransact" + randomUUID();
             NewProvider newProvider = new NewProvider.Builder()
