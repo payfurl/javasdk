@@ -17,6 +17,7 @@ import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Map;
 
 public class BaseApi {
@@ -48,6 +49,11 @@ public class BaseApi {
 
     protected void validateResponse(HttpResponse response) throws ApiException {
         int responseCode = response.getStatusCode();
+
+        if (responseCode == 408 || responseCode == 504) {
+            throw new ApiException(ApiError.buildTimeoutError());
+        }
+
         if (!Range.between(200, 208).contains(responseCode)) {
             String responseBody = ((HttpStringResponse) response).getBody();
             ApiError error;
@@ -97,6 +103,8 @@ public class BaseApi {
             HttpResponse response = getClientInstance().execute(request);
 
             return getDataFrom(response, returnType);
+        } catch (SocketTimeoutException socketTimeoutException) {
+            throw new ApiException(ApiError.buildTimeoutError());
         } catch (IOException exception) {
             throw new ApiException(exception);
         }

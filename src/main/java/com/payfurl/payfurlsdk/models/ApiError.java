@@ -94,6 +94,17 @@ public class ApiError {
                 '}';
     }
 
+    public static ApiError buildTimeoutError()
+    {
+        return new ApiError.Builder()
+                .withIsRetryable(true)
+                .withCode(ErrorCode.UnknownError)
+                .withType("https://docs.payfurl.com/errorcodes.html#1")
+                .withHttpCode(400)
+                .withMessage("Request Timeout")
+                .build();
+    }
+
     public static class Builder {
         private String message;
         private Map<String, String> details;
