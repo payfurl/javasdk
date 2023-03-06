@@ -3,6 +3,8 @@ package com.payfurl.payfurlsdk.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 public class NewCustomerToken {
     private final String reference;
     private final String firstName;
@@ -11,6 +13,7 @@ public class NewCustomerToken {
     private final String phone;
     private final String token;
     private final Address address;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public NewCustomerToken(@JsonProperty("Reference") String reference,
@@ -19,7 +22,8 @@ public class NewCustomerToken {
                             @JsonProperty("Email") String email,
                             @JsonProperty("Phone") String phone,
                             @JsonProperty("Address") Address address,
-                            @JsonProperty("Token") String token) {
+                            @JsonProperty("Token") String token,
+                            @JsonProperty("Metadata") Map<String, String> metadata) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,6 +31,7 @@ public class NewCustomerToken {
         this.phone = phone;
         this.token = token;
         this.address = address;
+        this.metadata = metadata;
     }
 
     public String getReference() {
@@ -57,6 +62,24 @@ public class NewCustomerToken {
         return address;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    @Override
+    public String toString() {
+        return "NewCustomerToken{" +
+                "reference=" + reference +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                ", address=" + address +
+                ", token='" + token + '\'' +
+                ", metadata=" + metadata +
+                '}';
+    }
+
     public static class Builder {
         private String reference;
         private String firstName;
@@ -65,6 +88,7 @@ public class NewCustomerToken {
         private String phone;
         private String token;
         private Address address;
+        private Map<String, String> metadata;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -101,8 +125,13 @@ public class NewCustomerToken {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public NewCustomerToken build() {
-            return new NewCustomerToken(reference, firstName, lastName, email, phone, address, token);
+            return new NewCustomerToken(reference, firstName, lastName, email, phone, address, token, metadata);
         }
     }
 }

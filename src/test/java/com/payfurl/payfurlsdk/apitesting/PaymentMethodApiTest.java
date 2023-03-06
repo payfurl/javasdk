@@ -22,10 +22,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class PaymentMethodApiTest {
+
+    private static final HashMap<String, String> METADATA = new HashMap<String, String>() {{ put("merchant_id", "1234356"); }};
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
             .withExpiryDate("12/35")
@@ -76,6 +79,7 @@ public class PaymentMethodApiTest {
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withMetadata(METADATA)
                     .build();
             // when
             PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
