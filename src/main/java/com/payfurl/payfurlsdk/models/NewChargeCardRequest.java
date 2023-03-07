@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class NewChargeCardRequest {
     private final BigDecimal amount;
@@ -20,6 +21,7 @@ public class NewChargeCardRequest {
     private final boolean capture;
     private final Initiator initiator;
     private final WebhookConfig webhookConfig;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public NewChargeCardRequest(@JsonProperty("Amount") BigDecimal amount,
@@ -35,7 +37,8 @@ public class NewChargeCardRequest {
                                 @JsonProperty("Phone") String phone,
                                 @JsonProperty("Capture") boolean capture,
                                 @JsonProperty("Initiator") Initiator initiator,
-                                @JsonProperty("WebhookConfig") WebhookConfig webhookConfig) {
+                                @JsonProperty("WebhookConfig") WebhookConfig webhookConfig,
+                                @JsonProperty("Metadata") Map<String, String> metadata) {
         this.amount = amount;
         this.currency = currency;
         this.providerId = providerId;
@@ -50,6 +53,7 @@ public class NewChargeCardRequest {
         this.capture = capture;
         this.initiator = initiator;
         this.webhookConfig = webhookConfig;
+        this.metadata = metadata;
     }
 
     public BigDecimal getAmount() {
@@ -108,6 +112,10 @@ public class NewChargeCardRequest {
         return webhookConfig;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCardRequest{" +
@@ -125,6 +133,7 @@ public class NewChargeCardRequest {
                 ", capture=" + capture +
                 ", initiator=" + initiator +
                 ", webhookConfig=" + webhookConfig +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -143,6 +152,7 @@ public class NewChargeCardRequest {
         private boolean capture = true;
         private Initiator initiator;
         private WebhookConfig webhookConfig;
+        private Map<String, String> metadata;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -214,8 +224,13 @@ public class NewChargeCardRequest {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public NewChargeCardRequest build() {
-            return new NewChargeCardRequest(amount, currency, providerId, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig);
+            return new NewChargeCardRequest(amount, currency, providerId, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig, metadata);
         }
     }
 }

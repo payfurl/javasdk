@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
+import java.util.Map;
 
 public class NewCustomerCard {
     private final String reference;
@@ -17,6 +18,7 @@ public class NewCustomerCard {
     private final boolean vaultCard;
     private final Date vaultExpireDate;
     private final Integer vaultExpireSeconds;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public NewCustomerCard(@JsonProperty("Reference") String reference,
@@ -29,7 +31,8 @@ public class NewCustomerCard {
                            @JsonProperty("Address") Address address,
                            @JsonProperty("VaultCard") boolean vaultCard,
                            @JsonProperty("VaultExpireDate") Date vaultExpireDate,
-                           @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds) {
+                           @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds,
+                           @JsonProperty("Metadata") Map<String, String> metadata) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,6 +44,7 @@ public class NewCustomerCard {
         this.vaultCard = vaultCard;
         this.vaultExpireDate = vaultExpireDate;
         this.vaultExpireSeconds = vaultExpireSeconds;
+        this.metadata = metadata;
     }
 
     public String getReference() {
@@ -87,6 +91,10 @@ public class NewCustomerCard {
         return vaultExpireSeconds;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "NewCustomerCard{" +
@@ -101,6 +109,7 @@ public class NewCustomerCard {
                 ", vaultCard=" + vaultCard +
                 ", vaultExpireDate=" + vaultExpireDate +
                 ", vaultExpireSeconds=" + vaultExpireSeconds +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -116,6 +125,7 @@ public class NewCustomerCard {
         private boolean vaultCard = false;
         private Date vaultExpireDate;
         private Integer vaultExpireSeconds;
+        private Map<String, String> metadata;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -172,8 +182,13 @@ public class NewCustomerCard {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public NewCustomerCard build() {
-            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds);
+            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds, metadata);
         }
     }
 }

@@ -30,12 +30,15 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
+import static javax.swing.UIManager.put;
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class ChargeApiTest {
     private static final TransactionStatus SUCCESS_MARKER = TransactionStatus.SUCCESS;
+    private static final HashMap<String, String> METADATA = new HashMap<String, String>() {{ put("merchant_id", "1234356"); }};
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
             .withExpiryDate("12/35")
@@ -107,6 +110,7 @@ public class ChargeApiTest {
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withOrder(SAMPLE_ORER)
+                    .withMetadata(METADATA)
                     .build();
 
             // when
@@ -182,6 +186,7 @@ public class ChargeApiTest {
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withOrder(SAMPLE_ORER)
                     .withAddress(SAMPLE_ADDRESS)
+                    .withMetadata(METADATA)
                     .build();
 
             // when
@@ -223,6 +228,7 @@ public class ChargeApiTest {
             NewChargePaymentMethod newChargePaymentMethod = new NewChargePaymentMethod.Builder()
                     .withAmount(BigDecimal.valueOf(5))
                     .withPaymentMethodId(paymentMethods.get(0).getPaymentMethodId())
+                    .withMetadata(METADATA)
                     .build();
 
             ChargeData chargeDataWithPaymentMethod = chargeApi.createWithPaymentMethod(newChargePaymentMethod);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
+import java.util.Map;
 
 public class NewPaymentMethodCard {
     private final String providerId;
@@ -12,6 +13,7 @@ public class NewPaymentMethodCard {
     private final Date vaultExpireDate;
     private final Integer vaultExpireSeconds;
     private final boolean setDefault;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public NewPaymentMethodCard(@JsonProperty("ProviderId") String providerId,
@@ -19,13 +21,15 @@ public class NewPaymentMethodCard {
                                 @JsonProperty("VaultCard") boolean vaultCard,
                                 @JsonProperty("VaultExpireDate") Date vaultExpireDate,
                                 @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds,
-                                @JsonProperty("SetDefault") boolean setDefault) {
+                                @JsonProperty("SetDefault") boolean setDefault,
+                                @JsonProperty("Metadata") Map<String, String> metadata) {
         this.providerId = providerId;
         this.paymentInformation = paymentInformation;
         this.vaultCard = vaultCard;
         this.vaultExpireDate = vaultExpireDate;
         this.vaultExpireSeconds = vaultExpireSeconds;
         this.setDefault = setDefault;
+        this.metadata = metadata;
     }
 
     public String getProviderId() {
@@ -50,6 +54,23 @@ public class NewPaymentMethodCard {
 
     public boolean getSetDefault() { return setDefault; }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    @Override
+    public String toString() {
+        return "NewPaymentMethodCard{" +
+                "providerId=" + providerId +
+                ", paymentInformation=" + paymentInformation +
+                ", vaultCard=" + vaultCard +
+                ", vaultExpireDate='" + vaultExpireDate + '\'' +
+                ", vaultExpireSeconds=" + vaultExpireSeconds +
+                ", setDefault=" + setDefault +
+                ", metadata=" + metadata +
+                '}';
+    }
+
     public static class Builder {
         private String providerId;
         private CardRequestInformation paymentInformation;
@@ -57,6 +78,7 @@ public class NewPaymentMethodCard {
         private Date vaultExpireDate;
         private Integer vaultExpireSeconds;
         private boolean setDefault = false;
+        private Map<String, String> metadata;
 
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
@@ -88,8 +110,13 @@ public class NewPaymentMethodCard {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public NewPaymentMethodCard build() {
-            return new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds, setDefault);
+            return new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds, setDefault, metadata);
         }
     }
 }

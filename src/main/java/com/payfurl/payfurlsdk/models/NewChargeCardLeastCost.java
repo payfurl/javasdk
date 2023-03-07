@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class NewChargeCardLeastCost {
     private final BigDecimal amount;
@@ -19,6 +20,7 @@ public class NewChargeCardLeastCost {
     private final boolean capture;
     private final Initiator initiator;
     private final WebhookConfig webhookConfig;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public NewChargeCardLeastCost(@JsonProperty("Amount") BigDecimal amount,
@@ -33,7 +35,8 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("Phone") String phone,
                                   @JsonProperty("Capture") boolean capture,
                                   @JsonProperty("Initiator") Initiator initiator,
-                                  @JsonProperty("WebhookConfig") WebhookConfig webhookConfig) {
+                                  @JsonProperty("WebhookConfig") WebhookConfig webhookConfig,
+                                  @JsonProperty("Metadata") Map<String, String> metadata) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -47,6 +50,7 @@ public class NewChargeCardLeastCost {
         this.capture = capture;
         this.initiator = initiator;
         this.webhookConfig = webhookConfig;
+        this.metadata = metadata;
     }
 
     public BigDecimal getAmount() {
@@ -101,6 +105,10 @@ public class NewChargeCardLeastCost {
         return webhookConfig;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCardLeastCost{" +
@@ -117,6 +125,7 @@ public class NewChargeCardLeastCost {
                 ", capture=" + capture +
                 ", initiator=" + initiator +
                 ", webhookConfig=" + webhookConfig +
+                ", meatadata=" + metadata +
                 '}';
     }
 
@@ -134,6 +143,7 @@ public class NewChargeCardLeastCost {
         private boolean capture = true;
         private Initiator initiator;
         private WebhookConfig webhookConfig;
+        private Map<String, String> metadata;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -200,8 +210,13 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public NewChargeCardLeastCost build() {
-            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig);
+            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig, metadata);
         }
     }
 }
