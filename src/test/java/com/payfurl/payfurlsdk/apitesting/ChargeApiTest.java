@@ -106,7 +106,7 @@ public class ChargeApiTest {
             NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
                     .withAmount(BigDecimal.valueOf(258))
                     .withCurrency("USD")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withOrder(SAMPLE_ORER)
@@ -128,7 +128,7 @@ public class ChargeApiTest {
             NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
                     .withAmount(BigDecimal.valueOf(258))
                     .withCurrency("USD")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withOrder(SAMPLE_ORER)
@@ -153,7 +153,7 @@ public class ChargeApiTest {
             NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
                     .withAmount(BigDecimal.valueOf(258))
                     .withCurrency("USD")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_FAILED_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withOrder(SAMPLE_ORER)
@@ -216,7 +216,7 @@ public class ChargeApiTest {
         void testCreateWithPaymentMethod() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .build();
@@ -238,13 +238,12 @@ public class ChargeApiTest {
         }
 
         @Test
-        @Disabled("Tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When createWithToken request is executed, Then return valid charge data")
         void testCreateWithToken() throws ApiException {
             // given
             NewChargeToken newChargeToken = new NewChargeToken.Builder()
                     .withAmount(BigDecimal.valueOf(20))
-                    .withToken("5dc5cfbaec7c4d057cb00482")
+                    .withToken(TestConfigProvider.getToken())
                     .build();
 
             // when

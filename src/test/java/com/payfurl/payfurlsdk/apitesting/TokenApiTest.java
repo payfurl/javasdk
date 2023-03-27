@@ -35,11 +35,10 @@ public class TokenApiTest {
     class SuccessFlow {
 
         @Test
-        @Disabled("Tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("Get token by ID")
         void getTokenById() throws ApiException {
             // given
-            String tokenId = "5dc5cfbaec7c4d057cb00482";
+            String tokenId = TestConfigProvider.getToken();
 
             // when
             TokenData singleToken = tokenApi.single(tokenId);
@@ -50,14 +49,13 @@ public class TokenApiTest {
         }
 
         @Test
-        @Disabled("Tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When Search request is executed, Then return valid TokenList")
         void testSearch() throws ApiException {
             // given
 
             // when
             TokenList tokenList = tokenApi.search(new TokenSearch.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .build());
 
             // then

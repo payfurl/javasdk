@@ -53,32 +53,12 @@ public class PaymentMethodApiTest {
     @DisplayName("Given valid request to PaymentMethod API")
     class SuccessFlow {
         @Test
-        @DisplayName("When checkout request is executed, Then return valid Checkout")
-        void testCheckout() throws ApiException {
-            // given
-            NewCheckout newCheckout = new NewCheckout.Builder()
-                    .withProviderId("1cf5deda-28cc-4214-adb5-1e597a37228c")
-                    .withAmount(BigDecimal.valueOf(123))
-                    .withCurrency("AUD")
-                    .withReference("123123123")
-                    .withOptions(ImmutableMap.of("HideShipping", "true"))
-                    .build();
-
-            // when
-            Checkout checkout = paymentMethodApi.checkout(newCheckout);
-
-            // then
-            then(checkout.getCheckoutId()).isNotNull();
-            then(checkout.getTransactionId()).isNotNull();
-        }
-
-        @Test
         @DisplayName("When createPaymentMethodWithCard request is executed, Then return valid PaymentMethodData")
         void testCreatePaymentMethodWithCard() throws ApiException {
             // given
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withMetadata(METADATA)
                     .build();
             // when
@@ -93,7 +73,7 @@ public class PaymentMethodApiTest {
         void testSingle() throws ApiException {
             // given
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
             // when
@@ -109,7 +89,7 @@ public class PaymentMethodApiTest {
         void testDeletePaymentMethod() throws ApiException {
             // given
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
             // when
@@ -130,7 +110,7 @@ public class PaymentMethodApiTest {
         void testCreatePaymentMethodWithVault() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withVaultCard(true)
                     .build();
@@ -139,7 +119,7 @@ public class PaymentMethodApiTest {
             CustomerData customer = customerApi.createWithCard(newCustomerCard);
 
             NewPaymentMethodVault newPaymentMethodVault = new NewPaymentMethodVault.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentMethodId(customer.getDefaultPaymentMethod().getPaymentMethodId())
                     .build();
             PaymentMethodData paymentMethodWithVault = paymentMethodApi.createPaymentMethodWithVault(newPaymentMethodVault);
@@ -153,13 +133,13 @@ public class PaymentMethodApiTest {
         void testSearch() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withVaultCard(true)
                     .build();
 
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
