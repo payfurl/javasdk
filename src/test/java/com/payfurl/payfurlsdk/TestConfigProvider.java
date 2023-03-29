@@ -13,14 +13,14 @@ import java.util.Map;
 
 public final class TestConfigProvider {
     private static final String TEST_DATA_FILE = "appsettings.json";
-    private static final Map<String, Object> config = new HashMap<>();
+    private static final Map<String, Object> CONFIG = new HashMap<>();
     private static int numToken = 0;
 
     static {
         ObjectMapper mapper = new ObjectMapper();
         try {
             InputStream inputStream = TestConfigProvider.class.getClassLoader().getResourceAsStream(TEST_DATA_FILE);
-            config.putAll(mapper.readValue(inputStream, Map.class));
+            CONFIG.putAll(mapper.readValue(inputStream, Map.class));
         } catch (IOException e) {
             throw new RuntimeException();
         }
@@ -31,20 +31,20 @@ public final class TestConfigProvider {
     }
 
     public static String getSecretKeyWithFallback() {
-        return StringUtils.defaultIfEmpty(config.get("SecretKey").toString(), "");
+        return StringUtils.defaultIfEmpty(CONFIG.get("SecretKey").toString(), "");
     }
 
     public static Environment getEnvironmentWithFallback() {
-        String env = config.get("Environment").toString();
+        String env = CONFIG.get("Environment").toString();
         return EnumUtils.getEnumIgnoreCase(Environment.class, env, Environment.LOCAL);
     }
 
     public static String getProviderId() {
-        return StringUtils.defaultIfEmpty(config.get("ProviderId").toString(), "");
+        return StringUtils.defaultIfEmpty(CONFIG.get("ProviderId").toString(), "");
     }
 
     public static String getToken() {
-        Object value = config.get("Tokens");
+        Object value = CONFIG.get("Tokens");
         if (value instanceof List) {
             List<?> list = (List<?>) value;
             String[] tokens = new String[list.size()];

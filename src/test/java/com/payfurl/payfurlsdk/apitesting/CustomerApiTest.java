@@ -18,7 +18,6 @@ import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
 import com.payfurl.payfurlsdk.models.PayIdDetails;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
-import org.checkerframework.framework.qual.IgnoreInWholeProgramInference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
