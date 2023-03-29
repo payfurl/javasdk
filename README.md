@@ -106,13 +106,19 @@ git clone https://github.com/payfurl/javasdk.git
 cd javasdk
 ```
 
-Before running the tests, get a sandbox token and set a `PAYFURL_ACCESS_TEST_TOKEN` environment
-variable.
+Before running the tests, create `appsettings.json` file in `src/test/resources` folder with the following contents:
 
-```sh
-export PAYFURL_ENVIRONMENT=sandbox
-export PAYFURL_LOCAL_ACCESS_SECRET_KEY=YOUR_SANDBOX_ACCESS_TOKEN
+```json
+{
+  "Environment": "Development",
+  "SecretKey": "PAYFURL_SECRET_KEY",
+  "ProviderId": "DUMMY_PROVIDER_ID",
+  "Tokens": ["PAYMENT_TOKEN1","PAYMENT_TOKEN2"]
+}
 ```
+
+We recommend to have 8 payment tokens to make all tests passed.
+
 
 If you are using Maven, run the tests with below command
 

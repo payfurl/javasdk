@@ -79,7 +79,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withMetadata(METADATA)
                     .build();
@@ -99,7 +99,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withEmail("test" + reference + "@payfurl.com")
@@ -134,7 +134,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withEmail("test" + reference + "@payfurl.com")
@@ -146,7 +146,7 @@ public class CustomerApiTest {
 
             // Create payment method for the customer, but do not apply as Default
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -186,7 +186,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withEmail("test" + reference + "@payfurl.com")
@@ -216,7 +216,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withReference(reference)
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
@@ -241,7 +241,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -249,7 +249,7 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithCard(newCustomerCard);
 
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -266,7 +266,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -274,7 +274,7 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithCard(newCustomerCard);
 
             NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withSetDefault(true)
                     .build();
@@ -297,7 +297,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -305,7 +305,7 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithCard(newCustomerCard);
 
             NewPaymentMethodToken newPaymentMethodCard = new NewPaymentMethodToken.Builder()
-                    .withToken("be7d0a5471934068af79e5553ed6acf2")
+                    .withToken(TestConfigProvider.getToken())
                     .build();
 
             PaymentMethodData paymentMethodData = customerApi.createWitPaymentMethodWithToken(customerData.getCustomerId(), newPaymentMethodCard);
@@ -315,14 +315,13 @@ public class CustomerApiTest {
         }
 
         @Test
-        @Disabled("tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When createPaymentMethodWithToken request is executed, Then return valid paymentMethodData")
         void testCreatePaymentMethodWithToken_SetDefault() throws ApiException {
             // given
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -330,7 +329,7 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithCard(newCustomerCard);
 
             NewPaymentMethodToken newPaymentMethodCard = new NewPaymentMethodToken.Builder()
-                    .withToken("51976f6472d44b7384ef9c9eabc8638f")
+                    .withToken(TestConfigProvider.getToken())
                     .withSetDefault(true)
                     .build();
 
@@ -351,7 +350,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -359,7 +358,7 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithCard(newCustomerCard);
 
             NewPayToAgreement newPayToAgreement = new NewPayToAgreement.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPayerName("This is a name")
                     .withDescription("This is a description")
                     .withMaximumAmount(500)
@@ -382,7 +381,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -390,7 +389,7 @@ public class CustomerApiTest {
             CustomerData customerData = customerApi.createWithCard(newCustomerCard);
 
             NewPayToAgreement newPayToAgreement = new NewPayToAgreement.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPayerName("This is a name")
                     .withDescription("This is a description")
                     .withMaximumAmount(500)
@@ -412,14 +411,13 @@ public class CustomerApiTest {
         }
 
         @Test
-        @Disabled("tokens expire, so this test needs to be adjusted each time it's run")
         @DisplayName("When createWithToken request is executed, Then return valid customerData")
         void testCreateWithToken() throws ApiException {
             // given
             NewCustomerToken newCustomerToken = new NewCustomerToken.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withToken("5dc5d0d4ec7c4d057cb00484")
+                    .withToken(TestConfigProvider.getToken())
                     .build();
 
             // when
@@ -438,7 +436,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withReference(reference)
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
@@ -466,7 +464,7 @@ public class CustomerApiTest {
             NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
                     .withFirstName("test")
                     .withLastName("test")
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .build();
 
@@ -481,11 +479,12 @@ public class CustomerApiTest {
         }
 
         @Test
+        @Disabled("For manual running only")
         @DisplayName("Create customer with provider token, Then return valid CustomerData")
         void testCustomerWithProviderToken() throws ApiException {
             // given
             NewCustomerProviderToken customerProviderToken = new NewCustomerProviderToken.Builder()
-                    .withProviderId("a26c371f-94f6-40da-add2-28ec8e9da8ed")
+                    .withProviderId(TestConfigProvider.getProviderId())
                     .withProviderToken("some_test_token")
                     .withProviderTokenData(new HashMap<String, String>() {{
                         put("test", "test");

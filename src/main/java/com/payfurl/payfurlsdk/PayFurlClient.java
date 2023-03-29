@@ -29,8 +29,10 @@ public class PayFurlClient implements PayFurlClientSdk {
     private static final String LOCAL_URL = "https://localhost:5001";
     private static final String SANDBOX_URL = "https://sandbox-api.payfurl.com";
     private static final String PRODUCTION_URL = "https://api.payfurl.com";
+    private static final String DEVELOPMENT_URL = "https://develop-api.payfurl.com";
     private static final Map<Environment, String> ENV_TO_URL_MAP = ImmutableMap.of(
             Environment.LOCAL, LOCAL_URL,
+            Environment.DEVELOPMENT, DEVELOPMENT_URL,
             Environment.SANDBOX, SANDBOX_URL,
             Environment.PRODUCTION, PRODUCTION_URL
     );

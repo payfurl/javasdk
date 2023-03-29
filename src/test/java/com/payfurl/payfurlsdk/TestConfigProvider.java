@@ -1,23 +1,64 @@
 package com.payfurl.payfurlsdk;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payfurl.payfurlsdk.http.client.config.Environment;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public final class TestConfigProvider {
-    private static final String LOCAL_ACCESS_SECRET_KEY = "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-    private static final String PAYFURL_ACCESS_TEST_SECRET_KEY = "PAYFURL_LOCAL_ACCESS_SECRET_KEY";
-    private static final String PAYFURL_ENVIRONMENT_KEY = "PAYFURL_ENVIRONMENT";
+    private static final String TEST_DATA_FILE = "appsettings.json";
+    private static final Map<String, Object> CONFIG = new HashMap<>();
+    private static int numToken = 0;
+
+    static {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            InputStream inputStream = TestConfigProvider.class.getClassLoader().getResourceAsStream(TEST_DATA_FILE);
+            CONFIG.putAll(mapper.readValue(inputStream, Map.class));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
 
     private TestConfigProvider() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
     public static String getSecretKeyWithFallback() {
-        return StringUtils.defaultIfEmpty(System.getProperty(PAYFURL_ACCESS_TEST_SECRET_KEY), LOCAL_ACCESS_SECRET_KEY);
+        return StringUtils.defaultIfEmpty(CONFIG.get("SecretKey").toString(), "");
     }
 
     public static Environment getEnvironmentWithFallback() {
-        return EnumUtils.getEnumIgnoreCase(Environment.class, System.getProperty(PAYFURL_ENVIRONMENT_KEY), Environment.LOCAL);
+        String env = CONFIG.get("Environment").toString();
+        return EnumUtils.getEnumIgnoreCase(Environment.class, env, Environment.LOCAL);
+    }
+
+    public static String getProviderId() {
+        return StringUtils.defaultIfEmpty(CONFIG.get("ProviderId").toString(), "");
+    }
+
+    public static String getToken() {
+        Object value = CONFIG.get("Tokens");
+        if (value instanceof List) {
+            List<?> list = (List<?>) value;
+            String[] tokens = new String[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                Object element = list.get(i);
+                if (element instanceof String) {
+                    tokens[i] = (String) element;
+                } else {
+                    throw new RuntimeException("Read tokens error");
+                }
+            }
+            return StringUtils.defaultIfEmpty(tokens[numToken++], "");
+        }
+
+        throw new RuntimeException("Read tokens error");
     }
 }
