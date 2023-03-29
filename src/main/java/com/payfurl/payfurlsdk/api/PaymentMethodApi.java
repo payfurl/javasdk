@@ -5,8 +5,6 @@ import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
-import com.payfurl.payfurlsdk.models.Checkout;
-import com.payfurl.payfurlsdk.models.NewCheckout;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodVault;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
@@ -26,18 +24,6 @@ public class PaymentMethodApi extends BaseApi {
 
         String baseUri = config.getBaseUri();
         paymentMethodApiBaseEndpoint = String.format("%s/%s", baseUri, "payment_method");
-    }
-
-    /**
-     * Creates a new checkout
-     *
-     * @param newCheckout
-     * @return
-     * @throws ApiException
-     */
-    public Checkout checkout(NewCheckout newCheckout) throws ApiException {
-        String urlPath = paymentMethodApiBaseEndpoint + "/checkout";
-        return executePostRequestWith(urlPath, newCheckout, Checkout.class);
     }
 
     /**

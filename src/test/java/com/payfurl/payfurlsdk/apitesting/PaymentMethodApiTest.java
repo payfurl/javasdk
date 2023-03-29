@@ -1,15 +1,12 @@
 package com.payfurl.payfurlsdk.apitesting;
 
-import com.google.common.collect.ImmutableMap;
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.PaymentMethodApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
-import com.payfurl.payfurlsdk.models.Checkout;
 import com.payfurl.payfurlsdk.models.CustomerData;
-import com.payfurl.payfurlsdk.models.NewCheckout;
 import com.payfurl.payfurlsdk.models.NewCustomerCard;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodVault;
@@ -21,7 +18,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 
 import static org.assertj.core.api.BDDAssertions.then;
