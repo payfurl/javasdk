@@ -23,4 +23,4 @@ jobs:
       - name: Generate appsettings
         run: mkdir ./src/test/resources && docker run --rm ghcr.io/payfurl/config-build:main > ./src/test/resources/appsettings.json
       - name: Run tests
-        run: mvn test
+        run: mvn --batch-mode test

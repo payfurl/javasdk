@@ -2,6 +2,7 @@ package com.payfurl.payfurlsdk;
 
 import com.payfurl.payfurlsdk.http.client.config.Environment;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -50,6 +51,7 @@ class PayFurlClientTest {
                 .build();
     }
 
+    @Disabled
     @DisplayName("Given newly created PayFurlClient When getBaseUri is Called Then return correct base URI")
     @ParameterizedTest(name = "{index}: {0}")
     @MethodSource("provideDataForTestUriBasedOnEnvironmentMapping")

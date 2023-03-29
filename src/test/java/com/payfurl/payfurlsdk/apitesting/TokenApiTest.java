@@ -44,8 +44,8 @@ public class TokenApiTest {
             TokenData singleToken = tokenApi.single(tokenId);
 
             // then
-            then(singleToken.getId()).isNotNull();
-            then(singleToken.getId()).isEqualTo(tokenId);
+            then(singleToken.getTokenId()).isNotNull();
+            then(singleToken.getTokenId()).isEqualTo(tokenId);
         }
 
         @Test

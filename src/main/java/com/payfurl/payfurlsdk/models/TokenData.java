@@ -7,7 +7,6 @@ import java.util.Date;
 
 public class TokenData {
 
-    private final String gatewayTokenId;
     private final String tokenId;
     private final String userId;
     private final CardData card;
@@ -17,15 +16,13 @@ public class TokenData {
     private final String payToStatus;
 
     @JsonCreator
-    public TokenData(@JsonProperty("GatewayTokenId") String gatewayTokenId,
-                     @JsonProperty("TokenId") String tokenId,
+    public TokenData(@JsonProperty("TokenId") String tokenId,
                      @JsonProperty("UserId") String userId,
                      @JsonProperty("Card") CardData card,
                      @JsonProperty("Provider") ProviderSummary provider,
                      @JsonProperty("DateAdded") Date dateAdded,
                      @JsonProperty("DateUsed") Date dateUsed,
                      @JsonProperty("PayToStatus") String payToStatus) {
-        this.gatewayTokenId = gatewayTokenId;
         this.tokenId = tokenId;
         this.userId = userId;
         this.card = card;
@@ -35,11 +32,7 @@ public class TokenData {
         this.payToStatus = payToStatus;
     }
 
-    public String getGatewayTokenId() {
-        return gatewayTokenId;
-    }
-
-    public String getId() {
+    public String getTokenId() {
         return tokenId;
     }
 
@@ -71,7 +64,6 @@ public class TokenData {
     public String toString() {
         return "TokenData{" +
                 "tokenId=" + tokenId +
-                ", gatewayTokenId=" + gatewayTokenId +
                 ", userId=" + userId +
                 ", card=" + card +
                 ", provider=" + provider +
@@ -82,8 +74,7 @@ public class TokenData {
     }
 
     public static class Builder {
-        private String gatewayTokenId;
-        private String id;
+        private String tokenId;
         private String userId;
         private CardData card;
         private ProviderSummary provider;
@@ -91,13 +82,8 @@ public class TokenData {
         private Date dateUsed;
         private String payToStatus;
 
-        public Builder withGatewayTokenId(String gatewayTokenId) {
-            this.gatewayTokenId = gatewayTokenId;
-            return this;
-        }
-
-        public Builder withId(String id) {
-            this.id = id;
+        public Builder withTokenId(String tokenId) {
+            this.tokenId = tokenId;
             return this;
         }
 
@@ -132,7 +118,7 @@ public class TokenData {
         }
 
         public TokenData build() {
-            return new TokenData(gatewayTokenId, id, userId, card, provider, dateAdded, dateUsed, payToStatus);
+            return new TokenData(tokenId, userId, card, provider, dateAdded, dateUsed, payToStatus);
         }
     }
 }
