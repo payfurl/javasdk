@@ -20,9 +20,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: check
-        run: pwd && ls -la && cd src/test && ls -la
       - name: Generate appsettings
-        run: docker run --rm ghcr.io/payfurl/config-build:main > ./src/test/resources/appsettings.json
+        run: mkdir ./src/test/resources && docker run --rm ghcr.io/payfurl/config-build:main > ./src/test/resources/appsettings.json
       - name: Run tests
         run: mvn test
