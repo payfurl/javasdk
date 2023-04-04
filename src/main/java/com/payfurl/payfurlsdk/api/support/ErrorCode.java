@@ -92,5 +92,6 @@ public enum ErrorCode {
     InvalidTransferId,
     InvalidNotificationFormat,
     ValidationError,
-    TokenVerificationNotSupported
+    TokenVerificationNotSupported,
+    Timeout
 }
