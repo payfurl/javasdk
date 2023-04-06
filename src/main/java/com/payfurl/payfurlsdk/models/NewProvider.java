@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
-
 public class NewProvider {
 
     private final String type;
@@ -14,6 +13,7 @@ public class NewProvider {
     private final Map<String, String> authenticationParameters;
     private final String providerCountry;
     private final String currency;
+    private final String threeDsProviderId;
 
     @JsonCreator
     public NewProvider(@JsonProperty("Type") String type,
@@ -21,13 +21,15 @@ public class NewProvider {
                        @JsonProperty("Environment") Environment environment,
                        @JsonProperty("AuthenticationParameters") Map<String, String> authenticationParameters,
                        @JsonProperty("ProviderCountry") String providerCountry,
-                       @JsonProperty("Currency") String currency) {
+                       @JsonProperty("Currency") String currency,
+                       @JsonProperty("ThreeDsProviderId") String threeDsProviderId) {
         this.type = type;
         this.name = name;
         this.environment = environment;
         this.authenticationParameters = authenticationParameters;
         this.providerCountry = providerCountry;
         this.currency = currency;
+        this.threeDsProviderId = threeDsProviderId;
     }
 
     public String getType() {
@@ -54,6 +56,10 @@ public class NewProvider {
         return currency;
     }
 
+    public String getThreeDsProviderId() {
+        return threeDsProviderId;
+    }
+
     @Override
     public String toString() {
         return "NewProvider{" +
@@ -63,6 +69,7 @@ public class NewProvider {
                 ", authenticationParameters='" + authenticationParameters + '\'' +
                 ", providerCountry=" + providerCountry +
                 ", currency=" + currency +
+                ", threeDsProviderId=" + threeDsProviderId +
                 '}';
     }
 
@@ -73,6 +80,7 @@ public class NewProvider {
         private Map<String, String> authenticationParameters;
         private String providerCountry;
         private String currency;
+        private String threeDsProviderId;
 
         public Builder withType(String type) {
             this.type = type;
@@ -104,8 +112,13 @@ public class NewProvider {
             return this;
         }
 
+        public Builder withThreeDsProviderId(String threeDsProviderId) {
+            this.threeDsProviderId = threeDsProviderId;
+            return this;
+        }
+
         public NewProvider build() {
-            return new NewProvider(type, name, environment, authenticationParameters, providerCountry, currency);
+            return new NewProvider(type, name, environment, authenticationParameters, providerCountry, currency, threeDsProviderId);
         }
     }
 }
