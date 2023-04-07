@@ -99,7 +99,7 @@ public class ApiError {
         return new ApiError.Builder()
                 .withIsRetryable(true)
                 .withCode(ErrorCode.Timeout)
-                .withType("https://docs.payfurl.com/errorcodes.html#1")
+                .withType("https://docs.payfurl.com/errorcodes.html#94")
                 .withHttpCode(400)
                 .withMessage("Request Timeout")
                 .build();
