@@ -93,5 +93,7 @@ public enum ErrorCode {
     InvalidNotificationFormat,
     ValidationError,
     TokenVerificationNotSupported,
+    InvalidAddress,
+    CardBlocked,
     Timeout
 }
