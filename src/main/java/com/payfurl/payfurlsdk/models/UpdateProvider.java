@@ -5,23 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
-
 public class UpdateProvider {
 
     private final String name;
     private final Map<String, String> authenticationParameters;
     private final String providerCountry;
     private final String currency;
+    private final String threeDsProviderId;
 
     @JsonCreator
     public UpdateProvider(@JsonProperty("Name") String name,
-                       @JsonProperty("AuthenticationParameters") Map<String, String> authenticationParameters,
-                       @JsonProperty("ProviderCountry") String providerCountry,
-                       @JsonProperty("Currency") String currency) {
+                          @JsonProperty("AuthenticationParameters") Map<String, String> authenticationParameters,
+                          @JsonProperty("ProviderCountry") String providerCountry,
+                          @JsonProperty("Currency") String currency,
+                          @JsonProperty("ThreeDsProviderId") String threeDsProviderId) {
         this.name = name;
         this.authenticationParameters = authenticationParameters;
         this.providerCountry = providerCountry;
         this.currency = currency;
+        this.threeDsProviderId = threeDsProviderId;
     }
 
     public String getName() {
@@ -40,6 +42,10 @@ public class UpdateProvider {
         return currency;
     }
 
+    public String getThreeDsProviderId() {
+        return threeDsProviderId;
+    }
+
     @Override
     public String toString() {
         return "UpdateProvider{" +
@@ -47,6 +53,7 @@ public class UpdateProvider {
                 ", authenticationParameters='" + authenticationParameters + '\'' +
                 ", providerCountry=" + providerCountry +
                 ", currency=" + currency +
+                ", threeDsProviderId=" + threeDsProviderId +
                 '}';
     }
 
@@ -55,6 +62,7 @@ public class UpdateProvider {
         private Map<String, String> authenticationParameters;
         private String providerCountry;
         private String currency;
+        private String threeDsProviderId;
 
         public Builder withName(String name) {
             this.name = name;
@@ -76,8 +84,13 @@ public class UpdateProvider {
             return this;
         }
 
+        public Builder withThreeDsProviderId(String threeDsProviderId) {
+            this.threeDsProviderId = threeDsProviderId;
+            return this;
+        }
+
         public UpdateProvider build() {
-            return new UpdateProvider(name, authenticationParameters, providerCountry, currency);
+            return new UpdateProvider(name, authenticationParameters, providerCountry, currency, threeDsProviderId);
         }
     }
 }
