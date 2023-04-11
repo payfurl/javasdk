@@ -6,7 +6,7 @@
 
     <groupId>com.payfurl</groupId>
     <artifactId>payfurlsdk</artifactId>
-    <version>1.0.20230406</version>
+    <version>1.0.20230412</version>
     <packaging>jar</packaging>
 
     <name>PayFURL</name>
@@ -255,7 +255,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.0</version>
+            <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>

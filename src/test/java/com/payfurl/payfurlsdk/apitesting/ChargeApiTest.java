@@ -1,5 +1,6 @@
 package com.payfurl.payfurlsdk.apitesting;
 
+import com.google.common.collect.ImmutableMap;
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.ChargeApi;
@@ -23,22 +24,19 @@ import com.payfurl.payfurlsdk.models.ProductItem;
 import com.payfurl.payfurlsdk.models.TransactionStatus;
 import com.payfurl.payfurlsdk.models.WebhookConfig;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
-import static javax.swing.UIManager.put;
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class ChargeApiTest {
     private static final TransactionStatus SUCCESS_MARKER = TransactionStatus.SUCCESS;
-    private static final HashMap<String, String> METADATA = new HashMap<String, String>() {{ put("merchant_id", "1234356"); }};
+    private static final ImmutableMap<String, String> METADATA = ImmutableMap.of("merchant_id", "1234356");
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
             .withExpiryDate("12/35")

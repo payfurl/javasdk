@@ -1,7 +1,11 @@
 package com.payfurl.payfurlsdk;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import com.payfurl.payfurlsdk.http.client.config.Environment;
+import com.payfurl.payfurlsdk.utils.TestConfigKeys;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,18 +13,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class TestConfigProvider {
     private static final String TEST_DATA_FILE = "appsettings.json";
-    private static final Map<String, Object> CONFIG = new HashMap<>();
+    private static final InputStream TEST_DATA_INPUT_STREAM =
+            TestConfigProvider.class.getClassLoader().getResourceAsStream(TEST_DATA_FILE);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ImmutableMap<String, Object> CONFIG;
+
     private static int numToken = 0;
 
     static {
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            InputStream inputStream = TestConfigProvider.class.getClassLoader().getResourceAsStream(TEST_DATA_FILE);
-            CONFIG.putAll(mapper.readValue(inputStream, Map.class));
+            CONFIG = ImmutableMap.<String, Object>builder()
+                    .putAll(MAPPER.readValue(TEST_DATA_INPUT_STREAM, new TypeReference<HashMap<String, Object>>() {
+                    }))
+                    .build();
+
         } catch (IOException e) {
             throw new RuntimeException();
         }
@@ -31,20 +40,21 @@ public final class TestConfigProvider {
     }
 
     public static String getSecretKeyWithFallback() {
-        return StringUtils.defaultIfEmpty(CONFIG.get("SecretKey").toString(), "");
+        return MapUtils.getString(CONFIG, TestConfigKeys.SECRET_KEY, StringUtils.EMPTY);
     }
 
     public static Environment getEnvironmentWithFallback() {
-        String env = CONFIG.get("Environment").toString();
+        String env = MapUtils.getString(CONFIG, TestConfigKeys.ENVIRONMENT);
         return EnumUtils.getEnumIgnoreCase(Environment.class, env, Environment.LOCAL);
     }
 
     public static String getProviderId() {
-        return StringUtils.defaultIfEmpty(CONFIG.get("ProviderId").toString(), "");
+        return MapUtils.getString(CONFIG, TestConfigKeys.PROVIDER_ID, StringUtils.EMPTY);
     }
 
     public static String getToken() {
-        Object value = CONFIG.get("Tokens");
+        Object value = CONFIG.get(TestConfigKeys.TOKENS);
+
         if (value instanceof List) {
             List<?> list = (List<?>) value;
             String[] tokens = new String[list.size()];
@@ -56,7 +66,8 @@ public final class TestConfigProvider {
                     throw new RuntimeException("Read tokens error");
                 }
             }
-            return StringUtils.defaultIfEmpty(tokens[numToken++], "");
+
+            return StringUtils.defaultIfEmpty(tokens[numToken++], StringUtils.EMPTY);
         }
 
         throw new RuntimeException("Read tokens error");
