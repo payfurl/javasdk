@@ -45,7 +45,6 @@ public class OkClient implements HttpClient {
         OkHttpClient okClientInstance = getDefaultOkHttpClient();
         if (okClientInstance != null) {
             this.client = okClientInstance;
-            configureHttpClient(okClientInstance, httpClientConfiguration);
         }
     }
 
@@ -152,15 +151,6 @@ public class OkClient implements HttpClient {
         return requestHeaders;
     }
 
-    private void configureHttpClient(OkHttpClient okHttpClient, HttpClientConfiguration httpClientConfiguration) {
-        okHttpClient.newBuilder()
-                .readTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
-                .connectTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
-                .callTimeout(httpClientConfiguration.getTimeout(), TimeUnit.SECONDS)
-                .build();
-    }
-
     private OkHttpClient getDefaultOkHttpClient() {
         if (defaultOkHttpClient != null) {
             return defaultOkHttpClient;
@@ -179,6 +169,9 @@ public class OkClient implements HttpClient {
         OkHttpClient.Builder okClientBuilder = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(false)
                 .callTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .connectTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .writeTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                 .followSslRedirects(true);
 
         if (Environment.LOCAL == environment) {
