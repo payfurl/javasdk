@@ -38,7 +38,7 @@ public class ApiException extends RuntimeException {
         this.gatewayMessage = null;
         this.code = UNKNOWN_ERROR;
         this.isRetryable = false;
-        this.type = String.format("https://docs.payfurl.com/errorcodes.html#%d", UNKNOWN_ERROR);
+        this.type = String.format("https://docs.payfurl.com/errorcodes.html#%d", UNKNOWN_ERROR.ordinal());
         this.httpCode = 500;
     }
 

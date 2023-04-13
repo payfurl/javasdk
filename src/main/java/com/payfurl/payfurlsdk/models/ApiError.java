@@ -94,8 +94,7 @@ public class ApiError {
                 '}';
     }
 
-    public static ApiError buildTimeoutError()
-    {
+    public static ApiError buildTimeoutError() {
         return new ApiError.Builder()
                 .withIsRetryable(true)
                 .withCode(ErrorCode.Timeout)

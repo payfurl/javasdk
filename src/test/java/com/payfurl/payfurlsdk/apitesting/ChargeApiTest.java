@@ -8,6 +8,7 @@ import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.api.support.ErrorCode;
 import com.payfurl.payfurlsdk.models.Address;
+import com.payfurl.payfurlsdk.models.ApiError;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
 import com.payfurl.payfurlsdk.models.ChargeData;
 import com.payfurl.payfurlsdk.models.ChargeList;
@@ -32,6 +33,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class ChargeApiTest {
@@ -157,22 +159,19 @@ public class ChargeApiTest {
                     .withOrder(SAMPLE_ORER)
                     .build();
 
-            ApiException exception = null;
-            // when
-            try {
-                ChargeData chargeData = chargeApi.createWithCard(newChargeCardRequest);
-            } catch (ApiException apiException) {
-                exception = apiException;
-            }
+            Throwable throwable = catchThrowable(() -> chargeApi.createWithCard(newChargeCardRequest));
 
             // then
-            then(exception).isNotNull();
-            then(exception.getCode()).isEqualTo(ErrorCode.InvalidCardNumber);
-            then(exception.getMessage()).isEqualTo("Invalid Card Number");
-            then(exception.getResource()).isEqualTo("/charge/card");
-            then(exception.isRetryable()).isEqualTo(false);
-            then(exception.getType()).isEqualTo("https://docs.payfurl.com/errorcodes.html#5");
-            then(exception.getHttpCode()).isEqualTo(400);
+            then(throwable).isInstanceOf(ApiException.class)
+                    .usingRecursiveComparison()
+                    .isEqualTo(new ApiException(new ApiError.Builder()
+                            .withCode(ErrorCode.InvalidCardNumber)
+                            .withMessage("Invalid Card Number")
+                            .withResource("/charge/card")
+                            .withIsRetryable(false)
+                            .withType("https://docs.payfurl.com/errorcodes.html#5")
+                            .withHttpCode(400)
+                            .build()));
         }
 
         @Test
@@ -250,6 +249,46 @@ public class ChargeApiTest {
             // then
             then(chargeData).isNotNull();
             then(chargeData.status).isEqualTo(SUCCESS_MARKER);
+        }
+    }
+
+    @Nested
+    class FailFlow {
+
+        @Test
+        @DisplayName("Given PayFurlClient configuration with small timeout When create API is called Then throw client's timeout error")
+        void testSmallTimeoutConfigurationToCauseException() {
+            // given
+            PayFurlClient lowTimeoutPayFurlClient = new PayFurlClient.Builder()
+                    .withHttpClientConfiguration((config) -> config.timeout(10))
+                    .withEnvironment(TestConfigProvider.getEnvironmentWithFallback())
+                    .withSecretKey(TestConfigProvider.getSecretKeyWithFallback())
+                    .build();
+
+            ChargeApi lowTimeoutChargeApi = lowTimeoutPayFurlClient.getChargeApi();
+
+            NewChargeCardLeastCost newChargeCardLeastCost = new NewChargeCardLeastCost.Builder()
+                    .withAmount(BigDecimal.valueOf(258))
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withOrder(SAMPLE_ORER)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withMetadata(METADATA)
+                    .build();
+
+            // when
+            Throwable throwable = catchThrowable(() -> lowTimeoutChargeApi.createWithCardLeastCost(newChargeCardLeastCost));
+
+            // then
+            then(throwable).isInstanceOf(ApiException.class)
+                    .usingRecursiveComparison()
+                    .isEqualTo(new ApiException(new ApiError.Builder()
+                            .withCode(ErrorCode.UnknownError)
+                            .withMessage("timeout")
+                            .withResource(null)
+                            .withIsRetryable(false)
+                            .withType("https://docs.payfurl.com/errorcodes.html#1")
+                            .withHttpCode(500)
+                            .build()));
         }
     }
 }

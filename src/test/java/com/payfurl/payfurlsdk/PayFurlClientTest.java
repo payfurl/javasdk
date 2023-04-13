@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -70,5 +71,25 @@ class PayFurlClientTest {
     @DisplayName("Given PayFurlClient When getSecretKeyAuthHandler is called Then return one secret key auth handler")
     void testGetSecretKeyAuthHandler() {
         then(dummyProdConfiguredClient.getSecretKeyAuthHandler().getSecretKey()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Given PayFurlClient configuration When create OkHttClient is called Then return custom default client")
+    void testDefaultTimeoutConfiguration() {
+        PayFurlClient payFurlClient = new PayFurlClient.Builder()
+                .build();
+
+        then(payFurlClient.getTimeout()).isEqualTo(TimeUnit.SECONDS.toMillis(60));
+    }
+
+    @Test
+    @DisplayName("Given PayFurlClient configuration When create OkHttClient is called Then return custom timeout client")
+    void testCustomTimeoutConfiguration() {
+        long smallTimeoutMs = 40;
+        PayFurlClient payFurlClient = new PayFurlClient.Builder()
+                .withHttpClientConfiguration((config) -> config.timeout(smallTimeoutMs))
+                .build();
+
+        then(payFurlClient.getTimeout()).isEqualTo(smallTimeoutMs);
     }
 }

@@ -22,9 +22,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class PayFurlClient implements PayFurlClientSdk {
+    private static final long DEFAULT_CALLS_TIMEOUT_SECONDS = TimeUnit.SECONDS.toMillis(60);
     private static final String SDK_VERSION = "2022.0.1";
     private static final String LOCAL_URL = "https://localhost:5001";
     private static final String SANDBOX_URL = "https://sandbox-api.payfurl.com";
@@ -116,7 +118,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     }
 
     @Override
-    public long timeout() {
+    public long getTimeout() {
         return httpClientConfiguration.getTimeout();
     }
 
@@ -171,7 +173,6 @@ public class PayFurlClient implements PayFurlClientSdk {
     }
 
     public static final class Builder {
-
         private final HttpClientConfiguration.Builder httpClientConfigurationBuilder = new HttpClientConfiguration.Builder();
         private final Map<AuthType, AuthHandler> authHandlerMap = null;
         private final String userAgentDetails = null;
@@ -201,9 +202,12 @@ public class PayFurlClient implements PayFurlClientSdk {
         }
 
         public PayFurlClient build() {
+            long timeout = getTimeoutFrom(httpClientConfigurationBuilder);
             HttpClientConfiguration httpClientConfig = httpClientConfigurationBuilder
+                    .timeout(timeout)
                     .environment(environment)
                     .build();
+
             HttpClient httpClient = new OkClient(httpClientConfig);
 
             return new PayFurlClient(environment,
@@ -213,6 +217,16 @@ public class PayFurlClient implements PayFurlClientSdk {
                     authHandlerMap,
                     userAgentDetails,
                     secretKey);
+        }
+
+        private static long getTimeoutFrom(HttpClientConfiguration.Builder httpClientConfigurationBuilder) {
+            long userConfigTimeout = httpClientConfigurationBuilder.getTimeout();
+
+            if (userConfigTimeout > 0) {
+                return userConfigTimeout;
+            }
+
+            return DEFAULT_CALLS_TIMEOUT_SECONDS;
         }
     }
 }

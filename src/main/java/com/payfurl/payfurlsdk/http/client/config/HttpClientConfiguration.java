@@ -29,9 +29,17 @@ public class HttpClientConfiguration {
             return this;
         }
 
+        public long getTimeout() {
+            return timeout;
+        }
+
         public Builder environment(Environment environment) {
             this.environment = environment;
             return this;
+        }
+
+        public Environment getEnvironment() {
+            return environment;
         }
 
         public HttpClientConfiguration build() {
