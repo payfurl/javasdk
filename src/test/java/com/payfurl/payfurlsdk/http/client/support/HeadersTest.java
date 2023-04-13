@@ -3,7 +3,6 @@ package com.payfurl.payfurlsdk.http.client.support;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,7 +54,6 @@ class HeadersTest {
         );
     }
 
-    @Disabled
     @ParameterizedTest(name = "{index}: {0}")
     @MethodSource("provideDataForTestValue")
     @DisplayName("Given key for headers When value is called Then return value")
