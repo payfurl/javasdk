@@ -17,6 +17,7 @@ import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.SocketTimeoutException;
 import java.util.Map;
 
@@ -103,7 +104,7 @@ public class BaseApi {
             HttpResponse response = getClientInstance().execute(request);
 
             return getDataFrom(response, returnType);
-        } catch (SocketTimeoutException socketTimeoutException) {
+        } catch (InterruptedIOException socketTimeoutException) {
             throw new ApiException(ApiError.buildTimeoutError());
         } catch (IOException exception) {
             throw new ApiException(exception);

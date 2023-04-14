@@ -125,7 +125,6 @@ public class OkClient implements HttpClient {
                 .headers(requestHeaders.build())
                 .url(url)
                 .build();
-
     }
 
     private static RequestBody createRequestBodyFrom(HttpRequest httpRequest) {
