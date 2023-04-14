@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class PayFurlClient implements PayFurlClientSdk {
-    private static final long DEFAULT_CALLS_TIMEOUT_SECONDS = TimeUnit.SECONDS.toMillis(60);
+    private static final long DEFAULT_CALLS_TIMEOUT_MILLISECONDS = TimeUnit.SECONDS.toMillis(60);
     private static final String SDK_VERSION = "2022.0.1";
     private static final String LOCAL_URL = "https://localhost:5001";
     private static final String SANDBOX_URL = "https://sandbox-api.payfurl.com";
@@ -226,7 +226,7 @@ public class PayFurlClient implements PayFurlClientSdk {
                 return userConfigTimeout;
             }
 
-            return DEFAULT_CALLS_TIMEOUT_SECONDS;
+            return DEFAULT_CALLS_TIMEOUT_MILLISECONDS;
         }
     }
 }

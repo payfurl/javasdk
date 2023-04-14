@@ -65,7 +65,7 @@ public class TimeoutTest {
             .build();
 
     @Test
-    @DisplayName("Given PayFurlClient configuration When create OkHttClient is called Then return custom default client")
+    @DisplayName("Given PayFurlClient configuration When create OkHttClient is called Then return default timeout")
     void testDefaultTimeoutConfiguration() {
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
                 .build();
@@ -74,7 +74,7 @@ public class TimeoutTest {
     }
 
     @Test
-    @DisplayName("Given PayFurlClient configuration When create OkHttClient is called Then return custom timeout client")
+    @DisplayName("Given PayFurlClient configuration When create OkHttClient is called Then return custom timeout")
     void testCustomTimeoutConfiguration() {
         long smallTimeoutMs = 40;
         PayFurlClient payFurlClient = new PayFurlClient.Builder()

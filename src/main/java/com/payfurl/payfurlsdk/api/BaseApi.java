@@ -104,7 +104,7 @@ public class BaseApi {
             HttpResponse response = getClientInstance().execute(request);
 
             return getDataFrom(response, returnType);
-        } catch (InterruptedIOException socketTimeoutException) {
+        } catch (InterruptedIOException interruptedIOException) {
             throw new ApiException(ApiError.buildTimeoutError());
         } catch (IOException exception) {
             throw new ApiException(exception);
