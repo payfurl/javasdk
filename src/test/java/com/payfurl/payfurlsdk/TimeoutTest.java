@@ -74,7 +74,7 @@ public class TimeoutTest {
     }
 
     @Test
-    @DisplayName("Given PayFurlClient configuration When create OkHttClient is called Then return custom timeout")
+    @DisplayName("Given PayFurlClient configuration with timeout When create OkHttClient is called Then return custom timeout")
     void testCustomTimeoutConfiguration() {
         long smallTimeoutMs = 40;
         PayFurlClient payFurlClient = new PayFurlClient.Builder()
@@ -88,7 +88,7 @@ public class TimeoutTest {
     class FailFlow {
 
         @Test
-        @DisplayName("Given PayFurlClient configuration with small timeout When create API is called Then throw client's timeout error")
+        @DisplayName("Given PayFurlClient configuration with small timeout When charge API is called Then throw client's timeout error")
         void testSmallTimeoutConfigurationToCauseException() {
             // given
             PayFurlClient lowTimeoutPayFurlClient = new PayFurlClient.Builder()
