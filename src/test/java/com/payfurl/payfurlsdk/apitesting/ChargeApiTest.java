@@ -8,6 +8,7 @@ import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.api.support.ErrorCode;
 import com.payfurl.payfurlsdk.models.Address;
+import com.payfurl.payfurlsdk.models.ApiError;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
 import com.payfurl.payfurlsdk.models.ChargeData;
 import com.payfurl.payfurlsdk.models.ChargeList;
@@ -32,6 +33,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
 public class ChargeApiTest {
@@ -57,7 +59,7 @@ public class ChargeApiTest {
             .withPostalCode("5006")
             .withCountry("Australia")
             .build();
-    private static final List<ProductItem> Items = Arrays.asList(new ProductItem.Builder()
+    private static final List<ProductItem> ITEMS = Arrays.asList(new ProductItem.Builder()
                     .withAmount(BigDecimal.valueOf(123))
                     .withDescription("First item")
                     .withQuantity(1)
@@ -73,11 +75,11 @@ public class ChargeApiTest {
                     .withProductCode("PC15678")
                     .withUnitOfMeasure("kg")
                     .build());
-    private static final Order SAMPLE_ORER = new Order.Builder()
+    private static final Order SAMPLE_ORDER = new Order.Builder()
             .withOrderNumber("12345ON")
             .withDutyAmount(BigDecimal.valueOf(1))
             .withFreightAmount(BigDecimal.valueOf(2))
-            .withItems(Items)
+            .withItems(ITEMS)
             .build();
 
     private ChargeApi chargeApi;
@@ -107,7 +109,7 @@ public class ChargeApiTest {
                     .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
-                    .withOrder(SAMPLE_ORER)
+                    .withOrder(SAMPLE_ORDER)
                     .withMetadata(METADATA)
                     .build();
 
@@ -129,7 +131,7 @@ public class ChargeApiTest {
                     .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
-                    .withOrder(SAMPLE_ORER)
+                    .withOrder(SAMPLE_ORDER)
                     .withWebhookConfig(new WebhookConfig.Builder()
                             .withUrl("https://webhook.site/1da8cac9-fef5-47bf-a276-81856f73d7ca")
                             .withAuthorization("Basic user:password")
@@ -154,25 +156,22 @@ public class ChargeApiTest {
                     .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(SAMPLE_FAILED_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
-                    .withOrder(SAMPLE_ORER)
+                    .withOrder(SAMPLE_ORDER)
                     .build();
 
-            ApiException exception = null;
-            // when
-            try {
-                ChargeData chargeData = chargeApi.createWithCard(newChargeCardRequest);
-            } catch (ApiException apiException) {
-                exception = apiException;
-            }
+            Throwable throwable = catchThrowable(() -> chargeApi.createWithCard(newChargeCardRequest));
 
             // then
-            then(exception).isNotNull();
-            then(exception.getCode()).isEqualTo(ErrorCode.InvalidCardNumber);
-            then(exception.getMessage()).isEqualTo("Invalid Card Number");
-            then(exception.getResource()).isEqualTo("/charge/card");
-            then(exception.isRetryable()).isEqualTo(false);
-            then(exception.getType()).isEqualTo("https://docs.payfurl.com/errorcodes.html#5");
-            then(exception.getHttpCode()).isEqualTo(400);
+            then(throwable).isInstanceOf(ApiException.class)
+                    .usingRecursiveComparison()
+                    .isEqualTo(new ApiException(new ApiError.Builder()
+                            .withCode(ErrorCode.InvalidCardNumber)
+                            .withMessage("Invalid Card Number")
+                            .withResource("/charge/card")
+                            .withIsRetryable(false)
+                            .withType("https://docs.payfurl.com/errorcodes.html#5")
+                            .withHttpCode(400)
+                            .build()));
         }
 
         @Test
@@ -182,7 +181,7 @@ public class ChargeApiTest {
             NewChargeCardLeastCost newChargeCardLeastCost = new NewChargeCardLeastCost.Builder()
                     .withAmount(BigDecimal.valueOf(258))
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
-                    .withOrder(SAMPLE_ORER)
+                    .withOrder(SAMPLE_ORDER)
                     .withAddress(SAMPLE_ADDRESS)
                     .withMetadata(METADATA)
                     .build();

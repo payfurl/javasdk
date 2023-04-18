@@ -12,7 +12,7 @@ public interface Configuration {
 
     String getUserAgentDetail();
 
-    long timeout();
+    long getTimeout();
 
     String getSecretKey();
 

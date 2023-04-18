@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 
 public class OkClient implements HttpClient {
     private static final Object SIMPLE_SYNC_OBJECT = new Object();
-    private static final int DEFAULT_CALL_TIMEOUT_SECONDS = 60;
     private static volatile OkHttpClient defaultOkHttpClient;
     private final Environment environment;
     private OkHttpClient client;
@@ -44,7 +43,7 @@ public class OkClient implements HttpClient {
 
         OkHttpClient okClientInstance = getDefaultOkHttpClient();
         if (okClientInstance != null) {
-            this.client = okClientInstance;
+            this.client = getConfiguredHttpClient(okClientInstance, httpClientConfiguration);
         }
     }
 
@@ -126,7 +125,6 @@ public class OkClient implements HttpClient {
                 .headers(requestHeaders.build())
                 .url(url)
                 .build();
-
     }
 
     private static RequestBody createRequestBodyFrom(HttpRequest httpRequest) {
@@ -151,6 +149,15 @@ public class OkClient implements HttpClient {
         return requestHeaders;
     }
 
+    private OkHttpClient getConfiguredHttpClient(OkHttpClient okHttpClient, HttpClientConfiguration httpClientConfiguration) {
+        return okHttpClient.newBuilder()
+                .readTimeout(httpClientConfiguration.getTimeout(), TimeUnit.MILLISECONDS)
+                .writeTimeout(httpClientConfiguration.getTimeout(), TimeUnit.MILLISECONDS)
+                .connectTimeout(httpClientConfiguration.getTimeout(), TimeUnit.MILLISECONDS)
+                .callTimeout(httpClientConfiguration.getTimeout(), TimeUnit.MILLISECONDS)
+                .build();
+    }
+
     private OkHttpClient getDefaultOkHttpClient() {
         if (defaultOkHttpClient != null) {
             return defaultOkHttpClient;
@@ -168,10 +175,6 @@ public class OkClient implements HttpClient {
     private OkHttpClient initializeOkClient() {
         OkHttpClient.Builder okClientBuilder = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(false)
-                .callTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .connectTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .readTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .writeTimeout(DEFAULT_CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                 .followSslRedirects(true);
 
         if (Environment.LOCAL == environment) {
