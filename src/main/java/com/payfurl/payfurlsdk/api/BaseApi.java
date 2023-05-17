@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
-import java.net.SocketTimeoutException;
 import java.util.Map;
 
 public class BaseApi {
@@ -61,7 +60,7 @@ public class BaseApi {
             try {
                 error = ApiUtils.deserialize(responseBody, ApiError.class);
                 error.setHttpCode(responseCode);
-            } catch (JsonProcessingException e) {
+            } catch (Exception e) {
                 throw new ApiException(new ApiError.Builder()
                         .withMessage(responseBody)
                         .withIsRetryable(false)
@@ -118,6 +117,8 @@ public class BaseApi {
             HttpResponse response = getClientInstance().execute(request);
 
             return getDataFrom(response, returnType);
+        } catch (InterruptedIOException interruptedIOException) {
+            throw new ApiException(ApiError.buildTimeoutError());
         } catch (IOException exception) {
             throw new ApiException(exception);
         }
@@ -130,6 +131,8 @@ public class BaseApi {
             HttpResponse response = getClientInstance().execute(request);
 
             return getDataFrom(response, returnType);
+        } catch (InterruptedIOException interruptedIOException) {
+            throw new ApiException(ApiError.buildTimeoutError());
         } catch (IOException exception) {
             throw new ApiException(exception);
         }
@@ -142,6 +145,8 @@ public class BaseApi {
             HttpResponse response = getClientInstance().execute(request);
 
             return getDataFrom(response, returnType);
+        } catch (InterruptedIOException interruptedIOException) {
+            throw new ApiException(ApiError.buildTimeoutError());
         } catch (IOException exception) {
             throw new ApiException(exception);
         }
