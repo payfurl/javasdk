@@ -20,7 +20,7 @@ public class NewChargeToken {
     private final String phone;
     private final boolean capture;
     private final Initiator initiator;
-    private final WebhookConfig webhookConfig;
+    private final WebhookConfig webhook;
     private final Map<String, String> metadata;
 
     @JsonCreator
@@ -37,7 +37,7 @@ public class NewChargeToken {
                           @JsonProperty("Phone") String phone,
                           @JsonProperty("Capture") boolean capture,
                           @JsonProperty("Initiator") Initiator initiator,
-                          @JsonProperty("WebhookConfig") WebhookConfig webhookConfig,
+                          @JsonProperty("Webhook") WebhookConfig webhook,
                           @JsonProperty("Metadata") Map<String, String> metadata) {
         this.amount = amount;
         this.currency = currency;
@@ -52,7 +52,7 @@ public class NewChargeToken {
         this.phone = phone;
         this.capture = capture;
         this.initiator = initiator;
-        this.webhookConfig = webhookConfig;
+        this.webhook = webhook;
         this.metadata = metadata;
     }
 
@@ -108,8 +108,8 @@ public class NewChargeToken {
         return initiator;
     }
 
-    public WebhookConfig getWebhookConfig() {
-        return webhookConfig;
+    public WebhookConfig getWebhook() {
+        return webhook;
     }
 
     public Map<String, String> getMetadata() {
@@ -132,7 +132,7 @@ public class NewChargeToken {
                 ", phone=" + phone +
                 ", capture=" + capture +
                 ", initiator=" + initiator +
-                ", webhookConfig=" + webhookConfig +
+                ", webhook=" + webhook +
                 ", metadata=" + metadata +
                 '}';
     }
@@ -151,7 +151,7 @@ public class NewChargeToken {
         private String phone;
         private boolean capture = true;
         private Initiator initiator;
-        private WebhookConfig webhookConfig;
+        private WebhookConfig webhook;
         private Map<String, String> metadata;
 
         public Builder withAmount(BigDecimal amount) {
@@ -219,8 +219,8 @@ public class NewChargeToken {
             return this;
         }
 
-        public Builder withWebhookConfig(WebhookConfig webhookConfig) {
-            this.webhookConfig = webhookConfig;
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
             return this;
         }
 
@@ -230,7 +230,7 @@ public class NewChargeToken {
         }
 
         public NewChargeToken build() {
-            return new NewChargeToken(amount, currency, reference, token, checkoutTransfer, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig, metadata);
+            return new NewChargeToken(amount, currency, reference, token, checkoutTransfer, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhook, metadata);
         }
     }
 }
