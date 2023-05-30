@@ -132,7 +132,7 @@ public class ChargeApiTest {
                     .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
                     .withAddress(SAMPLE_ADDRESS)
                     .withOrder(SAMPLE_ORDER)
-                    .withWebhookConfig(new WebhookConfig.Builder()
+                    .withWebhook(new WebhookConfig.Builder()
                             .withUrl("https://webhook.site/1da8cac9-fef5-47bf-a276-81856f73d7ca")
                             .withAuthorization("Basic user:password")
                             .build())

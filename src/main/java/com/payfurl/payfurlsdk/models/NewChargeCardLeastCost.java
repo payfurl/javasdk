@@ -19,7 +19,7 @@ public class NewChargeCardLeastCost {
     private final String phone;
     private final boolean capture;
     private final Initiator initiator;
-    private final WebhookConfig webhookConfig;
+    private final WebhookConfig webhook;
     private final Map<String, String> metadata;
 
     @JsonCreator
@@ -35,7 +35,7 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("Phone") String phone,
                                   @JsonProperty("Capture") boolean capture,
                                   @JsonProperty("Initiator") Initiator initiator,
-                                  @JsonProperty("WebhookConfig") WebhookConfig webhookConfig,
+                                  @JsonProperty("Webhook") WebhookConfig webhook,
                                   @JsonProperty("Metadata") Map<String, String> metadata) {
         this.amount = amount;
         this.currency = currency;
@@ -49,7 +49,7 @@ public class NewChargeCardLeastCost {
         this.phone = phone;
         this.capture = capture;
         this.initiator = initiator;
-        this.webhookConfig = webhookConfig;
+        this.webhook = webhook;
         this.metadata = metadata;
     }
 
@@ -101,8 +101,8 @@ public class NewChargeCardLeastCost {
         return initiator;
     }
 
-    public WebhookConfig getWebhookConfig() {
-        return webhookConfig;
+    public WebhookConfig getWebhook() {
+        return webhook;
     }
 
     public Map<String, String> getMetadata() {
@@ -124,7 +124,7 @@ public class NewChargeCardLeastCost {
                 ", phone=" + phone +
                 ", capture=" + capture +
                 ", initiator=" + initiator +
-                ", webhookConfig=" + webhookConfig +
+                ", webhook=" + webhook +
                 ", meatadata=" + metadata +
                 '}';
     }
@@ -142,7 +142,7 @@ public class NewChargeCardLeastCost {
         private String phone;
         private boolean capture = true;
         private Initiator initiator;
-        private WebhookConfig webhookConfig;
+        private WebhookConfig webhook;
         private Map<String, String> metadata;
 
         public Builder withAmount(BigDecimal amount) {
@@ -205,8 +205,8 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
-        public Builder withWebhookConfig(WebhookConfig webhookConfig) {
-            this.webhookConfig = webhookConfig;
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
             return this;
         }
 
@@ -216,7 +216,7 @@ public class NewChargeCardLeastCost {
         }
 
         public NewChargeCardLeastCost build() {
-            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhookConfig, metadata);
+            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhook, metadata);
         }
     }
 }
