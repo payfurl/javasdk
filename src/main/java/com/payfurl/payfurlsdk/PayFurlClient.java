@@ -2,26 +2,29 @@ package com.payfurl.payfurlsdk;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.payfurl.payfurlsdk.api.ProviderApi;
 import com.payfurl.payfurlsdk.api.ChargeApi;
-import com.payfurl.payfurlsdk.api.TokenApi;
-import com.payfurl.payfurlsdk.api.VaultApi;
 import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.api.TransferApi;
 import com.payfurl.payfurlsdk.api.PaymentMethodApi;
+import com.payfurl.payfurlsdk.api.ProviderApi;
+import com.payfurl.payfurlsdk.api.TokenApi;
+import com.payfurl.payfurlsdk.api.TransferApi;
+import com.payfurl.payfurlsdk.api.VaultApi;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.auth.SecretKeyAuthHandler;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
 import com.payfurl.payfurlsdk.http.client.OkClient;
 import com.payfurl.payfurlsdk.http.client.config.Environment;
+import com.payfurl.payfurlsdk.http.client.config.EnvironmentConfigKey;
 import com.payfurl.payfurlsdk.http.client.config.HttpClientConfiguration;
+import com.payfurl.payfurlsdk.http.client.config.Region;
 import com.payfurl.payfurlsdk.http.client.support.Headers;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -29,15 +32,23 @@ public class PayFurlClient implements PayFurlClientSdk {
     private static final long DEFAULT_CALLS_TIMEOUT_MILLISECONDS = TimeUnit.SECONDS.toMillis(60);
     private static final String SDK_VERSION = "2022.0.1";
     private static final String LOCAL_URL = "https://localhost:5001";
-    private static final String SANDBOX_URL = "https://sandbox-api.payfurl.com";
-    private static final String PRODUCTION_URL = "https://api.payfurl.com";
-    private static final String DEVELOPMENT_URL = "https://develop-api.payfurl.com";
-    private static final Map<Environment, String> ENV_TO_URL_MAP = ImmutableMap.of(
-            Environment.LOCAL, LOCAL_URL,
-            Environment.DEVELOPMENT, DEVELOPMENT_URL,
-            Environment.SANDBOX, SANDBOX_URL,
-            Environment.PRODUCTION, PRODUCTION_URL
-    );
+    private static final String GLOBAL_SANDBOX_URL = "https://sandbox-api.payfurl.com";
+    private static final String GLOBAL_PRODUCTION_URL = "https://api.payfurl.com";
+    private static final String GLOBAL_DEVELOPMENT_URL = "https://develop-api.payfurl.com";
+    private static final String KEY_REGION_SEPARATOR = "-";
+
+    private static final ImmutableMap<EnvironmentConfigKey, String> ENV_CONFIG_TO_URL_MAPPING = ImmutableMap.<EnvironmentConfigKey, String>builder()
+            .put(EnvironmentConfigKey.of(Region.NONE, Environment.LOCAL), LOCAL_URL)
+            .put(EnvironmentConfigKey.of(Region.NONE, Environment.DEVELOPMENT), GLOBAL_DEVELOPMENT_URL)
+            .put(EnvironmentConfigKey.of(Region.NONE, Environment.SANDBOX), GLOBAL_SANDBOX_URL)
+            .put(EnvironmentConfigKey.of(Region.NONE, Environment.PRODUCTION), GLOBAL_PRODUCTION_URL)
+
+            .put(EnvironmentConfigKey.of(Region.AU, Environment.DEVELOPMENT), "https://develop-api-au.payfurl.com")
+            .put(EnvironmentConfigKey.of(Region.JP, Environment.DEVELOPMENT), "https://develop-api-jp.payfurl.com")
+            .put(EnvironmentConfigKey.of(Region.US, Environment.SANDBOX), "https://sandbox-api-us.payfurl.com")
+            .put(EnvironmentConfigKey.of(Region.AU, Environment.SANDBOX), "https://sandbox-api-au.payfurl.com")
+            .put(EnvironmentConfigKey.of(Region.AU, Environment.PRODUCTION), "https://api-au.payfurl.com")
+            .build();
 
     private final Environment environment;
     private final Headers additionalHeaders;
@@ -46,6 +57,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private final SecretKeyAuthHandler secretKeyAuthHandler;
     private final Map<AuthType, AuthHandler> authHandlerMap;
     private final String userAgentDetails;
+    private final EnvironmentConfigKey environmentConfigKey;
 
     private ChargeApi chargeApi;
     private CustomerApi customerApi;
@@ -54,6 +66,21 @@ public class PayFurlClient implements PayFurlClientSdk {
     private VaultApi vaultApi;
     private TokenApi tokenApi;
     private ProviderApi providerApi;
+
+    private static Optional<String> extractRegionFromKey(String key) {
+        if (StringUtils.isEmpty(key)) {
+            return Optional.empty();
+        }
+
+        String[] parts = key.split(KEY_REGION_SEPARATOR, 2);
+
+        if (parts.length < 2) {
+            return Optional.empty();
+        }
+
+        return Optional.of(parts[1])
+                .map(String::toLowerCase);
+    }
 
     private PayFurlClient(Environment environment,
                           Headers additionalHeaders,
@@ -75,6 +102,13 @@ public class PayFurlClient implements PayFurlClientSdk {
 
         this.secretKeyAuthHandler = new SecretKeyAuthHandler(secretKey);
         this.authHandlerMap.put(AuthType.SECRET_KEY, secretKeyAuthHandler);
+
+        Optional<String> rawRegionPart = extractRegionFromKey(secretKey);
+        Region region = rawRegionPart.isPresent()
+                ? Region.fromLabel(rawRegionPart.get())
+                : Region.NONE;
+
+        this.environmentConfigKey = EnvironmentConfigKey.of(region, environment);
 
         initializeApis();
     }
@@ -129,7 +163,18 @@ public class PayFurlClient implements PayFurlClientSdk {
 
     @Override
     public String getBaseUri() {
-        return StringUtils.defaultIfEmpty(ENV_TO_URL_MAP.get(environment), SANDBOX_URL);
+        String baseUri = getBaseUriWithFallback();
+        return StringUtils.defaultIfEmpty(baseUri, GLOBAL_SANDBOX_URL);
+    }
+
+    private String getBaseUriWithFallback() {
+        String baseUri = ENV_CONFIG_TO_URL_MAPPING.get(environmentConfigKey);
+
+        if (StringUtils.isEmpty(baseUri)) {
+            return ENV_CONFIG_TO_URL_MAPPING.get(EnvironmentConfigKey.of(Region.NONE, environmentConfigKey.getEnvironment()));
+        }
+
+        return baseUri;
     }
 
     @Override
