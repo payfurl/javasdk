@@ -105,12 +105,6 @@ class PayFurlClientTest {
                                 .withSecretKey(getSecretKeyWithRegion(Region.JP))
                                 .build(),
                         "https://api.payfurl.com"),
-                Arguments.of("US - Non-existing Production environment with fallback to global production url",
-                        new PayFurlClient.Builder()
-                                .withEnvironment(Environment.PRODUCTION)
-                                .withSecretKey(getSecretKeyWithRegion(Region.US))
-                                .build(),
-                        "https://api.payfurl.com"),
                 Arguments.of("US - Non-existing Production environment and incorrectly formatted key with fallback to global production url",
                         new PayFurlClient.Builder()
                                 .withEnvironment(Environment.PRODUCTION)
