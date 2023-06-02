@@ -44,10 +44,12 @@ public class PayFurlClient implements PayFurlClientSdk {
             .put(EnvironmentConfigKey.of(Region.NONE, Environment.PRODUCTION), GLOBAL_PRODUCTION_URL)
 
             .put(EnvironmentConfigKey.of(Region.AU, Environment.DEVELOPMENT), "https://develop-api-au.payfurl.com")
+            .put(EnvironmentConfigKey.of(Region.US, Environment.DEVELOPMENT), "https://develop-api-us.payfurl.com")
             .put(EnvironmentConfigKey.of(Region.JP, Environment.DEVELOPMENT), "https://develop-api-jp.payfurl.com")
-            .put(EnvironmentConfigKey.of(Region.US, Environment.SANDBOX), "https://sandbox-api-us.payfurl.com")
             .put(EnvironmentConfigKey.of(Region.AU, Environment.SANDBOX), "https://sandbox-api-au.payfurl.com")
+            .put(EnvironmentConfigKey.of(Region.US, Environment.SANDBOX), "https://sandbox-api-us.payfurl.com")
             .put(EnvironmentConfigKey.of(Region.AU, Environment.PRODUCTION), "https://api-au.payfurl.com")
+            .put(EnvironmentConfigKey.of(Region.US, Environment.PRODUCTION), "https://api-us.payfurl.com")
             .build();
 
     private final Environment environment;
