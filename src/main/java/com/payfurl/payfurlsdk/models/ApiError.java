@@ -3,6 +3,7 @@ package com.payfurl.payfurlsdk.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.payfurl.payfurlsdk.api.support.ErrorCode;
+import com.payfurl.payfurlsdk.api.support.ErrorLink;
 
 import java.util.Map;
 
@@ -98,7 +99,7 @@ public class ApiError {
         return new ApiError.Builder()
                 .withIsRetryable(true)
                 .withCode(ErrorCode.Timeout)
-                .withType("https://docs.payfurl.com/errorcodes.html#94")
+                .withType(ErrorLink.buildWith(94))
                 .withHttpCode(400)
                 .withMessage("Request Timeout")
                 .build();

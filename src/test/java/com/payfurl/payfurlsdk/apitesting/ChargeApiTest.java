@@ -7,6 +7,7 @@ import com.payfurl.payfurlsdk.api.ChargeApi;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.api.support.ErrorCode;
+import com.payfurl.payfurlsdk.api.support.ErrorLink;
 import com.payfurl.payfurlsdk.models.Address;
 import com.payfurl.payfurlsdk.models.ApiError;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
@@ -169,7 +170,7 @@ public class ChargeApiTest {
                             .withMessage("Invalid Card Number")
                             .withResource("/charge/card")
                             .withIsRetryable(false)
-                            .withType("https://docs.payfurl.com/errorcodes.html#5")
+                            .withType(ErrorLink.buildWith(5))
                             .withHttpCode(400)
                             .build()));
         }

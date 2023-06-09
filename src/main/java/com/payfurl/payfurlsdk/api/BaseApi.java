@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.payfurl.payfurlsdk.Configuration;
 import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.api.support.ErrorCode;
+import com.payfurl.payfurlsdk.api.support.ErrorLink;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
@@ -65,7 +66,7 @@ public class BaseApi {
                         .withMessage(responseBody)
                         .withIsRetryable(false)
                         .withCode(UNKNOWN_ERROR)
-                        .withType("https://docs.payfurl.com/errorcodes.html#1")
+                        .withType(ErrorLink.buildWith(1))
                         .withHttpCode(responseCode)
                         .build());
             }
