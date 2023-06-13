@@ -7,6 +7,7 @@ import com.payfurl.payfurlsdk.api.ChargeApi;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.api.support.ErrorCode;
+import com.payfurl.payfurlsdk.api.support.ErrorLink;
 import com.payfurl.payfurlsdk.models.Address;
 import com.payfurl.payfurlsdk.models.ApiError;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
@@ -32,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
@@ -81,6 +83,7 @@ public class ChargeApiTest {
             .withFreightAmount(BigDecimal.valueOf(2))
             .withItems(ITEMS)
             .build();
+    private static final String HTML_ENDING = ".html";
 
     private ChargeApi chargeApi;
     private CustomerApi customerApi;
@@ -162,14 +165,20 @@ public class ChargeApiTest {
             Throwable throwable = catchThrowable(() -> chargeApi.createWithCard(newChargeCardRequest));
 
             // then
+
+            BiPredicate<String, String> typeComparator = (actual, expected) ->
+                    actual.replace(HTML_ENDING, "")
+                            .equals(expected.replace(HTML_ENDING, ""));
+
             then(throwable).isInstanceOf(ApiException.class)
                     .usingRecursiveComparison()
+                    .withEqualsForFields(typeComparator, "type")
                     .isEqualTo(new ApiException(new ApiError.Builder()
                             .withCode(ErrorCode.InvalidCardNumber)
                             .withMessage("Invalid Card Number")
                             .withResource("/charge/card")
                             .withIsRetryable(false)
-                            .withType("https://docs.payfurl.com/errorcodes.html#5")
+                            .withType(ErrorLink.buildWith(5))
                             .withHttpCode(400)
                             .build()));
         }
