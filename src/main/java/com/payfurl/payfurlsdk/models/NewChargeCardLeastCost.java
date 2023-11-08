@@ -21,6 +21,7 @@ public class NewChargeCardLeastCost {
     private final Initiator initiator;
     private final WebhookConfig webhook;
     private final Map<String, String> metadata;
+    private final String descriptor;
 
     @JsonCreator
     public NewChargeCardLeastCost(@JsonProperty("Amount") BigDecimal amount,
@@ -36,7 +37,8 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("Capture") boolean capture,
                                   @JsonProperty("Initiator") Initiator initiator,
                                   @JsonProperty("Webhook") WebhookConfig webhook,
-                                  @JsonProperty("Metadata") Map<String, String> metadata) {
+                                  @JsonProperty("Metadata") Map<String, String> metadata,
+                                  @JsonProperty("Descriptor") String descriptor) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -51,6 +53,7 @@ public class NewChargeCardLeastCost {
         this.initiator = initiator;
         this.webhook = webhook;
         this.metadata = metadata;
+        this.descriptor = descriptor;
     }
 
     public BigDecimal getAmount() {
@@ -109,6 +112,10 @@ public class NewChargeCardLeastCost {
         return metadata;
     }
 
+    public String getDescriptor() {
+        return descriptor;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCardLeastCost{" +
@@ -126,6 +133,7 @@ public class NewChargeCardLeastCost {
                 ", initiator=" + initiator +
                 ", webhook=" + webhook +
                 ", meatadata=" + metadata +
+                ", descriptor=" + descriptor +
                 '}';
     }
 
@@ -144,6 +152,7 @@ public class NewChargeCardLeastCost {
         private Initiator initiator;
         private WebhookConfig webhook;
         private Map<String, String> metadata;
+        private String descriptor;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -215,8 +224,28 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
+        public Builder withDescriptor(String descriptor) {
+            this.descriptor = descriptor;
+            return this;
+        }
+
         public NewChargeCardLeastCost build() {
-            return new NewChargeCardLeastCost(amount, currency, reference, paymentInformation, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhook, metadata);
+            return new NewChargeCardLeastCost(
+                    amount,
+                    currency,
+                    reference,
+                    paymentInformation,
+                    address,
+                    order,
+                    customerCode,
+                    invoiceNumber,
+                    email,
+                    phone,
+                    capture,
+                    initiator,
+                    webhook,
+                    metadata,
+                    descriptor);
         }
     }
 }
