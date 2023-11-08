@@ -21,6 +21,7 @@ public class NewChargeCustomer {
     private final Initiator initiator;
     private final WebhookConfig webhook;
     private final Map<String, String> metadata;
+    private final String descriptor;
 
     @JsonCreator
     public NewChargeCustomer(@JsonProperty("Amount") BigDecimal amount,
@@ -36,7 +37,8 @@ public class NewChargeCustomer {
                              @JsonProperty("Capture") boolean capture,
                              @JsonProperty("Initiator") Initiator initiator,
                              @JsonProperty("Webhook") WebhookConfig webhook,
-                             @JsonProperty("Metadata") Map<String, String> metadata) {
+                             @JsonProperty("Metadata") Map<String, String> metadata,
+                             @JsonProperty("Descriptor") String descriptor) {
         this.amount = amount;
         this.currency = currency;
         this.customerId = customerId;
@@ -51,6 +53,7 @@ public class NewChargeCustomer {
         this.initiator = initiator;
         this.webhook = webhook;
         this.metadata = metadata;
+        this.descriptor = descriptor;
     }
 
     public BigDecimal getAmount() {
@@ -109,6 +112,10 @@ public class NewChargeCustomer {
         return metadata;
     }
 
+    public String getDescriptor() {
+        return descriptor;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCustomer{" +
@@ -126,6 +133,7 @@ public class NewChargeCustomer {
                 ", initiator=" + initiator +
                 ", webhook=" + webhook +
                 ", metadata=" + metadata +
+                ", descriptor=" + descriptor +
                 '}';
     }
 
@@ -144,6 +152,7 @@ public class NewChargeCustomer {
         private Initiator initiator;
         private WebhookConfig webhook;
         private Map<String, String> metadata;
+        private String descriptor;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -214,8 +223,28 @@ public class NewChargeCustomer {
             return this;
         }
 
+        public Builder withDescriptor(String descriptor) {
+            this.descriptor = descriptor;
+            return this;
+        }
+
         public NewChargeCustomer build() {
-            return new NewChargeCustomer(amount, currency, customerId, reference, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhook, metadata);
+            return new NewChargeCustomer(
+                    amount,
+                    currency,
+                    customerId,
+                    reference,
+                    address,
+                    order,
+                    customerCode,
+                    invoiceNumber,
+                    email,
+                    phone,
+                    capture,
+                    initiator,
+                    webhook,
+                    metadata,
+                    descriptor);
         }
     }
 }
