@@ -10,6 +10,7 @@ import com.payfurl.payfurlsdk.models.NewPaymentMethodVault;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.PaymentMethodList;
 import com.payfurl.payfurlsdk.models.PaymentMethodSearch;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodProviderSingleUseToken;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,18 @@ public class PaymentMethodApi extends BaseApi {
     public PaymentMethodData createPaymentMethodWithCard(NewPaymentMethodCard newPaymentMethodCard) throws ApiException {
         String urlPath = paymentMethodApiBaseEndpoint + "/card";
         return executePostRequestWith(urlPath, newPaymentMethodCard, PaymentMethodData.class);
+    }
+
+    /**
+     * Add a payment method using provider single use token
+     *
+     * @param newPaymentMethodProviderSingleUseToken
+     * @return
+     * @throws ApiException
+     */
+    public PaymentMethodData createPaymentMethodWithSingleUseToken(NewPaymentMethodProviderSingleUseToken newPaymentMethodProviderSingleUseToken) throws ApiException {
+        String urlPath = paymentMethodApiBaseEndpoint + "/provider_single_use_token";
+        return executePostRequestWith(urlPath, newPaymentMethodProviderSingleUseToken, PaymentMethodData.class);
     }
 
     /**
