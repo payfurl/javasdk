@@ -21,6 +21,7 @@ public class NewChargePaymentMethod {
     private final Initiator initiator;
     private final WebhookConfig webhook;
     private final Map<String, String> metadata;
+    private final String descriptor;
 
     @JsonCreator
     public NewChargePaymentMethod(@JsonProperty("Amount") BigDecimal amount,
@@ -36,7 +37,8 @@ public class NewChargePaymentMethod {
                                   @JsonProperty("Capture") boolean capture,
                                   @JsonProperty("Initiator") Initiator initiator,
                                   @JsonProperty("Webhook") WebhookConfig webhook,
-                                  @JsonProperty("Metadata") Map<String, String> metadata) {
+                                  @JsonProperty("Metadata") Map<String, String> metadata,
+                                  @JsonProperty("Descriptor") String descriptor) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -51,6 +53,7 @@ public class NewChargePaymentMethod {
         this.initiator = initiator;
         this.webhook = webhook;
         this.metadata = metadata;
+        this.descriptor = descriptor;
     }
 
     public BigDecimal getAmount() {
@@ -109,6 +112,10 @@ public class NewChargePaymentMethod {
         return metadata;
     }
 
+    public String getDescriptor() {
+        return descriptor;
+    }
+
     @Override
     public String toString() {
         return "NewChargePaymentMethod{" +
@@ -126,6 +133,7 @@ public class NewChargePaymentMethod {
                 ", initiator=" + initiator +
                 ", webhook=" + webhook +
                 ", metadata=" + metadata +
+                ", descriptor=" + descriptor +
                 '}';
     }
 
@@ -145,6 +153,7 @@ public class NewChargePaymentMethod {
         private Initiator initiator;
         private WebhookConfig webhook;
         private Map<String, String> metadata;
+        private String descriptor;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -215,8 +224,28 @@ public class NewChargePaymentMethod {
             return this;
         }
 
+        public Builder withDescriptor(String descriptor) {
+            this.descriptor = descriptor;
+            return this;
+        }
+
         public NewChargePaymentMethod build() {
-            return new NewChargePaymentMethod(amount, currency, reference, paymentMethodId, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhook, metadata);
+            return new NewChargePaymentMethod(
+                    amount,
+                    currency,
+                    reference,
+                    paymentMethodId,
+                    address,
+                    order,
+                    customerCode,
+                    invoiceNumber,
+                    email,
+                    phone,
+                    capture,
+                    initiator,
+                    webhook,
+                    metadata,
+                    descriptor);
         }
     }
 }

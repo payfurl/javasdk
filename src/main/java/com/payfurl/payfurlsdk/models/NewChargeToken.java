@@ -22,6 +22,7 @@ public class NewChargeToken {
     private final Initiator initiator;
     private final WebhookConfig webhook;
     private final Map<String, String> metadata;
+    private final String descriptor;
 
     @JsonCreator
     public NewChargeToken(@JsonProperty("Amount") BigDecimal amount,
@@ -38,7 +39,8 @@ public class NewChargeToken {
                           @JsonProperty("Capture") boolean capture,
                           @JsonProperty("Initiator") Initiator initiator,
                           @JsonProperty("Webhook") WebhookConfig webhook,
-                          @JsonProperty("Metadata") Map<String, String> metadata) {
+                          @JsonProperty("Metadata") Map<String, String> metadata,
+                          @JsonProperty("Descriptor") String descriptor) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -54,6 +56,7 @@ public class NewChargeToken {
         this.initiator = initiator;
         this.webhook = webhook;
         this.metadata = metadata;
+        this.descriptor = descriptor;
     }
 
     public BigDecimal getAmount() {
@@ -116,6 +119,10 @@ public class NewChargeToken {
         return metadata;
     }
 
+    public String getDescriptor() {
+        return descriptor;
+    }
+
     @Override
     public String toString() {
         return "NewChargeToken{" +
@@ -134,6 +141,7 @@ public class NewChargeToken {
                 ", initiator=" + initiator +
                 ", webhook=" + webhook +
                 ", metadata=" + metadata +
+                ", descriptor=" + descriptor +
                 '}';
     }
 
@@ -153,6 +161,7 @@ public class NewChargeToken {
         private Initiator initiator;
         private WebhookConfig webhook;
         private Map<String, String> metadata;
+        private String descriptor;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -229,8 +238,29 @@ public class NewChargeToken {
             return this;
         }
 
+        public Builder withDescriptor(String descriptor) {
+            this.descriptor = descriptor;
+            return this;
+        }
+
         public NewChargeToken build() {
-            return new NewChargeToken(amount, currency, reference, token, checkoutTransfer, address, order, customerCode, invoiceNumber, email, phone, capture, initiator, webhook, metadata);
+            return new NewChargeToken(
+                    amount,
+                    currency,
+                    reference,
+                    token,
+                    checkoutTransfer,
+                    address,
+                    order,
+                    customerCode,
+                    invoiceNumber,
+                    email,
+                    phone,
+                    capture,
+                    initiator,
+                    webhook,
+                    metadata,
+                    descriptor);
         }
     }
 }

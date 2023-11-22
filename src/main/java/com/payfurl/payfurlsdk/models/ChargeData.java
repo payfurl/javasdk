@@ -32,6 +32,7 @@ public class ChargeData {
     public final BigDecimal authorisationAmount;
     private final Initiator initiator;
     private final VisaInstallmentsInfo visaInstallments;
+    private final String descriptor;
 
     @JsonCreator
     public ChargeData(@JsonProperty("ChargeId") String chargeId,
@@ -57,8 +58,8 @@ public class ChargeData {
                       @JsonProperty("ThreeDsVerified") boolean threeDsVerified,
                       @JsonProperty("AuthorisationAmount") BigDecimal authorisationAmount,
                       @JsonProperty("Initiator") Initiator initiator,
-                      @JsonProperty("VisaInstallments") VisaInstallmentsInfo visaInstallments
-    ) {
+                      @JsonProperty("VisaInstallments") VisaInstallmentsInfo visaInstallments,
+                      @JsonProperty("Descriptor") String descriptor) {
         this.chargeId = chargeId;
         this.providerChargeId = providerChargeId;
         this.amount = amount;
@@ -83,6 +84,7 @@ public class ChargeData {
         this.authorisationAmount = authorisationAmount;
         this.initiator = initiator;
         this.visaInstallments = visaInstallments;
+        this.descriptor = descriptor;
     }
 
     public String getChargeId() {
@@ -177,6 +179,10 @@ public class ChargeData {
         return initiator;
     }
 
+    public String getDescriptor() {
+        return descriptor;
+        }
+
     public VisaInstallmentsInfo getVisaInstallments() {
         return visaInstallments;
     }
@@ -208,6 +214,7 @@ public class ChargeData {
                 ", authorisationAmount=" + authorisationAmount +
                 ", initiator=" + initiator +
                 ", visaInstallments=" + visaInstallments +
+                ", descriptor=" + descriptor +
                 '}';
     }
 }

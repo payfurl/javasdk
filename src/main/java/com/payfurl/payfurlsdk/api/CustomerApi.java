@@ -16,6 +16,7 @@ import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
+import com.payfurl.payfurlsdk.models.NewCustomerProviderSingleUseToken;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -172,5 +173,16 @@ public class CustomerApi extends BaseApi {
      */
     public CustomerData createWithProviderToken(NewCustomerProviderToken customerProviderToken) throws ApiException {
         return executePostRequestWith(customerApiBaseEndpoint + "/provider_token", customerProviderToken, CustomerData.class);
+    }
+
+    /**
+     * Add a customer with provider single use token
+     *
+     * @param customerProviderSingleUseToken
+     * @return
+     * @throws ApiException
+     */
+    public CustomerData createWithSingleUseToken(NewCustomerProviderSingleUseToken customerProviderSingleUseToken) throws ApiException {
+        return executePostRequestWith(customerApiBaseEndpoint + "/provider_single_use_token", customerProviderSingleUseToken, CustomerData.class);
     }
 }
