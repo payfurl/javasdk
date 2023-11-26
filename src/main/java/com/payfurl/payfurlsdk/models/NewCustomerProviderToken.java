@@ -15,6 +15,7 @@ public class NewCustomerProviderToken {
     private final String providerId;
     private final String providerToken;
     private final Map<String, String> providerTokenData;
+    private final Map<String, String> metaData;
     private final Boolean verify;
 
     @JsonCreator
@@ -27,7 +28,9 @@ public class NewCustomerProviderToken {
                                     @JsonProperty("ProviderId") String providerId,
                                     @JsonProperty("ProviderToken") String providerToken,
                                     @JsonProperty("ProviderTokenData") Map<String, String> providerTokenData,
-                                    @JsonProperty("Verify") Boolean verify) {
+                                    @JsonProperty("Verify") Boolean verify,
+                                    @JsonProperty("MetaData") Map<String, String> metaData
+                                    ) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,6 +41,7 @@ public class NewCustomerProviderToken {
         this.providerToken = providerToken;
         this.providerTokenData = providerTokenData;
         this.verify = verify;
+        this.metaData = metaData;
     }
 
     public String getProviderId() {
@@ -54,6 +58,10 @@ public class NewCustomerProviderToken {
         return providerTokenData;
     }
 
+    public Map<String, String> getMetaData() {
+        return metaData;
+    }
+
     @Override
     public String toString() {
         return "NewCustomerProviderToken{" +
@@ -67,6 +75,7 @@ public class NewCustomerProviderToken {
                 ", providerTokenData=" + providerTokenData +
                 ", address=" + address +
                 ", verify=" + verify +
+                ", metaData=" + metaData +
                 '}';
     }
 
@@ -104,6 +113,7 @@ public class NewCustomerProviderToken {
         private String providerId;
         private String providerToken;
         private Map<String, String> providerTokenData;
+        private Map<String, String> metaData;
         private Boolean verify = false;
 
         public Builder withReference(String reference) {
@@ -151,13 +161,18 @@ public class NewCustomerProviderToken {
             return this;
         }
 
+        public Builder withMetaData(Map<String, String> metaDataData) {
+            this.metaData = metaData;
+            return this;
+        }
+
         public Builder withVerify(Boolean verify) {
             this.verify = verify;
             return this;
         }
 
         public NewCustomerProviderToken build() {
-            return new NewCustomerProviderToken(reference, firstName, lastName, email, phone, address, providerId, providerToken, providerTokenData, verify);
+            return new NewCustomerProviderToken(reference, firstName, lastName, email, phone, address, providerId, providerToken, providerTokenData, verify, metaData);
         }
     }
 }
