@@ -161,7 +161,7 @@ public class NewCustomerProviderToken {
             return this;
         }
 
-        public Builder withMetaData(Map<String, String> metaDataData) {
+        public Builder withMetadata(Map<String, String> metaData) {
             this.metaData = metaData;
             return this;
         }
