@@ -81,7 +81,7 @@ public enum ErrorCode {
     InvalidCaptureAmountPassed,
     FeaturePartialCaptureIsNotSupportedCaptureAmount,
     AmountOutsideRangeForMerchant,
-    GatewayTimout,
+    GatewayTimeout,
     InvalidPaymentInformation,
     CannotProvideBothExpireDateAndExpireSeconds,
     InvalidExpireDateOrExpireSeconds,
@@ -95,5 +95,10 @@ public enum ErrorCode {
     TokenVerificationNotSupported,
     InvalidAddress,
     CardBlocked,
-    Timeout
+    Timeout,
+    VisIsNotSupported,
+    TheOrderInformationIsInvalid,
+    MetadataDoesNotContainRequiredFields,
+    FraudIsNotSupported,
+    CardIsNotEnrolledForVis,
 }
