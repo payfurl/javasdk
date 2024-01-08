@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
+import java.util.Map;
 
 public class PaymentMethodData {
     private final String paymentMethodId;
@@ -15,6 +16,8 @@ public class PaymentMethodData {
     private final String providerType;
     private final Date dateAdded;
     private final String email;
+    private final String providerPaymentMethodId;
+    private final Map<String, String> providerPaymentMethodData;
 
     @JsonCreator
     public PaymentMethodData(@JsonProperty("PaymentMethodId") String paymentMethodId,
@@ -25,7 +28,9 @@ public class PaymentMethodData {
                              @JsonProperty("ProviderId") String providerId,
                              @JsonProperty("ProviderType") String providerType,
                              @JsonProperty("DateAdded") Date dateAdded,
-                             @JsonProperty("Email") String email) {
+                             @JsonProperty("Email") String email,
+                             @JsonProperty("ProviderPaymentMethodId") String providerPaymentMethodId,
+                             @JsonProperty("ProviderPaymentMethodData") Map<String, String> providerPaymentMethodData) {
         this.paymentMethodId = paymentMethodId;
         this.userId = userId;
         this.customerId = customerId;
@@ -35,6 +40,8 @@ public class PaymentMethodData {
         this.providerType = providerType;
         this.dateAdded = dateAdded;
         this.email = email;
+        this.providerPaymentMethodId = providerPaymentMethodId;
+        this.providerPaymentMethodData = providerPaymentMethodData;
     }
 
     public String getPaymentMethodId() {
@@ -72,6 +79,12 @@ public class PaymentMethodData {
     public String getEmail() {
         return email;
     }
+    public String getProviderPaymentMethodId() {
+        return providerPaymentMethodId;
+    }
+    public Map<String, String> getProviderPaymentMethodData() {
+        return providerPaymentMethodData;
+    }
 
     public static class Builder {
         private String paymentMethodId;
@@ -83,6 +96,8 @@ public class PaymentMethodData {
         private String providerType;
         private Date dateAdded;
         private String email;
+        private String providerPaymentMethodId;
+        Map<String, String> providerPaymentMethodData;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
@@ -129,8 +144,18 @@ public class PaymentMethodData {
             return this;
         }
 
+        public Builder withProviderPaymentMethodId(String providerPaymentMethodId) {
+            this.providerPaymentMethodId = providerPaymentMethodId;
+            return this;
+        }
+
+        public Builder withProviderPaymentMethodData(Map<String, String> providerPaymentMethodData) {
+            this.providerPaymentMethodData = providerPaymentMethodData;
+            return this;
+        }
+
         public PaymentMethodData build() {
-            return new PaymentMethodData(paymentMethodId, userId, customerId, type, card, providerId, providerType, dateAdded, email);
+            return new PaymentMethodData(paymentMethodId, userId, customerId, type, card, providerId, providerType, dateAdded, email, providerPaymentMethodId, providerPaymentMethodData);
         }
     }
 }
