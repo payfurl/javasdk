@@ -42,4 +42,14 @@ public class ProviderApi extends BaseApi {
     public Provider update(String providerId, UpdateProvider updateProvider) throws ApiException {
         return executePutRequestWith(providerApiBaseEndpoint + "/" + providerId, updateProvider, Provider.class);
     }
+
+    /**
+     * Delete provider
+     *
+     * @return Provider provider details
+     * @throws ApiException
+     */
+    public Provider delete(String providerId) throws ApiException {
+        return executeDeleteRequestWith(providerApiBaseEndpoint + "/" + providerId, null, Provider.class);
+    }
 }
