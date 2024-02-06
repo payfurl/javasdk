@@ -33,6 +33,7 @@ public class ChargeData {
     private final Initiator initiator;
     private final VisaInstallmentsInfo visaInstallments;
     private final String descriptor;
+    private final String threeDsRedirectUrl;
 
     @JsonCreator
     public ChargeData(@JsonProperty("ChargeId") String chargeId,
@@ -59,7 +60,8 @@ public class ChargeData {
                       @JsonProperty("AuthorisationAmount") BigDecimal authorisationAmount,
                       @JsonProperty("Initiator") Initiator initiator,
                       @JsonProperty("VisaInstallments") VisaInstallmentsInfo visaInstallments,
-                      @JsonProperty("Descriptor") String descriptor) {
+                      @JsonProperty("Descriptor") String descriptor,
+                      @JsonProperty("ThreeDsRedirectUrl") String threeDsRedirectUrl) {
         this.chargeId = chargeId;
         this.providerChargeId = providerChargeId;
         this.amount = amount;
@@ -85,6 +87,7 @@ public class ChargeData {
         this.initiator = initiator;
         this.visaInstallments = visaInstallments;
         this.descriptor = descriptor;
+        this.threeDsRedirectUrl = threeDsRedirectUrl;
     }
 
     public String getChargeId() {
@@ -187,6 +190,10 @@ public class ChargeData {
         return visaInstallments;
     }
 
+    public String getThreeDsRedirectUrl() {
+        return threeDsRedirectUrl;
+    }
+
     @Override
     public String toString() {
         return "ChargeData{" +
@@ -215,6 +222,7 @@ public class ChargeData {
                 ", initiator=" + initiator +
                 ", visaInstallments=" + visaInstallments +
                 ", descriptor=" + descriptor +
+                ", threeDsRedirectUrl=" + threeDsRedirectUrl +
                 '}';
     }
 }

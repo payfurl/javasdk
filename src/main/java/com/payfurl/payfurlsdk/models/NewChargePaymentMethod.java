@@ -24,6 +24,7 @@ public class NewChargePaymentMethod {
     private final Map<String, String> metadata;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String descriptor;
+    private final String threeDSNotificationUrl;
 
     @JsonCreator
     public NewChargePaymentMethod(@JsonProperty("Amount") BigDecimal amount,
@@ -40,7 +41,8 @@ public class NewChargePaymentMethod {
                                   @JsonProperty("Initiator") Initiator initiator,
                                   @JsonProperty("Webhook") WebhookConfig webhook,
                                   @JsonProperty("Metadata") Map<String, String> metadata,
-                                  @JsonProperty("Descriptor") String descriptor) {
+                                  @JsonProperty("Descriptor") String descriptor,
+                                  @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -56,6 +58,7 @@ public class NewChargePaymentMethod {
         this.webhook = webhook;
         this.metadata = metadata;
         this.descriptor = descriptor;
+        this.threeDSNotificationUrl = threeDSNotificationUrl;
     }
 
     public BigDecimal getAmount() {
@@ -117,6 +120,9 @@ public class NewChargePaymentMethod {
     public String getDescriptor() {
         return descriptor;
     }
+    public String getThreeDSNotificationUrl() {
+        return threeDSNotificationUrl;
+    }
 
     @Override
     public String toString() {
@@ -136,6 +142,7 @@ public class NewChargePaymentMethod {
                 ", webhook=" + webhook +
                 ", metadata=" + metadata +
                 ", descriptor=" + descriptor +
+                ", threeDSNotificationUrl=" + threeDSNotificationUrl +
                 '}';
     }
 
@@ -156,6 +163,7 @@ public class NewChargePaymentMethod {
         private WebhookConfig webhook;
         private Map<String, String> metadata;
         private String descriptor;
+        private String threeDSNotificationUrl;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -231,6 +239,11 @@ public class NewChargePaymentMethod {
             return this;
         }
 
+        public Builder withThreeDSNotificationUrl(String threeDSNotificationUrl) {
+            this.threeDSNotificationUrl = threeDSNotificationUrl;
+            return this;
+        }
+
         public NewChargePaymentMethod build() {
             return new NewChargePaymentMethod(
                     amount,
@@ -247,7 +260,8 @@ public class NewChargePaymentMethod {
                     initiator,
                     webhook,
                     metadata,
-                    descriptor);
+                    descriptor,
+                    threeDSNotificationUrl);
         }
     }
 }
