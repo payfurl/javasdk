@@ -139,6 +139,20 @@ public class BaseApi {
         }
     }
 
+    protected <T> T executeGetRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType, Headers headers) throws ApiException {
+        try {
+            HttpRequest request = createApiGetRequest(urlPath, queryParams, headers);
+
+            HttpResponse response = getClientInstance().execute(request);
+
+            return getDataFrom(response, returnType);
+        } catch (InterruptedIOException interruptedIOException) {
+            throw new ApiException(ApiError.buildTimeoutError());
+        } catch (IOException exception) {
+            throw new ApiException(exception);
+        }
+    }
+
     protected <T> T executeDeleteRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws ApiException {
         try {
             HttpRequest request = createApiDeleteRequest(urlPath, queryParams);
@@ -188,6 +202,18 @@ public class BaseApi {
         StringBuilder queryBuilder = new StringBuilder(urlPath);
 
         Headers headers = getPopulatedHeaders();
+
+        HttpRequest request = getClientInstance().prepareGetRequest(queryBuilder, headers, queryParams, null);
+
+        addAuthDataTo(request);
+        return request;
+    }
+
+    private HttpRequest createApiGetRequest(String urlPath, Map<String, Object> queryParams, Headers extraHeaders) {
+        StringBuilder queryBuilder = new StringBuilder(urlPath);
+
+        Headers headers = getPopulatedHeaders();
+        headers.addAll(extraHeaders);
 
         HttpRequest request = getClientInstance().prepareGetRequest(queryBuilder, headers, queryParams, null);
 
