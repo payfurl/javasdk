@@ -3,6 +3,7 @@ package com.payfurl.payfurlsdk.http.client.support;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableMap;
 import com.payfurl.payfurlsdk.models.CardData;
+import com.payfurl.payfurlsdk.models.IinData;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 class ApiUtilsTest {
     private static final String SAMPLE_URL_PART = "url";
     private static final String SAMPLE_SERIALIZED_STRING =
-            "{\"cardNumber\":\"11111\",\"expiryDate\":\"2022-12-22\",\"cardholder\":\"cardHolder\",\"type\":\"type\"}";
+            "{\"cardNumber\":\"11111\",\"expiryDate\":\"2022-12-22\",\"cardholder\":\"cardHolder\",\"type\":\"type\",\"iinData\":{\"scheme\":\"scheme\",\"country\":\"country\",\"issuer\":\"issuer\",\"countryCode\":\"countryCode\",\"cardType\":\"cardType\"}}";
     private static final String PAYFURL_URL_PART = "payfurl.com";
     private static final String PAYFURL_COM_URL = String.format("https://%s.com", PAYFURL_URL_PART);
     private static final String PAYFURL_COM_URL_WITH_FORWARD_SLASH = String.format("https://%s.com/", PAYFURL_URL_PART);
@@ -41,7 +42,8 @@ class ApiUtilsTest {
     private static Stream<Arguments> provideDataForTestSerialize() {
         return Stream.of(
                 Arguments.of("Valid serialized entity",
-                        new CardData("11111", "2022-12-22", "cardHolder", "type"),
+                        new CardData("11111", "2022-12-22", "cardHolder", "type",
+                                new IinData("scheme", "country", "issuer", "countryCode", "cardType")),
                         SAMPLE_SERIALIZED_STRING),
                 Arguments.of("Null data",
                         null,
@@ -54,7 +56,8 @@ class ApiUtilsTest {
                 Arguments.of("Valid deserialized entity",
                         SAMPLE_SERIALIZED_STRING,
                         CardData.class,
-                        new CardData("11111", "2022-12-22", "cardHolder", "type")),
+                        new CardData("11111", "2022-12-22", "cardHolder", "type",
+                                new IinData("scheme", "country", "issuer", "countryCode", "cardType"))),
                 Arguments.of("Null data",
                         null,
                         CardData.class,
