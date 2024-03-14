@@ -20,7 +20,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 class ApiUtilsTest {
     private static final String SAMPLE_URL_PART = "url";
     private static final String SAMPLE_SERIALIZED_STRING =
-            "{\"cardNumber\":\"11111\",\"expiryDate\":\"2022-12-22\",\"cardholder\":\"cardHolder\",\"type\":\"type\"}";
+            "{\"cardNumber\":\"11111\",\"expiryDate\":\"2022-12-22\",\"cardholder\":\"cardHolder\",\"type\":\"type\",\"iinData\":{\"scheme\":\"scheme\",\"country\":\"country\",\"issuer\":\"issuer\",\"countryCode\":\"countryCode\",\"cardType\":\"cardType\"}}";
     private static final String PAYFURL_URL_PART = "payfurl.com";
     private static final String PAYFURL_COM_URL = String.format("https://%s.com", PAYFURL_URL_PART);
     private static final String PAYFURL_COM_URL_WITH_FORWARD_SLASH = String.format("https://%s.com/", PAYFURL_URL_PART);
