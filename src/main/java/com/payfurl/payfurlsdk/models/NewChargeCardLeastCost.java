@@ -18,6 +18,8 @@ public class NewChargeCardLeastCost {
     private final String invoiceNumber;
     private final String email;
     private final String phone;
+    private final String firstName;
+    private final String lastName;
     private final boolean capture;
     private final Initiator initiator;
     private final WebhookConfig webhook;
@@ -37,6 +39,8 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("InvoiceNumber") String invoiceNumber,
                                   @JsonProperty("Email") String email,
                                   @JsonProperty("Phone") String phone,
+                                  @JsonProperty("FirstName") String firstName,
+                                  @JsonProperty("LastName") String lastName,
                                   @JsonProperty("Capture") boolean capture,
                                   @JsonProperty("Initiator") Initiator initiator,
                                   @JsonProperty("Webhook") WebhookConfig webhook,
@@ -53,6 +57,8 @@ public class NewChargeCardLeastCost {
         this.invoiceNumber = invoiceNumber;
         this.email = email;
         this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.capture = capture;
         this.initiator = initiator;
         this.webhook = webhook;
@@ -105,6 +111,13 @@ public class NewChargeCardLeastCost {
         return phone;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+
     public Initiator getInitiator() {
         return initiator;
     }
@@ -137,10 +150,12 @@ public class NewChargeCardLeastCost {
                 ", invoiceNumber=" + invoiceNumber +
                 ", email=" + email +
                 ", phone=" + phone +
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
                 ", capture=" + capture +
                 ", initiator=" + initiator +
                 ", webhook=" + webhook +
-                ", meatadata=" + metadata +
+                ", metadata=" + metadata +
                 ", descriptor=" + descriptor +
                 ", threeDSNotificationUrl=" + threeDSNotificationUrl +
                 '}';
@@ -157,6 +172,8 @@ public class NewChargeCardLeastCost {
         private String invoiceNumber;
         private String email;
         private String phone;
+        private String firstName;
+        private String lastName;
         private boolean capture = true;
         private Initiator initiator;
         private WebhookConfig webhook;
@@ -214,6 +231,16 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
+        public Builder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
         public Builder withCapture(boolean capture) {
             this.capture = capture;
             return this;
@@ -255,6 +282,8 @@ public class NewChargeCardLeastCost {
                     invoiceNumber,
                     email,
                     phone,
+                    firstName,
+                    lastName,
                     capture,
                     initiator,
                     webhook,
