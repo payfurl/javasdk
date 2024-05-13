@@ -2,13 +2,7 @@ package com.payfurl.payfurlsdk;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.payfurl.payfurlsdk.api.ChargeApi;
-import com.payfurl.payfurlsdk.api.CustomerApi;
-import com.payfurl.payfurlsdk.api.PaymentMethodApi;
-import com.payfurl.payfurlsdk.api.ProviderApi;
-import com.payfurl.payfurlsdk.api.TokenApi;
-import com.payfurl.payfurlsdk.api.TransferApi;
-import com.payfurl.payfurlsdk.api.VaultApi;
+import com.payfurl.payfurlsdk.api.*;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.auth.SecretKeyAuthHandler;
@@ -52,7 +46,7 @@ public class PayFurlClient implements PayFurlClientSdk {
             .put(EnvironmentConfigKey.of(Region.US, Environment.PRODUCTION), "https://api-us.payfurl.com")
             .put(EnvironmentConfigKey.of(Region.EU, Environment.PRODUCTION), "https://api-eu.payfurl.com")
             .build();
-    
+
     private final Environment environment;
     private final Headers additionalHeaders;
     private final HttpClient httpClient;
@@ -69,6 +63,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private VaultApi vaultApi;
     private TokenApi tokenApi;
     private ProviderApi providerApi;
+    private BatchApi batchApi;
 
     private static Optional<String> extractRegionFromKey(String key) {
         if (StringUtils.isEmpty(key)) {
@@ -128,6 +123,7 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.vaultApi = new VaultApi(this, this.httpClient, this.authHandlerMap);
         this.tokenApi = new TokenApi(this, this.httpClient, this.authHandlerMap);
         this.providerApi = new ProviderApi(this, this.httpClient, this.authHandlerMap);
+        this.batchApi = new BatchApi(this, this.httpClient, this.authHandlerMap);
     }
 
     public SecretKeyAuthHandler getSecretKeyAuthHandler() {
@@ -213,6 +209,11 @@ public class PayFurlClient implements PayFurlClientSdk {
     @Override
     public TokenApi getTokenApi() {
         return tokenApi;
+    }
+
+    @Override
+    public BatchApi getBatchApi() {
+        return batchApi;
     }
 
     @Override
