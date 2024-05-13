@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class BatchData {
     private final String batchId;
@@ -13,7 +13,7 @@ public class BatchData {
     private final String status;
     private final BigDecimal progress;
     private final String results;
-    private final LocalDateTime dateAdded;
+    private final Date dateAdded;
 
     @JsonCreator
     public BatchData(@JsonProperty("BatchId") String batchId,
@@ -22,7 +22,7 @@ public class BatchData {
                      @JsonProperty("Status") String status,
                      @JsonProperty("Progress") BigDecimal progress,
                      @JsonProperty("Results") String results,
-                     @JsonProperty("DateAdded") LocalDateTime dateAdded) {
+                     @JsonProperty("DateAdded") Date dateAdded) {
 
         this.batchId = batchId;
         this.count = count;
@@ -57,7 +57,7 @@ public class BatchData {
         return results;
     }
 
-    public LocalDateTime getDateAdded() {
+    public Date getDateAdded() {
         return dateAdded;
     }
 
@@ -81,7 +81,7 @@ public class BatchData {
         private String status;
         private BigDecimal progress;
         private String results;
-        private LocalDateTime dateAdded;
+        private Date dateAdded;
 
         public Builder withBatchId(String batchId) {
             this.batchId = batchId;
@@ -113,7 +113,7 @@ public class BatchData {
             return this;
         }
 
-        public Builder withDateAdded(LocalDateTime dateAdded) {
+        public Builder withDateAdded(Date dateAdded) {
             this.dateAdded = dateAdded;
             return this;
         }

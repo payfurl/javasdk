@@ -3,21 +3,21 @@ package com.payfurl.payfurlsdk.models.Batch;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class BatchSearch {
     private final Integer limit;
     private final Integer skip;
     private final String description;
-    private final LocalDateTime addedAfter;
-    private final LocalDateTime addedBefore;
+    private final Date addedAfter;
+    private final Date addedBefore;
 
     @JsonCreator
     public BatchSearch(@JsonProperty("Limit") Integer limit,
                        @JsonProperty("Skip") Integer skip,
                        @JsonProperty("Description") String description,
-                       @JsonProperty("AddedAfter") LocalDateTime addedAfter,
-                       @JsonProperty("AddedBefore") LocalDateTime addedBefore) {
+                       @JsonProperty("AddedAfter") Date addedAfter,
+                       @JsonProperty("AddedBefore") Date addedBefore) {
 
         this.limit = limit;
         this.skip = skip;
@@ -38,11 +38,11 @@ public class BatchSearch {
         return description;
     }
 
-    public LocalDateTime getAddedAfter() {
+    public Date getAddedAfter() {
         return addedAfter;
     }
 
-    public LocalDateTime getAddedBefore() {
+    public Date getAddedBefore() {
         return addedBefore;
     }
 
@@ -61,8 +61,8 @@ public class BatchSearch {
         private Integer limit;
         private Integer skip;
         private String description;
-        private LocalDateTime addedAfter;
-        private LocalDateTime addedBefore;
+        private Date addedAfter;
+        private Date addedBefore;
 
         public Builder withLimit(Integer limit) {
             this.limit = limit;
@@ -79,12 +79,12 @@ public class BatchSearch {
             return this;
         }
 
-        public Builder withAddedAfter(LocalDateTime addedAfter) {
+        public Builder withAddedAfter(Date addedAfter) {
             this.addedAfter = addedAfter;
             return this;
         }
 
-        public Builder withAddedBefore(LocalDateTime addedBefore) {
+        public Builder withAddedBefore(Date addedBefore) {
             this.addedBefore = addedBefore;
             return this;
         }
