@@ -101,4 +101,5 @@ public enum ErrorCode {
     MetadataDoesNotContainRequiredFields,
     FraudIsNotSupported,
     CardIsNotEnrolledForVis,
+    ProviderNotSupported,
 }
