@@ -30,27 +30,31 @@ public class BatchApiTest {
     @DisplayName("When createTransactionWithPaymentMethod request is executed, Then return valid batch status")
     void testCreateTransactionWithPaymentMethod() throws ApiException {
         // given
-        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod();
+        String description = UUID.randomUUID().toString();
+        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description);
 
         // when
         BatchStatus batchStatus = batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
 
         // then
-        assertThat(batchStatus.getStatus()).isEqualTo("RECEIVED");
+        assertThat(batchStatus.getCount()).isEqualTo(1);
+        assertThat(batchStatus.getDescription()).isEqualTo(description);
     }
 
     @Test
     @DisplayName("When getBatch request is executed, Then return valid batch data")
     void testGetBatch() throws ApiException {
         // given
-        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod();
+        String description = UUID.randomUUID().toString();
+        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description);
         BatchStatus createdBatchStatus = batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
 
         // when
         BatchData batchData = batchApi.getBatch(createdBatchStatus.getBatchId());
 
         // then
-        assertThat(batchData.getStatus()).isEqualTo("RECEIVED");
+        assertThat(batchData.getCount()).isEqualTo(1);
+        assertThat(batchData.getDescription()).isEqualTo(description);
         assertThat(batchData.getResults()).isEqualTo("PaymentMethodId,Amount,Currency,Reference,Status,TransactionId\r\n");
     }
 
@@ -58,13 +62,16 @@ public class BatchApiTest {
     @DisplayName("When getBatchStatus request is executed, Then return valid batch status")
     void testGetBatchStatus() throws ApiException {
         // given
-        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod();
+        String description = UUID.randomUUID().toString();
+        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description);
         BatchStatus createdBatchStatus = batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
 
         // when
         BatchStatus batchStatus = batchApi.getBatchStatus(createdBatchStatus.getBatchId());
 
         // then
+        assertThat(batchStatus.getCount()).isEqualTo(1);
+        assertThat(batchStatus.getDescription()).isEqualTo(description);
         assertThat(batchStatus.getStatus()).isEqualTo("RECEIVED");
     }
 
@@ -94,9 +101,5 @@ public class BatchApiTest {
                 .withDescription(description)
                 .withBatch("PaymentMethodId,Amount,Currency,Reference\ntest,123.4,AUD,reference")
                 .build();
-    }
-
-    private NewTransactionPaymentMethod getNewTransactionPaymentMethod() {
-        return getNewTransactionPaymentMethod("Test");
     }
 }
