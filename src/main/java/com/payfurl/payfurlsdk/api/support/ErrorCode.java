@@ -102,4 +102,6 @@ public enum ErrorCode {
     FraudIsNotSupported,
     CardIsNotEnrolledForVis,
     ProviderNotSupported,
+    InvalidBatch,
+    InvalidBatchData,
 }
