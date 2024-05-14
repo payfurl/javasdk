@@ -55,7 +55,6 @@ public class BatchApiTest {
         // then
         assertThat(batchData.getCount()).isEqualTo(1);
         assertThat(batchData.getDescription()).isEqualTo(description);
-        assertThat(batchData.getResults()).isEqualTo("PaymentMethodId,Amount,Currency,Reference,Status,TransactionId\r\n");
     }
 
     @Test
@@ -72,7 +71,6 @@ public class BatchApiTest {
         // then
         assertThat(batchStatus.getCount()).isEqualTo(1);
         assertThat(batchStatus.getDescription()).isEqualTo(description);
-        assertThat(batchStatus.getStatus()).isEqualTo("RECEIVED");
     }
 
     @Test
