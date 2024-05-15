@@ -5,14 +5,7 @@ import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.PaymentMethodApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
-import com.payfurl.payfurlsdk.models.CardRequestInformation;
-import com.payfurl.payfurlsdk.models.CustomerData;
-import com.payfurl.payfurlsdk.models.NewCustomerCard;
-import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
-import com.payfurl.payfurlsdk.models.NewPaymentMethodVault;
-import com.payfurl.payfurlsdk.models.PaymentMethodData;
-import com.payfurl.payfurlsdk.models.PaymentMethodList;
-import com.payfurl.payfurlsdk.models.PaymentMethodSearch;
+import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -147,6 +140,22 @@ public class PaymentMethodApiTest {
 
             // then
             then(paymentMethodList.getCount()).isGreaterThan(0);
+        }
+
+        @Test
+        @DisplayName("When createPaymentMethodWithProviderToken request is executed, Then return valid PaymentMethodData")
+        void testCreatePaymentMethodWithProviderToken() throws ApiException {
+            // given
+            NewProviderToken newProviderToken = new NewProviderToken.Builder()
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withProviderToken("sampleProviderToken")
+                    .build();
+
+            // when
+            PaymentMethodData paymentMethodWithProviderToken = paymentMethodApi.createPaymentMethodWithProviderToken(newProviderToken);
+
+            // then
+            then(paymentMethodWithProviderToken.getPaymentMethodId()).isNotNull();
         }
     }
 }
