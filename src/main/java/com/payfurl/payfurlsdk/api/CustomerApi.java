@@ -208,7 +208,7 @@ public class CustomerApi extends BaseApi {
      * @throws ApiException
      */
     public PaymentMethodData createWithPaymentMethodWithBankAccount(String customerId, NewPaymentMethodBankPayment newPaymentMethodBankPayment) throws ApiException {
-        String urlPath = String.format("%s/%s/payment_method/bank_account", customerApiBaseEndpoint, customerId);
+        String urlPath = String.format("%s/%s/bank_account", customerApiBaseEndpoint, customerId);
         return executePostRequestWith(urlPath, newPaymentMethodBankPayment, PaymentMethodData.class);
     }
 }
