@@ -536,7 +536,7 @@ public class CustomerApiTest {
                     .build();
 
             // when
-            CustomerData customerData = customerApi.createWithPaymentMethodWithBankAccount(NewPaymentMethodBankPayment);
+            CustomerData customerData = customerApi.createWithPaymentMethodWithBankAccount(newPaymentMethodBankPayment);
 
             // then
             then(customerData.getCustomerId()).isNotNull();
