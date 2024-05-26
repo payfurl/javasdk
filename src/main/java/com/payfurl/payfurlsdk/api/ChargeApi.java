@@ -15,6 +15,7 @@ import com.payfurl.payfurlsdk.models.NewChargeCustomer;
 import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
 import com.payfurl.payfurlsdk.models.NewChargeToken;
 import com.payfurl.payfurlsdk.models.NewRefund;
+import com.payfurl.payfurlsdk.models.NewChargeBankPaymentRequest;
 
 import java.util.HashMap;
 import java.util.Map;

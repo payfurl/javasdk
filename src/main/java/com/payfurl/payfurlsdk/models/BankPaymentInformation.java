@@ -3,13 +3,13 @@ package com.payfurl.payfurlsdk.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class BankPaymentRequestInformation {
+public class BankPaymentInformation {
     private final String bankCode;
     private final String accountNumber;
     private final String accountName;
 
     @JsonCreator
-    public BankPaymentRequestInformation(@JsonProperty("BankCode") String bankCode,
+    public BankPaymentInformation(@JsonProperty("BankCode") String bankCode,
                                   @JsonProperty("AccountNumber") String accountNumber,
                                   @JsonProperty("AccountName") String accountName) {
         this.bankCode = bankCode;
@@ -31,7 +31,7 @@ public class BankPaymentRequestInformation {
 
     @Override
     public String toString() {
-        return "BankPaymentRequestInformation{" +
+        return "BankPaymentInformation{" +
                 "bankCode='" + bankCode + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
                 ", accountName='" + accountName + '\'' +
@@ -58,8 +58,8 @@ public class BankPaymentRequestInformation {
             return this;
         }
 
-        public BankPaymentRequestInformation build() {
-            return new BankPaymentRequestInformation(bankCode, accountNumber, accountName);
+        public BankPaymentInformation build() {
+            return new BankPaymentInformation(bankCode, accountNumber, accountName);
         }
     }
 }

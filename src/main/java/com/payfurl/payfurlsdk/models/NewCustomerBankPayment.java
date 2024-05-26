@@ -13,7 +13,7 @@ public class NewCustomerBankPayment {
     private final String email;
     private final String phone;
     private final String providerId;
-    private final BankPaymentRequestInformation bankPaymentInformation;
+    private final BankPaymentInformation bankPaymentInformation;
     private final Address address;
     private final Map<String, String> metadata;
 
@@ -24,7 +24,7 @@ public class NewCustomerBankPayment {
                            @JsonProperty("Email") String email,
                            @JsonProperty("Phone") String phone,
                            @JsonProperty("ProviderId") String providerId,
-                           @JsonProperty("PaymentInformation") BankPaymentRequestInformation bankPaymentInformation,
+                           @JsonProperty("PaymentInformation") BankPaymentInformation bankPaymentInformation,
                            @JsonProperty("Address") Address address,
                            @JsonProperty("Metadata") Map<String, String> metadata) {
         this.reference = reference;
@@ -62,7 +62,7 @@ public class NewCustomerBankPayment {
         return providerId;
     }
 
-    public BankPaymentRequestInformation getBankPaymentInformation() {
+    public BankPaymentInformation getBankPaymentInformation() {
         return bankPaymentInformation;
     }
 
@@ -96,7 +96,7 @@ public class NewCustomerBankPayment {
         private String email;
         private String phone;
         private String providerId;
-        private BankPaymentRequestInformation bankPaymentInformation;
+        private BankPaymentInformation bankPaymentInformation;
         private Address address;
         private Map<String, String> metadata;
 
@@ -130,7 +130,7 @@ public class NewCustomerBankPayment {
             return this;
         }
 
-        public Builder withBankPaymentInformation(BankPaymentRequestInformation bankPaymentInformation) {
+        public Builder withBankPaymentInformation(BankPaymentInformation bankPaymentInformation) {
             this.bankPaymentInformation = bankPaymentInformation;
             return this;
         }

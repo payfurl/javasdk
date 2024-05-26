@@ -10,7 +10,7 @@ public class NewPaymentMethodBankPayment {
     private final String firstName;
     private final String lastName;
     private final String providerId;
-    private final BankPaymentRequestInformation bankPaymentInformation;
+    private final BankPaymentInformation bankPaymentInformation;
     private final boolean setDefault;
     private final Map<String, String> metadata;
 
@@ -18,7 +18,7 @@ public class NewPaymentMethodBankPayment {
     public NewPaymentMethodBankPayment(@JsonProperty("FirstName") String firstName,
                            @JsonProperty("LastName") String lastName,
                            @JsonProperty("ProviderId") String providerId,
-                           @JsonProperty("BankPaymentInformation") BankPaymentRequestInformation bankPaymentInformation,
+                           @JsonProperty("BankPaymentInformation") BankPaymentInformation bankPaymentInformation,
                            @JsonProperty("SetDefault") boolean setDefault,
                            @JsonProperty("Metadata") Map<String, String> metadata) {
         this.firstName = firstName;
@@ -41,7 +41,7 @@ public class NewPaymentMethodBankPayment {
         return providerId;
     }
 
-    public BankPaymentRequestInformation getBankPaymentInformation() {
+    public BankPaymentInformation getBankPaymentInformation() {
         return bankPaymentInformation;
     }
 
@@ -69,7 +69,7 @@ public class NewPaymentMethodBankPayment {
         private String firstName;
         private String lastName;
         private String providerId;
-        private BankPaymentRequestInformation bankPaymentInformation;
+        private BankPaymentInformation bankPaymentInformation;
         private boolean setDefault;
         private Map<String, String> metadata;
 
@@ -88,7 +88,7 @@ public class NewPaymentMethodBankPayment {
             return this;
         }
 
-        public Builder withBankPaymentInformation(BankPaymentRequestInformation bankPaymentInformation) {
+        public Builder withBankPaymentInformation(BankPaymentInformation bankPaymentInformation) {
             this.bankPaymentInformation = bankPaymentInformation;
             return this;
         }

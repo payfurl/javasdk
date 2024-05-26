@@ -48,7 +48,7 @@ public class ChargeApiTest {
             .withCcv("123")
             .build();
     
-    private static final BankPaymentRequestInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentRequestInformation.Builder()
+    private static final BankPaymentInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentInformation.Builder()
             .withBankCode("123-456")
             .withAccountNumber("123456")
             .withAccountName("Bank Account")

@@ -17,6 +17,8 @@ import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
 import com.payfurl.payfurlsdk.models.NewCustomerProviderSingleUseToken;
+import com.payfurl.payfurlsdk.models.NewCustomerBankPayment;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodBankPayment;
 
 import java.util.Arrays;
 import java.util.HashMap;

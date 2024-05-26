@@ -14,7 +14,7 @@ public class NewChargeBankPaymentRequest {
     private final String reference;
     private final String firstName;
     private final String lastName;
-    private final BankPaymentRequestInformation bankPaymentInformation;
+    private final BankPaymentInformation bankPaymentInformation;
     private final Address address;
     private final Order order;
     private final String customerCode;
@@ -36,7 +36,7 @@ public class NewChargeBankPaymentRequest {
                                 @JsonProperty("Reference") String reference,
                                 @JsonProperty("FirstName") String firstName,
                                 @JsonProperty("LastName") String lastName,
-                                @JsonProperty("BankPaymentInformation") BankPaymentRequestInformation bankPaymentInformation,
+                                @JsonProperty("BankPaymentInformation") BankPaymentInformation bankPaymentInformation,
                                 @JsonProperty("Address") Address address,
                                 @JsonProperty("Order") Order order,
                                 @JsonProperty("CustomerCode") String customerCode,
@@ -94,7 +94,7 @@ public class NewChargeBankPaymentRequest {
             return lastName;
     }
 
-    public BankPaymentRequestInformation getBankPaymentInformation() {
+    public BankPaymentInformation getBankPaymentInformation() {
         return bankPaymentInformation;
     }
 
@@ -152,6 +152,8 @@ public class NewChargeBankPaymentRequest {
                 ", currency='" + currency + '\'' +
                 ", providerId='" + providerId + '\'' +
                 ", reference='" + reference + '\'' +
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
                 ", bankPaymentInformation=" + bankPaymentInformation +
                 ", address=" + address +
                 ", order=" + order +
@@ -173,6 +175,8 @@ public class NewChargeBankPaymentRequest {
         private String currency;
         private String providerId;
         private String reference;
+        private String firstName;
+        private String lastName;
         private BankPaymentInformation bankPaymentInformation;
         private Address address;
         private Order order;
