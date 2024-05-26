@@ -185,4 +185,28 @@ public class CustomerApi extends BaseApi {
     public CustomerData createWithSingleUseToken(NewCustomerProviderSingleUseToken customerProviderSingleUseToken) throws ApiException {
         return executePostRequestWith(customerApiBaseEndpoint + "/provider_single_use_token", customerProviderSingleUseToken, CustomerData.class);
     }
+    
+    /**
+     * Add a customer with a bank account
+     *
+     * @param customerBankPayment
+     * @return
+     * @throws ApiException
+     */
+    public CustomerData createWithBankAccount(NewCustomerBankPayment customerBankPayment) throws ApiException {
+        return executePostRequestWith(customerApiBaseEndpoint + "/bank_account", customerBankPayment, CustomerData.class);
+    }
+    
+    /**
+     * Add a payment method using a bank account
+     *
+     * @param customerId
+     * @param newPaymentMethodBankPayment
+     * @return
+     * @throws ApiException
+     */
+    public PaymentMethodData createWithPaymentMethodWithBankAccount(String customerId, NewPaymentMethodBankPayment newPaymentMethodBankPayment) throws ApiException {
+        String urlPath = String.format("%s/%s/payment_method/bank_account", customerApiBaseEndpoint, customerId);
+        return executePostRequestWith(urlPath, newPaymentMethodBankPayment, PaymentMethodData.class);
+    }
 }

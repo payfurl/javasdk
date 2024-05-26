@@ -157,5 +157,21 @@ public class PaymentMethodApiTest {
             // then
             then(paymentMethodWithProviderToken.getPaymentMethodId()).isNotNull();
         }
+        
+        @Test
+        @DisplayName("When createPaymentMethodWithBankAccount request is executed, Then return valid PaymentMethodData")
+        void testCreatePaymentMethodWithBankAccount() throws ApiException {
+            // given
+            NewPaymentMethodBankPayment newPaymentMethodBankPayment = new NewPaymentMethodBankPayment.Builder()
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                    .withMetadata(METADATA)
+                    .build();
+            // when
+            PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithBankAccount(newPaymentMethodBankPayment);
+
+            // then
+            then(paymentMethodWithCard.getPaymentMethodId()).isNotNull();
+        }
     }
 }

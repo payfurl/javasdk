@@ -498,5 +498,39 @@ public class CustomerApiTest {
             // then
             then(customerData.getCustomerId()).isEqualTo(foundCustomerData.getCustomerId());
         }
+        
+        @Test
+        @DisplayName("When createWithBankAccount request is executed, Then return valid CustomerData")
+        void testCreateWithBankAccount() throws ApiException {
+            // given
+            NewCustomerBankPayment newCustomerCard = new NewCustomerBankPayment.Builder()
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                    .withMetadata(METADATA)
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithBankAccount(newCustomerCard);
+
+            // then
+            then(customerData.getCustomerId()).isNotNull();
+        }
+        
+        @Test
+        @DisplayName("When createWithPaymentMethodWithBankAccount request is executed, Then return valid CustomerData")
+        void testCreatePaymentMethodWithBankAccount() throws ApiException {
+            // given
+            NewPaymentMethodBankPayment newPaymentMethodBankPayment = new NewPaymentMethodBankPayment.Builder()
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                    .withMetadata(METADATA)
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithPaymentMethodWithBankAccount(NewPaymentMethodBankPayment);
+
+            // then
+            then(customerData.getCustomerId()).isNotNull();
+        }
     }
 }

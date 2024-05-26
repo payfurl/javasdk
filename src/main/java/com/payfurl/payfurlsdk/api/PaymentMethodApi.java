@@ -115,4 +115,16 @@ public class PaymentMethodApi extends BaseApi {
 
         return executeGetRequestWith(paymentMethodApiBaseEndpoint, queryParams, PaymentMethodList.class);
     }
+    
+    /**
+     * Add a payment method using bank account
+     *
+     * @param newPaymentMethodBankPayment
+     * @return
+     * @throws ApiException
+     */
+    public PaymentMethodData createPaymentMethodWithBankAccount(NewPaymentMethodBankPayment newPaymentMethodBankPayment) throws ApiException {
+        String urlPath = paymentMethodApiBaseEndpoint + "/bank_account";
+        return executePostRequestWith(urlPath, newPaymentMethodBankPayment, PaymentMethodData.class);
+    }
 }
