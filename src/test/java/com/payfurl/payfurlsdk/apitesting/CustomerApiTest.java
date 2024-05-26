@@ -529,6 +529,12 @@ public class CustomerApiTest {
         @DisplayName("When createWithPaymentMethodWithBankAccount request is executed, Then return valid CustomerData")
         void testCreatePaymentMethodWithBankAccount() throws ApiException {
             // given
+            NewCustomerBankPayment newCustomerCard = new NewCustomerBankPayment.Builder()
+                                .withProviderId(TestConfigProvider.getProviderId())
+                                .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                                .withMetadata(METADATA)
+                                .build();
+                                
             NewPaymentMethodBankPayment newPaymentMethodBankPayment = new NewPaymentMethodBankPayment.Builder()
                     .withProviderId(TestConfigProvider.getProviderId())
                     .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
@@ -536,10 +542,11 @@ public class CustomerApiTest {
                     .build();
 
             // when
-            CustomerData customerData = customerApi.createWithPaymentMethodWithBankAccount(newPaymentMethodBankPayment);
+            CustomerData customerData = customerApi.createWithBankAccount(newCustomerCard);
+            CustomerData customerDataWithPaymentMethod = customerApi.createWithPaymentMethodWithBankAccount(customerData.getCustomerId(), newPaymentMethodBankPayment);
 
             // then
-            then(customerData.getCustomerId()).isNotNull();
+            then(customerDataWithPaymentMethod.getCustomerId()).isNotNull();
         }
     }
 }
