@@ -543,10 +543,10 @@ public class CustomerApiTest {
 
             // when
             CustomerData customerData = customerApi.createWithBankAccount(newCustomerCard);
-            CustomerData customerDataWithPaymentMethod = customerApi.createWithPaymentMethodWithBankAccount(customerData.getCustomerId(), newPaymentMethodBankPayment);
+            PaymentMethodData paymentMethodData = customerApi.createWithPaymentMethodWithBankAccount(customerData.getCustomerId(), newPaymentMethodBankPayment);
 
             // then
-            then(customerDataWithPaymentMethod.getCustomerId()).isNotNull();
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
         }
     }
 }
