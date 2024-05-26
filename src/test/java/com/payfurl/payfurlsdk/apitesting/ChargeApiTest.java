@@ -25,6 +25,8 @@ import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.ProductItem;
 import com.payfurl.payfurlsdk.models.TransactionStatus;
 import com.payfurl.payfurlsdk.models.WebhookConfig;
+import com.payfurl.payfurlsdk.models.BankPaymentInformation;
+import com.payfurl.payfurlsdk.models.NewChargeBankPaymentRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -18,6 +18,8 @@ import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
 import com.payfurl.payfurlsdk.models.PayIdDetails;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
+import com.payfurl.payfurlsdk.models.BankPaymentInformation;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodBankPayment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +40,12 @@ public class CustomerApiTest {
             .withExpiryDate("12/35")
             .withCcv("123")
             .build();
+            
+    private static final BankPaymentInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentInformation.Builder()
+            .withBankCode("123-456")
+            .withAccountNumber("123456")
+            .withAccountName("Bank Account")
+            .build(); 
 
     private static final Address SAMPLE_ADDRESS = new Address.Builder()
             .withLine1("91  Gloucester Avenue")
