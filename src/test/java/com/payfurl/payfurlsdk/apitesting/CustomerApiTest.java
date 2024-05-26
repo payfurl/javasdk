@@ -19,6 +19,7 @@ import com.payfurl.payfurlsdk.models.PayIdDetails;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
 import com.payfurl.payfurlsdk.models.BankPaymentInformation;
+import com.payfurl.payfurlsdk.models.NewCustomerBankPayment;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodBankPayment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

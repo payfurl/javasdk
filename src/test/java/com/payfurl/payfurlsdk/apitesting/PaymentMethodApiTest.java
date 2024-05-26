@@ -23,6 +23,12 @@ public class PaymentMethodApiTest {
             .withExpiryDate("12/35")
             .withCcv("123")
             .build();
+            
+    private static final BankPaymentInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentInformation.Builder()
+            .withBankCode("123-456")
+            .withAccountNumber("123456")
+            .withAccountName("Bank Account")
+            .build(); 
 
     private PaymentMethodApi paymentMethodApi;
     private CustomerApi customerApi;
