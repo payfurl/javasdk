@@ -18,6 +18,9 @@ import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
 import com.payfurl.payfurlsdk.models.PayIdDetails;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
+import com.payfurl.payfurlsdk.models.BankPaymentInformation;
+import com.payfurl.payfurlsdk.models.NewCustomerBankPayment;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodBankPayment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +41,12 @@ public class CustomerApiTest {
             .withExpiryDate("12/35")
             .withCcv("123")
             .build();
+            
+    private static final BankPaymentInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentInformation.Builder()
+            .withBankCode("123-456")
+            .withAccountNumber("123456")
+            .withAccountName("Bank Account")
+            .build(); 
 
     private static final Address SAMPLE_ADDRESS = new Address.Builder()
             .withLine1("91  Gloucester Avenue")
@@ -497,6 +506,47 @@ public class CustomerApiTest {
 
             // then
             then(customerData.getCustomerId()).isEqualTo(foundCustomerData.getCustomerId());
+        }
+        
+        @Test
+        @DisplayName("When createWithBankAccount request is executed, Then return valid CustomerData")
+        void testCreateWithBankAccount() throws ApiException {
+            // given
+            NewCustomerBankPayment newCustomerCard = new NewCustomerBankPayment.Builder()
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                    .withMetadata(METADATA)
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithBankAccount(newCustomerCard);
+
+            // then
+            then(customerData.getCustomerId()).isNotNull();
+        }
+        
+        @Test
+        @DisplayName("When createWithPaymentMethodWithBankAccount request is executed, Then return valid CustomerData")
+        void testCreatePaymentMethodWithBankAccount() throws ApiException {
+            // given
+            NewCustomerBankPayment newCustomerCard = new NewCustomerBankPayment.Builder()
+                                .withProviderId(TestConfigProvider.getProviderId())
+                                .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                                .withMetadata(METADATA)
+                                .build();
+                                
+            NewPaymentMethodBankPayment newPaymentMethodBankPayment = new NewPaymentMethodBankPayment.Builder()
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                    .withMetadata(METADATA)
+                    .build();
+
+            // when
+            CustomerData customerData = customerApi.createWithBankAccount(newCustomerCard);
+            PaymentMethodData paymentMethodData = customerApi.createWithPaymentMethodWithBankAccount(customerData.getCustomerId(), newPaymentMethodBankPayment);
+
+            // then
+            then(paymentMethodData.getPaymentMethodId()).isNotNull();
         }
     }
 }
