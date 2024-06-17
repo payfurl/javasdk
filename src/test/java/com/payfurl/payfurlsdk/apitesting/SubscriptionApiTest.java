@@ -2,19 +2,33 @@ package com.payfurl.payfurlsdk.apitesting;
 
 import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
-import com.payfurl.payfurlsdk.api.BatchApi;
+import com.payfurl.payfurlsdk.api.PaymentMethodApi;
+import com.payfurl.payfurlsdk.api.SubscriptionApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
-import com.payfurl.payfurlsdk.models.Batch.*;
+import com.payfurl.payfurlsdk.models.CardRequestInformation;
+import com.payfurl.payfurlsdk.models.NewPaymentMethodCard;
+import com.payfurl.payfurlsdk.models.PaymentMethodData;
+import com.payfurl.payfurlsdk.models.Subscription.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BatchApiTest {
-    private BatchApi batchApi;
+public class SubscriptionApiTest {
+    private SubscriptionApi subscriptionApi;
+    private PaymentMethodApi paymentMethodApi;
+
+    private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
+            .withCardNumber("4111111111111111")
+            .withExpiryDate("12/35")
+            .withCcv("123")
+            .build();
+
+    private static final HashMap<String, String> METADATA = new HashMap<String, String>() {{ put("merchant_id", "1234356"); }};
 
     @BeforeEach
     void setUp() {
@@ -23,81 +37,110 @@ public class BatchApiTest {
                 .withSecretKey(TestConfigProvider.getSecretKeyWithFallback())
                 .build();
 
-        batchApi = payFurlClient.getBatchApi();
+        paymentMethodApi = payFurlClient.getPaymentMethodApi();
+        subscriptionApi = payFurlClient.getSubscriptionApi();
     }
 
     @Test
-    @DisplayName("When createTransactionWithPaymentMethod request is executed, Then return valid batch status")
-    void testCreateTransactionWithPaymentMethod() throws ApiException {
+    @DisplayName("When createSubscriptionWithPaymentMethod request is executed, Then return valid subscription status")
+    void testCreateSubscriptionWithPaymentMethod() throws ApiException {
         // given
-        String description = UUID.randomUUID().toString();
-        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description);
-
-        // when
-        BatchStatus batchStatus = batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
-
-        // then
-        assertThat(batchStatus.getCount()).isEqualTo(1);
-        assertThat(batchStatus.getDescription()).isEqualTo(description);
-    }
-
-    @Test
-    @DisplayName("When getBatch request is executed, Then return valid batch data")
-    void testGetBatch() throws ApiException {
-        // given
-        String description = UUID.randomUUID().toString();
-        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description);
-        BatchStatus createdBatchStatus = batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
-
-        // when
-        BatchData batchData = batchApi.getBatch(createdBatchStatus.getBatchId());
-
-        // then
-        assertThat(batchData.getCount()).isEqualTo(1);
-        assertThat(batchData.getDescription()).isEqualTo(description);
-    }
-
-    @Test
-    @DisplayName("When getBatchStatus request is executed, Then return valid batch status")
-    void testGetBatchStatus() throws ApiException {
-        // given
-        String description = UUID.randomUUID().toString();
-        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description);
-        BatchStatus createdBatchStatus = batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
-
-        // when
-        BatchStatus batchStatus = batchApi.getBatchStatus(createdBatchStatus.getBatchId());
-
-        // then
-        assertThat(batchStatus.getCount()).isEqualTo(1);
-        assertThat(batchStatus.getDescription()).isEqualTo(description);
-    }
-
-    @Test
-    @DisplayName("When searchBatch request is executed, Then return valid batch list")
-    void testSearchBatch() throws ApiException {
-        // given
-        String description = UUID.randomUUID().toString();
-        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description);
-        batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
-
-        BatchSearch batchSearch = new BatchSearch.Builder()
-                .withDescription(description)
+        NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                .withProviderId(TestConfigProvider.getProviderId())
+                .withMetadata(METADATA)
                 .build();
 
+        PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+        String paymentMethodId = paymentMethodWithCard.getPaymentMethodId();
+
+        NewSubscription newSubscription = getNewSubscription(paymentMethodId);
+
         // when
-        BatchList batchList = batchApi.searchBatch(batchSearch);
+        SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
 
         // then
-        assertThat(batchList.getCount()).isEqualTo(1);
-        assertThat(batchList.getBatches().get(0).getDescription()).isEqualTo(description);
+        assertThat(subscriptionData.getPaymentMethodId()).isEqualTo(paymentMethodId);
+        assertThat(subscriptionData.getStatus()).isEqualTo("Active");
     }
 
-    private NewTransactionPaymentMethod getNewTransactionPaymentMethod(String description) {
-        return new NewTransactionPaymentMethod.Builder()
-                .withCount(1)
-                .withDescription(description)
-                .withBatch("PaymentMethodId,Amount,Currency,Reference\ntest,123.4,AUD,reference")
+    @Test
+    @DisplayName("When getSubscription request is executed, Then return valid subscription data")
+    void testGetSubscription() throws ApiException {
+        // given
+        NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                .withProviderId(TestConfigProvider.getProviderId())
+                .withMetadata(METADATA)
+                .build();
+
+        PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+        String paymentMethodId = paymentMethodWithCard.getPaymentMethodId();
+
+        NewSubscription newSubscription = getNewSubscription(paymentMethodId);
+
+        SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
+
+        // when
+        SubscriptionData subscriptionDataResult = subscriptionApi.getSubscription(subscriptionData.getSubscriptionId());
+
+        // then
+        assertThat(subscriptionDataResult.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
+        assertThat(subscriptionDataResult.getPaymentMethodId()).isEqualTo(subscriptionData.getPaymentMethodId());
+    }
+
+    @Test
+    @DisplayName("When deleteSubscription request is executed, Then return valid subscription status")
+    void testDeleteSubscription() throws ApiException {
+        // given
+        NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                .withProviderId(TestConfigProvider.getProviderId())
+                .withMetadata(METADATA)
+                .build();
+
+        PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+        String paymentMethodId = paymentMethodWithCard.getPaymentMethodId();
+
+        NewSubscription newSubscription = getNewSubscription(paymentMethodId);
+
+        SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
+
+        // when
+        SubscriptionData subscriptionDataResult = subscriptionApi.getSubscription(subscriptionData.getSubscriptionId());
+        SubscriptionData subscriptionDataDeleted = subscriptionApi.deleteSubscription(subscriptionData.getSubscriptionId());
+
+        // then
+        assertThat(subscriptionDataResult.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
+        assertThat(subscriptionDataDeleted.getPaymentMethodId()).isEqualTo(subscriptionData.getPaymentMethodId());
+        assertThat(subscriptionDataDeleted.getStatus()).isEqualTo("Cancelled");
+    }
+
+    private NewSubscription getNewSubscription(String paymentMethodId) {
+        SubscriptionEnd subscriptionEnd = new SubscriptionEnd.Builder()
+                .withCount(2)
+                .build();
+
+        SubscriptionRetryPolicy subscriptionRetryPolicy = new SubscriptionRetryPolicy.Builder()
+                .withMaximum(3)
+                .withFrequency(1)
+                .withInterval("Day")
+                .build();
+
+        WebhookConfig webhookConfig = new WebhookConfig.Builder()
+                .withUrl("https://example.com/webhoo")
+                .withAuthorization("secret")
+                .build();
+
+        return new NewSubscription.Builder()
+                .withPaymentMethodId(paymentMethodId)
+                .withAmount(BigDecimal.valueOf(100))
+                .withCurrency("USD")
+                .withInterval("Month")
+                .withFrequency(1)
+                .withEndAfter(subscriptionEnd)
+                .withRetry(subscriptionRetryPolicy)
+                .withWebhook(webhookConfig)
                 .build();
     }
 }
