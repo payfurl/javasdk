@@ -19,6 +19,7 @@ public interface PayFurlClientSdk extends Configuration {
     TokenApi getTokenApi();
 
     BatchApi getBatchApi();
+    SubscriptionApi getSubscriptionApi();
 
     String getSdkVersion();
 }
