@@ -14,6 +14,7 @@ public class NewPaymentMethodCard {
     private final Integer vaultExpireSeconds;
     private final boolean setDefault;
     private final Map<String, String> metadata;
+    private final boolean skipExpiryDateValidation;
 
     @JsonCreator
     public NewPaymentMethodCard(@JsonProperty("ProviderId") String providerId,
@@ -22,7 +23,8 @@ public class NewPaymentMethodCard {
                                 @JsonProperty("VaultExpireDate") Date vaultExpireDate,
                                 @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds,
                                 @JsonProperty("SetDefault") boolean setDefault,
-                                @JsonProperty("Metadata") Map<String, String> metadata) {
+                                @JsonProperty("Metadata") Map<String, String> metadata,
+                                @JsonProperty("SkipExpiryDateValidation") boolean skipExpiryDateValidation) {
         this.providerId = providerId;
         this.paymentInformation = paymentInformation;
         this.vaultCard = vaultCard;
@@ -30,6 +32,7 @@ public class NewPaymentMethodCard {
         this.vaultExpireSeconds = vaultExpireSeconds;
         this.setDefault = setDefault;
         this.metadata = metadata;
+        this.skipExpiryDateValidation = skipExpiryDateValidation;
     }
 
     public String getProviderId() {
@@ -58,6 +61,8 @@ public class NewPaymentMethodCard {
         return metadata;
     }
 
+    public boolean getSkipExpiryDateValidation() { return skipExpiryDateValidation; }
+
     @Override
     public String toString() {
         return "NewPaymentMethodCard{" +
@@ -68,6 +73,7 @@ public class NewPaymentMethodCard {
                 ", vaultExpireSeconds=" + vaultExpireSeconds +
                 ", setDefault=" + setDefault +
                 ", metadata=" + metadata +
+                ", skipExpiryDateValidation=" + skipExpiryDateValidation +
                 '}';
     }
 
@@ -79,6 +85,7 @@ public class NewPaymentMethodCard {
         private Integer vaultExpireSeconds;
         private boolean setDefault = false;
         private Map<String, String> metadata;
+        private boolean skipExpiryDateValidation = false;
 
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
@@ -115,8 +122,13 @@ public class NewPaymentMethodCard {
             return this;
         }
 
+        public Builder withSkipExpiryDateValidation(boolean skipExpiryDateValidation) {
+            this.skipExpiryDateValidation = skipExpiryDateValidation;
+            return this;
+        }
+
         public NewPaymentMethodCard build() {
-            return new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds, setDefault, metadata);
+            return new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds, setDefault, metadata, skipExpiryDateValidation);
         }
     }
 }
