@@ -4,6 +4,7 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.BatchApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
+import com.payfurl.payfurlsdk.models.WebhookConfig;
 import com.payfurl.payfurlsdk.models.Batch.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,23 @@ public class BatchApiTest {
         // given
         String description = UUID.randomUUID().toString();
         NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description);
+
+        // when
+        BatchStatus batchStatus = batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
+
+        // then
+        assertThat(batchStatus.getCount()).isEqualTo(1);
+        assertThat(batchStatus.getDescription()).isEqualTo(description);
+    }
+
+    @Test
+    @DisplayName("When createTransactionWithPaymentMethod with webhook request is executed, Then return valid batch status")
+    void testCreateTransactionWithPaymentMethodWithWebhook() throws ApiException {
+        // given
+        String description = UUID.randomUUID().toString();
+        WebhookConfig webhookConfig = new WebhookConfig("https://example.com/webhook", "Bearer your_token_here");
+        NewTransactionPaymentMethod newTransactionPaymentMethod = getNewTransactionPaymentMethod(description,
+                webhookConfig);
 
         // when
         BatchStatus batchStatus = batchApi.createTransactionWithPaymentMethod(newTransactionPaymentMethod);
@@ -94,10 +112,20 @@ public class BatchApiTest {
     }
 
     private NewTransactionPaymentMethod getNewTransactionPaymentMethod(String description) {
-        return new NewTransactionPaymentMethod.Builder()
+        return getNewTransactionPaymentMethod(description, null);
+    }
+
+    private NewTransactionPaymentMethod getNewTransactionPaymentMethod(String description,
+            WebhookConfig webhookConfig) {
+        NewTransactionPaymentMethod.Builder builder = new NewTransactionPaymentMethod.Builder()
                 .withCount(1)
                 .withDescription(description)
-                .withBatch("PaymentMethodId,Amount,Currency,Reference\ntest,123.4,AUD,reference")
-                .build();
+                .withBatch("PaymentMethodId,Amount,Currency,Reference\ntest,123.4,AUD,reference");
+
+        if (webhookConfig != null) {
+            builder.withWebhook(webhookConfig);
+        }
+
+        return builder.build();
     }
 }
