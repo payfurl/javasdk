@@ -2,20 +2,24 @@ package com.payfurl.payfurlsdk.models.Batch;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.payfurl.payfurlsdk.models.WebhookConfig;
 
 public class NewTransactionPaymentMethod {
     private final int count;
     private final String description;
     private final String batch;
+    private final WebhookConfig webhook;
 
     @JsonCreator
     public NewTransactionPaymentMethod(@JsonProperty("Count") int count,
-                                       @JsonProperty("Description") String description,
-                                       @JsonProperty("Batch") String batch) {
+            @JsonProperty("Description") String description,
+            @JsonProperty("Batch") String batch,
+            @JsonProperty("Webhook") WebhookConfig webhook) {
 
         this.count = count;
         this.description = description;
         this.batch = batch;
+        this.webhook = webhook;
     }
 
     public int getCount() {
@@ -30,12 +34,17 @@ public class NewTransactionPaymentMethod {
         return batch;
     }
 
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
     @Override
     public String toString() {
         return "NewTransactionPaymentMethod{" +
                 "count=" + count +
                 ", description='" + description + '\'' +
                 ", batch='" + batch + '\'' +
+                ", webhook='" + webhook + '\'' +
                 '}';
     }
 
@@ -43,6 +52,7 @@ public class NewTransactionPaymentMethod {
         private int count;
         private String description;
         private String batch;
+        private WebhookConfig webhook;
 
         public Builder withCount(int count) {
             this.count = count;
@@ -59,8 +69,13 @@ public class NewTransactionPaymentMethod {
             return this;
         }
 
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewTransactionPaymentMethod build() {
-            return new NewTransactionPaymentMethod(count, description, batch);
+            return new NewTransactionPaymentMethod(count, description, batch, webhook);
         }
     }
 }
