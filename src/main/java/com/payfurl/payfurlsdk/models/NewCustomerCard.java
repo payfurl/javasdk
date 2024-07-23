@@ -19,6 +19,7 @@ public class NewCustomerCard {
     private final Date vaultExpireDate;
     private final Integer vaultExpireSeconds;
     private final Map<String, String> metadata;
+    private final boolean skipExpiryDateValidation;
 
     @JsonCreator
     public NewCustomerCard(@JsonProperty("Reference") String reference,
@@ -32,7 +33,8 @@ public class NewCustomerCard {
                            @JsonProperty("VaultCard") boolean vaultCard,
                            @JsonProperty("VaultExpireDate") Date vaultExpireDate,
                            @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds,
-                           @JsonProperty("Metadata") Map<String, String> metadata) {
+                           @JsonProperty("Metadata") Map<String, String> metadata,
+                           @JsonProperty("SkipExpiryDateValidation") boolean skipExpiryDateValidation) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,6 +47,7 @@ public class NewCustomerCard {
         this.vaultExpireDate = vaultExpireDate;
         this.vaultExpireSeconds = vaultExpireSeconds;
         this.metadata = metadata;
+        this.skipExpiryDateValidation = skipExpiryDateValidation;
     }
 
     public String getReference() {
@@ -95,6 +98,8 @@ public class NewCustomerCard {
         return metadata;
     }
 
+    public boolean getSkipExpiryDateValidation() { return skipExpiryDateValidation; }
+
     @Override
     public String toString() {
         return "NewCustomerCard{" +
@@ -110,6 +115,7 @@ public class NewCustomerCard {
                 ", vaultExpireDate=" + vaultExpireDate +
                 ", vaultExpireSeconds=" + vaultExpireSeconds +
                 ", metadata=" + metadata +
+                ", skipExpiryDateValidation=" + skipExpiryDateValidation +
                 '}';
     }
 
@@ -126,6 +132,7 @@ public class NewCustomerCard {
         private Date vaultExpireDate;
         private Integer vaultExpireSeconds;
         private Map<String, String> metadata;
+        private boolean skipExpiryDateValidation = false;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -187,8 +194,13 @@ public class NewCustomerCard {
             return this;
         }
 
+        public Builder withSkipExpiryDateValidation(boolean skipExpiryDateValidation) {
+            this.skipExpiryDateValidation = skipExpiryDateValidation;
+            return this;
+        }
+
         public NewCustomerCard build() {
-            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds, metadata);
+            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds, metadata, skipExpiryDateValidation);
         }
     }
 }
