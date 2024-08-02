@@ -104,4 +104,9 @@ public enum ErrorCode {
     ProviderNotSupported,
     InvalidBatch,
     InvalidBatchData,
+    DirectDebitNotSupported,
+    InvalidSubscriptionId,
+    NoDataToUpdateThePaymentMethod,
+    PaymentMethodMustBeACardType,
+    UnableToUpdateThePaymentMethod
 }
