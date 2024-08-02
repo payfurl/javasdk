@@ -23,6 +23,12 @@ public class PaymentMethodApiTest {
             .withExpiryDate("12/35")
             .withCcv("123")
             .build();
+            
+    private static final BankPaymentInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentInformation.Builder()
+            .withBankCode("123-456")
+            .withAccountNumber("123456")
+            .withAccountName("Bank Account")
+            .build(); 
 
     private PaymentMethodApi paymentMethodApi;
     private CustomerApi customerApi;
@@ -156,6 +162,22 @@ public class PaymentMethodApiTest {
 
             // then
             then(paymentMethodWithProviderToken.getPaymentMethodId()).isNotNull();
+        }
+        
+        @Test
+        @DisplayName("When createPaymentMethodWithBankAccount request is executed, Then return valid PaymentMethodData")
+        void testCreatePaymentMethodWithBankAccount() throws ApiException {
+            // given
+            NewPaymentMethodBankPayment newPaymentMethodBankPayment = new NewPaymentMethodBankPayment.Builder()
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                    .withMetadata(METADATA)
+                    .build();
+            // when
+            PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithBankAccount(newPaymentMethodBankPayment);
+
+            // then
+            then(paymentMethodWithCard.getPaymentMethodId()).isNotNull();
         }
     }
 }

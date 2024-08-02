@@ -25,6 +25,8 @@ import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.ProductItem;
 import com.payfurl.payfurlsdk.models.TransactionStatus;
 import com.payfurl.payfurlsdk.models.WebhookConfig;
+import com.payfurl.payfurlsdk.models.BankPaymentInformation;
+import com.payfurl.payfurlsdk.models.NewChargeBankPaymentRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -40,12 +42,19 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 public class ChargeApiTest {
     private static final TransactionStatus SUCCESS_MARKER = TransactionStatus.SUCCESS;
+    private static final TransactionStatus PENDING_MARKER = TransactionStatus.PENDING;
     private static final ImmutableMap<String, String> METADATA = ImmutableMap.of("merchant_id", "1234356");
     private static final CardRequestInformation SAMPLE_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4111111111111111")
             .withExpiryDate("12/35")
             .withCcv("123")
             .build();
+    
+    private static final BankPaymentInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentInformation.Builder()
+            .withBankCode("123-456")
+            .withAccountNumber("123456")
+            .withAccountName("Bank Account")
+            .build();        
 
     private static final CardRequestInformation SAMPLE_FAILED_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4000000000000000")
@@ -258,6 +267,28 @@ public class ChargeApiTest {
             // then
             then(chargeData).isNotNull();
             then(chargeData.status).isEqualTo(SUCCESS_MARKER);
+        }
+        
+        @Test
+        @DisplayName("When createWithBankAccount request is executed, Then return valid charge data")
+        void testCreateWithBankAccount() throws ApiException {
+            // given
+            NewChargeBankPaymentRequest newChargeBankPaymentRequest = new NewChargeBankPaymentRequest.Builder()
+                    .withAmount(BigDecimal.valueOf(258))
+                    .withCurrency("USD")
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withBankPaymentInformation(SAMPLE_BANK_PAYMENT_INFORMATION)
+                    .withAddress(SAMPLE_ADDRESS)
+                    .withOrder(SAMPLE_ORDER)
+                    .withMetadata(METADATA)
+                    .build();
+
+            // when
+            ChargeData chargeData = chargeApi.createWithBankAccount(newChargeBankPaymentRequest);
+
+            // then
+            then(chargeData).isNotNull();
+            then(chargeData.status).isEqualTo(PENDING_MARKER);
         }
     }
 }

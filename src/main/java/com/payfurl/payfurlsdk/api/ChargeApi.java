@@ -15,6 +15,7 @@ import com.payfurl.payfurlsdk.models.NewChargeCustomer;
 import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
 import com.payfurl.payfurlsdk.models.NewChargeToken;
 import com.payfurl.payfurlsdk.models.NewRefund;
+import com.payfurl.payfurlsdk.models.NewChargeBankPaymentRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -153,5 +154,16 @@ public class ChargeApi extends BaseApi {
      */
     public ChargeData voidCharge(String chargeId) throws ApiException {
         return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + chargeId + "/void", null, ChargeData.class);
+    }
+    
+    /**
+     * Accept a payment using a bank account
+     *
+     * @param newChargeBankPaymentRequest parameter for creating payment with bank account
+     * @return ChargeData object details
+     * @throws ApiException
+     */
+    public ChargeData createWithBankAccount(NewChargeBankPaymentRequest newChargeBankPaymentRequest) throws ApiException {
+        return executePostRequestWith(chargeApiBaseEndpoint + "/bank_account", newChargeBankPaymentRequest, ChargeData.class);
     }
 }

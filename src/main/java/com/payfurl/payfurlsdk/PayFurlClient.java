@@ -64,6 +64,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private TokenApi tokenApi;
     private ProviderApi providerApi;
     private BatchApi batchApi;
+    private SubscriptionApi subscriptionApi;
 
     private static Optional<String> extractRegionFromKey(String key) {
         if (StringUtils.isEmpty(key)) {
@@ -124,6 +125,7 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.tokenApi = new TokenApi(this, this.httpClient, this.authHandlerMap);
         this.providerApi = new ProviderApi(this, this.httpClient, this.authHandlerMap);
         this.batchApi = new BatchApi(this, this.httpClient, this.authHandlerMap);
+        this.subscriptionApi = new SubscriptionApi(this, this.httpClient, this.authHandlerMap);
     }
 
     public SecretKeyAuthHandler getSecretKeyAuthHandler() {
@@ -214,6 +216,11 @@ public class PayFurlClient implements PayFurlClientSdk {
     @Override
     public BatchApi getBatchApi() {
         return batchApi;
+    }
+
+    @Override
+    public SubscriptionApi getSubscriptionApi() {
+        return subscriptionApi;
     }
 
     @Override

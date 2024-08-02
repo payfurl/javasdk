@@ -6,48 +6,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.Map;
 
-public class NewCustomerCard {
+public class NewCustomerBankPayment {
     private final String reference;
     private final String firstName;
     private final String lastName;
     private final String email;
     private final String phone;
     private final String providerId;
-    private final CardRequestInformation paymentInformation;
+    private final BankPaymentInformation bankPaymentInformation;
     private final Address address;
-    private final boolean vaultCard;
-    private final Date vaultExpireDate;
-    private final Integer vaultExpireSeconds;
     private final Map<String, String> metadata;
-    private final boolean skipExpiryDateValidation;
 
     @JsonCreator
-    public NewCustomerCard(@JsonProperty("Reference") String reference,
+    public NewCustomerBankPayment(@JsonProperty("Reference") String reference,
                            @JsonProperty("FirstName") String firstName,
                            @JsonProperty("LastName") String lastName,
                            @JsonProperty("Email") String email,
                            @JsonProperty("Phone") String phone,
                            @JsonProperty("ProviderId") String providerId,
-                           @JsonProperty("PaymentInformation") CardRequestInformation paymentInformation,
+                           @JsonProperty("PaymentInformation") BankPaymentInformation bankPaymentInformation,
                            @JsonProperty("Address") Address address,
-                           @JsonProperty("VaultCard") boolean vaultCard,
-                           @JsonProperty("VaultExpireDate") Date vaultExpireDate,
-                           @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds,
-                           @JsonProperty("Metadata") Map<String, String> metadata,
-                           @JsonProperty("SkipExpiryDateValidation") boolean skipExpiryDateValidation) {
+                           @JsonProperty("Metadata") Map<String, String> metadata) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.providerId = providerId;
-        this.paymentInformation = paymentInformation;
+        this.bankPaymentInformation = bankPaymentInformation;
         this.address = address;
-        this.vaultCard = vaultCard;
-        this.vaultExpireDate = vaultExpireDate;
-        this.vaultExpireSeconds = vaultExpireSeconds;
         this.metadata = metadata;
-        this.skipExpiryDateValidation = skipExpiryDateValidation;
     }
 
     public String getReference() {
@@ -74,48 +62,30 @@ public class NewCustomerCard {
         return providerId;
     }
 
-    public CardRequestInformation getPaymentInformation() {
-        return paymentInformation;
+    public BankPaymentInformation getBankPaymentInformation() {
+        return bankPaymentInformation;
     }
 
     public Address getAddress() {
         return address;
     }
 
-    public boolean isVaultCard() {
-        return vaultCard;
-    }
-
-    public Date getVaultExpireDate() {
-        return vaultExpireDate;
-    }
-
-    public Integer getVaultExpireSeconds() {
-        return vaultExpireSeconds;
-    }
-
     public Map<String, String> getMetadata() {
         return metadata;
     }
 
-    public boolean getSkipExpiryDateValidation() { return skipExpiryDateValidation; }
-
     @Override
     public String toString() {
-        return "NewCustomerCard{" +
+        return "NewCustomerBankPayment{" +
                 "reference=" + reference +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
                 ", providerId=" + providerId +
-                ", paymentInformation=" + paymentInformation +
+                ", bankPaymentInformation=" + bankPaymentInformation +
                 ", address=" + address +
-                ", vaultCard=" + vaultCard +
-                ", vaultExpireDate=" + vaultExpireDate +
-                ", vaultExpireSeconds=" + vaultExpireSeconds +
                 ", metadata=" + metadata +
-                ", skipExpiryDateValidation=" + skipExpiryDateValidation +
                 '}';
     }
 
@@ -126,13 +96,9 @@ public class NewCustomerCard {
         private String email;
         private String phone;
         private String providerId;
-        private CardRequestInformation paymentInformation;
+        private BankPaymentInformation bankPaymentInformation;
         private Address address;
-        private boolean vaultCard = false;
-        private Date vaultExpireDate;
-        private Integer vaultExpireSeconds;
         private Map<String, String> metadata;
-        private boolean skipExpiryDateValidation = false;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -164,8 +130,8 @@ public class NewCustomerCard {
             return this;
         }
 
-        public Builder withPaymentInformation(CardRequestInformation paymentInformation) {
-            this.paymentInformation = paymentInformation;
+        public Builder withBankPaymentInformation(BankPaymentInformation bankPaymentInformation) {
+            this.bankPaymentInformation = bankPaymentInformation;
             return this;
         }
 
@@ -174,33 +140,13 @@ public class NewCustomerCard {
             return this;
         }
 
-        public Builder withVaultCard(boolean vaultCard) {
-            this.vaultCard = vaultCard;
-            return this;
-        }
-
-        public Builder withVaultExpireDate(Date vaultExpireDate) {
-            this.vaultExpireDate = vaultExpireDate;
-            return this;
-        }
-
-        public Builder withVaultExpireSeconds(Integer vaultExpireSeconds) {
-            this.vaultExpireSeconds = vaultExpireSeconds;
-            return this;
-        }
-
         public Builder withMetadata(Map<String, String> metadata) {
             this.metadata = metadata;
             return this;
         }
 
-        public Builder withSkipExpiryDateValidation(boolean skipExpiryDateValidation) {
-            this.skipExpiryDateValidation = skipExpiryDateValidation;
-            return this;
-        }
-
-        public NewCustomerCard build() {
-            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds, metadata, skipExpiryDateValidation);
+        public NewCustomerBankPayment build() {
+            return new NewCustomerBankPayment(reference, firstName, lastName, email, phone, providerId, bankPaymentInformation, address, metadata);
         }
     }
 }
