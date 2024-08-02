@@ -107,6 +107,6 @@ public enum ErrorCode {
     DirectDebitNotSupported,
     InvalidSubscriptionId,
     NoDataToUpdateThePaymentMethod,
-    PaymentMethodMustBeACardType,
+    PaymentMethodMustBeOfTypeCard,
     UnableToUpdateThePaymentMethod
 }
