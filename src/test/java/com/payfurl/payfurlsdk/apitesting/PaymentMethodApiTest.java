@@ -29,6 +29,15 @@ public class PaymentMethodApiTest {
             .withAccountNumber("123456")
             .withAccountName("Bank Account")
             .build(); 
+            
+    private static final SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION = new UpdatePaymentMethodCardRequestInformation.Builder()
+            .withExpiryDate("01/31")
+            .withCardholder("UpdatedCardholder")
+            .build();
+            
+    private static final UpdatePaymentMethod SAMPLE_UPDATE_PAYMENT_METHOD = new UpdatePaymentMethod.Builder()
+            .withCard(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION)
+            .build();
 
     private PaymentMethodApi paymentMethodApi;
     private CustomerApi customerApi;
@@ -178,6 +187,33 @@ public class PaymentMethodApiTest {
 
             // then
             then(paymentMethodWithCard.getPaymentMethodId()).isNotNull();
+        }
+        
+        @Test
+        @DisplayName("When update payment method, Then return valid PaymentMethodData")
+        void testUpdatePaymentMethod() throws ApiException {
+            // given
+            NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                    .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withMetadata(METADATA)
+                    .build();
+            // when
+            PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+
+            // then
+            then(paymentMethodWithCard.getPaymentMethodId()).isNotNull();
+            
+            // give
+            
+            // when
+            PaymentMethodData updatedPaymentMethod = paymentMethodApi.updatePaymentMethod(paymentMethodWithCard.getPaymentMethodId(), SAMPLE_UPDATE_PAYMENT_METHOD)
+            
+            // then
+            then(updatedPaymentMethod.getPaymentMethodId()).isNotNull();
+            then(updatedPaymentMethod.getPaymentMethodId()).isEqualTo(paymentMethodWithCard.getPaymentMethodId());
+            then(updatedPaymentMethod.getCard().getExpiryDate().isEqualTo(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION.getExpiryDate();
+            then(updatedPaymentMethod.getCard().getCardholder().isEqualTo(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION.getCardholder();
         }
     }
 }
