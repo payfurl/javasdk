@@ -207,7 +207,7 @@ public class PaymentMethodApiTest {
             // give
             
             // when
-            PaymentMethodData updatedPaymentMethod = paymentMethodApi.updatePaymentMethod(paymentMethodWithCard.getPaymentMethodId(), SAMPLE_UPDATE_PAYMENT_METHOD)
+            PaymentMethodData updatedPaymentMethod = paymentMethodApi.updatePaymentMethod(paymentMethodWithCard.getPaymentMethodId(), SAMPLE_UPDATE_PAYMENT_METHOD);
             
             // then
             then(updatedPaymentMethod.getPaymentMethodId()).isNotNull();
