@@ -212,8 +212,8 @@ public class PaymentMethodApiTest {
             // then
             then(updatedPaymentMethod.getPaymentMethodId()).isNotNull();
             then(updatedPaymentMethod.getPaymentMethodId()).isEqualTo(paymentMethodWithCard.getPaymentMethodId());
-            then(updatedPaymentMethod.getCard().getExpiryDate().isEqualTo(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION.getExpiryDate();
-            then(updatedPaymentMethod.getCard().getCardholder().isEqualTo(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION.getCardholder();
+            then(updatedPaymentMethod.getCard().getExpiryDate()).isEqualTo(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION.getExpiryDate());
+            then(updatedPaymentMethod.getCard().getCardholder()).isEqualTo(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION.getCardholder());
         }
     }
 }
