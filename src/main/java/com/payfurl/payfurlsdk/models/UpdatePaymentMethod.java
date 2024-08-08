@@ -7,7 +7,7 @@ public class UpdatePaymentMethod {
     public final UpdatePaymentMethodCardRequestInformation card;
 
     @JsonCreator
-    public CardData(@JsonProperty("Card") UpdatePaymentMethodCardRequestInformation card) {
+    public UpdatePaymentMethod(@JsonProperty("Card") UpdatePaymentMethodCardRequestInformation card) {
         this.card = card;
     }
 
