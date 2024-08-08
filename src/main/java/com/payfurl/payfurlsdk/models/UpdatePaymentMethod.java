@@ -11,7 +11,7 @@ public class UpdatePaymentMethod {
         this.card = card;
     }
 
-    public String getCard() {
+    public UpdatePaymentMethodCardRequestInformation getCard() {
         return card;
     }
 
