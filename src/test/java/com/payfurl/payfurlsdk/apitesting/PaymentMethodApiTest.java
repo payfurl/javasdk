@@ -30,7 +30,7 @@ public class PaymentMethodApiTest {
             .withAccountName("Bank Account")
             .build(); 
             
-    private static final SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION = new UpdatePaymentMethodCardRequestInformation.Builder()
+    private static final UpdatePaymentMethodCardRequestInformation SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION = new UpdatePaymentMethodCardRequestInformation.Builder()
             .withExpiryDate("01/31")
             .withCardholder("UpdatedCardholder")
             .build();
