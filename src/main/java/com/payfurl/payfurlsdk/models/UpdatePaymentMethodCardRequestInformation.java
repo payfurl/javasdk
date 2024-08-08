@@ -43,5 +43,9 @@ public class UpdatePaymentMethodCardRequestInformation {
             this.cardholder = cardholder;
             return this;
         }
+        
+        public UpdatePaymentMethodCardRequestInformation build() {
+            return new UpdatePaymentMethodCardRequestInformation(expiryDate, cardholder);
+        }
     }
 }

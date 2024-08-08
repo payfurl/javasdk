@@ -29,5 +29,9 @@ public class UpdatePaymentMethod {
             this.card = card;
             return this;
         }
+        
+        public UpdatePaymentMethod build() {
+            return new UpdatePaymentMethod(card);
+        }
     }
 }
