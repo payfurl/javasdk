@@ -127,4 +127,16 @@ public class PaymentMethodApi extends BaseApi {
         String urlPath = paymentMethodApiBaseEndpoint + "/bank_account";
         return executePostRequestWith(urlPath, newPaymentMethodBankPayment, PaymentMethodData.class);
     }
+    
+        /**
+         * Update a payment method
+         *
+         * @param updatePaymentMethod
+         * @return
+         * @throws ApiException
+         */
+        public PaymentMethodData updatePaymentMethod(String paymentMethodId, UpdatePaymentMethod updatePaymentMethod) throws ApiException {
+            String urlPath = String.format("%s/%s", paymentMethodApiBaseEndpoint, paymentMethodId);
+            return executePutRequestWith(urlPath, updatePaymentMethod, PaymentMethodData.class);
+        }
 }
