@@ -113,6 +113,12 @@ public class ChargeApi extends BaseApi {
         queryParameters.put("AmountLessThan", searchData.getAmountLessThan());
         queryParameters.put("CustomerId", searchData.getCustomerId());
         queryParameters.put("Status", searchData.getStatus());
+        queryParameters.put("ProviderId", searchData.getProviderId());
+        queryParameters.put("PaymentType", searchData.getPaymentType());
+        queryParameters.put("CardType", searchData.getCardType());
+        queryParameters.put("Currency", searchData.getCurrency());
+        queryParameters.put("CardNumber", searchData.getCardNumber());
+        queryParameters.put("Cardholder", searchData.getCardholder());
         queryParameters.put("AddedAfter", searchData.getAddedAfter());
         queryParameters.put("AddedBefore", searchData.getAddedBefore());
         queryParameters.put("SortBy", searchData.getSortBy());
@@ -155,7 +161,7 @@ public class ChargeApi extends BaseApi {
     public ChargeData voidCharge(String chargeId) throws ApiException {
         return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + chargeId + "/void", null, ChargeData.class);
     }
-    
+
     /**
      * Accept a payment using a bank account
      *
