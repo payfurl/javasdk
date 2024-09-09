@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class PaymentMethodSearch {
     private final String paymentType;
+    private final String cardType;
     private final String providerId;
     private final String customerId;
     private final String sortBy;
@@ -19,6 +20,7 @@ public class PaymentMethodSearch {
 
     @JsonCreator
     public PaymentMethodSearch(@JsonProperty("PaymentType") String paymentType,
+                               @JsonProperty("CardType") String cardType,
                                @JsonProperty("ProviderId") String providerId,
                                @JsonProperty("CustomerId") String customerId,
                                @JsonProperty("SortBy") String sortBy,
@@ -28,6 +30,7 @@ public class PaymentMethodSearch {
                                @JsonProperty("Skip") Integer skip,
                                @JsonProperty("Search") String search) {
         this.paymentType = paymentType;
+        this.cardType = cardType;
         this.providerId = providerId;
         this.customerId = customerId;
         this.sortBy = sortBy;
@@ -40,6 +43,10 @@ public class PaymentMethodSearch {
 
     public String getPaymentType() {
         return paymentType;
+    }
+    
+    public String getCardType() {
+        return cardType;
     }
 
     public String getProviderId() {
@@ -78,6 +85,7 @@ public class PaymentMethodSearch {
     public String toString() {
         return "ChargeSearch{" +
                 "paymentType='" + paymentType + '\'' +
+                ", cardType='" + cardType + '\'' +
                 ", providerId='" + providerId + '\'' +
                 ", customerId='" + customerId + '\'' +
                 ", sortBy='" + sortBy + '\'' +
@@ -91,6 +99,7 @@ public class PaymentMethodSearch {
 
     public static class Builder {
         private String paymentType;
+        private String cardType;
         private String providerId;
         private String customerId;
         private String sortBy;
@@ -102,6 +111,11 @@ public class PaymentMethodSearch {
 
         public Builder withPaymentType(String paymentType) {
             this.paymentType = paymentType;
+            return this;
+        }
+        
+        public Builder withCardType(String cardType) {
+            this.cardType = cardType;
             return this;
         }
 
@@ -146,7 +160,7 @@ public class PaymentMethodSearch {
         }
 
         public PaymentMethodSearch build() {
-            return new PaymentMethodSearch(paymentType, providerId, customerId, sortBy, addedAfter, addedBefore, limit, skip, search);
+            return new PaymentMethodSearch(paymentType, cardType, providerId, customerId, sortBy, addedAfter, addedBefore, limit, skip, search);
         }
     }
 }
