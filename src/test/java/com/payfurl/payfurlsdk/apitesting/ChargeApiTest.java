@@ -230,7 +230,8 @@ public class ChargeApiTest {
         @Test
         @DisplayName("When Search request is executed, Then return valid charge data list")
         void testSearchByCard() throws ApiException {
-            String cardholder = UUID.randomUUID().toString();
+            //String cardholder = UUID.randomUUID().toString();
+            String cardholder = "randomstring123";
             CardRequestInformation paymentInformation = new CardRequestInformation.Builder()
                     .withCardNumber("4111111111111111")
                     .withCardHolder(cardholder)
