@@ -238,12 +238,14 @@ public class ChargeApiTest {
                     .withExpiryDate("12/35")
                     .build();
 
-            NewCustomerCard newCustomerCard = new NewCustomerCard.Builder()
+            NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
+                    .withAmount(BigDecimal.valueOf(258))
+                    .withCurrency("USD")
                     .withProviderId(TestConfigProvider.getProviderId())
                     .withPaymentInformation(paymentInformation)
                     .build();
 
-            customerApi.createWithCard(newCustomerCard);
+            chargeApi.createWithCard(newChargeCardRequest);
 
             ChargeSearch chargeSearch = new ChargeSearch.Builder()
                     .withCardholder(cardholder)
