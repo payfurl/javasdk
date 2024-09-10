@@ -249,7 +249,7 @@ public class ChargeApiTest {
 
             ChargeSearch chargeSearch = new ChargeSearch.Builder()
                     .withCardholder(cardholder)
-                    .withCardNumber("4111")
+                    .withCardNumber("411111")
                     .withCardType("VISA")
                     .build();
 
