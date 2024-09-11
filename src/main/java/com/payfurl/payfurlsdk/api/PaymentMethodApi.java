@@ -111,6 +111,7 @@ public class PaymentMethodApi extends BaseApi {
         queryParams.put("AddedAfter", searchData.getAddedAfter());
         queryParams.put("AddedBefore", searchData.getAddedBefore());
         queryParams.put("PaymentType", searchData.getPaymentType());
+        queryParams.put("CardType", searchData.getCardType());
         queryParams.put("SortBy", searchData.getSortBy());
 
         return executeGetRequestWith(paymentMethodApiBaseEndpoint, queryParams, PaymentMethodList.class);
