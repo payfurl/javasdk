@@ -111,11 +111,12 @@ public class PaymentMethodApi extends BaseApi {
         queryParams.put("AddedAfter", searchData.getAddedAfter());
         queryParams.put("AddedBefore", searchData.getAddedBefore());
         queryParams.put("PaymentType", searchData.getPaymentType());
+        queryParams.put("CardType", searchData.getCardType());
         queryParams.put("SortBy", searchData.getSortBy());
 
         return executeGetRequestWith(paymentMethodApiBaseEndpoint, queryParams, PaymentMethodList.class);
     }
-    
+
     /**
      * Add a payment method using bank account
      *
@@ -127,16 +128,28 @@ public class PaymentMethodApi extends BaseApi {
         String urlPath = paymentMethodApiBaseEndpoint + "/bank_account";
         return executePostRequestWith(urlPath, newPaymentMethodBankPayment, PaymentMethodData.class);
     }
-    
-        /**
-         * Update a payment method
-         *
-         * @param updatePaymentMethod
-         * @return
-         * @throws ApiException
-         */
-        public PaymentMethodData updatePaymentMethod(String paymentMethodId, UpdatePaymentMethod updatePaymentMethod) throws ApiException {
-            String urlPath = String.format("%s/%s", paymentMethodApiBaseEndpoint, paymentMethodId);
-            return executePutRequestWith(urlPath, updatePaymentMethod, PaymentMethodData.class);
-        }
+
+    /**
+     * Add a payment method using bank account
+     *
+     * @param newPaymentMethodToken
+     * @return
+     * @throws ApiException
+     */
+    public PaymentMethodData createPaymentMethodWithToken(NewPaymentMethodToken newPaymentMethodToken) throws ApiException {
+        String urlPath = paymentMethodApiBaseEndpoint + "/token";
+        return executePostRequestWith(urlPath, newPaymentMethodToken, PaymentMethodData.class);
+    }
+
+    /**
+     * Update a payment method
+     *
+     * @param updatePaymentMethod
+     * @return
+     * @throws ApiException
+     */
+    public PaymentMethodData updatePaymentMethod(String paymentMethodId, UpdatePaymentMethod updatePaymentMethod) throws ApiException {
+        String urlPath = String.format("%s/%s", paymentMethodApiBaseEndpoint, paymentMethodId);
+        return executePutRequestWith(urlPath, updatePaymentMethod, PaymentMethodData.class);
+    }
 }
