@@ -23,18 +23,18 @@ public class PaymentMethodApiTest {
             .withExpiryDate("12/35")
             .withCcv("123")
             .build();
-            
+
     private static final BankPaymentInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentInformation.Builder()
             .withBankCode("123-456")
             .withAccountNumber("123456")
             .withAccountName("Bank Account")
-            .build(); 
-            
+            .build();
+
     private static final UpdatePaymentMethodCardRequestInformation SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION = new UpdatePaymentMethodCardRequestInformation.Builder()
             .withExpiryDate("01/31")
             .withCardholder("UpdatedCardholder")
             .build();
-            
+
     private static final UpdatePaymentMethod SAMPLE_UPDATE_PAYMENT_METHOD = new UpdatePaymentMethod.Builder()
             .withCard(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION)
             .build();
@@ -172,7 +172,7 @@ public class PaymentMethodApiTest {
             // then
             then(paymentMethodWithProviderToken.getPaymentMethodId()).isNotNull();
         }
-        
+
         @Test
         @DisplayName("When createPaymentMethodWithBankAccount request is executed, Then return valid PaymentMethodData")
         void testCreatePaymentMethodWithBankAccount() throws ApiException {
@@ -188,7 +188,7 @@ public class PaymentMethodApiTest {
             // then
             then(paymentMethodWithCard.getPaymentMethodId()).isNotNull();
         }
-        
+
         @Test
         @DisplayName("When update payment method, Then return valid PaymentMethodData")
         void testUpdatePaymentMethod() throws ApiException {
@@ -203,17 +203,31 @@ public class PaymentMethodApiTest {
 
             // then
             then(paymentMethodWithCard.getPaymentMethodId()).isNotNull();
-            
+
             // give
-            
+
             // when
             PaymentMethodData updatedPaymentMethod = paymentMethodApi.updatePaymentMethod(paymentMethodWithCard.getPaymentMethodId(), SAMPLE_UPDATE_PAYMENT_METHOD);
-            
+
             // then
             then(updatedPaymentMethod.getPaymentMethodId()).isNotNull();
             then(updatedPaymentMethod.getPaymentMethodId()).isEqualTo(paymentMethodWithCard.getPaymentMethodId());
             then(updatedPaymentMethod.getCard().getExpiryDate()).isEqualTo(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION.getExpiryDate());
             then(updatedPaymentMethod.getCard().getCardholder()).isEqualTo(SAMPLE_UPDATE_PAYMENT_METHOD_CARD_REQUEST_INFORMATION.getCardholder());
+        }
+
+        @Test
+        @DisplayName("When createPaymentMethodWithToken request is executed, Then return valid PaymentMethodData")
+        void testCreatePaymentMethodWithToken() throws ApiException {
+            // given
+            NewPaymentMethodToken newPaymentMethodToken = new NewPaymentMethodToken.Builder()
+                    .withToken(TestConfigProvider.getToken())
+                    .build();
+            // when
+            PaymentMethodData paymentMethodWithToken = paymentMethodApi.createPaymentMethodWithToken(newPaymentMethodToken);
+
+            // then
+            then(paymentMethodWithToken.getPaymentMethodId()).isNotNull();
         }
     }
 }
