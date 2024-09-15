@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.BiPredicate;
 
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -49,12 +50,12 @@ public class ChargeApiTest {
             .withExpiryDate("12/35")
             .withCcv("123")
             .build();
-    
+
     private static final BankPaymentInformation SAMPLE_BANK_PAYMENT_INFORMATION = new BankPaymentInformation.Builder()
             .withBankCode("123-456")
             .withAccountNumber("123456")
             .withAccountName("Bank Account")
-            .build();        
+            .build();
 
     private static final CardRequestInformation SAMPLE_FAILED_PAYMENT_INFORMATION = new CardRequestInformation.Builder()
             .withCardNumber("4000000000000000")
@@ -227,6 +228,36 @@ public class ChargeApiTest {
         }
 
         @Test
+        @DisplayName("When Search request is executed, Then return valid charge data list")
+        void testSearchByCard() throws ApiException {
+            String cardholder = UUID.randomUUID().toString();
+            CardRequestInformation paymentInformation = new CardRequestInformation.Builder()
+                    .withCardNumber("4111111111111111")
+                    .withCardHolder(cardholder)
+                    .withExpiryDate("12/35")
+                    .build();
+
+            NewChargeCardRequest newChargeCardRequest = new NewChargeCardRequest.Builder()
+                    .withAmount(BigDecimal.valueOf(258))
+                    .withCurrency("USD")
+                    .withProviderId(TestConfigProvider.getProviderId())
+                    .withPaymentInformation(paymentInformation)
+                    .build();
+
+            chargeApi.createWithCard(newChargeCardRequest);
+
+            ChargeSearch chargeSearch = new ChargeSearch.Builder()
+                    .withCardholder(cardholder)
+                    .withCardNumber("411111")
+                    .withCardType("VISA")
+                    .build();
+
+            ChargeList chargeList = chargeApi.search(chargeSearch);
+
+            then(chargeList.getCount()).isEqualTo(1);
+        }
+
+        @Test
         @DisplayName("When createWitPaymentMethod request is executed, Then return valid charge data")
         void testCreateWithPaymentMethod() throws ApiException {
             // given
@@ -268,7 +299,7 @@ public class ChargeApiTest {
             then(chargeData).isNotNull();
             then(chargeData.status).isEqualTo(SUCCESS_MARKER);
         }
-        
+
         @Test
         @DisplayName("When createWithBankAccount request is executed, Then return valid charge data")
         void testCreateWithBankAccount() throws ApiException {

@@ -18,6 +18,12 @@ public class ChargeSearch {
     private final Integer limit;
     private final Integer skip;
     private final String sortBy;
+    private final String providerId;
+    private final String paymentType;
+    private final String cardType;
+    private final String currency;
+    private final String cardNumber;
+    private final String cardholder;
 
     @JsonCreator
     public ChargeSearch(@JsonProperty("PaymentMethodId") String paymentMethodId,
@@ -28,6 +34,12 @@ public class ChargeSearch {
                         @JsonProperty("Status") String status,
                         @JsonProperty("AddedAfter") Date addedAfter,
                         @JsonProperty("AddedBefore") Date addedBefore,
+                        @JsonProperty("ProviderId") String providerId,
+                        @JsonProperty("PaymentType") String paymentType,
+                        @JsonProperty("CardType") String cardType,
+                        @JsonProperty("Currency") String currency,
+                        @JsonProperty("CardNumber") String cardNumber,
+                        @JsonProperty("Cardholder") String cardholder,
                         @JsonProperty("Limit") Integer limit,
                         @JsonProperty("Skip") Integer skip,
                         @JsonProperty("SortBy") String sortBy) {
@@ -39,6 +51,12 @@ public class ChargeSearch {
         this.status = status;
         this.addedAfter = addedAfter;
         this.addedBefore = addedBefore;
+        this.providerId = providerId;
+        this.paymentType = paymentType;
+        this.cardType = cardType;
+        this.currency = currency;
+        this.cardNumber = cardNumber;
+        this.cardholder = cardholder;
         this.limit = limit;
         this.skip = skip;
         this.sortBy = sortBy;
@@ -84,6 +102,24 @@ public class ChargeSearch {
         return addedBefore;
     }
 
+    @JsonProperty("ProviderId")
+    public String getProviderId() { return providerId; }
+
+    @JsonProperty("PaymentType")
+    public String getPaymentType() { return paymentType; }
+
+    @JsonProperty("CardType")
+    public String getCardType() { return cardType; }
+
+    @JsonProperty("Currency")
+    public String getCurrency() { return currency; }
+
+    @JsonProperty("CardNumber")
+    public String getCardNumber() { return cardNumber; }
+
+    @JsonProperty("Cardholder")
+    public String getCardholder() { return cardholder; }
+
     @JsonProperty("Limit")
     public Integer getLimit() {
         return limit;
@@ -110,6 +146,12 @@ public class ChargeSearch {
                 ", status='" + status + '\'' +
                 ", addedAfter=" + addedAfter +
                 ", addedBefore=" + addedBefore +
+                ", providerId=" + providerId +
+                ", paymentType=" + paymentType +
+                ", cardType=" + cardType +
+                ", currency=" + currency +
+                ", cardNumber=" + cardNumber +
+                ", cardholder=" + cardholder +
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", sortBy='" + sortBy + '\'' +
@@ -125,6 +167,12 @@ public class ChargeSearch {
         private String status;
         private Date addedAfter;
         private Date addedBefore;
+        private String providerId;
+        private String paymentType;
+        private String cardType;
+        private String currency;
+        private String cardNumber;
+        private String cardholder;
         private Integer limit;
         private Integer skip;
         private String sortBy;
@@ -169,6 +217,36 @@ public class ChargeSearch {
             return this;
         }
 
+        public Builder withProviderId(String providerId) {
+            this.providerId = providerId;
+            return this;
+        }
+
+        public Builder withPaymentType(String paymentType) {
+            this.paymentType = paymentType;
+            return this;
+        }
+
+        public Builder withCardType(String cardType) {
+            this.cardType = cardType;
+            return this;
+        }
+
+        public Builder withCurrency(String currency) {
+            this.currency = currency;
+            return this;
+        }
+
+        public Builder withCardNumber(String cardNumber) {
+            this.cardNumber = cardNumber;
+            return this;
+        }
+
+        public Builder withCardholder(String cardholder) {
+            this.cardholder = cardholder;
+            return this;
+        }
+
         public Builder withLimit(Integer limit) {
             this.limit = limit;
             return this;
@@ -185,7 +263,7 @@ public class ChargeSearch {
         }
 
         public ChargeSearch build() {
-            return new ChargeSearch(paymentMethodId, reference, amountGreaterThan, amountLessThan, customerId, status, addedAfter, addedBefore, limit, skip, sortBy);
+            return new ChargeSearch(paymentMethodId, reference, amountGreaterThan, amountLessThan, customerId, status, addedAfter, addedBefore, providerId, paymentType, cardType, currency, cardNumber, cardholder, limit, skip, sortBy);
         }
     }
 }
