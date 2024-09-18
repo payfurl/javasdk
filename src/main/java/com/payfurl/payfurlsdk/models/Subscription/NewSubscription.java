@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 public class NewSubscription {
 
@@ -18,6 +19,7 @@ public class NewSubscription {
     private SubscriptionEnd endAfter;
     private SubscriptionRetryPolicy retry;
     private WebhookConfig webhook;
+    private Map<String, String> metadata;
 
     @JsonCreator
     public NewSubscription(
@@ -29,7 +31,8 @@ public class NewSubscription {
             @JsonProperty("StartDate") Date startDate,
             @JsonProperty("EndAfter") SubscriptionEnd endAfter,
             @JsonProperty("Retry") SubscriptionRetryPolicy retry,
-            @JsonProperty("Webhook") WebhookConfig webhook) {
+            @JsonProperty("Webhook") WebhookConfig webhook,
+            @JsonProperty("Metadata") Map<String, String> metadata){
 
         this.paymentMethodId = paymentMethodId;
         this.amount = amount;
@@ -40,6 +43,7 @@ public class NewSubscription {
         this.endAfter = endAfter;
         this.retry = retry;
         this.webhook = webhook;
+        this.metadata = metadata;
     }
 
     public String getPaymentMethodId() {
@@ -78,6 +82,10 @@ public class NewSubscription {
         return webhook;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "SubscriptionCreate{" +
@@ -90,6 +98,7 @@ public class NewSubscription {
                 ", endAfter=" + endAfter + '\'' +
                 ", retry=" + retry + '\'' +
                 ", webhook=" + webhook +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -103,9 +112,10 @@ public class NewSubscription {
         private SubscriptionEnd endAfter;
         private SubscriptionRetryPolicy retry;
         private WebhookConfig webhook;
+        private Map<String, String> metadata;
 
         public NewSubscription build() {
-            return new NewSubscription(paymentMethodId, amount, currency, interval, frequency, startDate, endAfter, retry, webhook);
+            return new NewSubscription(paymentMethodId, amount, currency, interval, frequency, startDate, endAfter, retry, webhook, metadata);
         }
 
         public Builder withPaymentMethodId(String paymentMethodId) {
@@ -150,6 +160,11 @@ public class NewSubscription {
 
         public Builder withWebhook(WebhookConfig webhook) {
             this.webhook = webhook;
+            return this;
+        }
+
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
             return this;
         }
     }
