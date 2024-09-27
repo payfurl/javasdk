@@ -132,7 +132,7 @@ public class CustomerApiTest {
             then(updatedCustomer.getCustomerId()).isEqualTo(customerData.getCustomerId());
             then(updatedCustomer.getPhone()).isEqualTo("+61311111112");
             then(updatedCustomer.getEmail()).isEqualTo("updated" + reference + "@payfurl.com");
-            then(updatedCustomer.getAddress().getCountry()).isEqualTo("India");
+            then(updatedCustomer.getAddress().getCountry()).isEqualTo("IN");
         }
 
         @Test
@@ -182,7 +182,7 @@ public class CustomerApiTest {
             then(updatedCustomer.getCustomerId()).isEqualTo(customerData.getCustomerId());
             then(updatedCustomer.getPhone()).isEqualTo("+61311111112");
             then(updatedCustomer.getEmail()).isEqualTo("updated" + reference + "@payfurl.com");
-            then(updatedCustomer.getAddress().getCountry()).isEqualTo("India");
+            then(updatedCustomer.getAddress().getCountry()).isEqualTo("IN");
             // Verify if new payment method is default now for the customer
             then(updatedCustomer.getDefaultPaymentMethod().getPaymentMethodId()).isEqualTo(paymentMethodData.getPaymentMethodId());
         }
