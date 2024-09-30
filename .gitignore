@@ -22,3 +22,4 @@ gradlew.bat
 settings.gradle
 .idea/
 appsettings.json
+.vscode/settings.json
