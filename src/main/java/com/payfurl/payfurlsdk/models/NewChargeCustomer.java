@@ -25,6 +25,9 @@ public class NewChargeCustomer {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String descriptor;
     private final String threeDSNotificationUrl;
+    private final String firstName;
+    private final String lastName;
+    private final Geolocation geolocation;
 
     @JsonCreator
     public NewChargeCustomer(@JsonProperty("Amount") BigDecimal amount,
@@ -42,7 +45,10 @@ public class NewChargeCustomer {
                              @JsonProperty("Webhook") WebhookConfig webhook,
                              @JsonProperty("Metadata") Map<String, String> metadata,
                              @JsonProperty("Descriptor") String descriptor,
-                             @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl) {
+                             @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl,
+                             @JsonProperty("FirstName") String firstName,
+                             @JsonProperty("LastName") String lastName,
+                             @JsonProperty("Geolocation") Geolocation geolocation) {
         this.amount = amount;
         this.currency = currency;
         this.customerId = customerId;
@@ -59,6 +65,9 @@ public class NewChargeCustomer {
         this.metadata = metadata;
         this.descriptor = descriptor;
         this.threeDSNotificationUrl = threeDSNotificationUrl;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.geolocation = geolocation;
     }
 
     public BigDecimal getAmount() {
@@ -120,8 +129,21 @@ public class NewChargeCustomer {
     public String getDescriptor() {
         return descriptor;
     }
+
     public String getThreeDSNotificationUrl() {
         return threeDSNotificationUrl;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Geolocation getGeolocation() {
+        return geolocation;
     }
 
     @Override
@@ -143,6 +165,9 @@ public class NewChargeCustomer {
                 ", metadata=" + metadata +
                 ", descriptor=" + descriptor +
                 ", threeDSNotificationUrl=" + threeDSNotificationUrl +
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
+                ", geolocation=" + geolocation +
                 '}';
     }
 
@@ -163,6 +188,9 @@ public class NewChargeCustomer {
         private Map<String, String> metadata;
         private String descriptor;
         private String threeDSNotificationUrl;
+        private String firstName;
+        private String lastName;
+        private Geolocation geolocation;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -228,6 +256,7 @@ public class NewChargeCustomer {
             this.webhook = webhook;
             return this;
         }
+
         public Builder withMetadata(Map<String, String> metadata) {
             this.metadata = metadata;
             return this;
@@ -240,6 +269,21 @@ public class NewChargeCustomer {
 
         public Builder withThreeDSNotificationUrl(String threeDSNotificationUrl) {
             this.threeDSNotificationUrl = threeDSNotificationUrl;
+            return this;
+        }
+
+        public Builder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder withGeolocation(Geolocation geolocation) {
+            this.geolocation = geolocation;
             return this;
         }
 
@@ -260,7 +304,10 @@ public class NewChargeCustomer {
                     webhook,
                     metadata,
                     descriptor,
-                    threeDSNotificationUrl);
+                    threeDSNotificationUrl,
+                    firstName,
+                    lastName,
+                    geolocation);
         }
     }
 }

@@ -28,27 +28,29 @@ public class NewChargeBankPaymentRequest {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String descriptor;
     private final String threeDSNotificationUrl;
+    private final Geolocation geolocation;
 
     @JsonCreator
     public NewChargeBankPaymentRequest(@JsonProperty("Amount") BigDecimal amount,
-                                @JsonProperty("Currency") String currency,
-                                @JsonProperty("ProviderId") String providerId,
-                                @JsonProperty("Reference") String reference,
-                                @JsonProperty("FirstName") String firstName,
-                                @JsonProperty("LastName") String lastName,
-                                @JsonProperty("BankPaymentInformation") BankPaymentInformation bankPaymentInformation,
-                                @JsonProperty("Address") Address address,
-                                @JsonProperty("Order") Order order,
-                                @JsonProperty("CustomerCode") String customerCode,
-                                @JsonProperty("InvoiceNumber") String invoiceNumber,
-                                @JsonProperty("Email") String email,
-                                @JsonProperty("Phone") String phone,
-                                @JsonProperty("Capture") boolean capture,
-                                @JsonProperty("Initiator") Initiator initiator,
-                                @JsonProperty("Webhook") WebhookConfig webhook,
-                                @JsonProperty("Metadata") Map<String, String> metadata,
-                                @JsonProperty("Descriptor") String descriptor,
-                                @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl) {
+                                       @JsonProperty("Currency") String currency,
+                                       @JsonProperty("ProviderId") String providerId,
+                                       @JsonProperty("Reference") String reference,
+                                       @JsonProperty("FirstName") String firstName,
+                                       @JsonProperty("LastName") String lastName,
+                                       @JsonProperty("BankPaymentInformation") BankPaymentInformation bankPaymentInformation,
+                                       @JsonProperty("Address") Address address,
+                                       @JsonProperty("Order") Order order,
+                                       @JsonProperty("CustomerCode") String customerCode,
+                                       @JsonProperty("InvoiceNumber") String invoiceNumber,
+                                       @JsonProperty("Email") String email,
+                                       @JsonProperty("Phone") String phone,
+                                       @JsonProperty("Capture") boolean capture,
+                                       @JsonProperty("Initiator") Initiator initiator,
+                                       @JsonProperty("Webhook") WebhookConfig webhook,
+                                       @JsonProperty("Metadata") Map<String, String> metadata,
+                                       @JsonProperty("Descriptor") String descriptor,
+                                       @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl,
+                                       @JsonProperty("Geolocation") Geolocation geolocation) {
         this.amount = amount;
         this.currency = currency;
         this.providerId = providerId;
@@ -68,6 +70,7 @@ public class NewChargeBankPaymentRequest {
         this.metadata = metadata;
         this.descriptor = descriptor;
         this.threeDSNotificationUrl = threeDSNotificationUrl;
+        this.geolocation = geolocation;
     }
 
     public BigDecimal getAmount() {
@@ -85,13 +88,13 @@ public class NewChargeBankPaymentRequest {
     public String getReference() {
         return reference;
     }
-    
+
     public String getFirstName() {
         return firstName;
     }
-        
+
     public String getLastName() {
-            return lastName;
+        return lastName;
     }
 
     public BankPaymentInformation getBankPaymentInformation() {
@@ -141,8 +144,13 @@ public class NewChargeBankPaymentRequest {
     public String getDescriptor() {
         return descriptor;
     }
+
     public String getThreeDSNotificationUrl() {
         return threeDSNotificationUrl;
+    }
+
+    public Geolocation getGeolocation() {
+        return geolocation;
     }
 
     @Override
@@ -152,21 +160,22 @@ public class NewChargeBankPaymentRequest {
                 ", currency='" + currency + '\'' +
                 ", providerId='" + providerId + '\'' +
                 ", reference='" + reference + '\'' +
-                ", firstName=" + firstName +
-                ", lastName=" + lastName +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", bankPaymentInformation=" + bankPaymentInformation +
                 ", address=" + address +
                 ", order=" + order +
-                ", customerCode=" + customerCode +
-                ", invoiceNumber=" + invoiceNumber +
-                ", email=" + email +
-                ", phone=" + phone +
+                ", customerCode='" + customerCode + '\'' +
+                ", invoiceNumber='" + invoiceNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 ", capture=" + capture +
                 ", initiator=" + initiator +
                 ", webhook=" + webhook +
                 ", metadata=" + metadata +
-                ", descriptor=" + descriptor +
-                ", threeDSNotificationUrl=" + threeDSNotificationUrl +
+                ", descriptor='" + descriptor + '\'' +
+                ", threeDSNotificationUrl='" + threeDSNotificationUrl + '\'' +
+                ", geolocation=" + geolocation +
                 '}';
     }
 
@@ -190,6 +199,7 @@ public class NewChargeBankPaymentRequest {
         private Map<String, String> metadata;
         private String descriptor;
         private String threeDSNotificationUrl;
+        private Geolocation geolocation;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -210,12 +220,12 @@ public class NewChargeBankPaymentRequest {
             this.reference = reference;
             return this;
         }
-        
+
         public Builder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
-        
+
         public Builder withLastName(String lastName) {
             this.lastName = lastName;
             return this;
@@ -223,11 +233,6 @@ public class NewChargeBankPaymentRequest {
 
         public Builder withBankPaymentInformation(BankPaymentInformation bankPaymentInformation) {
             this.bankPaymentInformation = bankPaymentInformation;
-            return this;
-        }
-
-        public Builder withCapture(boolean capture) {
-            this.capture = capture;
             return this;
         }
 
@@ -261,6 +266,11 @@ public class NewChargeBankPaymentRequest {
             return this;
         }
 
+        public Builder withCapture(boolean capture) {
+            this.capture = capture;
+            return this;
+        }
+
         public Builder withInitiator(Initiator initiator) {
             this.initiator = initiator;
             return this;
@@ -286,6 +296,11 @@ public class NewChargeBankPaymentRequest {
             return this;
         }
 
+        public Builder withGeolocation(Geolocation geolocation) {
+            this.geolocation = geolocation;
+            return this;
+        }
+
         public NewChargeBankPaymentRequest build() {
             return new NewChargeBankPaymentRequest(
                     amount,
@@ -306,7 +321,8 @@ public class NewChargeBankPaymentRequest {
                     webhook,
                     metadata,
                     descriptor,
-                    threeDSNotificationUrl);
+                    threeDSNotificationUrl,
+                    geolocation);
         }
     }
 }
