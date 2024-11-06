@@ -25,6 +25,9 @@ public class NewChargeCardLeastCost {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final String descriptor;
     private final String threeDSNotificationUrl;
+    private final String firstName;
+    private final String lastName;
+    private final Geolocation geolocation;
 
     @JsonCreator
     public NewChargeCardLeastCost(@JsonProperty("Amount") BigDecimal amount,
@@ -42,7 +45,10 @@ public class NewChargeCardLeastCost {
                                   @JsonProperty("Webhook") WebhookConfig webhook,
                                   @JsonProperty("Metadata") Map<String, String> metadata,
                                   @JsonProperty("Descriptor") String descriptor,
-                                  @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl) {
+                                  @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl,
+                                  @JsonProperty("FirstName") String firstName,
+                                  @JsonProperty("LastName") String lastName,
+                                  @JsonProperty("Geolocation") Geolocation geolocation) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -59,6 +65,9 @@ public class NewChargeCardLeastCost {
         this.metadata = metadata;
         this.descriptor = descriptor;
         this.threeDSNotificationUrl = threeDSNotificationUrl;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.geolocation = geolocation;
     }
 
     public BigDecimal getAmount() {
@@ -85,10 +94,6 @@ public class NewChargeCardLeastCost {
         return order;
     }
 
-    public boolean isCapture() {
-        return capture;
-    }
-
     public String getCustomerCode() {
         return customerCode;
     }
@@ -103,6 +108,10 @@ public class NewChargeCardLeastCost {
 
     public String getPhone() {
         return phone;
+    }
+
+    public boolean isCapture() {
+        return capture;
     }
 
     public Initiator getInitiator() {
@@ -120,8 +129,21 @@ public class NewChargeCardLeastCost {
     public String getDescriptor() {
         return descriptor;
     }
+
     public String getThreeDSNotificationUrl() {
         return threeDSNotificationUrl;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Geolocation getGeolocation() {
+        return geolocation;
     }
 
     @Override
@@ -140,9 +162,12 @@ public class NewChargeCardLeastCost {
                 ", capture=" + capture +
                 ", initiator=" + initiator +
                 ", webhook=" + webhook +
-                ", meatadata=" + metadata +
+                ", metadata=" + metadata +
                 ", descriptor=" + descriptor +
                 ", threeDSNotificationUrl=" + threeDSNotificationUrl +
+                ", firstName=" + firstName +
+                ", lastName=" + lastName +
+                ", geolocation=" + geolocation +
                 '}';
     }
 
@@ -163,6 +188,9 @@ public class NewChargeCardLeastCost {
         private Map<String, String> metadata;
         private String descriptor;
         private String threeDSNotificationUrl;
+        private String firstName;
+        private String lastName;
+        private Geolocation geolocation;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -238,8 +266,24 @@ public class NewChargeCardLeastCost {
             this.descriptor = descriptor;
             return this;
         }
+
         public Builder withThreeDSNotificationUrl(String threeDSNotificationUrl) {
             this.threeDSNotificationUrl = threeDSNotificationUrl;
+            return this;
+        }
+
+        public Builder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder withGeolocation(Geolocation geolocation) {
+            this.geolocation = geolocation;
             return this;
         }
 
@@ -260,7 +304,10 @@ public class NewChargeCardLeastCost {
                     webhook,
                     metadata,
                     descriptor,
-                    threeDSNotificationUrl);
+                    threeDSNotificationUrl,
+                    firstName,
+                    lastName,
+                    geolocation);
         }
     }
 }
