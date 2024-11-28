@@ -34,6 +34,8 @@ public class ChargeData {
     private final VisaInstallmentsInfo visaInstallments;
     private final String descriptor;
     private final String threeDsRedirectUrl;
+    private final String paymentTokenId;
+    private final String subscriptionId;
 
     @JsonCreator
     public ChargeData(@JsonProperty("ChargeId") String chargeId,
@@ -61,7 +63,9 @@ public class ChargeData {
                       @JsonProperty("Initiator") Initiator initiator,
                       @JsonProperty("VisaInstallments") VisaInstallmentsInfo visaInstallments,
                       @JsonProperty("Descriptor") String descriptor,
-                      @JsonProperty("ThreeDsRedirectUrl") String threeDsRedirectUrl) {
+                      @JsonProperty("ThreeDsRedirectUrl") String threeDsRedirectUrl,
+                      @JsonProperty("ThreeDsRedirectUrl") String paymentTokenId,
+                      @JsonProperty("ThreeDsRedirectUrl") String subscriptionId) {
         this.chargeId = chargeId;
         this.providerChargeId = providerChargeId;
         this.amount = amount;
@@ -88,6 +92,8 @@ public class ChargeData {
         this.visaInstallments = visaInstallments;
         this.descriptor = descriptor;
         this.threeDsRedirectUrl = threeDsRedirectUrl;
+        this.paymentTokenId = paymentTokenId;
+        this.subscriptionId = subscriptionId;
     }
 
     public String getChargeId() {
@@ -194,6 +200,14 @@ public class ChargeData {
         return threeDsRedirectUrl;
     }
 
+    public String getPaymentTokenId() {
+        return paymentTokenId;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
     @Override
     public String toString() {
         return "ChargeData{" +
@@ -223,6 +237,8 @@ public class ChargeData {
                 ", visaInstallments=" + visaInstallments +
                 ", descriptor=" + descriptor +
                 ", threeDsRedirectUrl=" + threeDsRedirectUrl +
+                ", paymentTokenId=" + paymentTokenId +
+                ", subscriptionId=" + subscriptionId +
                 '}';
     }
 }
