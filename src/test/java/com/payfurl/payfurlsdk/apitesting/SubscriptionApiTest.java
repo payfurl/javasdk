@@ -118,7 +118,7 @@ public class SubscriptionApiTest {
     
     @Test
     @DisplayName("When updateSubscription request is executed, Then return valid updated subscription data")
-    void testCreateSubscriptionWithPaymentMethod() throws ApiException {
+    void testUpdateSubscription() throws ApiException {
         // given
         NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
                 .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
@@ -143,6 +143,11 @@ public class SubscriptionApiTest {
         assertThat(subscriptionDataUpdated.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
         assertThat(subscriptionData.getAmount()).isEqualTo(200);
         assertThat(subscriptionData.getCurrency()).isEqualTo("AUD");
+        assertThat(subscriptionData.getInterval()).isEqualTo("Month");
+        assertThat(subscriptionData.getFrequency()).isEqualTo(1);
+        assertThat(subscriptionData.getEndAfter()).isNull();
+        assertThat(subscriptionData.getRetry()).isNull();
+        assertThat(subscriptionData.getWebhook()).isNull();
     }
 
     private NewSubscription getNewSubscription(String paymentMethodId) {
