@@ -64,8 +64,8 @@ public class ChargeData {
                       @JsonProperty("VisaInstallments") VisaInstallmentsInfo visaInstallments,
                       @JsonProperty("Descriptor") String descriptor,
                       @JsonProperty("ThreeDsRedirectUrl") String threeDsRedirectUrl,
-                      @JsonProperty("ThreeDsRedirectUrl") String paymentTokenId,
-                      @JsonProperty("ThreeDsRedirectUrl") String subscriptionId) {
+                      @JsonProperty("PaymentTokenId") String paymentTokenId,
+                      @JsonProperty("SubscriptionId") String subscriptionId) {
         this.chargeId = chargeId;
         this.providerChargeId = providerChargeId;
         this.amount = amount;
