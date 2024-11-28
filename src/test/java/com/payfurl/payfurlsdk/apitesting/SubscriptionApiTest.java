@@ -115,6 +115,35 @@ public class SubscriptionApiTest {
         assertThat(subscriptionDataDeleted.getPaymentMethodId()).isEqualTo(subscriptionData.getPaymentMethodId());
         assertThat(subscriptionDataDeleted.getStatus()).isEqualTo("Cancelled");
     }
+    
+    @Test
+    @DisplayName("When updateSubscription request is executed, Then return valid updated subscription data")
+    void testCreateSubscriptionWithPaymentMethod() throws ApiException {
+        // given
+        NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                .withProviderId(TestConfigProvider.getProviderId())
+                .withMetadata(METADATA)
+                .build();
+
+        PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+        String paymentMethodId = paymentMethodWithCard.getPaymentMethodId();
+
+        NewSubscription newSubscription = getNewSubscription(paymentMethodId);
+        SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
+
+        // when
+        SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate.Builder()
+            .withAmount(200)
+            .withCurrency("AUD")
+            .build();
+        SubscriptionData subscriptionDataUpdated = subscriptionApi.updateSubscription(subscriptionData.getSubscriptionId(), subscriptionUpdate);
+
+        // then
+        assertThat(subscriptionDataUpdated.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
+        assertThat(subscriptionData.getAmount()).isEqualTo(200);
+        assertThat(subscriptionData.getCurrency()).isEqualTo("AUD");
+    }
 
     private NewSubscription getNewSubscription(String paymentMethodId) {
         SubscriptionEnd subscriptionEnd = new SubscriptionEnd.Builder()

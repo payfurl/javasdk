@@ -6,10 +6,7 @@ import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
 import com.payfurl.payfurlsdk.models.Batch.*;
-import com.payfurl.payfurlsdk.models.Subscription.NewSubscription;
-import com.payfurl.payfurlsdk.models.Subscription.SubscriptionData;
-import com.payfurl.payfurlsdk.models.Subscription.SubscriptionList;
-import com.payfurl.payfurlsdk.models.Subscription.SubscriptionSearch;
+import com.payfurl.payfurlsdk.models.Subscription.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,5 +46,9 @@ public class SubscriptionApi extends BaseApi {
 
     public SubscriptionData deleteSubscription(String subscriptionId) throws ApiException {
         return executeDeleteRequestWith(subscriptionApiBaseEndpoint + "/" + subscriptionId, null, SubscriptionData.class);
+    }
+    
+    public SubscriptionData updateSubscription(String subscriptionId, SubscriptionUpdate data) throws ApiException {
+        return executePutRequestWith(subscriptionApiBaseEndpoint + "/" + subscriptionId, data, SubscriptionData.class);
     }
 }
