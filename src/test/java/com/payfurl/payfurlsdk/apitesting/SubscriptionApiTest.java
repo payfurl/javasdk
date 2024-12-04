@@ -150,6 +150,45 @@ public class SubscriptionApiTest {
         assertThat(subscriptionData.getWebhook()).isNull();
     }
 
+    @Test
+    @DisplayName("When updateSubscriptionStatus request is executed, Then return valid subscription status")
+    void testPauseSubscription() throws ApiException {
+        NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                .withProviderId(TestConfigProvider.getProviderId())
+                .withMetadata(METADATA)
+                .build();
+
+        PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+        String paymentMethodId = paymentMethodWithCard.getPaymentMethodId();
+
+        NewSubscription newSubscription = getNewSubscription(paymentMethodId);
+        SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
+        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Suspended").build());
+
+        assertThat(result.getStatus()).isEqualTo("Suspended");
+    }
+
+    @Test
+    @DisplayName("When updateSubscriptionStatus request is executed, Then return valid subscription status")
+    void testReactivateSubscription() throws ApiException {
+        NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                .withProviderId(TestConfigProvider.getProviderId())
+                .withMetadata(METADATA)
+                .build();
+
+        PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+        String paymentMethodId = paymentMethodWithCard.getPaymentMethodId();
+
+        NewSubscription newSubscription = getNewSubscription(paymentMethodId);
+        SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
+        subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Suspended").build());
+        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Active").build());
+
+        assertThat(result.getStatus()).isEqualTo("Active");
+    }
+
     private NewSubscription getNewSubscription(String paymentMethodId) {
         SubscriptionEnd subscriptionEnd = new SubscriptionEnd.Builder()
                 .withCount(2)
