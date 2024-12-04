@@ -71,7 +71,7 @@ public class SubscriptionUpdate {
                 ", frequency=" + frequency + '\'' +
                 ", endAfter=" + endAfter + '\'' +
                 ", retry=" + retry + '\'' +
-                ", webhook=" + webhook
+                ", webhook=" + webhook +
                 '}';
     }
 
