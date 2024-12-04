@@ -134,7 +134,7 @@ public class SubscriptionApiTest {
 
         // when
         SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate.Builder()
-            .withAmount(200)
+            .withAmount(BigDecimal.valueOf(200)
             .withCurrency("AUD")
             .build();
         SubscriptionData subscriptionDataUpdated = subscriptionApi.updateSubscription(subscriptionData.getSubscriptionId(), subscriptionUpdate);
