@@ -84,7 +84,7 @@ public class SubscriptionUpdate {
         private SubscriptionRetryPolicy retry;
         private WebhookConfig webhook;
 
-        public SubscriptionData build() {
+        public SubscriptionUpdate build() {
             return new SubscriptionUpdate(amount, currency, interval, frequency, endAfter, retry, webhook);
         }
 
