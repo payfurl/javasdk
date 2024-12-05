@@ -10,7 +10,7 @@ public class SubscriptionUpdate {
 
     private BigDecimal amount;
     private String currency;
-    private String interval;
+    private SubscriptionInterval interval;
     private int frequency;
     private SubscriptionEnd endAfter;
     private SubscriptionRetryPolicy retry;
@@ -20,7 +20,7 @@ public class SubscriptionUpdate {
     public SubscriptionUpdate(
             @JsonProperty("Amount") BigDecimal amount,
             @JsonProperty("Currency") String currency,
-            @JsonProperty("Interval") String interval,
+            @JsonProperty("Interval") SubscriptionInterval interval,
             @JsonProperty("Frequency") int frequency,
             @JsonProperty("EndAfter") SubscriptionEnd endAfter,
             @JsonProperty("Retry") SubscriptionRetryPolicy retry,
@@ -42,7 +42,7 @@ public class SubscriptionUpdate {
         return currency;
     }
 
-    public String getInterval() {
+    public SubscriptionInterval getInterval() {
         return interval;
     }
 
@@ -78,7 +78,7 @@ public class SubscriptionUpdate {
     public static class Builder {
         private BigDecimal amount;
         private String currency;
-        private String interval;
+        private SubscriptionInterval interval;
         private int frequency;
         private SubscriptionEnd endAfter;
         private SubscriptionRetryPolicy retry;
@@ -98,7 +98,7 @@ public class SubscriptionUpdate {
             return this;
         }
 
-        public Builder withInterval(String interval) {
+        public Builder withInterval(SubscriptionInterval interval) {
             this.interval = interval;
             return this;
         }

@@ -12,7 +12,7 @@ public class NewSubscription {
     private String paymentMethodId;
     private BigDecimal amount;
     private String currency;
-    private String interval;
+    private SubscriptionInterval interval;
     private Integer frequency;
 
     private Date startDate;
@@ -26,7 +26,7 @@ public class NewSubscription {
             @JsonProperty("PaymentMethodId") String paymentMethodId,
             @JsonProperty("Amount") BigDecimal amount,
             @JsonProperty("Currency") String currency,
-            @JsonProperty("Interval") String interval,
+            @JsonProperty("Interval") SubscriptionInterval interval,
             @JsonProperty("Frequency") Integer frequency,
             @JsonProperty("StartDate") Date startDate,
             @JsonProperty("EndAfter") SubscriptionEnd endAfter,
@@ -58,7 +58,7 @@ public class NewSubscription {
         return currency;
     }
 
-    public String getInterval() {
+    public SubscriptionInterval getInterval() {
         return interval;
     }
 
@@ -106,7 +106,7 @@ public class NewSubscription {
         private String paymentMethodId;
         private BigDecimal amount;
         private String currency;
-        private String interval;
+        private SubscriptionInterval interval;
         private Integer frequency;
         private Date startDate;
         private SubscriptionEnd endAfter;
@@ -133,7 +133,7 @@ public class NewSubscription {
             return this;
         }
 
-        public Builder withInterval(String interval) {
+        public Builder withInterval(SubscriptionInterval interval) {
             this.interval = interval;
             return this;
         }
