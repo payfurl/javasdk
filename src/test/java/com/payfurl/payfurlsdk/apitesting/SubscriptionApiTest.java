@@ -143,7 +143,7 @@ public class SubscriptionApiTest {
         assertThat(subscriptionDataUpdated.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
         assertThat(subscriptionData.getAmount()).isEqualTo(200);
         assertThat(subscriptionData.getCurrency()).isEqualTo("AUD");
-        assertThat(subscriptionData.getInterval()).isEqualTo("Month");
+        assertThat(subscriptionData.getInterval()).isEqualTo(SubscriptionInterval.Month);
         assertThat(subscriptionData.getFrequency()).isEqualTo(1);
         assertThat(subscriptionData.getEndAfter()).isNull();
         assertThat(subscriptionData.getRetry()).isNull();
@@ -197,7 +197,7 @@ public class SubscriptionApiTest {
         SubscriptionRetryPolicy subscriptionRetryPolicy = new SubscriptionRetryPolicy.Builder()
                 .withMaximum(3)
                 .withFrequency(1)
-                .withInterval("Day")
+                .withInterval(SubscriptionRetryInterval.Day)
                 .build();
 
         WebhookConfig webhookConfig = new WebhookConfig.Builder()
@@ -209,7 +209,7 @@ public class SubscriptionApiTest {
                 .withPaymentMethodId(paymentMethodId)
                 .withAmount(BigDecimal.valueOf(100))
                 .withCurrency("USD")
-                .withInterval("Month")
+                .withInterval(SubscriptionInterval.Month)
                 .withFrequency(1)
                 .withEndAfter(subscriptionEnd)
                 .withRetry(subscriptionRetryPolicy)
