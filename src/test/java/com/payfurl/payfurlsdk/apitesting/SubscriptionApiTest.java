@@ -135,6 +135,7 @@ public class SubscriptionApiTest {
         // when
         SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate.Builder()
             .withAmount(BigDecimal.valueOf(200))
+            .withInterval(SubscriptionInterval.Month)
             .withCurrency("AUD")
             .build();
         SubscriptionData subscriptionDataUpdated = subscriptionApi.updateSubscription(subscriptionData.getSubscriptionId(), subscriptionUpdate);
