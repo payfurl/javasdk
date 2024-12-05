@@ -144,7 +144,7 @@ public class SubscriptionApiTest {
         assertThat(subscriptionDataUpdated.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
         assertThat(subscriptionDataUpdated.getAmount()).isEqualTo(BigDecimal.valueOf(200));
         assertThat(subscriptionDataUpdated.getCurrency()).isEqualTo("AUD");
-        assertThat(subscriptionDataUpdated.getInterval()).isEqualTo(SubscriptionInterval.Month.nameof());
+        assertThat(subscriptionDataUpdated.getInterval()).isEqualTo(SubscriptionInterval.Month.name());
         assertThat(subscriptionDataUpdated.getFrequency()).isEqualTo(Integer.valueOf(1));
         assertThat(subscriptionDataUpdated.getEndAfter()).isNull();
         assertThat(subscriptionDataUpdated.getRetry()).isNull();
