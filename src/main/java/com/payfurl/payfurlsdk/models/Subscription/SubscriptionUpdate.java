@@ -11,7 +11,7 @@ public class SubscriptionUpdate {
     private BigDecimal amount;
     private String currency;
     private SubscriptionInterval interval;
-    private int frequency;
+    private Integer frequency;
     private SubscriptionEnd endAfter;
     private SubscriptionRetryPolicy retry;
     private WebhookConfig webhook;
@@ -21,7 +21,7 @@ public class SubscriptionUpdate {
             @JsonProperty("Amount") BigDecimal amount,
             @JsonProperty("Currency") String currency,
             @JsonProperty("Interval") SubscriptionInterval interval,
-            @JsonProperty("Frequency") int frequency,
+            @JsonProperty("Frequency") Integer frequency,
             @JsonProperty("EndAfter") SubscriptionEnd endAfter,
             @JsonProperty("Retry") SubscriptionRetryPolicy retry,
             @JsonProperty("Webhook") WebhookConfig webhook) {
@@ -46,7 +46,7 @@ public class SubscriptionUpdate {
         return interval;
     }
 
-    public int getFrequency() {
+    public Integer getFrequency() {
         return frequency;
     }
 
@@ -79,7 +79,7 @@ public class SubscriptionUpdate {
         private BigDecimal amount;
         private String currency;
         private SubscriptionInterval interval;
-        private int frequency;
+        private Integer frequency;
         private SubscriptionEnd endAfter;
         private SubscriptionRetryPolicy retry;
         private WebhookConfig webhook;
@@ -103,7 +103,7 @@ public class SubscriptionUpdate {
             return this;
         }
 
-        public Builder withFrequency(int frequency) {
+        public Builder withFrequency(Integer frequency) {
             this.frequency = frequency;
             return this;
         }
