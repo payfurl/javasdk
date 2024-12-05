@@ -61,7 +61,7 @@ public class SubscriptionApiTest {
 
         // then
         assertThat(subscriptionData.getPaymentMethodId()).isEqualTo(paymentMethodId);
-        assertThat(subscriptionData.getStatus()).isEqualTo(SubscriptionStatus.Active.name();
+        assertThat(subscriptionData.getStatus()).isEqualTo(SubscriptionStatus.Active.name());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class SubscriptionApiTest {
         // then
         assertThat(subscriptionDataResult.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
         assertThat(subscriptionDataDeleted.getPaymentMethodId()).isEqualTo(subscriptionData.getPaymentMethodId());
-        assertThat(subscriptionDataDeleted.getStatus()).isEqualTo(SubscriptionStatus.Cancelled.name();
+        assertThat(subscriptionDataDeleted.getStatus()).isEqualTo(SubscriptionStatus.Cancelled.name());
     }
     
     @Test
@@ -144,7 +144,7 @@ public class SubscriptionApiTest {
         assertThat(subscriptionDataUpdated.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
         assertThat(subscriptionDataUpdated.getAmount()).isEqualTo(BigDecimal.valueOf(200));
         assertThat(subscriptionDataUpdated.getCurrency()).isEqualTo("AUD");
-        assertThat(subscriptionDataUpdated.getInterval()).isEqualTo(SubscriptionInterval.Month.nameof();
+        assertThat(subscriptionDataUpdated.getInterval()).isEqualTo(SubscriptionInterval.Month.nameof());
         assertThat(subscriptionDataUpdated.getFrequency()).isEqualTo(Integer.valueOf(1));
         assertThat(subscriptionDataUpdated.getEndAfter()).isNull();
         assertThat(subscriptionDataUpdated.getRetry()).isNull();
@@ -187,7 +187,7 @@ public class SubscriptionApiTest {
         subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Suspended").build());
         SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Active").build());
 
-        assertThat(result.getStatus()).isEqualTo(SubscriptionStatus.Active.name();
+        assertThat(result.getStatus()).isEqualTo(SubscriptionStatus.Active.name());
     }
 
     private NewSubscription getNewSubscription(String paymentMethodId) {
