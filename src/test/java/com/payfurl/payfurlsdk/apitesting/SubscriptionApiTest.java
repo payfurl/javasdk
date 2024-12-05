@@ -142,7 +142,7 @@ public class SubscriptionApiTest {
 
         // then
         assertThat(subscriptionDataUpdated.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
-        assertThat(subscriptionDataUpdated.getAmount()).isEqualTo(200);
+        assertThat(subscriptionDataUpdated.getAmount()).isEqualTo(BigDecimal.valueOf(200));
         assertThat(subscriptionDataUpdated.getCurrency()).isEqualTo("AUD");
         assertThat(subscriptionDataUpdated.getInterval()).isEqualTo(SubscriptionInterval.Month);
         assertThat(subscriptionDataUpdated.getFrequency()).isEqualTo(1);
