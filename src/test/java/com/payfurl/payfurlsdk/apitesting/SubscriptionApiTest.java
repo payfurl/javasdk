@@ -142,13 +142,13 @@ public class SubscriptionApiTest {
 
         // then
         assertThat(subscriptionDataUpdated.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
-        assertThat(subscriptionData.getAmount()).isEqualTo(200);
-        assertThat(subscriptionData.getCurrency()).isEqualTo("AUD");
-        assertThat(subscriptionData.getInterval()).isEqualTo(SubscriptionInterval.Month);
-        assertThat(subscriptionData.getFrequency()).isEqualTo(1);
-        assertThat(subscriptionData.getEndAfter()).isNull();
-        assertThat(subscriptionData.getRetry()).isNull();
-        assertThat(subscriptionData.getWebhook()).isNull();
+        assertThat(subscriptionDataUpdated.getAmount()).isEqualTo(200);
+        assertThat(subscriptionDataUpdated.getCurrency()).isEqualTo("AUD");
+        assertThat(subscriptionDataUpdated.getInterval()).isEqualTo(SubscriptionInterval.Month);
+        assertThat(subscriptionDataUpdated.getFrequency()).isEqualTo(1);
+        assertThat(subscriptionDataUpdated.getEndAfter()).isNull();
+        assertThat(subscriptionDataUpdated.getRetry()).isNull();
+        assertThat(subscriptionDataUpdated.getWebhook()).isNull();
     }
 
     @Test
