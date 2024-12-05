@@ -61,7 +61,7 @@ public class SubscriptionApiTest {
 
         // then
         assertThat(subscriptionData.getPaymentMethodId()).isEqualTo(paymentMethodId);
-        assertThat(subscriptionData.getStatus()).isEqualTo(SubscriptionStatus.Active;
+        assertThat(subscriptionData.getStatus()).isEqualTo(SubscriptionStatus.Active);
     }
 
     @Test
