@@ -145,7 +145,7 @@ public class SubscriptionApiTest {
         assertThat(subscriptionDataUpdated.getAmount()).isEqualTo(BigDecimal.valueOf(200));
         assertThat(subscriptionDataUpdated.getCurrency()).isEqualTo("AUD");
         assertThat(subscriptionDataUpdated.getInterval()).isEqualTo("Month");
-        assertThat(subscriptionDataUpdated.getFrequency()).isEqualTo(Interger.valueOf(1);
+        assertThat(subscriptionDataUpdated.getFrequency()).isEqualTo(Interger.valueOf(1));
         assertThat(subscriptionDataUpdated.getEndAfter()).isNull();
         assertThat(subscriptionDataUpdated.getRetry()).isNull();
         assertThat(subscriptionDataUpdated.getWebhook()).isNull();
