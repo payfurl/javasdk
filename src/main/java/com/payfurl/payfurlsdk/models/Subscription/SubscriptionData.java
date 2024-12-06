@@ -19,7 +19,7 @@ public class SubscriptionData {
     private SubscriptionEnd endAfter;
     private SubscriptionRetryPolicy retry;
     private WebhookConfig webhook;
-    private String status;
+    private SubscriptionStatus status;
 
     @JsonCreator
     public SubscriptionData(
@@ -34,7 +34,7 @@ public class SubscriptionData {
             @JsonProperty("EndAfter") SubscriptionEnd endAfter,
             @JsonProperty("Retry") SubscriptionRetryPolicy retry,
             @JsonProperty("Webhook") WebhookConfig webhook,
-            @JsonProperty("Status") String status) {
+            @JsonProperty("Status") SubscriptionStatus status) {
         this.subscriptionId = subscriptionId;
         this.paymentMethodId = paymentMethodId;
         this.amount = amount;
@@ -93,7 +93,7 @@ public class SubscriptionData {
         return webhook;
     }
 
-    public String getStatus() {
+    public SubscriptionStatus getStatus() {
         return status;
     }
 
@@ -127,7 +127,7 @@ public class SubscriptionData {
         private SubscriptionEnd endAfter;
         private SubscriptionRetryPolicy retry;
         private WebhookConfig webhook;
-        private String status;
+        private SubscriptionStatus status;
 
         public SubscriptionData build() {
             return new SubscriptionData(subscriptionId, paymentMethodId, amount, currency, interval, frequency, createdDate, startDate, endAfter, retry, webhook, status);
@@ -188,7 +188,7 @@ public class SubscriptionData {
             return this;
         }
 
-        public Builder withStatus(String status) {
+        public Builder withStatus(SubscriptionStatus status) {
             this.status = status;
             return this;
         }
