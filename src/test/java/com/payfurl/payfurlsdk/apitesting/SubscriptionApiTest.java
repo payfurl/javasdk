@@ -61,7 +61,7 @@ public class SubscriptionApiTest {
 
         // then
         assertThat(subscriptionData.getPaymentMethodId()).isEqualTo(paymentMethodId);
-        assertThat(subscriptionData.getStatus()).isEqualTo("Active");
+        assertThat(subscriptionData.getStatus()).isEqualTo(SubscriptionStatus.Active);
     }
 
     @Test
@@ -113,7 +113,42 @@ public class SubscriptionApiTest {
         // then
         assertThat(subscriptionDataResult.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
         assertThat(subscriptionDataDeleted.getPaymentMethodId()).isEqualTo(subscriptionData.getPaymentMethodId());
-        assertThat(subscriptionDataDeleted.getStatus()).isEqualTo("Cancelled");
+        assertThat(subscriptionDataDeleted.getStatus()).isEqualTo(SubscriptionStatus.Cancelled);
+    }
+    
+    @Test
+    @DisplayName("When updateSubscription request is executed, Then return valid updated subscription data")
+    void testUpdateSubscription() throws ApiException {
+        // given
+        NewPaymentMethodCard newPaymentMethodCard = new NewPaymentMethodCard.Builder()
+                .withPaymentInformation(SAMPLE_PAYMENT_INFORMATION)
+                .withProviderId(TestConfigProvider.getProviderId())
+                .withMetadata(METADATA)
+                .build();
+
+        PaymentMethodData paymentMethodWithCard = paymentMethodApi.createPaymentMethodWithCard(newPaymentMethodCard);
+        String paymentMethodId = paymentMethodWithCard.getPaymentMethodId();
+
+        NewSubscription newSubscription = getNewSubscription(paymentMethodId);
+        SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
+
+        // when
+        SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate.Builder()
+            .withAmount(BigDecimal.valueOf(200))
+            .withInterval(SubscriptionInterval.Month)
+            .withCurrency("AUD")
+            .build();
+        SubscriptionData subscriptionDataUpdated = subscriptionApi.updateSubscription(subscriptionData.getSubscriptionId(), subscriptionUpdate);
+
+        // then
+        assertThat(subscriptionDataUpdated.getSubscriptionId()).isEqualTo(subscriptionData.getSubscriptionId());
+        assertThat(subscriptionDataUpdated.getAmount()).isEqualTo(BigDecimal.valueOf(200));
+        assertThat(subscriptionDataUpdated.getCurrency()).isEqualTo("AUD");
+        assertThat(subscriptionDataUpdated.getInterval()).isEqualTo(SubscriptionInterval.Month);
+        assertThat(subscriptionDataUpdated.getFrequency()).isEqualTo(Integer.valueOf(1));
+        assertThat(subscriptionDataUpdated.getEndAfter()).isNull();
+        assertThat(subscriptionDataUpdated.getRetry()).isNull();
+        assertThat(subscriptionDataUpdated.getWebhook()).isNull();
     }
 
     @Test
@@ -130,9 +165,10 @@ public class SubscriptionApiTest {
 
         NewSubscription newSubscription = getNewSubscription(paymentMethodId);
         SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
-        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Suspended").build());
+        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+            new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Suspended).build());
 
-        assertThat(result.getStatus()).isEqualTo("Suspended");
+        assertThat(result.getStatus()).isEqualTo(SubscriptionStatus.Suspended);
     }
 
     @Test
@@ -149,10 +185,12 @@ public class SubscriptionApiTest {
 
         NewSubscription newSubscription = getNewSubscription(paymentMethodId);
         SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
-        subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Suspended").build());
-        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Active").build());
+        subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+        new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Suspended).build());
+        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+        new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Active).build());
 
-        assertThat(result.getStatus()).isEqualTo("Active");
+        assertThat(result.getStatus()).isEqualTo(SubscriptionStatus.Active);
     }
 
     private NewSubscription getNewSubscription(String paymentMethodId) {
@@ -163,7 +201,7 @@ public class SubscriptionApiTest {
         SubscriptionRetryPolicy subscriptionRetryPolicy = new SubscriptionRetryPolicy.Builder()
                 .withMaximum(3)
                 .withFrequency(1)
-                .withInterval("Day")
+                .withInterval(SubscriptionRetryInterval.Day)
                 .build();
 
         WebhookConfig webhookConfig = new WebhookConfig.Builder()
@@ -175,7 +213,7 @@ public class SubscriptionApiTest {
                 .withPaymentMethodId(paymentMethodId)
                 .withAmount(BigDecimal.valueOf(100))
                 .withCurrency("USD")
-                .withInterval("Month")
+                .withInterval(SubscriptionInterval.Month)
                 .withFrequency(1)
                 .withEndAfter(subscriptionEnd)
                 .withRetry(subscriptionRetryPolicy)

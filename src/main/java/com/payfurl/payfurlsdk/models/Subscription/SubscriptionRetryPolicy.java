@@ -7,12 +7,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SubscriptionRetryPolicy {
 
     private final int maximum;
-    private final String interval;
+    private final SubscriptionRetryInterval interval;
     private final int frequency;
 
     @JsonCreator
     public SubscriptionRetryPolicy(@JsonProperty("Maximum") int maximum,
-                           @JsonProperty("Interval") String interval,
+                           @JsonProperty("Interval") SubscriptionRetryInterval interval,
                            @JsonProperty("Frequency") int frequency) {
         this.maximum = maximum;
         this.interval = interval;
@@ -23,7 +23,7 @@ public class SubscriptionRetryPolicy {
         return maximum;
     }
 
-    public String getInterval() {
+    public SubscriptionRetryInterval getInterval() {
         return interval;
     }
 
@@ -42,7 +42,7 @@ public class SubscriptionRetryPolicy {
 
     public static class Builder {
         private int maximum;
-        private String interval;
+        private SubscriptionRetryInterval interval;
         private int frequency;
 
         public SubscriptionRetryPolicy build() {
@@ -54,7 +54,7 @@ public class SubscriptionRetryPolicy {
             return this;
         }
 
-        public Builder withInterval(String interval) {
+        public Builder withInterval(SubscriptionRetryInterval interval) {
             this.interval = interval;
             return this;
         }

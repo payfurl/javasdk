@@ -51,4 +51,8 @@ public class SubscriptionApi extends BaseApi {
     public SubscriptionData updateSubscriptionStatus(String subscriptionId, SubscriptionUpdateStatus data) throws ApiException {
         return executePutRequestWith(subscriptionApiBaseEndpoint + "/" + subscriptionId + "/status", data, SubscriptionData.class);
     }
+    
+    public SubscriptionData updateSubscription(String subscriptionId, SubscriptionUpdate data) throws ApiException {
+        return executePutRequestWith(subscriptionApiBaseEndpoint + "/" + subscriptionId, data, SubscriptionData.class);
+    }
 }

@@ -6,55 +6,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SubscriptionData {
+public class SubscriptionUpdate {
 
-    private String subscriptionId;
-    private String paymentMethodId;
     private BigDecimal amount;
     private String currency;
     private SubscriptionInterval interval;
-    private int frequency;
-    private Date createdDate;
-    private Date startDate;
+    private Integer frequency;
     private SubscriptionEnd endAfter;
     private SubscriptionRetryPolicy retry;
     private WebhookConfig webhook;
-    private SubscriptionStatus status;
 
     @JsonCreator
-    public SubscriptionData(
-            @JsonProperty("SubscriptionId") String subscriptionId,
-            @JsonProperty("PaymentMethodId") String paymentMethodId,
+    public SubscriptionUpdate(
             @JsonProperty("Amount") BigDecimal amount,
             @JsonProperty("Currency") String currency,
             @JsonProperty("Interval") SubscriptionInterval interval,
-            @JsonProperty("Frequency") int frequency,
-            @JsonProperty("CreatedDate") Date createdDate,
-            @JsonProperty("StartDate") Date startDate,
+            @JsonProperty("Frequency") Integer frequency,
             @JsonProperty("EndAfter") SubscriptionEnd endAfter,
             @JsonProperty("Retry") SubscriptionRetryPolicy retry,
-            @JsonProperty("Webhook") WebhookConfig webhook,
-            @JsonProperty("Status") SubscriptionStatus status) {
-        this.subscriptionId = subscriptionId;
-        this.paymentMethodId = paymentMethodId;
+            @JsonProperty("Webhook") WebhookConfig webhook) {
         this.amount = amount;
         this.currency = currency;
         this.interval = interval;
         this.frequency = frequency;
-        this.createdDate = createdDate;
-        this.startDate = startDate;
         this.endAfter = endAfter;
         this.retry = retry;
         this.webhook = webhook;
-        this.status = status;
-    }
-
-    public String getSubscriptionId() {
-        return subscriptionId;
-    }
-
-    public String getPaymentMethodId() {
-        return paymentMethodId;
     }
 
     public BigDecimal getAmount() {
@@ -69,16 +46,8 @@ public class SubscriptionData {
         return interval;
     }
 
-    public int getFrequency() {
+    public Integer getFrequency() {
         return frequency;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public Date getStartDate() {
-        return startDate;
     }
 
     public SubscriptionEnd getEndAfter() {
@@ -93,54 +62,30 @@ public class SubscriptionData {
         return webhook;
     }
 
-    public SubscriptionStatus getStatus() {
-        return status;
-    }
-
     @Override
     public String toString() {
-        return "SubscriptionData{" +
-                "subscriptionId='" + subscriptionId + '\'' +
-                ", paymentMethodId='" + paymentMethodId + '\'' +
-                ", amount=" + amount + '\'' +
+        return "SubscriptionUpdate{" +
+                "amount=" + amount + '\'' +
                 ", currency='" + currency + '\'' +
                 ", interval=" + interval + '\'' +
                 ", frequency=" + frequency + '\'' +
-                ", createdDate=" + createdDate + '\'' +
-                ", startDate=" + startDate + '\'' +
                 ", endAfter=" + endAfter + '\'' +
                 ", retry=" + retry + '\'' +
-                ", webhook=" + webhook + '\'' +
-                ", status=" + status +
+                ", webhook=" + webhook +
                 '}';
     }
 
     public static class Builder {
-        private String subscriptionId;
-        private String paymentMethodId;
         private BigDecimal amount;
         private String currency;
         private SubscriptionInterval interval;
-        private int frequency;
-        private Date createdDate;
-        private Date startDate;
+        private Integer frequency;
         private SubscriptionEnd endAfter;
         private SubscriptionRetryPolicy retry;
         private WebhookConfig webhook;
-        private SubscriptionStatus status;
 
-        public SubscriptionData build() {
-            return new SubscriptionData(subscriptionId, paymentMethodId, amount, currency, interval, frequency, createdDate, startDate, endAfter, retry, webhook, status);
-        }
-
-        public Builder withSubscriptionId(String subscriptionId) {
-            this.subscriptionId = subscriptionId;
-            return this;
-        }
-
-        public Builder withPaymentMethodId(String paymentMethodId) {
-            this.paymentMethodId = paymentMethodId;
-            return this;
+        public SubscriptionUpdate build() {
+            return new SubscriptionUpdate(amount, currency, interval, frequency, endAfter, retry, webhook);
         }
 
         public Builder withAmount(BigDecimal amount) {
@@ -158,18 +103,8 @@ public class SubscriptionData {
             return this;
         }
 
-        public Builder withFrequency(int frequency) {
+        public Builder withFrequency(Integer frequency) {
             this.frequency = frequency;
-            return this;
-        }
-
-        public Builder withCreatedDate(Date createdDate) {
-            this.createdDate = createdDate;
-            return this;
-        }
-
-        public Builder withStartDate(Date startDate) {
-            this.startDate = startDate;
             return this;
         }
 
@@ -185,11 +120,6 @@ public class SubscriptionData {
 
         public Builder withWebhook(WebhookConfig webhook) {
             this.webhook = webhook;
-            return this;
-        }
-
-        public Builder withStatus(SubscriptionStatus status) {
-            this.status = status;
             return this;
         }
     }

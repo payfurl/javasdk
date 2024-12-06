@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SubscriptionUpdateStatus {
 
-    private String status;
+    private SubscriptionStatus status;
 
     @JsonCreator
     public SubscriptionUpdateStatus(
-            @JsonProperty("Status") String status){
+            @JsonProperty("Status") SubscriptionStatus status){
 
         this.status = status;
     }
 
-    public String getStatus() {
+    public SubscriptionStatus getStatus() {
         return status;
     }
 
@@ -26,13 +26,13 @@ public class SubscriptionUpdateStatus {
     }
 
     public static class Builder {
-        private String status;
+        private SubscriptionStatus status;
 
         public SubscriptionUpdateStatus build() {
             return new SubscriptionUpdateStatus(status);
         }
 
-        public Builder withStatus(String status) {
+        public Builder withStatus(SubscriptionStatus status) {
             this.status = status;
             return this;
         }
