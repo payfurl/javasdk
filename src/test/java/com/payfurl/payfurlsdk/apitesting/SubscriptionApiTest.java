@@ -165,7 +165,8 @@ public class SubscriptionApiTest {
 
         NewSubscription newSubscription = getNewSubscription(paymentMethodId);
         SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
-        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Suspended").build());
+        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+            new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Suspended).build());
 
         assertThat(result.getStatus()).isEqualTo(SubscriptionStatus.Suspended);
     }
@@ -184,8 +185,10 @@ public class SubscriptionApiTest {
 
         NewSubscription newSubscription = getNewSubscription(paymentMethodId);
         SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
-        subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Suspended").build());
-        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), new SubscriptionUpdateStatus.Builder().withStatus("Active").build());
+        subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+        new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Suspended).build());
+        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+        new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Active).build());
 
         assertThat(result.getStatus()).isEqualTo(SubscriptionStatus.Active);
     }
