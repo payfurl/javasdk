@@ -11,7 +11,7 @@ public class WebhookSubscriptionData {
     private String accountId;
     private String url;
     private String authorization;
-    private List<String> types;
+    private List<WebhookType> types;
     private Date createdDate;
     private Date dateRemoved;
 
@@ -20,7 +20,7 @@ public class WebhookSubscriptionData {
                                    @JsonProperty("AccountId") String accountId,
                                    @JsonProperty("Url") String url,
                                    @JsonProperty("Authorization") String authorization,
-                                   @JsonProperty("Types") List<String> types,
+                                   @JsonProperty("Types") List<WebhookType> types,
                                    @JsonProperty("CreatedDate") Date createdDate,
                                    @JsonProperty("DateRemoved") Date dateRemoved) {
         this.webhookSubscriptionId = webhookSubscriptionId;
@@ -64,11 +64,11 @@ public class WebhookSubscriptionData {
         this.authorization = authorization;
     }
 
-    public List<String> getTypes() {
+    public List<WebhookType> getTypes() {
         return types;
     }
 
-    public void setTypes(List<String> types) {
+    public void setTypes(List<WebhookType> types) {
         this.types = types;
     }
 
@@ -106,7 +106,7 @@ public class WebhookSubscriptionData {
         private String accountId;
         private String url;
         private String authorization;
-        private List<String> types;
+        private List<WebhookType> types;
         private Date createdDate;
         private Date dateRemoved;
 
@@ -130,7 +130,7 @@ public class WebhookSubscriptionData {
             return this;
         }
 
-        public Builder withTypes(List<String> types) {
+        public Builder withTypes(List<WebhookType> types) {
             this.types = types;
             return this;
         }

@@ -8,12 +8,12 @@ import java.util.List;
 public class NewWebhookSubscription {
     private String url;
     private String authorization;
-    private List<String> types;
+    private List<WebhookType> types;
 
     @JsonCreator
     public NewWebhookSubscription(@JsonProperty("Url") String url,
                                   @JsonProperty("Authorization") String authorization,
-                                  @JsonProperty("Types") List<String> types) {
+                                  @JsonProperty("Types") List<WebhookType> types) {
         this.url = url;
         this.authorization = authorization;
         this.types = types;
@@ -35,11 +35,11 @@ public class NewWebhookSubscription {
         this.authorization = authorization;
     }
 
-    public List<String> getTypes() {
+    public List<WebhookType> getTypes() {
         return types;
     }
 
-    public void setTypes(List<String> types) {
+    public void setTypes(List<WebhookType> types) {
         this.types = types;
     }
 
@@ -55,7 +55,7 @@ public class NewWebhookSubscription {
     public static class Builder {
         private String url;
         private String authorization;
-        private List<String> types;
+        private List<WebhookType> types;
 
         public Builder withUrl(String url) {
             this.url = url;
@@ -67,7 +67,7 @@ public class NewWebhookSubscription {
             return this;
         }
 
-        public Builder withTypes(List<String> types) {
+        public Builder withTypes(List<WebhookType> types) {
             this.types = types;
             return this;
         }
