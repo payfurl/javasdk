@@ -115,7 +115,7 @@ public class SubscriptionApiTest {
         assertThat(subscriptionDataDeleted.getPaymentMethodId()).isEqualTo(subscriptionData.getPaymentMethodId());
         assertThat(subscriptionDataDeleted.getStatus()).isEqualTo(SubscriptionStatus.Cancelled);
     }
-    
+
     @Test
     @DisplayName("When updateSubscription request is executed, Then return valid updated subscription data")
     void testUpdateSubscription() throws ApiException {
@@ -136,6 +136,7 @@ public class SubscriptionApiTest {
         SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate.Builder()
             .withAmount(BigDecimal.valueOf(200))
             .withInterval(SubscriptionInterval.Month)
+            .withFrequency(1)
             .withCurrency("AUD")
             .build();
         SubscriptionData subscriptionDataUpdated = subscriptionApi.updateSubscription(subscriptionData.getSubscriptionId(), subscriptionUpdate);
@@ -165,7 +166,7 @@ public class SubscriptionApiTest {
 
         NewSubscription newSubscription = getNewSubscription(paymentMethodId);
         SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
-        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(),
             new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Suspended).build());
 
         assertThat(result.getStatus()).isEqualTo(SubscriptionStatus.Suspended);
@@ -185,9 +186,9 @@ public class SubscriptionApiTest {
 
         NewSubscription newSubscription = getNewSubscription(paymentMethodId);
         SubscriptionData subscriptionData = subscriptionApi.createSubscription(newSubscription);
-        subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+        subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(),
         new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Suspended).build());
-        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(), 
+        SubscriptionData result = subscriptionApi.updateSubscriptionStatus(subscriptionData.getSubscriptionId(),
         new SubscriptionUpdateStatus.Builder().withStatus(SubscriptionStatus.Active).build());
 
         assertThat(result.getStatus()).isEqualTo(SubscriptionStatus.Active);
