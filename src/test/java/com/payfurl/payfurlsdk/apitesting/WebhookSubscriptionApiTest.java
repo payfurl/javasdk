@@ -4,10 +4,7 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.WebhookSubscriptionApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
-import com.payfurl.payfurlsdk.models.NewWebhookSubscription;
-import com.payfurl.payfurlsdk.models.WebhookSubscriptionData;
-import com.payfurl.payfurlsdk.models.WebhookSubscriptionSearch;
-import com.payfurl.payfurlsdk.models.WebhookSubscriptionSearchResults;
+import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,8 +27,8 @@ public class WebhookSubscriptionApiTest {
     }
 
     private WebhookSubscriptionData createWebhookSubscription() throws ApiException {
-        List<String> types = new ArrayList<>();
-        types.add("Transaction");
+        List<WebhookType> types = new ArrayList<>();
+        types.add(WebhookType.Transaction);
         NewWebhookSubscription newWebhookSubscription = new NewWebhookSubscription.Builder()
                 .withUrl("https://webhook.site")
                 .withTypes(types)
