@@ -73,7 +73,7 @@ public class NewWebhookSubscription {
         }
 
         public NewWebhookSubscription build() {
-            NewWebhookSubscription subscription = new NewWebhookSubscription();
+            NewWebhookSubscription subscription = new NewWebhookSubscription(url, authorization, types);
             subscription.setUrl(url);
             subscription.setAuthorization(authorization);
             subscription.setTypes(types);
