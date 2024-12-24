@@ -5,21 +5,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 public class SubscriptionData {
 
-    private String subscriptionId;
-    private String paymentMethodId;
-    private BigDecimal amount;
-    private String currency;
-    private SubscriptionInterval interval;
-    private int frequency;
-    private Date createdDate;
-    private Date startDate;
-    private SubscriptionEnd endAfter;
-    private SubscriptionRetryPolicy retry;
-    private WebhookConfig webhook;
-    private SubscriptionStatus status;
+    private final String subscriptionId;
+    private final String paymentMethodId;
+    private final BigDecimal amount;
+    private final String currency;
+    private final SubscriptionInterval interval;
+    private final int frequency;
+    private final Date createdDate;
+    private final Date startDate;
+    private final SubscriptionEnd endAfter;
+    private final SubscriptionRetryPolicy retry;
+    private final WebhookConfig webhook;
+    private final SubscriptionStatus status;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public SubscriptionData(
@@ -34,7 +36,8 @@ public class SubscriptionData {
             @JsonProperty("EndAfter") SubscriptionEnd endAfter,
             @JsonProperty("Retry") SubscriptionRetryPolicy retry,
             @JsonProperty("Webhook") WebhookConfig webhook,
-            @JsonProperty("Status") SubscriptionStatus status) {
+            @JsonProperty("Status") SubscriptionStatus status,
+            @JsonProperty("Metadata") Map<String, String> metadata) {
         this.subscriptionId = subscriptionId;
         this.paymentMethodId = paymentMethodId;
         this.amount = amount;
@@ -47,6 +50,7 @@ public class SubscriptionData {
         this.retry = retry;
         this.webhook = webhook;
         this.status = status;
+        this.metadata = metadata;
     }
 
     public String getSubscriptionId() {
@@ -97,6 +101,10 @@ public class SubscriptionData {
         return status;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "SubscriptionData{" +
@@ -112,6 +120,7 @@ public class SubscriptionData {
                 ", retry=" + retry + '\'' +
                 ", webhook=" + webhook + '\'' +
                 ", status=" + status +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -128,9 +137,10 @@ public class SubscriptionData {
         private SubscriptionRetryPolicy retry;
         private WebhookConfig webhook;
         private SubscriptionStatus status;
+        private Map<String, String> metadata;
 
         public SubscriptionData build() {
-            return new SubscriptionData(subscriptionId, paymentMethodId, amount, currency, interval, frequency, createdDate, startDate, endAfter, retry, webhook, status);
+            return new SubscriptionData(subscriptionId, paymentMethodId, amount, currency, interval, frequency, createdDate, startDate, endAfter, retry, webhook, status, metadata);
         }
 
         public Builder withSubscriptionId(String subscriptionId) {
@@ -190,6 +200,11 @@ public class SubscriptionData {
 
         public Builder withStatus(SubscriptionStatus status) {
             this.status = status;
+            return this;
+        }
+
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
             return this;
         }
     }
