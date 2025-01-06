@@ -16,20 +16,57 @@ import com.payfurl.payfurlsdk.http.client.support.Headers;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class PayFurlClient implements PayFurlClientSdk {
     private static final long DEFAULT_CALLS_TIMEOUT_MILLISECONDS = TimeUnit.SECONDS.toMillis(60);
     private static final String SDK_VERSION = "2022.0.1";
-    private static final String LOCAL_URL = "https://localhost:5001";
-    private static final String GLOBAL_SANDBOX_URL = "https://sandbox-api.payfurl.com";
-    private static final String GLOBAL_PRODUCTION_URL = "https://api.payfurl.com";
-    private static final String GLOBAL_DEVELOPMENT_URL = "https://develop-api.payfurl.com";
+    private static final String PROPERTIES_FILE = "config.properties";
+    private static final String LOCAL_URL;
+    private static final String GLOBAL_SANDBOX_URL;
+    private static final String GLOBAL_PRODUCTION_URL;
+    private static final String GLOBAL_DEVELOPMENT_URL;
     private static final String KEY_REGION_SEPARATOR = "-";
+
+    private static final String DEVELOP_API_AU_URL;
+    private static final String DEVELOP_API_US_URL;
+    private static final String DEVELOP_API_JP_URL;
+    private static final String SANDBOX_API_AU_URL;
+    private static final String SANDBOX_API_US_URL;
+    private static final String PRODUCTION_API_AU_URL;
+    private static final String PRODUCTION_API_US_URL;
+    private static final String PRODUCTION_API_EU_URL;
+
+    static {
+        Properties properties = new Properties();
+        try (InputStream input = PayFurlClient.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
+            if (input == null) {
+                throw new IllegalStateException("Unable to find " + PROPERTIES_FILE);
+            }
+            properties.load(input);
+        } catch (IOException ex) {
+            throw new ExceptionInInitializerError("Failed to load properties file: " + ex.getMessage());
+        }
+        LOCAL_URL = properties.getProperty("local.url");
+        GLOBAL_SANDBOX_URL = properties.getProperty("global.sandbox.url");
+        GLOBAL_PRODUCTION_URL = properties.getProperty("global.production.url");
+        GLOBAL_DEVELOPMENT_URL = properties.getProperty("global.development.url");
+        DEVELOP_API_AU_URL = properties.getProperty("develop.api.au.url");
+        DEVELOP_API_US_URL = properties.getProperty("develop.api.us.url");
+        DEVELOP_API_JP_URL = properties.getProperty("develop.api.jp.url");
+        SANDBOX_API_AU_URL = properties.getProperty("sandbox.api.au.url");
+        SANDBOX_API_US_URL = properties.getProperty("sandbox.api.us.url");
+        PRODUCTION_API_AU_URL = properties.getProperty("production.api.au.url");
+        PRODUCTION_API_US_URL = properties.getProperty("production.api.us.url");
+        PRODUCTION_API_EU_URL = properties.getProperty("production.api.eu.url");
+    }
 
     private static final ImmutableMap<EnvironmentConfigKey, String> ENV_CONFIG_TO_URL_MAPPING = ImmutableMap.<EnvironmentConfigKey, String>builder()
             .put(EnvironmentConfigKey.of(Region.NONE, Environment.LOCAL), LOCAL_URL)
@@ -37,14 +74,14 @@ public class PayFurlClient implements PayFurlClientSdk {
             .put(EnvironmentConfigKey.of(Region.NONE, Environment.SANDBOX), GLOBAL_SANDBOX_URL)
             .put(EnvironmentConfigKey.of(Region.NONE, Environment.PRODUCTION), GLOBAL_PRODUCTION_URL)
 
-            .put(EnvironmentConfigKey.of(Region.AU, Environment.DEVELOPMENT), "https://develop-api-au.payfurl.com")
-            .put(EnvironmentConfigKey.of(Region.US, Environment.DEVELOPMENT), "https://develop-api-us.payfurl.com")
-            .put(EnvironmentConfigKey.of(Region.JP, Environment.DEVELOPMENT), "https://develop-api-jp.payfurl.com")
-            .put(EnvironmentConfigKey.of(Region.AU, Environment.SANDBOX), "https://sandbox-api-au.payfurl.com")
-            .put(EnvironmentConfigKey.of(Region.US, Environment.SANDBOX), "https://sandbox-api-us.payfurl.com")
-            .put(EnvironmentConfigKey.of(Region.AU, Environment.PRODUCTION), "https://api-au.payfurl.com")
-            .put(EnvironmentConfigKey.of(Region.US, Environment.PRODUCTION), "https://api-us.payfurl.com")
-            .put(EnvironmentConfigKey.of(Region.EU, Environment.PRODUCTION), "https://api-eu.payfurl.com")
+            .put(EnvironmentConfigKey.of(Region.AU, Environment.DEVELOPMENT), DEVELOP_API_AU_URL)
+            .put(EnvironmentConfigKey.of(Region.US, Environment.DEVELOPMENT), DEVELOP_API_US_URL)
+            .put(EnvironmentConfigKey.of(Region.JP, Environment.DEVELOPMENT), DEVELOP_API_JP_URL)
+            .put(EnvironmentConfigKey.of(Region.AU, Environment.SANDBOX), SANDBOX_API_AU_URL)
+            .put(EnvironmentConfigKey.of(Region.US, Environment.SANDBOX), SANDBOX_API_US_URL)
+            .put(EnvironmentConfigKey.of(Region.AU, Environment.PRODUCTION), PRODUCTION_API_AU_URL)
+            .put(EnvironmentConfigKey.of(Region.US, Environment.PRODUCTION), PRODUCTION_API_US_URL)
+            .put(EnvironmentConfigKey.of(Region.EU, Environment.PRODUCTION), PRODUCTION_API_EU_URL)
             .build();
 
     private final Environment environment;
