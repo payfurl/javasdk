@@ -18,6 +18,7 @@ public class PaymentMethodData {
     private final String email;
     private final String providerPaymentMethodId;
     private final Map<String, String> providerPaymentMethodData;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public PaymentMethodData(@JsonProperty("PaymentMethodId") String paymentMethodId,
@@ -30,7 +31,8 @@ public class PaymentMethodData {
                              @JsonProperty("DateAdded") Date dateAdded,
                              @JsonProperty("Email") String email,
                              @JsonProperty("ProviderPaymentMethodId") String providerPaymentMethodId,
-                             @JsonProperty("ProviderPaymentMethodData") Map<String, String> providerPaymentMethodData) {
+                             @JsonProperty("ProviderPaymentMethodData") Map<String, String> providerPaymentMethodData,
+                             @JsonProperty("Metadata") Map<String, String> metadata) {
         this.paymentMethodId = paymentMethodId;
         this.userId = userId;
         this.customerId = customerId;
@@ -42,6 +44,7 @@ public class PaymentMethodData {
         this.email = email;
         this.providerPaymentMethodId = providerPaymentMethodId;
         this.providerPaymentMethodData = providerPaymentMethodData;
+        this.metadata = metadata;
     }
 
     public String getPaymentMethodId() {
@@ -86,6 +89,10 @@ public class PaymentMethodData {
         return providerPaymentMethodData;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     public static class Builder {
         private String paymentMethodId;
         private String userId;
@@ -97,7 +104,8 @@ public class PaymentMethodData {
         private Date dateAdded;
         private String email;
         private String providerPaymentMethodId;
-        Map<String, String> providerPaymentMethodData;
+        private Map<String, String> providerPaymentMethodData;
+        private Map<String, String> metadata;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
@@ -154,8 +162,14 @@ public class PaymentMethodData {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+
         public PaymentMethodData build() {
-            return new PaymentMethodData(paymentMethodId, userId, customerId, type, card, providerId, providerType, dateAdded, email, providerPaymentMethodId, providerPaymentMethodData);
+            return new PaymentMethodData(paymentMethodId, userId, customerId, type, card, providerId, providerType, dateAdded, email, providerPaymentMethodId, providerPaymentMethodData, metadata);
         }
     }
 }

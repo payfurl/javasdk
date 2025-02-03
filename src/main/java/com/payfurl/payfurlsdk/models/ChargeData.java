@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ChargeData {
     public final String chargeId;
@@ -36,6 +37,7 @@ public class ChargeData {
     private final String threeDsRedirectUrl;
     private final String paymentTokenId;
     private final String subscriptionId;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public ChargeData(@JsonProperty("ChargeId") String chargeId,
@@ -65,7 +67,8 @@ public class ChargeData {
                       @JsonProperty("Descriptor") String descriptor,
                       @JsonProperty("ThreeDsRedirectUrl") String threeDsRedirectUrl,
                       @JsonProperty("PaymentTokenId") String paymentTokenId,
-                      @JsonProperty("SubscriptionId") String subscriptionId) {
+                      @JsonProperty("SubscriptionId") String subscriptionId,
+                      @JsonProperty("Metadata") Map<String, String> metadata) {
         this.chargeId = chargeId;
         this.providerChargeId = providerChargeId;
         this.amount = amount;
@@ -94,6 +97,7 @@ public class ChargeData {
         this.threeDsRedirectUrl = threeDsRedirectUrl;
         this.paymentTokenId = paymentTokenId;
         this.subscriptionId = subscriptionId;
+        this.metadata = metadata;
     }
 
     public String getChargeId() {
@@ -208,6 +212,10 @@ public class ChargeData {
         return subscriptionId;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "ChargeData{" +
@@ -239,6 +247,7 @@ public class ChargeData {
                 ", threeDsRedirectUrl=" + threeDsRedirectUrl +
                 ", paymentTokenId=" + paymentTokenId +
                 ", subscriptionId=" + subscriptionId +
+                ", metadata=" + metadata +
                 '}';
     }
 }

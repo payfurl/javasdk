@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
+import java.util.Map;
 
 public class TokenData {
 
@@ -14,6 +15,7 @@ public class TokenData {
     private final Date dateAdded;
     private final Date dateUsed;
     private final String payToStatus;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public TokenData(@JsonProperty("TokenId") String tokenId,
@@ -22,7 +24,8 @@ public class TokenData {
                      @JsonProperty("Provider") ProviderSummary provider,
                      @JsonProperty("DateAdded") Date dateAdded,
                      @JsonProperty("DateUsed") Date dateUsed,
-                     @JsonProperty("PayToStatus") String payToStatus) {
+                     @JsonProperty("PayToStatus") String payToStatus,
+                     @JsonProperty("Metadata") Map<String, String> metadata) {
         this.tokenId = tokenId;
         this.userId = userId;
         this.card = card;
@@ -30,6 +33,7 @@ public class TokenData {
         this.dateAdded = dateAdded;
         this.dateUsed = dateUsed;
         this.payToStatus = payToStatus;
+        this.metadata = metadata;
     }
 
     public String getTokenId() {
@@ -60,6 +64,10 @@ public class TokenData {
         return payToStatus;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "TokenData{" +
@@ -70,6 +78,7 @@ public class TokenData {
                 ", dateAdded=" + dateAdded +
                 ", dateUsed=" + dateUsed +
                 ", payToStatus=" + payToStatus +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -81,6 +90,7 @@ public class TokenData {
         private Date dateAdded;
         private Date dateUsed;
         private String payToStatus;
+        private Map<String, String> metadata;
 
         public Builder withTokenId(String tokenId) {
             this.tokenId = tokenId;
@@ -117,8 +127,13 @@ public class TokenData {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public TokenData build() {
-            return new TokenData(tokenId, userId, card, provider, dateAdded, dateUsed, payToStatus);
+            return new TokenData(tokenId, userId, card, provider, dateAdded, dateUsed, payToStatus, metadata);
         }
     }
 }
