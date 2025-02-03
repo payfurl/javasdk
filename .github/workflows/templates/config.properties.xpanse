@@ -1,0 +1,12 @@
+global.sandbox.url=https://sandbox-api.xpanse.one
+global.production.url=https://api.xpanse.one
+global.development.url=https://develop-api.xpanse.one
+local.url=https://localhost:5001
+develop.api.au.url=https://develop-api-au.xpanse.one
+develop.api.us.url=https://develop-api-us.xpanse.one
+develop.api.jp.url=https://develop-api-jp.xpanse.one
+sandbox.api.au.url=https://sandbox-api-au.xpanse.one
+sandbox.api.us.url=https://sandbox-api-us.xpanse.one
+production.api.au.url=https://api-au.xpanse.one
+production.api.us.url=https://api-us.xpanse.one
+production.api.eu.url=https://api-eu.xpanse.one

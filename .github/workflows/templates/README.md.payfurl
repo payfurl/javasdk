@@ -36,7 +36,7 @@ To use the PayFURL Java SDK in your project please do the following steps:
     <scope>compile</scope>
 </dependency>
 ```
-or 
+or
 
 - Edit the `build.gradle` file:
 
