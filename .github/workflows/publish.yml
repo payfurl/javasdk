@@ -1,0 +1,81 @@
+name: Publish to Nexus
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Set up Payfurl configuration files
+        run: |
+          cp ./workflow/templates/config.properties.payfurl ./src/main/resources/config.properties
+          cp ./workflow/templates/README.md.payfurl ./README.md
+
+      - name: Set up Maven settings
+        run: |
+          mkdir -p ~/.m2
+          echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <servers>
+              <server>
+                <id>ossrh</id>
+                <username>${{ secrets.SONATYPE_USERNAME }}</username>
+                <password>${{ secrets.SONATYPE_PASSWORD }}</password>
+              </server>
+            </servers>
+          </settings>' > ~/.m2/settings.xml
+
+      - name: Publish to Nexus
+        run: mvn deploy -DskipTests
+        env:
+          GPG_EXECUTABLE: gpg
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Set up Xpanse configuration files
+        run: |
+          mv src/main/java/com src/main/java/one
+          mv src/main/java/one/payfurl src/main/java/one/xpanse
+          mv src/main/java/one/xpanse/payfurlsdk src/main/java/one/xpanse/xpansesdk
+          mv src/main/java/one/xpanse/xpansesdk/PayFurlClient.java src/main/java/one/xpanse/xpansesdk/XpanseClient.java
+          mv src/main/java/one/xpanse/xpansesdk/PayFurlClientSdk.java src/main/java/one/xpanse/xpansesdk/XpanseClientSdk.java
+          
+          mv src/test/java/com src/test/java/one
+          mv src/test/java/one/payfurl src/test/java/one/xpanse
+          mv src/test/java/one/xpanse/payfurlsdk src/test/java/one/xpanse/xpansesdk
+          mv src/test/java/one/xpanse/xpansesdk/PayFurlClientTest.java src/test/java/one/xpanse/xpansesdk/XpanseClientTest.java
+          
+          cp ./workflow/templates/config.properties.xpanse ./src/main/resources/config.properties
+          cp ./workflow/templates/README.md.xpanse ./README.md
+
+          find . -type f -exec sed -i '' 's/com\.payfurl\.payfurlsdk/one\.xpanse\.xpansesdk/g' {} +
+          find . -type f -exec sed -i '' 's/PayFurl/Xpanse/g' {} +
+          find . -type f -exec sed -i '' 's/PayFURL/Xpanse/g' {} +
+
+      - name: Set up Maven settings
+        run: |
+          mkdir -p ~/.m2
+          echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <servers>
+              <server>
+                <id>ossrh</id>
+                <username>${{ secrets.SONATYPE_USERNAME }}</username>
+                <password>${{ secrets.SONATYPE_PASSWORD }}</password>
+              </server>
+            </servers>
+          </settings>' > ~/.m2/settings.xml
+
+      - name: Publish to Nexus
+        run: mvn deploy -DskipTests
+        env:
+          GPG_EXECUTABLE: gpg
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

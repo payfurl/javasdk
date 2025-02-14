@@ -1,6 +1,6 @@
-# PayFURL Java SDK
+# Xpanse Java SDK
 
-Library for integrating with PayFURL payments in your app. It includes the following APIs:
+Library for integrating with Xpanse payments in your app. It includes the following APIs:
 
 1. Charge API
 2. Customer API
@@ -15,43 +15,43 @@ Library for integrating with PayFURL payments in your app. It includes the follo
 
 ## 📄 Requirements
 
-Use of the PayFURL Java SDK requires:
+Use of the Xpanse Java SDK requires:
 
 * Java 8 or higher
 * Maven or Gradle
 
 ## 🧰 Installation
 
-To use the PayFURL Java SDK in your project please do the following steps:
+To use the Xpanse Java SDK in your project please do the following steps:
 
-1. Install PayFURL Java SDK:
+1. Install Xpanse Java SDK:
 
 - Edit the `pom.xml` file:
 
 ```xml
 <dependency>
-    <groupId>com.payfurl</groupId>
-    <artifactId>payfurlsdk</artifactId>
+    <groupId>one.xpanse</groupId>
+    <artifactId>xpansesdk</artifactId>
     <version>SDK_VERSION</version>
     <scope>compile</scope>
 </dependency>
 ```
-or 
+or
 
 - Edit the `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation 'com.payfurl:payfurlsdk:SDK_VERSION'
+    implementation 'one.xpanse:xpansesdk:SDK_VERSION'
 }
 ```
 
 
-2. Replace `SDK_VERSION` with the latest version of the PayFURL Java SDK.
+2. Replace `SDK_VERSION` with the latest version of the Xpanse Java SDK.
 
-`compile` scope in Maven resolves all dependencies and makes the PayFURL Java SDK available to your project.
+`compile` scope in Maven resolves all dependencies and makes the Xpanse Java SDK available to your project.
 
-Alternatively, you can use Maven to download the PayFURL Java SDK, and all other dependencies, to your local Maven
+Alternatively, you can use Maven to download the Xpanse Java SDK, and all other dependencies, to your local Maven
 repository.
 
 ```shell
@@ -60,21 +60,21 @@ mvn install -DskipTests
 
 ## 👷 Usage
 
-An example of creating a PayFURL client with **sandbox** environment.
+An example of creating a Xpanse client with **sandbox** environment.
 
 ```java
-import com.payfurl.payfurlsdk.api.ChargeApi;
-import com.payfurl.payfurlsdk.models.NewChargeToken;
+import one.xpanse.xpansesdk.api.ChargeApi;
+import one.xpanse.xpansesdk.models.NewChargeToken;
 
 import java.math.BigDecimal;
 
 class Example {
     // Initialize
-    PayFurlClient payFurlClient = new PayFurlClient.Builder()
+    XpanseClient xpanseClient = new XpanseClient.Builder()
             .withEnvironment(Environment.SANDBOX)
-            .withSecretKey(PAYFURL_SECRET_KEY)
+            .withSecretKey(XPANSE_SECRET_KEY)
             .build();
-    ChargeApi chargeApi = payFurlClient.getChargeApi();
+    ChargeApi chargeApi = xpanseClient.getChargeApi();
 
     public ChargeData chargeToken() {
         NewChargeToken newChargeToken = new NewChargeToken.Builder()
@@ -114,7 +114,7 @@ Before running the tests, create `appsettings.json` file in `src/test/resources`
 ```json
 {
   "Environment": "Development",
-  "SecretKey": "PAYFURL_SECRET_KEY",
+  "SecretKey": "XPANSE_SECRET_KEY",
   "ProviderId": "DUMMY_PROVIDER_ID",
   "Tokens": ["PAYMENT_TOKEN1","PAYMENT_TOKEN2"]
 }
