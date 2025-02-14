@@ -31,7 +31,7 @@ jobs:
           </settings>' > ~/.m2/settings.xml
 
       - name: Publish to Nexus
-        run: mvn deploy -DskipTests -P release
+        run: mvn deploy -DskipTests
         env:
           GPG_EXECUTABLE: gpg
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
