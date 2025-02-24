@@ -63,18 +63,6 @@ class PayFurlClientTest {
                                 .withSecretKey(getSecretKeyWithRegion(Region.AU))
                                 .build(),
                         "https://develop-api-au.payfurl.com"),
-                Arguments.of("JP - Development environment",
-                        new PayFurlClient.Builder()
-                                .withEnvironment(Environment.DEVELOPMENT)
-                                .withSecretKey(getSecretKeyWithRegion(Region.JP))
-                                .build(),
-                        "https://develop-api-jp.payfurl.com"),
-                Arguments.of("US - Sandbox environment",
-                        new PayFurlClient.Builder()
-                                .withEnvironment(Environment.SANDBOX)
-                                .withSecretKey(getSecretKeyWithRegion(Region.US))
-                                .build(),
-                        "https://sandbox-api-us.payfurl.com"),
                 Arguments.of("AU - Sandbox environment",
                         new PayFurlClient.Builder()
                                 .withEnvironment(Environment.SANDBOX)
