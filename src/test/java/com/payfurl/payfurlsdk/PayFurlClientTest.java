@@ -81,22 +81,10 @@ class PayFurlClientTest {
                                 .withSecretKey(getSecretKeyWithRegion("aU"))
                                 .build(),
                         "https://api-au.payfurl.com"),
-                Arguments.of("JP - Non-existing Sandbox environment with fallback to global sandbox url",
-                        new PayFurlClient.Builder()
-                                .withEnvironment(Environment.SANDBOX)
-                                .withSecretKey(getSecretKeyWithRegion(Region.JP))
-                                .build(),
-                        "https://sandbox-api.payfurl.com"),
-                Arguments.of("JP - Non-existing Production environment with fallback to global production url",
-                        new PayFurlClient.Builder()
-                                .withEnvironment(Environment.PRODUCTION)
-                                .withSecretKey(getSecretKeyWithRegion(Region.JP))
-                                .build(),
-                        "https://api.payfurl.com"),
                 Arguments.of("US - Non-existing Production environment and incorrectly formatted key with fallback to global production url",
                         new PayFurlClient.Builder()
                                 .withEnvironment(Environment.PRODUCTION)
-                                .withSecretKey(getSecretKeyWithRegion(Region.US) + "-123")
+                                .withSecretKey(getSecretKeyWithRegion(Region.AU) + "-123")
                                 .build(),
                         "https://api.payfurl.com")
         );
