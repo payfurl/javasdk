@@ -35,12 +35,16 @@ jobs:
                 <activeByDefault>true</activeByDefault>
               </activation>
               <properties>
+                <gpg.executable>gpg</gpg.executable>
                 <gpg.passphrase>${{ secrets.GPG_PASSPHRASE }}</gpg.passphrase>
                 <gpg.keyname>4C99F31C0AD4E0FC506F417DB4CFFEC061B960B1</gpg.keyname>
               </properties>
             </profile>
           </profiles>
           </settings>' > ~/.m2/settings.xml
+
+      - name: gpg
+        run: gpg -v --list-secret-keys
 
       - name: Publish to Nexus
         run: mvn deploy -DskipTests
