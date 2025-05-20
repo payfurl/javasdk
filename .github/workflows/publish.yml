@@ -46,8 +46,8 @@ jobs:
       - name: gpg
         run: which gpg && gpg -v --list-secret-keys && gpg --version
 
-      - name: Publish to Nexus
-        run: mvn deploy -DskipTests
-        env:
-          GPG_EXECUTABLE: gpg
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+#      - name: Publish to Nexus
+#        run: mvn deploy -DskipTests
+#        env:
+#          GPG_EXECUTABLE: gpg
+#          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
