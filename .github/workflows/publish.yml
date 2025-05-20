@@ -29,10 +29,8 @@ jobs:
             </server>
           </servers></settings>' > ~/.m2/settings.xml
 
-#      - name: gpg
-#        run: gpg --keyserver keyserver.ubuntu.com --recv-keys 4C99F31C0AD4E0FC506F417DB4CFFEC061B960B1 && gpg -v --list-secret-keys
-
       - name: Publishing via Central Portal
         run: mvn clean deploy -P release -DskipTests
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          MAVEN_GPG_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
