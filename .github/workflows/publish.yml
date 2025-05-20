@@ -44,7 +44,7 @@ jobs:
           </settings>' > ~/.m2/settings.xml
 
       - name: gpg
-        run: gpg -v --list-secret-keys
+        run: which gpg && gpg -v --list-secret-keys && gpg --version
 
       - name: Publish to Nexus
         run: mvn deploy -DskipTests
