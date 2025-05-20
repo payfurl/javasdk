@@ -3,23 +3,9 @@
                       http://maven.apache.org/xsd/settings-1.0.0.xsd">
     <servers>
         <server>
-            <!-- Publishing via the Central Portal -->
             <id>central</id>
             <username>${SONATYPE_USERNAME}</username>
             <password>${SONATYPE_PASSWORD}</password>
         </server>
     </servers>
-    <profiles>
-        <profile>
-            <id>ossrh</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <!--gpg.executable>gpg</gpg.executable-->
-                <gpg.passphrase>${GPG_PASSPHRASE}</gpg.passphrase>
-                <gpg.keyname>4C99F31C0AD4E0FC506F417DB4CFFEC061B960B1</gpg.keyname>
-            </properties>
-        </profile>
-    </profiles>
 </settings>
