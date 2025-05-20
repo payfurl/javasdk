@@ -27,8 +27,8 @@ jobs:
           <servers>
             <server>
               <id>central</id>
-              <username>iHU1wt+x</username>
-              <password>aMwJJ8mh5We4wUKQwaiW6X2MkirJ9zGu91/ORbws1P32</password>
+              <username>${{ secrets.SONATYPE_USERNAME }}</username>
+              <password>${{ secrets.SONATYPE_PASSWORD }}</password>
             </server>
           </servers></settings>' > ~/.m2/settings.xml
 
