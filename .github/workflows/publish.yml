@@ -44,10 +44,10 @@ jobs:
           </settings>' > ~/.m2/settings.xml
 
       - name: gpg
-        run: which gpg && gpg -v --list-secret-keys && gpg --version
+        run: gpg --keyserver keyserver.ubuntu.com --recv-keys 4C99F31C0AD4E0FC506F417DB4CFFEC061B960B1 && gpg -v --list-secret-keys
 
-#      - name: Publish to Nexus
-#        run: mvn deploy -DskipTests
-#        env:
-#          GPG_EXECUTABLE: gpg
-#          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Publish to Nexus
+        run: mvn deploy -DskipTests
+        env:
+          GPG_EXECUTABLE: gpg
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
