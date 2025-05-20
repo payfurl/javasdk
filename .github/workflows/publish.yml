@@ -1,4 +1,4 @@
-name: Publish to Nexus
+name: Publishing via Central Portal
 
 on:
   workflow_dispatch:
