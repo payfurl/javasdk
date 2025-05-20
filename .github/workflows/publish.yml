@@ -20,15 +20,31 @@ jobs:
       - name: Set up Maven settings
         run: |
           mkdir -p ~/.m2
-          echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-            <servers>
-              <server>
-                <id>ossrh</id>
-                <username>${{ secrets.SONATYPE_USERNAME }}</username>
-                <password>${{ secrets.SONATYPE_PASSWORD }}</password>
-              </server>
-            </servers>
-          </settings>' > ~/.m2/settings.xml
+          echo '<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xsi:schemalocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+          <servers>
+            <server>
+              <!-- Publishing via the Central Portal -->
+              <id>central</id>
+              <username>${{ secrets.SONATYPE_USERNAME }}</username>
+              <password>${{ secrets.SONATYPE_PASSWORD }}</password>
+            </server>
+          </servers>
+          <profiles>
+            <profile>
+              <id>ossrh</id>
+              <activation>
+                <activeByDefault>true</activeByDefault>
+              </activation>
+              <properties>
+                <!--gpg.executable>gpg</gpg.executable-->
+                <gpg.passphrase>${{ secrets.GPG_PASSPHRASE }}</gpg.passphrase>
+                <gpg.keyname>B4CFFEC061B960B1</gpg.keyname>
+              </properties>
+            </profile>
+          </profiles>
+          </settings> ~/.m2/settings.xml
 
       - name: Publish to Nexus
         run: mvn deploy -DskipTests
