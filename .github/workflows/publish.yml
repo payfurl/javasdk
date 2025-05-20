@@ -27,13 +27,13 @@ jobs:
           <servers>
             <server>
               <id>central</id>
-              <username>${{ secrets.SONATYPE_USERNAME }}</username>
-              <password>${{ secrets.SONATYPE_PASSWORD }}</password>
+              <username>iHU1wt+x</username>
+              <password>aMwJJ8mh5We4wUKQwaiW6X2MkirJ9zGu91/ORbws1P32</password>
             </server>
           </servers></settings>' > ~/.m2/settings.xml
 
       - name: Publishing via Central Portal
-        run: mvn clean deploy -e -P release -DskipTests -Dgpg.keyname=A4A15E725F8999E44ECD2A31098EEB5CD442C65A
+        run: mvn clean deploy -P release -DskipTests -Dgpg.keyname=A4A15E725F8999E44ECD2A31098EEB5CD442C65A
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           MAVEN_GPG_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
