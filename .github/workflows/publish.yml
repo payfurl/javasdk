@@ -33,7 +33,7 @@ jobs:
           </servers></settings>' > ~/.m2/settings.xml
 
       - name: Publishing via Central Portal
-        run: mvn clean deploy -P release -DskipTests
+        run: mvn clean deploy -e -P release -DskipTests
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           MAVEN_GPG_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
