@@ -27,8 +27,7 @@ jobs:
               <username>${{ secrets.SONATYPE_USERNAME }}</username>
               <password>${{ secrets.SONATYPE_PASSWORD }}</password>
             </server>
-          </servers>' > ~/.m2/settings.xml
-          cat ~/.m2/settings.xml
+          </servers></settings>' > ~/.m2/settings.xml
 
 #      - name: gpg
 #        run: gpg --keyserver keyserver.ubuntu.com --recv-keys 4C99F31C0AD4E0FC506F417DB4CFFEC061B960B1 && gpg -v --list-secret-keys
