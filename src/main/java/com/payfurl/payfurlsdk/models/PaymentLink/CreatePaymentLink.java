@@ -14,6 +14,8 @@ public class CreatePaymentLink {
     private final String image;
     private final String confirmationMessage;
     private final String redirectUrl;
+    private final String callToAction;
+    private final Integer limitPayments;
 
     public CreatePaymentLink(
             @JsonProperty("Title") String title,
@@ -23,7 +25,9 @@ public class CreatePaymentLink {
             @JsonProperty("Description") String description,
             @JsonProperty("Image") String image,
             @JsonProperty("ConfirmationMessage") String confirmationMessage,
-            @JsonProperty("RedirectUrl") String redirectUrl) {
+            @JsonProperty("RedirectUrl") String redirectUrl,
+            @JsonProperty("CallToAction") String callToAction,
+            @JsonProperty("LimitPayments") Integer limitPayments) {
         this.title = title;
         this.amount = amount;
         this.currency = currency;
@@ -32,6 +36,8 @@ public class CreatePaymentLink {
         this.image = image;
         this.confirmationMessage = confirmationMessage;
         this.redirectUrl = redirectUrl;
+        this.callToAction = callToAction;
+        this.limitPayments = limitPayments;
     }
 
     public String getTitle() {
@@ -66,6 +72,14 @@ public class CreatePaymentLink {
         return redirectUrl;
     }
 
+    public String getCallToAction() {
+        return callToAction;
+    }
+
+    public Integer getLimitPayments() {
+        return limitPayments;
+    }
+
     @Override
     public String toString() {
         return "CreatePaymentLink{" +
@@ -77,6 +91,8 @@ public class CreatePaymentLink {
                 ", image='" + image + '\'' +
                 ", confirmationMessage='" + confirmationMessage + '\'' +
                 ", redirectUrl='" + redirectUrl + '\'' +
+                ", callToAction='" + callToAction + '\'' +
+                ", limitPayments=" + limitPayments +
                 '}';
     }
 
@@ -89,6 +105,8 @@ public class CreatePaymentLink {
         private String image;
         private String confirmationMessage;
         private String redirectUrl;
+        private String callToAction;
+        private Integer limitPayments;
 
         public Builder withTitle(String title) {
             this.title = title;
@@ -130,10 +148,21 @@ public class CreatePaymentLink {
             return this;
         }
 
+        public Builder withCallToAction(String callToAction) {
+            this.callToAction = callToAction;
+            return this;
+        }
+
+        public Builder withLimitPayments(Integer limitPayments) {
+            this.limitPayments = limitPayments;
+            return this;
+        }
+
         public CreatePaymentLink build() {
             return new CreatePaymentLink(
                     title, amount, currency, allowedPaymentTypes,
-                    description, image, confirmationMessage, redirectUrl
+                    description, image, confirmationMessage, redirectUrl,
+                    callToAction, limitPayments
             );
         }
     }

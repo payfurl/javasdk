@@ -17,6 +17,11 @@ public class PaymentLinkData {
     private final List<String> allowedPaymentTypes;
     private final String description;
     private final String image;
+    private final String confirmationMessage;
+    private final String redirectUrl;
+    private final String callToAction;
+    private final Integer limitPayments;
+
 
     public PaymentLinkData(
             @JsonProperty("PaymentLinkId") String paymentLinkId,
@@ -29,7 +34,11 @@ public class PaymentLinkData {
             @JsonProperty("Currency") String currency,
             @JsonProperty("AllowedPaymentTypes") List<String> allowedPaymentTypes,
             @JsonProperty("Description") String description,
-            @JsonProperty("Image") String image) {
+            @JsonProperty("Image") String image,
+            @JsonProperty("ConfirmationMessage") String confirmationMessage,
+            @JsonProperty("RedirectUrl") String redirectUrl,
+            @JsonProperty("CallToAction") String callToAction,
+            @JsonProperty("LimitPayments") Integer limitPayments) {
         this.paymentLinkId = paymentLinkId;
         this.dateAdded = dateAdded;
         this.accountId = accountId;
@@ -41,6 +50,10 @@ public class PaymentLinkData {
         this.allowedPaymentTypes = allowedPaymentTypes;
         this.description = description;
         this.image = image;
+        this.confirmationMessage = confirmationMessage;
+        this.redirectUrl = redirectUrl;
+        this.callToAction = callToAction;
+        this.limitPayments = limitPayments;
     }
 
     public String getPaymentLinkId() {
@@ -87,6 +100,22 @@ public class PaymentLinkData {
         return image;
     }
 
+    public String getConfirmationMessage() {
+        return confirmationMessage;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public String getCallToAction() {
+        return callToAction;
+    }
+
+    public Integer getLimitPayments() {
+        return limitPayments;
+    }
+
     @Override
     public String toString() {
         return "PaymentLinkData{" +
@@ -101,6 +130,10 @@ public class PaymentLinkData {
                 ", allowedPaymentTypes=" + allowedPaymentTypes +
                 ", description='" + description + '\'' +
                 ", image='" + image + '\'' +
+                ", confirmationMessage='" + confirmationMessage + '\'' +
+                ", redirectUrl='" + redirectUrl + '\'' +
+                ", callToAction='" + callToAction + '\'' +
+                ", limitPayments=" + limitPayments +
                 '}';
     }
 
@@ -116,6 +149,10 @@ public class PaymentLinkData {
         private List<String> allowedPaymentTypes;
         private String description;
         private String image;
+        private String confirmationMessage;
+        private String redirectUrl;
+        private String callToAction;
+        private Integer limitPayments;
 
         public Builder withPaymentLinkId(String paymentLinkId) {
             this.paymentLinkId = paymentLinkId;
@@ -172,10 +209,31 @@ public class PaymentLinkData {
             return this;
         }
 
+        public Builder withConfirmationMessage(String confirmationMessage) {
+            this.confirmationMessage = confirmationMessage;
+            return this;
+        }
+
+        public Builder withRedirectUrl(String redirectUrl) {
+            this.redirectUrl = redirectUrl;
+            return this;
+        }
+
+        public Builder withCallToAction(String callToAction) {
+            this.callToAction = callToAction;
+            return this;
+        }
+
+        public Builder withLimitPayments(Integer limitPayments) {
+            this.limitPayments = limitPayments;
+            return this;
+        }
+
         public PaymentLinkData build() {
             return new PaymentLinkData(
                     paymentLinkId, dateAdded, accountId, secretKey, publicKey,
-                    title, amount, currency, allowedPaymentTypes, description, image
+                    title, amount, currency, allowedPaymentTypes, description, image,
+                    confirmationMessage, redirectUrl, callToAction, limitPayments
             );
         }
     }
