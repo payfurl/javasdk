@@ -28,6 +28,7 @@ public class NewChargeCustomer {
     private final String firstName;
     private final String lastName;
     private final Geolocation geolocation;
+    private final boolean recurring;
 
     @JsonCreator
     public NewChargeCustomer(@JsonProperty("Amount") BigDecimal amount,
@@ -48,7 +49,8 @@ public class NewChargeCustomer {
                              @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl,
                              @JsonProperty("FirstName") String firstName,
                              @JsonProperty("LastName") String lastName,
-                             @JsonProperty("Geolocation") Geolocation geolocation) {
+                             @JsonProperty("Geolocation") Geolocation geolocation,
+                             @JsonProperty("Recurring") boolean recurring) {
         this.amount = amount;
         this.currency = currency;
         this.customerId = customerId;
@@ -68,6 +70,7 @@ public class NewChargeCustomer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.geolocation = geolocation;
+        this.recurring = recurring;
     }
 
     public BigDecimal getAmount() {
@@ -146,6 +149,10 @@ public class NewChargeCustomer {
         return geolocation;
     }
 
+    public boolean isRecurring() {
+        return recurring;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCustomer{" +
@@ -168,6 +175,7 @@ public class NewChargeCustomer {
                 ", firstName=" + firstName +
                 ", lastName=" + lastName +
                 ", geolocation=" + geolocation +
+                ", recurring=" + recurring +
                 '}';
     }
 
@@ -191,6 +199,7 @@ public class NewChargeCustomer {
         private String firstName;
         private String lastName;
         private Geolocation geolocation;
+        private boolean recurring = false;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -287,6 +296,11 @@ public class NewChargeCustomer {
             return this;
         }
 
+        public Builder withRecurring(boolean recurring) {
+            this.recurring = recurring;
+            return this;
+        }
+
         public NewChargeCustomer build() {
             return new NewChargeCustomer(
                     amount,
@@ -307,7 +321,8 @@ public class NewChargeCustomer {
                     threeDSNotificationUrl,
                     firstName,
                     lastName,
-                    geolocation);
+                    geolocation,
+                    recurring);
         }
     }
 }
