@@ -16,8 +16,13 @@ public class PaymentMethodSummary {
     private final Date dateAdded;
     private final String email;
     private final String vaultId;
+    private final Date dateRemoved;
     private final String providerPaymentMethodId;
     private final Map<String, String> providerPaymentMethodData;
+    private final String token;
+    private final String fallbackPaymentMethodId;
+    private final Map<String, String> metadata;
+    private final String networkTokenId;
 
     @JsonCreator
     public PaymentMethodSummary(@JsonProperty("PaymentMethodId") String paymentMethodId,
@@ -29,8 +34,13 @@ public class PaymentMethodSummary {
                                 @JsonProperty("DateAdded") Date dateAdded,
                                 @JsonProperty("Email") String email,
                                 @JsonProperty("VaultId") String vaultId,
+                                @JsonProperty("DateRemoved") Date dateRemoved,
                                 @JsonProperty("ProviderPaymentMethodId") String providerPaymentMethodId,
-                                @JsonProperty("ProviderPaymentMethodData") Map<String, String> providerPaymentMethodData) {
+                                @JsonProperty("ProviderPaymentMethodData") Map<String, String> providerPaymentMethodData,
+                                @JsonProperty("Token") String token,
+                                @JsonProperty("FallbackPaymentMethodId") String fallbackPaymentMethodId,
+                                @JsonProperty("Metadata") Map<String, String> metadata,
+                                @JsonProperty("NetworkTokenId") String networkTokenId) {
         this.paymentMethodId = paymentMethodId;
         this.customerId = customerId;
         this.type = type;
@@ -40,8 +50,13 @@ public class PaymentMethodSummary {
         this.dateAdded = dateAdded;
         this.email = email;
         this.vaultId = vaultId;
+        this.dateRemoved = dateRemoved;
         this.providerPaymentMethodId = providerPaymentMethodId;
         this.providerPaymentMethodData = providerPaymentMethodData;
+        this.token = token;
+        this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+        this.metadata = metadata;
+        this.networkTokenId = networkTokenId;
     }
 
     public String getPaymentMethodId() {
@@ -80,11 +95,32 @@ public class PaymentMethodSummary {
         return vaultId;
     }
 
+    public Date getDateRemoved() {
+        return dateRemoved;
+    }
+
     public String getProviderPaymentMethodId() {
         return providerPaymentMethodId;
     }
+
     public Map<String, String> getProviderPaymentMethodData() {
         return providerPaymentMethodData;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public String getNetworkTokenId() {
+        return networkTokenId;
     }
 
     public static class Builder {
@@ -97,8 +133,13 @@ public class PaymentMethodSummary {
         private Date dateAdded;
         private String email;
         private String vaultId;
+        private Date dateRemoved;
         private String providerPaymentMethodId;
-        Map<String, String> providerPaymentMethodData;
+        private Map<String, String> providerPaymentMethodData;
+        private String token;
+        private String fallbackPaymentMethodId;
+        private Map<String, String> metadata;
+        private String networkTokenId;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
@@ -145,6 +186,11 @@ public class PaymentMethodSummary {
             return this;
         }
 
+        public Builder withDateRemoved(Date dateRemoved) {
+            this.dateRemoved = dateRemoved;
+            return this;
+        }
+
         public Builder withProviderPaymentMethodId(String providerPaymentMethodId) {
             this.providerPaymentMethodId = providerPaymentMethodId;
             return this;
@@ -155,8 +201,30 @@ public class PaymentMethodSummary {
             return this;
         }
 
+        public Builder withToken(String token) {
+            this.token = token;
+            return this;
+        }
+
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
+        public Builder withNetworkTokenId(String networkTokenId) {
+            this.networkTokenId = networkTokenId;
+            return this;
+        }
+
         public PaymentMethodSummary build() {
-            return new PaymentMethodSummary(paymentMethodId, customerId, type, card, providerId, providerType, dateAdded, email, vaultId, providerPaymentMethodId, providerPaymentMethodData);
+            return new PaymentMethodSummary(paymentMethodId, customerId, type, card, providerId,
+                    providerType, dateAdded, email, vaultId, dateRemoved, providerPaymentMethodId,
+                    providerPaymentMethodData, token, fallbackPaymentMethodId, metadata, networkTokenId);
         }
     }
 }
