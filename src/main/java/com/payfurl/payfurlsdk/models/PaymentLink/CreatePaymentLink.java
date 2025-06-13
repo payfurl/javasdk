@@ -14,7 +14,7 @@ public class CreatePaymentLink {
     private final String image;
     private final String confirmationMessage;
     private final String redirectUrl;
-    private final String callToAction;
+    private final CallToAction callToAction;
     private final Integer limitPayments;
 
     public CreatePaymentLink(
@@ -26,7 +26,7 @@ public class CreatePaymentLink {
             @JsonProperty("Image") String image,
             @JsonProperty("ConfirmationMessage") String confirmationMessage,
             @JsonProperty("RedirectUrl") String redirectUrl,
-            @JsonProperty("CallToAction") String callToAction,
+            @JsonProperty("CallToAction") CallToAction callToAction,
             @JsonProperty("LimitPayments") Integer limitPayments) {
         this.title = title;
         this.amount = amount;
@@ -72,7 +72,7 @@ public class CreatePaymentLink {
         return redirectUrl;
     }
 
-    public String getCallToAction() {
+    public CallToAction getCallToAction() {
         return callToAction;
     }
 
@@ -105,7 +105,7 @@ public class CreatePaymentLink {
         private String image;
         private String confirmationMessage;
         private String redirectUrl;
-        private String callToAction;
+        private CallToAction callToAction;
         private Integer limitPayments;
 
         public Builder withTitle(String title) {
@@ -148,7 +148,7 @@ public class CreatePaymentLink {
             return this;
         }
 
-        public Builder withCallToAction(String callToAction) {
+        public Builder withCallToAction(CallToAction callToAction) {
             this.callToAction = callToAction;
             return this;
         }
