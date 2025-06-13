@@ -1,0 +1,39 @@
+name: Publishing via Central Portal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+          cache: 'maven'
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Set up Maven settings
+        run: |
+          mkdir -p ~/.m2
+          echo '<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/SETTINGS/1.0.0" xsi:schemalocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+          <servers>
+            <server>
+              <id>central</id>
+              <username>${{ secrets.SONATYPE_USERNAME }}</username>
+              <password>${{ secrets.SONATYPE_PASSWORD }}</password>
+            </server>
+          </servers></settings>' > ~/.m2/settings.xml
+
+      - name: Publishing via Central Portal
+        run: mvn clean deploy -P release -DskipTests -Dgpg.keyname=A4A15E725F8999E44ECD2A31098EEB5CD442C65A
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          MAVEN_GPG_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
