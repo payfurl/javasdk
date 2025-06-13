@@ -24,5 +24,7 @@ public interface PayFurlClientSdk extends Configuration {
 
     WebhookSubscriptionApi getWebhookSubscriptionApi();
 
+    PaymentLinkApi getPaymentLinkApi();
+
     String getSdkVersion();
 }
