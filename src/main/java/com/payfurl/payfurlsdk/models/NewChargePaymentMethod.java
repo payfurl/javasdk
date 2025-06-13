@@ -28,6 +28,7 @@ public class NewChargePaymentMethod {
     private final String firstName;
     private final String lastName;
     private final Geolocation geolocation;
+    private final boolean recurring;
 
     @JsonCreator
     public NewChargePaymentMethod(@JsonProperty("Amount") BigDecimal amount,
@@ -48,7 +49,8 @@ public class NewChargePaymentMethod {
                                   @JsonProperty("ThreeDSNotificationUrl") String threeDSNotificationUrl,
                                   @JsonProperty("FirstName") String firstName,
                                   @JsonProperty("LastName") String lastName,
-                                  @JsonProperty("Geolocation") Geolocation geolocation) {
+                                  @JsonProperty("Geolocation") Geolocation geolocation,
+                                  @JsonProperty("Recurring") boolean recurring) {
         this.amount = amount;
         this.currency = currency;
         this.reference = reference;
@@ -68,6 +70,7 @@ public class NewChargePaymentMethod {
         this.firstName = firstName;
         this.lastName = lastName;
         this.geolocation = geolocation;
+        this.recurring = recurring;
     }
 
     public BigDecimal getAmount() {
@@ -146,6 +149,10 @@ public class NewChargePaymentMethod {
         return geolocation;
     }
 
+    public boolean isRecurring() {
+        return recurring;
+    }
+
     @Override
     public String toString() {
         return "NewChargePaymentMethod{" +
@@ -168,6 +175,7 @@ public class NewChargePaymentMethod {
                 ", firstName=" + firstName +
                 ", lastName=" + lastName +
                 ", geolocation=" + geolocation +
+                ", recurring=" + recurring +
                 '}';
     }
 
@@ -191,6 +199,7 @@ public class NewChargePaymentMethod {
         private String firstName;
         private String lastName;
         private Geolocation geolocation;
+        private boolean recurring = false;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -287,6 +296,11 @@ public class NewChargePaymentMethod {
             return this;
         }
 
+        public Builder withRecurring(boolean recurring) {
+            this.recurring = recurring;
+            return this;
+        }
+
         public NewChargePaymentMethod build() {
             return new NewChargePaymentMethod(
                     amount,
@@ -307,7 +321,8 @@ public class NewChargePaymentMethod {
                     threeDSNotificationUrl,
                     firstName,
                     lastName,
-                    geolocation);
+                    geolocation,
+                    recurring);
         }
     }
 }
