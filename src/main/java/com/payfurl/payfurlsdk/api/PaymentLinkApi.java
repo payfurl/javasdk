@@ -5,6 +5,7 @@ import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
+import com.payfurl.payfurlsdk.models.PaymentLink.CreatePaymentLink;
 import com.payfurl.payfurlsdk.models.PaymentLink.PaymentLinkData;
 import com.payfurl.payfurlsdk.models.PaymentLink.SearchPaymentLink;
 import com.payfurl.payfurlsdk.models.PaymentLink.SearchPaymentLinkResult;
@@ -29,7 +30,7 @@ public class PaymentLinkApi extends BaseApi {
      * @return
      * @throws ApiException
      */
-    public PaymentLinkData create(PaymentLinkData paymentLinkData) throws ApiException {
+    public PaymentLinkData create(CreatePaymentLink paymentLinkData) throws ApiException {
         return executePostRequestWith(paymentLinkApiBaseEndpoint, paymentLinkData, PaymentLinkData.class);
     }
 
