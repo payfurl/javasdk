@@ -18,6 +18,10 @@ public class SearchPaymentLink {
         Title
     }
 
+    public SearchPaymentLink() {
+        this(null, null, null, null, null);
+    }
+
     @JsonCreator
     public SearchPaymentLink(
             @JsonProperty("Limit") Integer limit,
