@@ -15,6 +15,8 @@ public class BatchData {
     private final BigDecimal progress;
     private final String results;
     private final Date dateAdded;
+    private final int success;
+    private final int failure;
     private final Map<String, String> metadata;
 
     @JsonCreator
@@ -25,6 +27,8 @@ public class BatchData {
                      @JsonProperty("Progress") BigDecimal progress,
                      @JsonProperty("Results") String results,
                      @JsonProperty("DateAdded") Date dateAdded,
+                     @JsonProperty("Success") int success,
+                     @JsonProperty("Failure") int failure,
                      @JsonProperty("Metadata") Map<String, String> metadata) {
 
         this.batchId = batchId;
@@ -35,6 +39,8 @@ public class BatchData {
         this.results = results;
         this.dateAdded = dateAdded;
         this.metadata = metadata;
+        this.success = success;
+        this.failure = failure;
     }
 
     public String getBatchId() {
@@ -69,6 +75,14 @@ public class BatchData {
         return metadata;
     }
 
+    public int getSuccess() {
+        return success;
+    }
+
+    public int getFailure() {
+        return failure;
+    }
+
     @Override
     public String toString() {
         return "BatchData{" +
@@ -79,6 +93,8 @@ public class BatchData {
                 ", progress=" + progress +
                 ", results='" + results + '\'' +
                 ", dateAdded=" + dateAdded +
+                ", success=" + success +
+                ", failure=" + failure +
                 ", metadata=" + metadata +
                 '}';
     }
@@ -92,6 +108,8 @@ public class BatchData {
         private String results;
         private Date dateAdded;
         private Map<String, String> metadata;
+        private int success;
+        private int failure;
 
         public Builder withBatchId(String batchId) {
             this.batchId = batchId;
@@ -128,13 +146,23 @@ public class BatchData {
             return this;
         }
 
+        public Builder withSuccess(int success) {
+            this.success = success;
+            return this;
+        }
+
+        public Builder withFailure(int failure) {
+            this.failure = failure;
+            return this;
+        }
+
         public Builder withMetadata(Map<String, String> metadata) {
             this.metadata = metadata;
             return this;
         }
 
         public BatchData build() {
-            return new BatchData(batchId, count, description, status, progress, results, dateAdded, metadata);
+            return new BatchData(batchId, count, description, status, progress, results, dateAdded, success, failure, metadata);
         }
     }
 }
