@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.nio.file.Paths;
 
 public class PaymentLinkApiTest {
 
@@ -59,6 +60,16 @@ public class PaymentLinkApiTest {
                 .withTitle("Test Payment Link")
                 .withAmount(BigDecimal.valueOf(1000))
                 .withCurrency("USD")
+                .withImage(CreatePaymentLink.encodeImage(getResourcePath("100x50.png")))
                 .build();
+    }
+
+    private static String getResourcePath(String resourceName) {
+        try {
+            return Paths.get(PaymentLinkApiTest.class.getClassLoader()
+                    .getResource(resourceName).toURI()).toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Could not find resource: " + resourceName, e);
+        }
     }
 }
