@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class PaymentLinkData {
+    private final String url;
     private final String paymentLinkId;
     private final Date dateAdded;
     private final String accountId;
@@ -24,6 +25,7 @@ public class PaymentLinkData {
 
 
     public PaymentLinkData(
+            @JsonProperty("Url") String url,
             @JsonProperty("PaymentLinkId") String paymentLinkId,
             @JsonProperty("DateAdded") Date dateAdded,
             @JsonProperty("AccountId") String accountId,
@@ -39,6 +41,7 @@ public class PaymentLinkData {
             @JsonProperty("RedirectUrl") String redirectUrl,
             @JsonProperty("CallToAction") String callToAction,
             @JsonProperty("LimitPayments") Integer limitPayments) {
+        this.url = url;
         this.paymentLinkId = paymentLinkId;
         this.dateAdded = dateAdded;
         this.accountId = accountId;
@@ -54,6 +57,10 @@ public class PaymentLinkData {
         this.redirectUrl = redirectUrl;
         this.callToAction = callToAction;
         this.limitPayments = limitPayments;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public String getPaymentLinkId() {
@@ -119,7 +126,8 @@ public class PaymentLinkData {
     @Override
     public String toString() {
         return "PaymentLinkData{" +
-                "paymentLinkId='" + paymentLinkId + '\'' +
+                "url='" + url + '\'' +
+                ", paymentLinkId='" + paymentLinkId + '\'' +
                 ", dateAdded=" + dateAdded +
                 ", accountId='" + accountId + '\'' +
                 ", secretKey='" + secretKey + '\'' +
@@ -138,6 +146,7 @@ public class PaymentLinkData {
     }
 
     public static class Builder {
+        private String url;
         private String paymentLinkId;
         private Date dateAdded;
         private String accountId;
@@ -153,6 +162,11 @@ public class PaymentLinkData {
         private String redirectUrl;
         private String callToAction;
         private Integer limitPayments;
+
+        public Builder withUrl(String url) {
+            this.url = url;
+            return this;
+        }
 
         public Builder withPaymentLinkId(String paymentLinkId) {
             this.paymentLinkId = paymentLinkId;
@@ -231,7 +245,7 @@ public class PaymentLinkData {
 
         public PaymentLinkData build() {
             return new PaymentLinkData(
-                    paymentLinkId, dateAdded, accountId, secretKey, publicKey,
+                    url, paymentLinkId, dateAdded, accountId, secretKey, publicKey,
                     title, amount, currency, allowedPaymentTypes, description, image,
                     confirmationMessage, redirectUrl, callToAction, limitPayments
             );
