@@ -23,6 +23,7 @@ public class PaymentMethodSummary {
     private final String fallbackPaymentMethodId;
     private final Map<String, String> metadata;
     private final String networkTokenId;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public PaymentMethodSummary(@JsonProperty("PaymentMethodId") String paymentMethodId,
@@ -41,6 +42,7 @@ public class PaymentMethodSummary {
                                 @JsonProperty("FallbackPaymentMethodId") String fallbackPaymentMethodId,
                                 @JsonProperty("Metadata") Map<String, String> metadata,
                                 @JsonProperty("NetworkTokenId") String networkTokenId) {
+                                @JsonProperty("Metadata") Map<String, String> metadata) {
         this.paymentMethodId = paymentMethodId;
         this.customerId = customerId;
         this.type = type;
@@ -57,6 +59,7 @@ public class PaymentMethodSummary {
         this.fallbackPaymentMethodId = fallbackPaymentMethodId;
         this.metadata = metadata;
         this.networkTokenId = networkTokenId;
+        this.metadata = metadata;
     }
 
     public String getPaymentMethodId() {
@@ -140,6 +143,7 @@ public class PaymentMethodSummary {
         private String fallbackPaymentMethodId;
         private Map<String, String> metadata;
         private String networkTokenId;
+        private Map<String, String> metadata;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;

@@ -36,13 +36,8 @@ public class PayFurlClient implements PayFurlClientSdk {
     private static final String KEY_REGION_SEPARATOR = "-";
 
     private static final String DEVELOP_API_AU_URL;
-    private static final String DEVELOP_API_US_URL;
-    private static final String DEVELOP_API_JP_URL;
     private static final String SANDBOX_API_AU_URL;
-    private static final String SANDBOX_API_US_URL;
     private static final String PRODUCTION_API_AU_URL;
-    private static final String PRODUCTION_API_US_URL;
-    private static final String PRODUCTION_API_EU_URL;
 
     static {
         Properties properties = new Properties();
@@ -59,13 +54,8 @@ public class PayFurlClient implements PayFurlClientSdk {
         GLOBAL_PRODUCTION_URL = properties.getProperty("global.production.url");
         GLOBAL_DEVELOPMENT_URL = properties.getProperty("global.development.url");
         DEVELOP_API_AU_URL = properties.getProperty("develop.api.au.url");
-        DEVELOP_API_US_URL = properties.getProperty("develop.api.us.url");
-        DEVELOP_API_JP_URL = properties.getProperty("develop.api.jp.url");
         SANDBOX_API_AU_URL = properties.getProperty("sandbox.api.au.url");
-        SANDBOX_API_US_URL = properties.getProperty("sandbox.api.us.url");
         PRODUCTION_API_AU_URL = properties.getProperty("production.api.au.url");
-        PRODUCTION_API_US_URL = properties.getProperty("production.api.us.url");
-        PRODUCTION_API_EU_URL = properties.getProperty("production.api.eu.url");
     }
 
     private static final ImmutableMap<EnvironmentConfigKey, String> ENV_CONFIG_TO_URL_MAPPING = ImmutableMap.<EnvironmentConfigKey, String>builder()
@@ -75,13 +65,8 @@ public class PayFurlClient implements PayFurlClientSdk {
             .put(EnvironmentConfigKey.of(Region.NONE, Environment.PRODUCTION), GLOBAL_PRODUCTION_URL)
 
             .put(EnvironmentConfigKey.of(Region.AU, Environment.DEVELOPMENT), DEVELOP_API_AU_URL)
-            .put(EnvironmentConfigKey.of(Region.US, Environment.DEVELOPMENT), DEVELOP_API_US_URL)
-            .put(EnvironmentConfigKey.of(Region.JP, Environment.DEVELOPMENT), DEVELOP_API_JP_URL)
             .put(EnvironmentConfigKey.of(Region.AU, Environment.SANDBOX), SANDBOX_API_AU_URL)
-            .put(EnvironmentConfigKey.of(Region.US, Environment.SANDBOX), SANDBOX_API_US_URL)
             .put(EnvironmentConfigKey.of(Region.AU, Environment.PRODUCTION), PRODUCTION_API_AU_URL)
-            .put(EnvironmentConfigKey.of(Region.US, Environment.PRODUCTION), PRODUCTION_API_US_URL)
-            .put(EnvironmentConfigKey.of(Region.EU, Environment.PRODUCTION), PRODUCTION_API_EU_URL)
             .build();
 
     private final Environment environment;
@@ -103,6 +88,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private BatchApi batchApi;
     private SubscriptionApi subscriptionApi;
     private WebhookSubscriptionApi webhookSubscriptionApi;
+    private PaymentLinkApi paymentLinkApi;
 
     private static Optional<String> extractRegionFromKey(String key) {
         if (StringUtils.isEmpty(key)) {
@@ -165,6 +151,7 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.batchApi = new BatchApi(this, this.httpClient, this.authHandlerMap);
         this.subscriptionApi = new SubscriptionApi(this, this.httpClient, this.authHandlerMap);
         this.webhookSubscriptionApi = new WebhookSubscriptionApi(this, this.httpClient, this.authHandlerMap);
+        this.paymentLinkApi = new PaymentLinkApi(this, this.httpClient, this.authHandlerMap);
     }
 
     public SecretKeyAuthHandler getSecretKeyAuthHandler() {
@@ -265,6 +252,11 @@ public class PayFurlClient implements PayFurlClientSdk {
     @Override
     public WebhookSubscriptionApi getWebhookSubscriptionApi() {
         return webhookSubscriptionApi;
+    }
+
+    @Override
+    public PaymentLinkApi getPaymentLinkApi() {
+        return paymentLinkApi;
     }
 
     @Override

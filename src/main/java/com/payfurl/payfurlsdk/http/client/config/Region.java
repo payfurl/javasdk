@@ -7,9 +7,6 @@ import java.util.stream.Collectors;
 
 public enum Region {
     AU("au"),
-    JP("jp"),
-    US("us"),
-    EU("eu"),
     NONE("none");
 
     private static final Map<String, Region> LABEL_TO_REGION_MAPPING = Arrays.stream(values())

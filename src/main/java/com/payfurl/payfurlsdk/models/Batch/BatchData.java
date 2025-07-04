@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 public class BatchData {
     private final String batchId;
@@ -14,6 +15,9 @@ public class BatchData {
     private final BigDecimal progress;
     private final String results;
     private final Date dateAdded;
+    private final int success;
+    private final int failure;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public BatchData(@JsonProperty("BatchId") String batchId,
@@ -22,7 +26,10 @@ public class BatchData {
                      @JsonProperty("Status") String status,
                      @JsonProperty("Progress") BigDecimal progress,
                      @JsonProperty("Results") String results,
-                     @JsonProperty("DateAdded") Date dateAdded) {
+                     @JsonProperty("DateAdded") Date dateAdded,
+                     @JsonProperty("Success") int success,
+                     @JsonProperty("Failure") int failure,
+                     @JsonProperty("Metadata") Map<String, String> metadata) {
 
         this.batchId = batchId;
         this.count = count;
@@ -31,6 +38,9 @@ public class BatchData {
         this.progress = progress;
         this.results = results;
         this.dateAdded = dateAdded;
+        this.metadata = metadata;
+        this.success = success;
+        this.failure = failure;
     }
 
     public String getBatchId() {
@@ -61,6 +71,18 @@ public class BatchData {
         return dateAdded;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public int getSuccess() {
+        return success;
+    }
+
+    public int getFailure() {
+        return failure;
+    }
+
     @Override
     public String toString() {
         return "BatchData{" +
@@ -71,6 +93,9 @@ public class BatchData {
                 ", progress=" + progress +
                 ", results='" + results + '\'' +
                 ", dateAdded=" + dateAdded +
+                ", success=" + success +
+                ", failure=" + failure +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -82,6 +107,9 @@ public class BatchData {
         private BigDecimal progress;
         private String results;
         private Date dateAdded;
+        private Map<String, String> metadata;
+        private int success;
+        private int failure;
 
         public Builder withBatchId(String batchId) {
             this.batchId = batchId;
@@ -118,8 +146,23 @@ public class BatchData {
             return this;
         }
 
+        public Builder withSuccess(int success) {
+            this.success = success;
+            return this;
+        }
+
+        public Builder withFailure(int failure) {
+            this.failure = failure;
+            return this;
+        }
+
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public BatchData build() {
-            return new BatchData(batchId, count, description, status, progress, results, dateAdded);
+            return new BatchData(batchId, count, description, status, progress, results, dateAdded, success, failure, metadata);
         }
     }
 }
