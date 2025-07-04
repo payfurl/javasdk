@@ -2,7 +2,12 @@ package com.payfurl.payfurlsdk.models.PaymentLink;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 
 public class CreatePaymentLink {
@@ -78,6 +83,45 @@ public class CreatePaymentLink {
 
     public Integer getLimitPayments() {
         return limitPayments;
+    }
+
+    public static String encodeImage(String filePath) {
+        if (filePath == null || filePath.trim().isEmpty()) {
+            throw new IllegalArgumentException("File path cannot be null or empty.");
+        }
+
+        Path path = Paths.get(filePath);
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException("File does not exist.");
+        }
+
+        byte[] imageBytes;
+        try {
+            imageBytes = Files.readAllBytes(path);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read file: " + e.getMessage(), e);
+        }
+
+        if (imageBytes.length < 4) {
+            throw new IllegalArgumentException("Invalid file bytes.");
+        }
+
+        String contentType;
+        if (imageBytes[0] == (byte) 0x89 && imageBytes[1] == (byte) 0x50 &&
+                imageBytes[2] == (byte) 0x4E && imageBytes[3] == (byte) 0x47) {
+            contentType = "image/png";
+        } else if (imageBytes[0] == (byte) 0xFF && imageBytes[1] == (byte) 0xD8 &&
+                imageBytes[imageBytes.length - 2] == (byte) 0xFF &&
+                imageBytes[imageBytes.length - 1] == (byte) 0xD9) {
+            contentType = "image/jpeg";
+        } else if (imageBytes[0] == (byte) 0x47 && imageBytes[1] == (byte) 0x49 &&
+                imageBytes[2] == (byte) 0x46 && imageBytes[3] == (byte) 0x38) {
+            contentType = "image/gif";
+        } else {
+            throw new IllegalArgumentException("Unsupported image format.");
+        }
+
+        return String.format("data:%s;base64,%s", contentType, Base64.getEncoder().encodeToString(imageBytes));
     }
 
     @Override
