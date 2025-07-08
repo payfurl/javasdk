@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class PaymentLinkData {
     private final String url;
@@ -22,6 +23,7 @@ public class PaymentLinkData {
     private final String redirectUrl;
     private final String callToAction;
     private final Integer limitPayments;
+    private final Map<String, String> metadata;
 
 
     public PaymentLinkData(
@@ -40,7 +42,8 @@ public class PaymentLinkData {
             @JsonProperty("ConfirmationMessage") String confirmationMessage,
             @JsonProperty("RedirectUrl") String redirectUrl,
             @JsonProperty("CallToAction") String callToAction,
-            @JsonProperty("LimitPayments") Integer limitPayments) {
+            @JsonProperty("LimitPayments") Integer limitPayments,
+            @JsonProperty("Metadata") Map<String, String> metadata) {
         this.url = url;
         this.paymentLinkId = paymentLinkId;
         this.dateAdded = dateAdded;
@@ -57,6 +60,7 @@ public class PaymentLinkData {
         this.redirectUrl = redirectUrl;
         this.callToAction = callToAction;
         this.limitPayments = limitPayments;
+        this.metadata = metadata;
     }
 
     public String getUrl() {
@@ -123,6 +127,10 @@ public class PaymentLinkData {
         return limitPayments;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "PaymentLinkData{" +
@@ -142,6 +150,7 @@ public class PaymentLinkData {
                 ", redirectUrl='" + redirectUrl + '\'' +
                 ", callToAction='" + callToAction + '\'' +
                 ", limitPayments=" + limitPayments +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -162,6 +171,7 @@ public class PaymentLinkData {
         private String redirectUrl;
         private String callToAction;
         private Integer limitPayments;
+        private Map<String, String> metadata;
 
         public Builder withUrl(String url) {
             this.url = url;
@@ -243,11 +253,16 @@ public class PaymentLinkData {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public PaymentLinkData build() {
             return new PaymentLinkData(
                     url, paymentLinkId, dateAdded, accountId, secretKey, publicKey,
                     title, amount, currency, allowedPaymentTypes, description, image,
-                    confirmationMessage, redirectUrl, callToAction, limitPayments
+                    confirmationMessage, redirectUrl, callToAction, limitPayments, metadata
             );
         }
     }
