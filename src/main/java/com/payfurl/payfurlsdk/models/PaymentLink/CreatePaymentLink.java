@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 public class CreatePaymentLink {
     private final String title;
@@ -21,6 +22,8 @@ public class CreatePaymentLink {
     private final String redirectUrl;
     private final CallToAction callToAction;
     private final Integer limitPayments;
+    private final Map<String, String> metadata;
+
 
     public CreatePaymentLink(
             @JsonProperty("Title") String title,
@@ -32,7 +35,8 @@ public class CreatePaymentLink {
             @JsonProperty("ConfirmationMessage") String confirmationMessage,
             @JsonProperty("RedirectUrl") String redirectUrl,
             @JsonProperty("CallToAction") CallToAction callToAction,
-            @JsonProperty("LimitPayments") Integer limitPayments) {
+            @JsonProperty("LimitPayments") Integer limitPayments,
+            @JsonProperty("Metadata") Map<String, String> metadata) {
         this.title = title;
         this.amount = amount;
         this.currency = currency;
@@ -43,6 +47,7 @@ public class CreatePaymentLink {
         this.redirectUrl = redirectUrl;
         this.callToAction = callToAction;
         this.limitPayments = limitPayments;
+        this.metadata = metadata;
     }
 
     public String getTitle() {
@@ -83,6 +88,10 @@ public class CreatePaymentLink {
 
     public Integer getLimitPayments() {
         return limitPayments;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
     }
 
     public static String encodeImage(String filePath) {
@@ -137,6 +146,7 @@ public class CreatePaymentLink {
                 ", redirectUrl='" + redirectUrl + '\'' +
                 ", callToAction='" + callToAction + '\'' +
                 ", limitPayments=" + limitPayments +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -151,6 +161,7 @@ public class CreatePaymentLink {
         private String redirectUrl;
         private CallToAction callToAction;
         private Integer limitPayments;
+        private Map<String, String> metadata;
 
         public Builder withTitle(String title) {
             this.title = title;
@@ -202,11 +213,16 @@ public class CreatePaymentLink {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public CreatePaymentLink build() {
             return new CreatePaymentLink(
                     title, amount, currency, allowedPaymentTypes,
                     description, image, confirmationMessage, redirectUrl,
-                    callToAction, limitPayments
+                    callToAction, limitPayments, metadata
             );
         }
     }
