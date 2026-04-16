@@ -39,7 +39,7 @@ public class WebhookSubscriptionApi extends BaseApi {
         queryParameters.put("AddedBefore", search.getAddedBefore());
         queryParameters.put("Type", search.getType());
         queryParameters.put("Id", search.getId());
-        queryParameters.put("Sort", search.getSort());
+        queryParameters.put("SortBy", search.getSortBy());
 
         return executeGetRequestWith(webhookSubscriptionApiBaseEndpoint, queryParameters, WebhookSubscriptionSearchResults.class);
     }

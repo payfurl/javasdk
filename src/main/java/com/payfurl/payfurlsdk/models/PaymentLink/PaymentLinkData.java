@@ -23,6 +23,8 @@ public class PaymentLinkData {
     private final String redirectUrl;
     private final String callToAction;
     private final Integer limitPayments;
+    private final Integer countPayments;
+    private final String invoiceId;
     private final Map<String, String> metadata;
 
 
@@ -43,6 +45,8 @@ public class PaymentLinkData {
             @JsonProperty("RedirectUrl") String redirectUrl,
             @JsonProperty("CallToAction") String callToAction,
             @JsonProperty("LimitPayments") Integer limitPayments,
+            @JsonProperty("CountPayments") Integer countPayments,
+            @JsonProperty("InvoiceId") String invoiceId,
             @JsonProperty("Metadata") Map<String, String> metadata) {
         this.url = url;
         this.paymentLinkId = paymentLinkId;
@@ -60,6 +64,8 @@ public class PaymentLinkData {
         this.redirectUrl = redirectUrl;
         this.callToAction = callToAction;
         this.limitPayments = limitPayments;
+        this.countPayments = countPayments;
+        this.invoiceId = invoiceId;
         this.metadata = metadata;
     }
 
@@ -127,6 +133,14 @@ public class PaymentLinkData {
         return limitPayments;
     }
 
+    public Integer getCountPayments() {
+        return countPayments;
+    }
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
     public Map<String, String> getMetadata() {
         return metadata;
     }
@@ -150,6 +164,8 @@ public class PaymentLinkData {
                 ", redirectUrl='" + redirectUrl + '\'' +
                 ", callToAction='" + callToAction + '\'' +
                 ", limitPayments=" + limitPayments +
+                ", countPayments=" + countPayments +
+                ", invoiceId='" + invoiceId + '\'' +
                 ", metadata=" + metadata +
                 '}';
     }
@@ -171,6 +187,8 @@ public class PaymentLinkData {
         private String redirectUrl;
         private String callToAction;
         private Integer limitPayments;
+        private Integer countPayments;
+        private String invoiceId;
         private Map<String, String> metadata;
 
         public Builder withUrl(String url) {
@@ -253,6 +271,16 @@ public class PaymentLinkData {
             return this;
         }
 
+        public Builder withCountPayments(Integer countPayments) {
+            this.countPayments = countPayments;
+            return this;
+        }
+
+        public Builder withInvoiceId(String invoiceId) {
+            this.invoiceId = invoiceId;
+            return this;
+        }
+
         public Builder withMetadata(Map<String, String> metadata) {
             this.metadata = metadata;
             return this;
@@ -262,7 +290,7 @@ public class PaymentLinkData {
             return new PaymentLinkData(
                     url, paymentLinkId, dateAdded, accountId, secretKey, publicKey,
                     title, amount, currency, allowedPaymentTypes, description, image,
-                    confirmationMessage, redirectUrl, callToAction, limitPayments, metadata
+                    confirmationMessage, redirectUrl, callToAction, limitPayments, countPayments, invoiceId, metadata
             );
         }
     }

@@ -11,9 +11,11 @@ public class NewCustomerToken {
     private final String lastName;
     private final String email;
     private final String phone;
+    private final String ip;
     private final String token;
     private final Address address;
     private final Map<String, String> metadata;
+    private final WebhookConfig webhook;
 
     @JsonCreator
     public NewCustomerToken(@JsonProperty("Reference") String reference,
@@ -21,17 +23,21 @@ public class NewCustomerToken {
                             @JsonProperty("LastName") String lastName,
                             @JsonProperty("Email") String email,
                             @JsonProperty("Phone") String phone,
+                            @JsonProperty("Ip") String ip,
                             @JsonProperty("Address") Address address,
                             @JsonProperty("Token") String token,
-                            @JsonProperty("Metadata") Map<String, String> metadata) {
+                            @JsonProperty("Metadata") Map<String, String> metadata,
+                            @JsonProperty("Webhook") WebhookConfig webhook) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.ip = ip;
         this.token = token;
         this.address = address;
         this.metadata = metadata;
+        this.webhook = webhook;
     }
 
     public String getReference() {
@@ -54,6 +60,10 @@ public class NewCustomerToken {
         return phone;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
     public String getToken() {
         return token;
     }
@@ -64,6 +74,10 @@ public class NewCustomerToken {
 
     public Map<String, String> getMetadata() {
         return metadata;
+    }
+
+    public WebhookConfig getWebhook() {
+        return webhook;
     }
 
     @Override
@@ -86,9 +100,11 @@ public class NewCustomerToken {
         private String lastName;
         private String email;
         private String phone;
+        private String ip;
         private String token;
         private Address address;
         private Map<String, String> metadata;
+        private WebhookConfig webhook;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -115,6 +131,11 @@ public class NewCustomerToken {
             return this;
         }
 
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public Builder withToken(String token) {
             this.token = token;
             return this;
@@ -130,8 +151,13 @@ public class NewCustomerToken {
             return this;
         }
 
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewCustomerToken build() {
-            return new NewCustomerToken(reference, firstName, lastName, email, phone, address, token, metadata);
+            return new NewCustomerToken(reference, firstName, lastName, email, phone, ip, address, token, metadata, webhook);
         }
     }
 }

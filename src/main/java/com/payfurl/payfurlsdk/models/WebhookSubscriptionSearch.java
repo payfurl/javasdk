@@ -1,5 +1,6 @@
 package com.payfurl.payfurlsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,7 +27,7 @@ public class WebhookSubscriptionSearch {
                                      @JsonProperty("Type") String type,
                                      @JsonProperty("AddedAfter") Date addedAfter,
                                      @JsonProperty("AddedBefore") Date addedBefore,
-                                     @JsonProperty("Sort") SortBy sort) {
+                                     @JsonProperty("SortBy") @JsonAlias("Sort") SortBy sort) {
         this.id = id;
         this.limit = limit;
         this.skip = skip;
@@ -88,6 +89,10 @@ public class WebhookSubscriptionSearch {
         return sort;
     }
 
+    public SortBy getSortBy() {
+        return sort;
+    }
+
     public void setSort(SortBy sort) {
         this.sort = sort;
     }
@@ -145,6 +150,11 @@ public class WebhookSubscriptionSearch {
         }
 
         public Builder withSort(SortBy sort) {
+            this.sort = sort;
+            return this;
+        }
+
+        public Builder withSortBy(SortBy sort) {
             this.sort = sort;
             return this;
         }

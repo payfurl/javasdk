@@ -11,6 +11,9 @@ public class NewPayToAgreement {
     private final Integer maximumAmount;
     private final String ip;
     private final boolean setDefault;
+    private final String fallbackPaymentMethodId;
+    private final WebhookConfig webhook;
+    private final java.util.Map<String, String> metadata;
 
     @JsonCreator
     public NewPayToAgreement(@JsonProperty("ProviderId") String providerId,
@@ -19,7 +22,10 @@ public class NewPayToAgreement {
                              @JsonProperty("Description") String description,
                              @JsonProperty("MaximumAmount") Integer maximumAmount,
                              @JsonProperty("Ip") String ip,
-                             @JsonProperty("SetDefault") boolean setDefault) {
+                             @JsonProperty("SetDefault") boolean setDefault,
+                             @JsonProperty("FallbackPaymentMethodId") String fallbackPaymentMethodId,
+                             @JsonProperty("Webhook") WebhookConfig webhook,
+                             @JsonProperty("Metadata") java.util.Map<String, String> metadata) {
         this.providerId = providerId;
         this.payerName = payerName;
         this.payerPayIdDetails = payerPayIdDetails;
@@ -27,6 +33,9 @@ public class NewPayToAgreement {
         this.maximumAmount = maximumAmount;
         this.ip = ip;
         this.setDefault = setDefault;
+        this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+        this.webhook = webhook;
+        this.metadata = metadata;
     }
 
     public String getProviderId() {
@@ -57,6 +66,18 @@ public class NewPayToAgreement {
         return setDefault;
     }
 
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
+    public java.util.Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     public static class Builder {
         private String providerId;
         private String payerName;
@@ -65,6 +86,9 @@ public class NewPayToAgreement {
         private Integer maximumAmount;
         private String ip;
         private boolean setDefault;
+        private String fallbackPaymentMethodId;
+        private WebhookConfig webhook;
+        private java.util.Map<String, String> metadata;
 
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
@@ -101,8 +125,34 @@ public class NewPayToAgreement {
             return this;
         }
 
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
+        public Builder withMetadata(java.util.Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public NewPayToAgreement build() {
-            return new NewPayToAgreement(providerId, payerName, payerPayIdDetails, description, maximumAmount, ip, setDefault);
+            return new NewPayToAgreement(
+                    providerId,
+                    payerName,
+                    payerPayIdDetails,
+                    description,
+                    maximumAmount,
+                    ip,
+                    setDefault,
+                    fallbackPaymentMethodId,
+                    webhook,
+                    metadata
+            );
         }
     }
 }

@@ -5,29 +5,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 public class BatchSummary {
     private final String batchId;
     private final int count;
+    private final int success;
+    private final int failure;
     private final String description;
     private final String status;
     private final BigDecimal progress;
     private final Date dateAdded;
+    private final Map<String, String> metadata;
 
     @JsonCreator
     public BatchSummary(@JsonProperty("BatchId") String batchId,
                         @JsonProperty("Count") int count,
+                        @JsonProperty("Success") int success,
+                        @JsonProperty("Failure") int failure,
                         @JsonProperty("Description") String description,
                         @JsonProperty("Status") String status,
                         @JsonProperty("Progress") BigDecimal progress,
-                        @JsonProperty("DateAdded") Date dateAdded) {
+                        @JsonProperty("DateAdded") Date dateAdded,
+                        @JsonProperty("Metadata") Map<String, String> metadata) {
 
         this.batchId = batchId;
         this.count = count;
+        this.success = success;
+        this.failure = failure;
         this.description = description;
         this.status = status;
         this.progress = progress;
         this.dateAdded = dateAdded;
+        this.metadata = metadata;
     }
 
     public String getBatchId() {
@@ -36,6 +46,14 @@ public class BatchSummary {
 
     public int getCount() {
         return count;
+    }
+
+    public int getSuccess() {
+        return success;
+    }
+
+    public int getFailure() {
+        return failure;
     }
 
     public String getDescription() {
@@ -54,25 +72,35 @@ public class BatchSummary {
         return dateAdded;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "BatchSummary{" +
                 "batchId='" + batchId + '\'' +
                 ", count=" + count +
+                ", success=" + success +
+                ", failure=" + failure +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
                 ", progress=" + progress +
                 ", dateAdded=" + dateAdded +
+                ", metadata=" + metadata +
                 '}';
     }
 
     public static class Builder {
         private String batchId;
         private int count;
+        private int success;
+        private int failure;
         private String description;
         private String status;
         private BigDecimal progress;
         private Date dateAdded;
+        private Map<String, String> metadata;
 
         public Builder withBatchId(String batchId) {
             this.batchId = batchId;
@@ -81,6 +109,16 @@ public class BatchSummary {
 
         public Builder withCount(int count) {
             this.count = count;
+            return this;
+        }
+
+        public Builder withSuccess(int success) {
+            this.success = success;
+            return this;
+        }
+
+        public Builder withFailure(int failure) {
+            this.failure = failure;
             return this;
         }
 
@@ -104,8 +142,13 @@ public class BatchSummary {
             return this;
         }
 
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public BatchSummary build() {
-            return new BatchSummary(batchId, count, description, status, progress, dateAdded);
+            return new BatchSummary(batchId, count, success, failure, description, status, progress, dateAdded, metadata);
         }
     }
 }

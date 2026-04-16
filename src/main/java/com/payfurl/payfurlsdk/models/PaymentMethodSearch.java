@@ -16,6 +16,8 @@ public class PaymentMethodSearch {
     private final Integer limit;
     private final Integer skip;
     private final String search;
+    private final String sortOrder;
+    private final Boolean includeRemoved;
 
 
     @JsonCreator
@@ -28,7 +30,9 @@ public class PaymentMethodSearch {
                                @JsonProperty("AddedBefore") Date addedBefore,
                                @JsonProperty("Limit") Integer limit,
                                @JsonProperty("Skip") Integer skip,
-                               @JsonProperty("Search") String search) {
+                               @JsonProperty("Search") String search,
+                               @JsonProperty("SortOrder") String sortOrder,
+                               @JsonProperty("IncludeRemoved") Boolean includeRemoved) {
         this.paymentType = paymentType;
         this.cardType = cardType;
         this.providerId = providerId;
@@ -39,6 +43,8 @@ public class PaymentMethodSearch {
         this.limit = limit;
         this.skip = skip;
         this.search = search;
+        this.sortOrder = sortOrder;
+        this.includeRemoved = includeRemoved;
     }
 
     public String getPaymentType() {
@@ -81,6 +87,14 @@ public class PaymentMethodSearch {
         return search;
     }
 
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    public Boolean getIncludeRemoved() {
+        return includeRemoved;
+    }
+
     @Override
     public String toString() {
         return "ChargeSearch{" +
@@ -94,6 +108,8 @@ public class PaymentMethodSearch {
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", search='" + search + '\'' +
+                ", sortOrder='" + sortOrder + '\'' +
+                ", includeRemoved=" + includeRemoved +
                 '}';
     }
 
@@ -108,6 +124,8 @@ public class PaymentMethodSearch {
         private Integer limit;
         private Integer skip;
         private String search;
+        private String sortOrder;
+        private Boolean includeRemoved;
 
         public Builder withPaymentType(String paymentType) {
             this.paymentType = paymentType;
@@ -159,8 +177,21 @@ public class PaymentMethodSearch {
             return this;
         }
 
+        public Builder withSortOrder(String sortOrder) {
+            this.sortOrder = sortOrder;
+            return this;
+        }
+
+        public Builder withIncludeRemoved(Boolean includeRemoved) {
+            this.includeRemoved = includeRemoved;
+            return this;
+        }
+
         public PaymentMethodSearch build() {
-            return new PaymentMethodSearch(paymentType, cardType, providerId, customerId, sortBy, addedAfter, addedBefore, limit, skip, search);
+            return new PaymentMethodSearch(
+                    paymentType, cardType, providerId, customerId, sortBy, addedAfter,
+                    addedBefore, limit, skip, search, sortOrder, includeRemoved
+            );
         }
     }
 }

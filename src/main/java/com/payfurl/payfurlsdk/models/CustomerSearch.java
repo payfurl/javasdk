@@ -15,6 +15,8 @@ public class CustomerSearch {
     private final Integer limit;
     private final Integer skip;
     private final String search;
+    private final String sortBy;
+    private final Boolean includeRemoved;
 
     @JsonCreator
     public CustomerSearch(@JsonProperty("PaymentMethodId") String paymentMethodId,
@@ -25,7 +27,9 @@ public class CustomerSearch {
                           @JsonProperty("AddedBefore") Date addedBefore,
                           @JsonProperty("Limit") Integer limit,
                           @JsonProperty("Skip") Integer skip,
-                          @JsonProperty("Search") String search) {
+                          @JsonProperty("Search") String search,
+                          @JsonProperty("SortBy") String sortBy,
+                          @JsonProperty("IncludeRemoved") Boolean includeRemoved) {
         this.paymentMethodId = paymentMethodId;
         this.reference = reference;
         this.customerId = customerId;
@@ -35,6 +39,8 @@ public class CustomerSearch {
         this.limit = limit;
         this.skip = skip;
         this.search = search;
+        this.sortBy = sortBy;
+        this.includeRemoved = includeRemoved;
     }
 
     public String getPaymentMethodId() {
@@ -73,6 +79,14 @@ public class CustomerSearch {
         return search;
     }
 
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public Boolean getIncludeRemoved() {
+        return includeRemoved;
+    }
+
     @Override
     public String toString() {
         return "ChargeSearch{" +
@@ -85,6 +99,8 @@ public class CustomerSearch {
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", search='" + search + '\'' +
+                ", sortBy='" + sortBy + '\'' +
+                ", includeRemoved=" + includeRemoved +
                 '}';
     }
 
@@ -98,6 +114,8 @@ public class CustomerSearch {
         private Integer limit;
         private Integer skip;
         private String search;
+        private String sortBy;
+        private Boolean includeRemoved;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
@@ -144,8 +162,18 @@ public class CustomerSearch {
             return this;
         }
 
+        public Builder withSortBy(String sortBy) {
+            this.sortBy = sortBy;
+            return this;
+        }
+
+        public Builder withIncludeRemoved(Boolean includeRemoved) {
+            this.includeRemoved = includeRemoved;
+            return this;
+        }
+
         public CustomerSearch build() {
-            return new CustomerSearch(paymentMethodId, reference, customerId, email, addedAfter, addedBefore, limit, skip, search);
+            return new CustomerSearch(paymentMethodId, reference, customerId, email, addedAfter, addedBefore, limit, skip, search, sortBy, includeRemoved);
         }
     }
 }

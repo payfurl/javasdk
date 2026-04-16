@@ -3,7 +3,6 @@ package com.payfurl.payfurlsdk.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
 import java.util.Map;
 
 public class NewCustomerBankPayment {
@@ -12,30 +11,36 @@ public class NewCustomerBankPayment {
     private final String lastName;
     private final String email;
     private final String phone;
+    private final String ip;
     private final String providerId;
     private final BankPaymentInformation bankPaymentInformation;
     private final Address address;
     private final Map<String, String> metadata;
+    private final WebhookConfig webhook;
 
     @JsonCreator
     public NewCustomerBankPayment(@JsonProperty("Reference") String reference,
-                           @JsonProperty("FirstName") String firstName,
-                           @JsonProperty("LastName") String lastName,
-                           @JsonProperty("Email") String email,
-                           @JsonProperty("Phone") String phone,
-                           @JsonProperty("ProviderId") String providerId,
-                           @JsonProperty("PaymentInformation") BankPaymentInformation bankPaymentInformation,
-                           @JsonProperty("Address") Address address,
-                           @JsonProperty("Metadata") Map<String, String> metadata) {
+                                  @JsonProperty("FirstName") String firstName,
+                                  @JsonProperty("LastName") String lastName,
+                                  @JsonProperty("Email") String email,
+                                  @JsonProperty("Phone") String phone,
+                                  @JsonProperty("Ip") String ip,
+                                  @JsonProperty("ProviderId") String providerId,
+                                  @JsonProperty("BankPaymentInformation") BankPaymentInformation bankPaymentInformation,
+                                  @JsonProperty("Address") Address address,
+                                  @JsonProperty("Metadata") Map<String, String> metadata,
+                                  @JsonProperty("Webhook") WebhookConfig webhook) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.ip = ip;
         this.providerId = providerId;
         this.bankPaymentInformation = bankPaymentInformation;
         this.address = address;
         this.metadata = metadata;
+        this.webhook = webhook;
     }
 
     public String getReference() {
@@ -58,6 +63,10 @@ public class NewCustomerBankPayment {
         return phone;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
     public String getProviderId() {
         return providerId;
     }
@@ -72,6 +81,10 @@ public class NewCustomerBankPayment {
 
     public Map<String, String> getMetadata() {
         return metadata;
+    }
+
+    public WebhookConfig getWebhook() {
+        return webhook;
     }
 
     @Override
@@ -95,10 +108,12 @@ public class NewCustomerBankPayment {
         private String lastName;
         private String email;
         private String phone;
+        private String ip;
         private String providerId;
         private BankPaymentInformation bankPaymentInformation;
         private Address address;
         private Map<String, String> metadata;
+        private WebhookConfig webhook;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -125,6 +140,11 @@ public class NewCustomerBankPayment {
             return this;
         }
 
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
             return this;
@@ -145,8 +165,25 @@ public class NewCustomerBankPayment {
             return this;
         }
 
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewCustomerBankPayment build() {
-            return new NewCustomerBankPayment(reference, firstName, lastName, email, phone, providerId, bankPaymentInformation, address, metadata);
+            return new NewCustomerBankPayment(
+                    reference,
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    ip,
+                    providerId,
+                    bankPaymentInformation,
+                    address,
+                    metadata,
+                    webhook
+            );
         }
     }
 }

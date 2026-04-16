@@ -19,6 +19,7 @@ public class NewChargeCustomer {
     private final String email;
     private final String phone;
     private final boolean capture;
+    private final String ip;
     private final Initiator initiator;
     private final WebhookConfig webhook;
     private final Map<String, String> metadata;
@@ -42,6 +43,7 @@ public class NewChargeCustomer {
                              @JsonProperty("Email") String email,
                              @JsonProperty("Phone") String phone,
                              @JsonProperty("Capture") boolean capture,
+                             @JsonProperty("Ip") String ip,
                              @JsonProperty("Initiator") Initiator initiator,
                              @JsonProperty("Webhook") WebhookConfig webhook,
                              @JsonProperty("Metadata") Map<String, String> metadata,
@@ -62,6 +64,7 @@ public class NewChargeCustomer {
         this.email = email;
         this.phone = phone;
         this.capture = capture;
+        this.ip = ip;
         this.initiator = initiator;
         this.webhook = webhook;
         this.metadata = metadata;
@@ -115,6 +118,10 @@ public class NewChargeCustomer {
 
     public String getPhone() {
         return phone;
+    }
+
+    public String getIp() {
+        return ip;
     }
 
     public Initiator getInitiator() {
@@ -191,6 +198,7 @@ public class NewChargeCustomer {
         private String email;
         private String phone;
         private boolean capture = true;
+        private String ip;
         private Initiator initiator;
         private WebhookConfig webhook;
         private Map<String, String> metadata;
@@ -243,6 +251,11 @@ public class NewChargeCustomer {
 
         public Builder withPhone(String phone) {
             this.phone = phone;
+            return this;
+        }
+
+        public Builder withIp(String ip) {
+            this.ip = ip;
             return this;
         }
 
@@ -314,6 +327,7 @@ public class NewChargeCustomer {
                     email,
                     phone,
                     capture,
+                    ip,
                     initiator,
                     webhook,
                     metadata,

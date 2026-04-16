@@ -12,7 +12,7 @@ public class NewChargeToken {
     private final String currency;
     private final String reference;
     private final String token;
-    private final CheckoutTransfer checkoutTransfer;
+    private final CheckoutTransfer transfer;
     private final Address address;
     private final Order order;
     private final String customerCode;
@@ -20,6 +20,7 @@ public class NewChargeToken {
     private final String email;
     private final String phone;
     private final boolean capture;
+    private final String ip;
     private final Initiator initiator;
     private final WebhookConfig webhook;
     private final Map<String, String> metadata;
@@ -34,8 +35,8 @@ public class NewChargeToken {
     public NewChargeToken(@JsonProperty("Amount") BigDecimal amount,
                           @JsonProperty("Currency") String currency,
                           @JsonProperty("Reference") String reference,
-                          @JsonProperty("PaymentMethodId") String token,
-                          @JsonProperty("CheckoutTransfer") CheckoutTransfer checkoutTransfer,
+                          @JsonProperty("Token") String token,
+                          @JsonProperty("Transfer") CheckoutTransfer transfer,
                           @JsonProperty("Address") Address address,
                           @JsonProperty("Order") Order order,
                           @JsonProperty("CustomerCode") String customerCode,
@@ -43,6 +44,7 @@ public class NewChargeToken {
                           @JsonProperty("Email") String email,
                           @JsonProperty("Phone") String phone,
                           @JsonProperty("Capture") boolean capture,
+                          @JsonProperty("Ip") String ip,
                           @JsonProperty("Initiator") Initiator initiator,
                           @JsonProperty("Webhook") WebhookConfig webhook,
                           @JsonProperty("Metadata") Map<String, String> metadata,
@@ -55,7 +57,7 @@ public class NewChargeToken {
         this.currency = currency;
         this.reference = reference;
         this.token = token;
-        this.checkoutTransfer = checkoutTransfer;
+        this.transfer = transfer;
         this.address = address;
         this.order = order;
         this.customerCode = customerCode;
@@ -63,6 +65,7 @@ public class NewChargeToken {
         this.email = email;
         this.phone = phone;
         this.capture = capture;
+        this.ip = ip;
         this.initiator = initiator;
         this.webhook = webhook;
         this.metadata = metadata;
@@ -101,8 +104,13 @@ public class NewChargeToken {
         return capture;
     }
 
+    @JsonProperty("Transfer")
+    public CheckoutTransfer getTransfer() {
+        return transfer;
+    }
+
     public CheckoutTransfer getCheckoutTransfer() {
-        return checkoutTransfer;
+        return transfer;
     }
 
     public String getCustomerCode() {
@@ -119,6 +127,10 @@ public class NewChargeToken {
 
     public String getPhone() {
         return phone;
+    }
+
+    public String getIp() {
+        return ip;
     }
 
     public Initiator getInitiator() {
@@ -158,9 +170,9 @@ public class NewChargeToken {
         return "NewChargeToken{" +
                 "amount=" + amount +
                 ", currency='" + currency + '\'' +
-                ", paymentMethodId='" + token + '\'' +
+                ", token='" + token + '\'' +
                 ", reference='" + reference + '\'' +
-                ", checkoutTransfer='" + checkoutTransfer + '\'' +
+                ", transfer='" + transfer + '\'' +
                 ", address=" + address +
                 ", order=" + order +
                 ", customerCode=" + customerCode +
@@ -168,6 +180,7 @@ public class NewChargeToken {
                 ", email=" + email +
                 ", phone=" + phone +
                 ", capture=" + capture +
+                ", ip=" + ip +
                 ", initiator=" + initiator +
                 ", webhook=" + webhook +
                 ", metadata=" + metadata +
@@ -184,7 +197,7 @@ public class NewChargeToken {
         private String currency;
         private String reference;
         private String token;
-        private CheckoutTransfer checkoutTransfer;
+        private CheckoutTransfer transfer;
         private Address address;
         private Order order;
         private String customerCode;
@@ -192,6 +205,7 @@ public class NewChargeToken {
         private String email;
         private String phone;
         private boolean capture = true;
+        private String ip;
         private Initiator initiator;
         private WebhookConfig webhook;
         private Map<String, String> metadata;
@@ -222,7 +236,12 @@ public class NewChargeToken {
         }
 
         public Builder withCheckoutTransfer(CheckoutTransfer checkoutTransfer) {
-            this.checkoutTransfer = checkoutTransfer;
+            this.transfer = checkoutTransfer;
+            return this;
+        }
+
+        public Builder withTransfer(CheckoutTransfer transfer) {
+            this.transfer = transfer;
             return this;
         }
 
@@ -258,6 +277,11 @@ public class NewChargeToken {
 
         public Builder withCapture(boolean capture) {
             this.capture = capture;
+            return this;
+        }
+
+        public Builder withIp(String ip) {
+            this.ip = ip;
             return this;
         }
 
@@ -307,7 +331,7 @@ public class NewChargeToken {
                     currency,
                     reference,
                     token,
-                    checkoutTransfer,
+                    transfer,
                     address,
                     order,
                     customerCode,
@@ -315,6 +339,7 @@ public class NewChargeToken {
                     email,
                     phone,
                     capture,
+                    ip,
                     initiator,
                     webhook,
                     metadata,

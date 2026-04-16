@@ -1,5 +1,6 @@
 package com.payfurl.payfurlsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,31 +10,34 @@ import java.util.Map;
 public class TokenData {
 
     private final String tokenId;
-    private final String userId;
+    private final String accountId;
     private final CardData card;
     private final ProviderSummary provider;
     private final Date dateAdded;
     private final Date dateUsed;
     private final String payToStatus;
     private final Map<String, String> metadata;
+    private final ClickToPayData clickToPay;
 
     @JsonCreator
     public TokenData(@JsonProperty("TokenId") String tokenId,
-                     @JsonProperty("UserId") String userId,
+                     @JsonProperty("AccountId") @JsonAlias("UserId") String accountId,
                      @JsonProperty("Card") CardData card,
                      @JsonProperty("Provider") ProviderSummary provider,
                      @JsonProperty("DateAdded") Date dateAdded,
                      @JsonProperty("DateUsed") Date dateUsed,
                      @JsonProperty("PayToStatus") String payToStatus,
-                     @JsonProperty("Metadata") Map<String, String> metadata) {
+                     @JsonProperty("Metadata") Map<String, String> metadata,
+                     @JsonProperty("ClickToPay") ClickToPayData clickToPay) {
         this.tokenId = tokenId;
-        this.userId = userId;
+        this.accountId = accountId;
         this.card = card;
         this.provider = provider;
         this.dateAdded = dateAdded;
         this.dateUsed = dateUsed;
         this.payToStatus = payToStatus;
         this.metadata = metadata;
+        this.clickToPay = clickToPay;
     }
 
     public String getTokenId() {
@@ -41,7 +45,11 @@ public class TokenData {
     }
 
     public String getUserId() {
-        return userId;
+        return accountId;
+    }
+
+    public String getAccountId() {
+        return accountId;
     }
 
     public CardData getCard() {
@@ -68,29 +76,35 @@ public class TokenData {
         return metadata;
     }
 
+    public ClickToPayData getClickToPay() {
+        return clickToPay;
+    }
+
     @Override
     public String toString() {
         return "TokenData{" +
                 "tokenId=" + tokenId +
-                ", userId=" + userId +
+                ", accountId=" + accountId +
                 ", card=" + card +
                 ", provider=" + provider +
                 ", dateAdded=" + dateAdded +
                 ", dateUsed=" + dateUsed +
                 ", payToStatus=" + payToStatus +
                 ", metadata=" + metadata +
+                ", clickToPay=" + clickToPay +
                 '}';
     }
 
     public static class Builder {
         private String tokenId;
-        private String userId;
+        private String accountId;
         private CardData card;
         private ProviderSummary provider;
         private Date dateAdded;
         private Date dateUsed;
         private String payToStatus;
         private Map<String, String> metadata;
+        private ClickToPayData clickToPay;
 
         public Builder withTokenId(String tokenId) {
             this.tokenId = tokenId;
@@ -98,7 +112,12 @@ public class TokenData {
         }
 
         public Builder withUserId(String userId) {
-            this.userId = userId;
+            this.accountId = userId;
+            return this;
+        }
+
+        public Builder withAccountId(String accountId) {
+            this.accountId = accountId;
             return this;
         }
 
@@ -132,8 +151,13 @@ public class TokenData {
             return this;
         }
 
+        public Builder withClickToPay(ClickToPayData clickToPay) {
+            this.clickToPay = clickToPay;
+            return this;
+        }
+
         public TokenData build() {
-            return new TokenData(tokenId, userId, card, provider, dateAdded, dateUsed, payToStatus, metadata);
+            return new TokenData(tokenId, accountId, card, provider, dateAdded, dateUsed, payToStatus, metadata, clickToPay);
         }
     }
 }

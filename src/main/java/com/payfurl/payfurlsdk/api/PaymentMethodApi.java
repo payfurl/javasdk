@@ -71,6 +71,18 @@ public class PaymentMethodApi extends BaseApi {
     }
 
     /**
+     * Add a payment method using a PayTo agreement.
+     *
+     * @param newPayToAgreement
+     * @return
+     * @throws ApiException
+     */
+    public PaymentMethodData createPaymentMethodWithPayTo(NewPayToAgreement newPayToAgreement) throws ApiException {
+        String urlPath = paymentMethodApiBaseEndpoint + "/payto";
+        return executePostRequestWith(urlPath, newPayToAgreement, PaymentMethodData.class);
+    }
+
+    /**
      * Retrieve a single payment method
      *
      * @param paymentMethodId
@@ -90,8 +102,22 @@ public class PaymentMethodApi extends BaseApi {
      * @throws ApiException
      */
     public PaymentMethodData deletePaymentMethod(String paymentMethodId) throws ApiException {
+        return deletePaymentMethod(paymentMethodId, true);
+    }
+
+    /**
+     * Delete payment method
+     *
+     * @param paymentMethodId
+     * @param gatewayDelete remove the payment method from the gateway too
+     * @return
+     * @throws ApiException
+     */
+    public PaymentMethodData deletePaymentMethod(String paymentMethodId, boolean gatewayDelete) throws ApiException {
         String urlPath = String.format("%s/%s", paymentMethodApiBaseEndpoint, paymentMethodId);
-        return executeDeleteRequestWith(urlPath, null, PaymentMethodData.class);
+        Map<String, Object> queryParameters = new HashMap<>();
+        queryParameters.put("GatewayDelete", gatewayDelete);
+        return executeDeleteRequestWith(urlPath, queryParameters, PaymentMethodData.class);
     }
 
     /**
@@ -113,6 +139,8 @@ public class PaymentMethodApi extends BaseApi {
         queryParams.put("PaymentType", searchData.getPaymentType());
         queryParams.put("CardType", searchData.getCardType());
         queryParams.put("SortBy", searchData.getSortBy());
+        queryParams.put("SortOrder", searchData.getSortOrder());
+        queryParams.put("IncludeRemoved", searchData.getIncludeRemoved());
 
         return executeGetRequestWith(paymentMethodApiBaseEndpoint, queryParams, PaymentMethodList.class);
     }

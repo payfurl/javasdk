@@ -12,6 +12,7 @@ public class NewCustomerCard {
     private final String lastName;
     private final String email;
     private final String phone;
+    private final String ip;
     private final String providerId;
     private final CardRequestInformation paymentInformation;
     private final Address address;
@@ -19,6 +20,9 @@ public class NewCustomerCard {
     private final Date vaultExpireDate;
     private final Integer vaultExpireSeconds;
     private final Map<String, String> metadata;
+    private final WebhookConfig webhook;
+    private final Boolean createNetworkToken;
+    private final boolean verify;
     private final boolean skipExpiryDateValidation;
 
     @JsonCreator
@@ -27,6 +31,7 @@ public class NewCustomerCard {
                            @JsonProperty("LastName") String lastName,
                            @JsonProperty("Email") String email,
                            @JsonProperty("Phone") String phone,
+                           @JsonProperty("Ip") String ip,
                            @JsonProperty("ProviderId") String providerId,
                            @JsonProperty("PaymentInformation") CardRequestInformation paymentInformation,
                            @JsonProperty("Address") Address address,
@@ -34,12 +39,16 @@ public class NewCustomerCard {
                            @JsonProperty("VaultExpireDate") Date vaultExpireDate,
                            @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds,
                            @JsonProperty("Metadata") Map<String, String> metadata,
+                           @JsonProperty("Webhook") WebhookConfig webhook,
+                           @JsonProperty("CreateNetworkToken") Boolean createNetworkToken,
+                           @JsonProperty("Verify") boolean verify,
                            @JsonProperty("SkipExpiryDateValidation") boolean skipExpiryDateValidation) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.ip = ip;
         this.providerId = providerId;
         this.paymentInformation = paymentInformation;
         this.address = address;
@@ -47,6 +56,9 @@ public class NewCustomerCard {
         this.vaultExpireDate = vaultExpireDate;
         this.vaultExpireSeconds = vaultExpireSeconds;
         this.metadata = metadata;
+        this.webhook = webhook;
+        this.createNetworkToken = createNetworkToken;
+        this.verify = verify;
         this.skipExpiryDateValidation = skipExpiryDateValidation;
     }
 
@@ -68,6 +80,10 @@ public class NewCustomerCard {
 
     public String getPhone() {
         return phone;
+    }
+
+    public String getIp() {
+        return ip;
     }
 
     public String getProviderId() {
@@ -98,6 +114,18 @@ public class NewCustomerCard {
         return metadata;
     }
 
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
+    public Boolean getCreateNetworkToken() {
+        return createNetworkToken;
+    }
+
+    public boolean getVerify() {
+        return verify;
+    }
+
     public boolean getSkipExpiryDateValidation() { return skipExpiryDateValidation; }
 
     @Override
@@ -108,6 +136,7 @@ public class NewCustomerCard {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
+                ", ip=" + ip +
                 ", providerId=" + providerId +
                 ", paymentInformation=" + paymentInformation +
                 ", address=" + address +
@@ -115,6 +144,9 @@ public class NewCustomerCard {
                 ", vaultExpireDate=" + vaultExpireDate +
                 ", vaultExpireSeconds=" + vaultExpireSeconds +
                 ", metadata=" + metadata +
+                ", webhook=" + webhook +
+                ", createNetworkToken=" + createNetworkToken +
+                ", verify=" + verify +
                 ", skipExpiryDateValidation=" + skipExpiryDateValidation +
                 '}';
     }
@@ -125,6 +157,7 @@ public class NewCustomerCard {
         private String lastName;
         private String email;
         private String phone;
+        private String ip;
         private String providerId;
         private CardRequestInformation paymentInformation;
         private Address address;
@@ -132,6 +165,9 @@ public class NewCustomerCard {
         private Date vaultExpireDate;
         private Integer vaultExpireSeconds;
         private Map<String, String> metadata;
+        private WebhookConfig webhook;
+        private Boolean createNetworkToken;
+        private boolean verify = false;
         private boolean skipExpiryDateValidation = false;
 
         public Builder withReference(String reference) {
@@ -156,6 +192,11 @@ public class NewCustomerCard {
 
         public Builder withPhone(String phone) {
             this.phone = phone;
+            return this;
+        }
+
+        public Builder withIp(String ip) {
+            this.ip = ip;
             return this;
         }
 
@@ -194,13 +235,46 @@ public class NewCustomerCard {
             return this;
         }
 
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
+        public Builder withCreateNetworkToken(Boolean createNetworkToken) {
+            this.createNetworkToken = createNetworkToken;
+            return this;
+        }
+
+        public Builder withVerify(boolean verify) {
+            this.verify = verify;
+            return this;
+        }
+
         public Builder withSkipExpiryDateValidation(boolean skipExpiryDateValidation) {
             this.skipExpiryDateValidation = skipExpiryDateValidation;
             return this;
         }
 
         public NewCustomerCard build() {
-            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds, metadata, skipExpiryDateValidation);
+            return new NewCustomerCard(
+                    reference,
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    ip,
+                    providerId,
+                    paymentInformation,
+                    address,
+                    vaultCard,
+                    vaultExpireDate,
+                    vaultExpireSeconds,
+                    metadata,
+                    webhook,
+                    createNetworkToken,
+                    verify,
+                    skipExpiryDateValidation
+            );
         }
     }
 }

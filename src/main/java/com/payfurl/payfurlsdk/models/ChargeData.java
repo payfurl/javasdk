@@ -31,6 +31,8 @@ public class ChargeData {
     public final String threeDsServerTransId;
     public final boolean threeDsVerified;
     public final BigDecimal authorisationAmount;
+    private final String ip;
+    private final GeolocationInfo ipInfo;
     private final Initiator initiator;
     private final VisaInstallmentsInfo visaInstallments;
     private final String descriptor;
@@ -62,6 +64,8 @@ public class ChargeData {
                       @JsonProperty("ThreeDsServerTransId") String threeDsServerTransId,
                       @JsonProperty("ThreeDsVerified") boolean threeDsVerified,
                       @JsonProperty("AuthorisationAmount") BigDecimal authorisationAmount,
+                      @JsonProperty("Ip") String ip,
+                      @JsonProperty("IpInfo") GeolocationInfo ipInfo,
                       @JsonProperty("Initiator") Initiator initiator,
                       @JsonProperty("VisaInstallments") VisaInstallmentsInfo visaInstallments,
                       @JsonProperty("Descriptor") String descriptor,
@@ -91,6 +95,8 @@ public class ChargeData {
         this.threeDsServerTransId = threeDsServerTransId;
         this.threeDsVerified = threeDsVerified;
         this.authorisationAmount = authorisationAmount;
+        this.ip = ip;
+        this.ipInfo = ipInfo;
         this.initiator = initiator;
         this.visaInstallments = visaInstallments;
         this.descriptor = descriptor;
@@ -188,6 +194,14 @@ public class ChargeData {
         return authorisationAmount;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public GeolocationInfo getIpInfo() {
+        return ipInfo;
+    }
+
     public Initiator getInitiator() {
         return initiator;
     }
@@ -241,6 +255,8 @@ public class ChargeData {
                 ", threeDsServerTransId='" + threeDsServerTransId + '\'' +
                 ", threeDsVerified=" + threeDsVerified +
                 ", authorisationAmount=" + authorisationAmount +
+                ", ip=" + ip +
+                ", ipInfo=" + ipInfo +
                 ", initiator=" + initiator +
                 ", visaInstallments=" + visaInstallments +
                 ", descriptor=" + descriptor +
