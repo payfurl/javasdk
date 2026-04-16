@@ -117,4 +117,10 @@ class PayFurlClientTest {
     void testGetSecretKeyAuthHandler() {
         then(dummyProdConfiguredClient.getSecretKeyAuthHandler().getSecretKey()).isEmpty();
     }
+
+    @Test
+    @DisplayName("Given PayFurlClient When getSettlementApi is called Then return settlement api instance")
+    void testGetSettlementApi() {
+        then(dummyProdConfiguredClient.getSettlementApi()).isNotNull();
+    }
 }
