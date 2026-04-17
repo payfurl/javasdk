@@ -5,6 +5,8 @@ import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.PaymentMethodApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpMethod;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpRequest;
 import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -228,6 +230,73 @@ public class PaymentMethodApiTest {
 
             // then
             then(paymentMethodWithToken.getPaymentMethodId()).isNotNull();
+        }
+    }
+
+    @Nested
+    @DisplayName("Given request wiring changes in PaymentMethod API")
+    class RequestWiringFlow {
+        @Test
+        @DisplayName("When createPaymentMethodWithPayTo is called, Then use top-level payto endpoint")
+        void testCreatePaymentMethodWithPayToRequestWiring() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"PaymentMethodId\":\"payment_method_123\"}");
+            PaymentMethodApi unitPaymentMethodApi = new PaymentMethodApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitPaymentMethodApi.createPaymentMethodWithPayTo(new NewPayToAgreement.Builder()
+                    .withProviderId("provider_123")
+                    .withPayerName("Jane Doe")
+                    .withDescription("Subscription")
+                    .withMaximumAmount(500)
+                    .withPayerPayIdDetails(new PayIdDetails.Builder()
+                            .withPayId("payto@example.com")
+                            .withPayIdType("EMAIL")
+                            .build())
+                    .withFallbackPaymentMethodId("fallback_payment_method_123")
+                    .withMetadata(METADATA)
+                    .withWebhook(new WebhookConfig.Builder()
+                            .withUrl("https://notify.example.com/payto")
+                            .withAuthorization("Bearer payto")
+                            .build())
+                    .build());
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.POST);
+            then(ApiTestSupport.resolvedUrl(request)).isEqualTo(ApiTestSupport.BASE_URI + "/payment_method/payto");
+            then(ApiTestSupport.bodyOf(request)).contains("fallback_payment_method_123").contains("payto@example.com");
+        }
+
+        @Test
+        @DisplayName("When search is called with new fields, Then include payment method sort and removal filters")
+        void testSearchIncludesNewQueryParameters() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"Limit\":10,\"Skip\":0,\"Count\":0,\"PaymentMethods\":[]}");
+            PaymentMethodApi unitPaymentMethodApi = new PaymentMethodApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitPaymentMethodApi.search(new PaymentMethodSearch.Builder()
+                    .withSortBy("DateAdded")
+                    .withSortOrder("ASC")
+                    .withIncludeRemoved(true)
+                    .build());
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.GET);
+            then(request.getQueryParameters())
+                    .containsEntry("SortBy", "DateAdded")
+                    .containsEntry("SortOrder", "ASC")
+                    .containsEntry("IncludeRemoved", true);
+        }
+
+        @Test
+        @DisplayName("When deletePaymentMethod is called with gatewayDelete false, Then forward the flag")
+        void testDeletePaymentMethodWithGatewayDelete() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"PaymentMethodId\":\"payment_method_123\"}");
+            PaymentMethodApi unitPaymentMethodApi = new PaymentMethodApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitPaymentMethodApi.deletePaymentMethod("payment_method_123", false);
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.DELETE);
+            then(ApiTestSupport.resolvedUrl(request)).isEqualTo(ApiTestSupport.BASE_URI + "/payment_method/payment_method_123?GatewayDelete=false");
+            then(request.getQueryParameters()).containsEntry("GatewayDelete", false);
         }
     }
 }

@@ -4,8 +4,11 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.WebhookSubscriptionApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpMethod;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpRequest;
 import com.payfurl.payfurlsdk.models.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -78,5 +81,22 @@ public class WebhookSubscriptionApiTest {
         assertThat(result).isNotNull();
         assertThat(result.getCount()).isEqualTo(1);
         assertThat(result.getWebhookSubscriptions().get(0).getWebhookSubscriptionId()).isEqualTo(webhook.getWebhookSubscriptionId());
+    }
+
+    @Test
+    @DisplayName("When searchWebhookSubscription request uses sortBy, Then forward SortBy query parameter")
+    void testSearchWebhookSubscriptionUsesSortByQueryParameter() throws ApiException {
+        ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"WebhookSubscriptions\":[],\"Count\":0}");
+        WebhookSubscriptionApi unitWebhookSubscriptionApi = new WebhookSubscriptionApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+        unitWebhookSubscriptionApi.searchWebhookSubscription(new WebhookSubscriptionSearch.Builder()
+                .withSortBy(WebhookSubscriptionSearch.SortBy.DATE)
+                .build());
+
+        HttpRequest request = httpClient.getLastRequest();
+        assertThat(request.getHttpMethod()).isEqualTo(HttpMethod.GET);
+        assertThat(request.getQueryParameters())
+                .containsEntry("SortBy", WebhookSubscriptionSearch.SortBy.DATE)
+                .doesNotContainKey("Sort");
     }
 }

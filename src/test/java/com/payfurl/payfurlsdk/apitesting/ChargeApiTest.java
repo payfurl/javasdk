@@ -8,6 +8,8 @@ import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.api.support.ErrorCode;
 import com.payfurl.payfurlsdk.api.support.ErrorLink;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpMethod;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpRequest;
 import com.payfurl.payfurlsdk.models.Address;
 import com.payfurl.payfurlsdk.models.ApiError;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
@@ -15,8 +17,10 @@ import com.payfurl.payfurlsdk.models.ChargeData;
 import com.payfurl.payfurlsdk.models.ChargeList;
 import com.payfurl.payfurlsdk.models.ChargeSearch;
 import com.payfurl.payfurlsdk.models.CustomerData;
+import com.payfurl.payfurlsdk.models.NewChargeApplePay;
 import com.payfurl.payfurlsdk.models.NewChargeCardLeastCost;
 import com.payfurl.payfurlsdk.models.NewChargeCardRequest;
+import com.payfurl.payfurlsdk.models.NewChargeNetworkToken;
 import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
 import com.payfurl.payfurlsdk.models.NewChargeToken;
 import com.payfurl.payfurlsdk.models.NewCustomerCard;
@@ -320,6 +324,117 @@ public class ChargeApiTest {
             // then
             then(chargeData).isNotNull();
             then(chargeData.status).isEqualTo(PENDING_MARKER);
+        }
+    }
+
+    @Nested
+    @DisplayName("Given request wiring changes in Charge API")
+    class RequestWiringFlow {
+        @Test
+        @DisplayName("When createWithApplePay is called, Then use apple endpoint with custom headers")
+        void testCreateWithApplePayRequestWiring() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"ChargeId\":\"charge_123\"}");
+            ChargeApi unitChargeApi = new ChargeApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitChargeApi.createWithApplePay(new NewChargeApplePay.Builder()
+                    .withAmount(new BigDecimal("12.34"))
+                    .withCurrency("USD")
+                    .withEmail("applepay@example.com")
+                    .withUserAgent("Safari")
+                    .withToken(new NewChargeApplePay.AppleToken(
+                            new NewChargeApplePay.ApplePaySource(
+                                    "token-data",
+                                    "signature-value",
+                                    new NewChargeApplePay.ApplePayHeader("public-key-hash", "ephemeral-key", "txn_123"),
+                                    "EC_v1"),
+                            new NewChargeApplePay.ApplePaymentMethod("Visa 1111", "Visa", "debit")))
+                    .build(), "provider_123", "user_123");
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.POST);
+            then(ApiTestSupport.resolvedUrl(request)).isEqualTo(ApiTestSupport.BASE_URI + "/charge/token/apple");
+            then(request.getHeaders().value("providerId")).isEqualTo("provider_123");
+            then(request.getHeaders().value("userId")).isEqualTo("user_123");
+            then(request.getHeaders().value("x-secretkey")).isEqualTo("secret_key_test");
+            then(ApiTestSupport.bodyOf(request)).contains("token-data").contains("signature-value").contains("txn_123");
+        }
+
+        @Test
+        @DisplayName("When createWithNetworkToken is called, Then use network token endpoint")
+        void testCreateWithNetworkTokenRequestWiring() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"ChargeId\":\"charge_123\"}");
+            ChargeApi unitChargeApi = new ChargeApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitChargeApi.createWithNetworkToken(new NewChargeNetworkToken.Builder()
+                    .withNetworkTokenId("network_token_123")
+                    .withAmount(new BigDecimal("12.34"))
+                    .withCurrency("USD")
+                    .withProviderId("provider_123")
+                    .withMetadata(METADATA)
+                    .withWebhook(new WebhookConfig.Builder()
+                            .withUrl("https://notify.example.com/network-token")
+                            .withAuthorization("Bearer token")
+                            .build())
+                    .withThreeDSNotificationUrl("https://notify.example.com/3ds")
+                    .build());
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.POST);
+            then(ApiTestSupport.resolvedUrl(request)).isEqualTo(ApiTestSupport.BASE_URI + "/charge/network_token");
+            then(request.getHeaders().value("x-secretkey")).isEqualTo("secret_key_test");
+            then(ApiTestSupport.bodyOf(request))
+                    .contains("network_token_123")
+                    .contains("merchant_id")
+                    .contains("https://notify.example.com/3ds");
+        }
+
+        @Test
+        @DisplayName("When search is called with new fields, Then include new query parameters")
+        void testSearchIncludesNewQueryParameters() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"Limit\":10,\"Skip\":0,\"Count\":0,\"Charges\":[]}");
+            ChargeApi unitChargeApi = new ChargeApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitChargeApi.search(new ChargeSearch.Builder()
+                    .withBatchId("batch_123")
+                    .withSubscriptionId("subscription_123")
+                    .withSortBy("DateAdded")
+                    .withSortOrder("DESC")
+                    .build());
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.GET);
+            then(ApiTestSupport.resolvedUrl(request)).startsWith(ApiTestSupport.BASE_URI + "/charge?");
+            then(ApiTestSupport.resolvedUrl(request)).contains("BatchId=batch_123");
+            then(ApiTestSupport.resolvedUrl(request)).contains("SubscriptionId=subscription_123");
+            then(ApiTestSupport.resolvedUrl(request)).contains("SortBy=DateAdded");
+            then(ApiTestSupport.resolvedUrl(request)).contains("SortOrder=DESC");
+            then(request.getQueryParameters())
+                    .containsEntry("BatchId", "batch_123")
+                    .containsEntry("SubscriptionId", "subscription_123")
+                    .containsEntry("SortBy", "DateAdded")
+                    .containsEntry("SortOrder", "DESC");
+        }
+
+        @Test
+        @DisplayName("When refund is called with comment, Then include refund comment query parameter")
+        void testRefundIncludesCommentQueryParameter() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"ChargeId\":\"charge_123\"}");
+            ChargeApi unitChargeApi = new ChargeApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitChargeApi.refund(new com.payfurl.payfurlsdk.models.NewRefund.Builder()
+                    .withChargeId("charge_123")
+                    .withRefundAmount(new BigDecimal("12.34"))
+                    .withComment("customer requested partial refund")
+                    .build());
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.DELETE);
+            then(ApiTestSupport.resolvedUrl(request)).startsWith(ApiTestSupport.BASE_URI + "/charge/charge_123?");
+            then(ApiTestSupport.resolvedUrl(request)).contains("amount=12.34");
+            then(ApiTestSupport.resolvedUrl(request)).contains("comment=customer+requested+partial+refund");
+            then(request.getQueryParameters())
+                    .containsEntry("amount", new BigDecimal("12.34"))
+                    .containsEntry("comment", "customer requested partial refund");
         }
     }
 }
