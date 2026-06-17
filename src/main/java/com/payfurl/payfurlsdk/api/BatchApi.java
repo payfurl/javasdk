@@ -39,6 +39,7 @@ public class BatchApi extends BaseApi {
         queryParameters.put("Description", search.getDescription());
         queryParameters.put("AddedAfter", search.getAddedAfter());
         queryParameters.put("AddedBefore", search.getAddedBefore());
+        queryParameters.put("Status", search.getStatus());
 
         return executeGetRequestWith(batchApiBaseEndpoint, queryParameters, BatchList.class);
     }

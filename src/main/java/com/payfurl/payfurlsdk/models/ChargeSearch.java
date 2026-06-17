@@ -24,6 +24,9 @@ public class ChargeSearch {
     private final String currency;
     private final String cardNumber;
     private final String cardholder;
+    private final String batchId;
+    private final String subscriptionId;
+    private final String sortOrder;
 
     @JsonCreator
     public ChargeSearch(@JsonProperty("PaymentMethodId") String paymentMethodId,
@@ -40,9 +43,12 @@ public class ChargeSearch {
                         @JsonProperty("Currency") String currency,
                         @JsonProperty("CardNumber") String cardNumber,
                         @JsonProperty("Cardholder") String cardholder,
+                        @JsonProperty("BatchId") String batchId,
+                        @JsonProperty("SubscriptionId") String subscriptionId,
                         @JsonProperty("Limit") Integer limit,
                         @JsonProperty("Skip") Integer skip,
-                        @JsonProperty("SortBy") String sortBy) {
+                        @JsonProperty("SortBy") String sortBy,
+                        @JsonProperty("SortOrder") String sortOrder) {
         this.paymentMethodId = paymentMethodId;
         this.reference = reference;
         this.amountGreaterThan = amountGreaterThan;
@@ -57,9 +63,12 @@ public class ChargeSearch {
         this.currency = currency;
         this.cardNumber = cardNumber;
         this.cardholder = cardholder;
+        this.batchId = batchId;
+        this.subscriptionId = subscriptionId;
         this.limit = limit;
         this.skip = skip;
         this.sortBy = sortBy;
+        this.sortOrder = sortOrder;
     }
 
     @JsonProperty("PaymentMethodId")
@@ -120,6 +129,12 @@ public class ChargeSearch {
     @JsonProperty("Cardholder")
     public String getCardholder() { return cardholder; }
 
+    @JsonProperty("BatchId")
+    public String getBatchId() { return batchId; }
+
+    @JsonProperty("SubscriptionId")
+    public String getSubscriptionId() { return subscriptionId; }
+
     @JsonProperty("Limit")
     public Integer getLimit() {
         return limit;
@@ -133,6 +148,11 @@ public class ChargeSearch {
     @JsonProperty("SortBy")
     public String getSortBy() {
         return sortBy;
+    }
+
+    @JsonProperty("SortOrder")
+    public String getSortOrder() {
+        return sortOrder;
     }
 
     @Override
@@ -152,9 +172,12 @@ public class ChargeSearch {
                 ", currency=" + currency +
                 ", cardNumber=" + cardNumber +
                 ", cardholder=" + cardholder +
+                ", batchId=" + batchId +
+                ", subscriptionId=" + subscriptionId +
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", sortBy='" + sortBy + '\'' +
+                ", sortOrder='" + sortOrder + '\'' +
                 '}';
     }
 
@@ -173,9 +196,12 @@ public class ChargeSearch {
         private String currency;
         private String cardNumber;
         private String cardholder;
+        private String batchId;
+        private String subscriptionId;
         private Integer limit;
         private Integer skip;
         private String sortBy;
+        private String sortOrder;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
@@ -247,6 +273,16 @@ public class ChargeSearch {
             return this;
         }
 
+        public Builder withBatchId(String batchId) {
+            this.batchId = batchId;
+            return this;
+        }
+
+        public Builder withSubscriptionId(String subscriptionId) {
+            this.subscriptionId = subscriptionId;
+            return this;
+        }
+
         public Builder withLimit(Integer limit) {
             this.limit = limit;
             return this;
@@ -262,8 +298,17 @@ public class ChargeSearch {
             return this;
         }
 
+        public Builder withSortOrder(String sortOrder) {
+            this.sortOrder = sortOrder;
+            return this;
+        }
+
         public ChargeSearch build() {
-            return new ChargeSearch(paymentMethodId, reference, amountGreaterThan, amountLessThan, customerId, status, addedAfter, addedBefore, providerId, paymentType, cardType, currency, cardNumber, cardholder, limit, skip, sortBy);
+            return new ChargeSearch(
+                    paymentMethodId, reference, amountGreaterThan, amountLessThan, customerId, status,
+                    addedAfter, addedBefore, providerId, paymentType, cardType, currency, cardNumber,
+                    cardholder, batchId, subscriptionId, limit, skip, sortBy, sortOrder
+            );
         }
     }
 }

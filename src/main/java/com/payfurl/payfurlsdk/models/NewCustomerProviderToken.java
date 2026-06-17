@@ -11,12 +11,14 @@ public class NewCustomerProviderToken {
     private final String lastName;
     private final String email;
     private final String phone;
+    private final String ip;
     private final Address address;
     private final String providerId;
     private final String providerToken;
     private final Map<String, String> providerTokenData;
-    private final Map<String, String> metaData;
+    private final Map<String, String> metadata;
     private final Boolean verify;
+    private final WebhookConfig webhook;
 
     @JsonCreator
     public NewCustomerProviderToken(@JsonProperty("Reference") String reference,
@@ -24,24 +26,27 @@ public class NewCustomerProviderToken {
                                     @JsonProperty("LastName") String lastName,
                                     @JsonProperty("Email") String email,
                                     @JsonProperty("Phone") String phone,
+                                    @JsonProperty("Ip") String ip,
                                     @JsonProperty("Address") Address address,
                                     @JsonProperty("ProviderId") String providerId,
                                     @JsonProperty("ProviderToken") String providerToken,
                                     @JsonProperty("ProviderTokenData") Map<String, String> providerTokenData,
                                     @JsonProperty("Verify") Boolean verify,
-                                    @JsonProperty("MetaData") Map<String, String> metaData
-                                    ) {
+                                    @JsonProperty("Metadata") Map<String, String> metadata,
+                                    @JsonProperty("Webhook") WebhookConfig webhook) {
         this.reference = reference;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.ip = ip;
         this.address = address;
         this.providerId = providerId;
         this.providerToken = providerToken;
         this.providerTokenData = providerTokenData;
         this.verify = verify;
-        this.metaData = metaData;
+        this.metadata = metadata;
+        this.webhook = webhook;
     }
 
     public String getProviderId() {
@@ -58,8 +63,20 @@ public class NewCustomerProviderToken {
         return providerTokenData;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     public Map<String, String> getMetaData() {
-        return metaData;
+        return metadata;
+    }
+
+    public WebhookConfig getWebhook() {
+        return webhook;
     }
 
     @Override
@@ -72,10 +89,12 @@ public class NewCustomerProviderToken {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
+                ", ip='" + ip + '\'' +
                 ", providerTokenData=" + providerTokenData +
                 ", address=" + address +
                 ", verify=" + verify +
-                ", metaData=" + metaData +
+                ", metadata=" + metadata +
+                ", webhook=" + webhook +
                 '}';
     }
 
@@ -109,12 +128,14 @@ public class NewCustomerProviderToken {
         private String lastName;
         private String email;
         private String phone;
+        private String ip;
         private Address address;
         private String providerId;
         private String providerToken;
         private Map<String, String> providerTokenData;
-        private Map<String, String> metaData;
+        private Map<String, String> metadata;
         private Boolean verify = false;
+        private WebhookConfig webhook;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -141,6 +162,11 @@ public class NewCustomerProviderToken {
             return this;
         }
 
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public Builder withAddress(Address address) {
             this.address = address;
             return this;
@@ -161,8 +187,8 @@ public class NewCustomerProviderToken {
             return this;
         }
 
-        public Builder withMetadata(Map<String, String> metaData) {
-            this.metaData = metaData;
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
             return this;
         }
 
@@ -171,8 +197,16 @@ public class NewCustomerProviderToken {
             return this;
         }
 
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewCustomerProviderToken build() {
-            return new NewCustomerProviderToken(reference, firstName, lastName, email, phone, address, providerId, providerToken, providerTokenData, verify, metaData);
+            return new NewCustomerProviderToken(
+                    reference, firstName, lastName, email, phone, ip, address, providerId,
+                    providerToken, providerTokenData, verify, metadata, webhook
+            );
         }
     }
 }

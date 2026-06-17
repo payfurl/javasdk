@@ -111,6 +111,20 @@ public class BaseApi {
         }
     }
 
+    protected <T, R> R executePostRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType, Headers headers) throws ApiException {
+        try {
+            HttpRequest request = createApiPostRequest(urlPath, chargeApiRequest, headers);
+
+            HttpResponse response = getClientInstance().execute(request);
+
+            return getDataFrom(response, returnType);
+        } catch (InterruptedIOException interruptedIOException) {
+            throw new ApiException(ApiError.buildTimeoutError());
+        } catch (IOException exception) {
+            throw new ApiException(exception);
+        }
+    }
+
     protected <T, R> R executePutRequestWith(String urlPath, T chargeApiRequest, Class<R> returnType) throws ApiException {
         try {
             HttpRequest request = createApiPutRequest(urlPath, chargeApiRequest);
@@ -178,6 +192,19 @@ public class BaseApi {
         StringBuilder queryBuilder = new StringBuilder(urlPath);
 
         Headers headers = getPopulatedHeaders();
+
+        String bodyJson = ApiUtils.serialize(chargeApiRequest);
+        HttpRequest request = getClientInstance().preparePostBodyRequest(queryBuilder, headers, null, bodyJson);
+
+        addAuthDataTo(request);
+        return request;
+    }
+
+    private <T> HttpRequest createApiPostRequest(String urlPath, T chargeApiRequest, Headers extraHeaders) throws JsonProcessingException {
+        StringBuilder queryBuilder = new StringBuilder(urlPath);
+
+        Headers headers = getPopulatedHeaders();
+        headers.addAll(extraHeaders);
 
         String bodyJson = ApiUtils.serialize(chargeApiRequest);
         HttpRequest request = getClientInstance().preparePostBodyRequest(queryBuilder, headers, null, bodyJson);

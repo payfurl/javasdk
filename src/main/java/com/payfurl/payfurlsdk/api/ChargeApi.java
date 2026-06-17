@@ -5,13 +5,16 @@ import com.payfurl.payfurlsdk.api.support.ApiException;
 import com.payfurl.payfurlsdk.auth.AuthHandler;
 import com.payfurl.payfurlsdk.auth.AuthType;
 import com.payfurl.payfurlsdk.http.client.HttpClient;
+import com.payfurl.payfurlsdk.http.client.support.Headers;
 import com.payfurl.payfurlsdk.models.ChargeData;
 import com.payfurl.payfurlsdk.models.ChargeList;
 import com.payfurl.payfurlsdk.models.ChargeSearch;
+import com.payfurl.payfurlsdk.models.NewChargeApplePay;
 import com.payfurl.payfurlsdk.models.NewChargeCapture;
 import com.payfurl.payfurlsdk.models.NewChargeCardLeastCost;
 import com.payfurl.payfurlsdk.models.NewChargeCardRequest;
 import com.payfurl.payfurlsdk.models.NewChargeCustomer;
+import com.payfurl.payfurlsdk.models.NewChargeNetworkToken;
 import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
 import com.payfurl.payfurlsdk.models.NewChargeToken;
 import com.payfurl.payfurlsdk.models.NewRefund;
@@ -50,6 +53,22 @@ public class ChargeApi extends BaseApi {
      */
     public ChargeData createWithCardLeastCost(NewChargeCardLeastCost newChargeCardLeastCost) throws ApiException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/card/least_cost", newChargeCardLeastCost, ChargeData.class);
+    }
+
+    /**
+     * Accept a payment using Apple Pay.
+     *
+     * @param newChargeApplePay request body
+     * @param providerId provider identifier header
+     * @param userId user identifier header
+     * @return ChargeData object details
+     * @throws ApiException
+     */
+    public ChargeData createWithApplePay(NewChargeApplePay newChargeApplePay, String providerId, String userId) throws ApiException {
+        Headers headers = new Headers();
+        headers.add("providerId", providerId);
+        headers.add("userId", userId);
+        return executePostRequestWith(chargeApiBaseEndpoint + "/token/apple", newChargeApplePay, ChargeData.class, headers);
     }
 
     /**
@@ -119,9 +138,12 @@ public class ChargeApi extends BaseApi {
         queryParameters.put("Currency", searchData.getCurrency());
         queryParameters.put("CardNumber", searchData.getCardNumber());
         queryParameters.put("Cardholder", searchData.getCardholder());
+        queryParameters.put("BatchId", searchData.getBatchId());
+        queryParameters.put("SubscriptionId", searchData.getSubscriptionId());
         queryParameters.put("AddedAfter", searchData.getAddedAfter());
         queryParameters.put("AddedBefore", searchData.getAddedBefore());
         queryParameters.put("SortBy", searchData.getSortBy());
+        queryParameters.put("SortOrder", searchData.getSortOrder());
 
         return executeGetRequestWith(chargeApiBaseEndpoint, queryParameters, ChargeList.class);
     }
@@ -136,6 +158,7 @@ public class ChargeApi extends BaseApi {
     public ChargeData refund(NewRefund newRefund) throws ApiException {
         Map<String, Object> queryParameters = new HashMap<>();
         queryParameters.put("amount", newRefund.getRefundAmount());
+        queryParameters.put("comment", newRefund.getComment());
         return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + newRefund.getChargeId(), queryParameters, ChargeData.class);
     }
 
@@ -171,5 +194,16 @@ public class ChargeApi extends BaseApi {
      */
     public ChargeData createWithBankAccount(NewChargeBankPaymentRequest newChargeBankPaymentRequest) throws ApiException {
         return executePostRequestWith(chargeApiBaseEndpoint + "/bank_account", newChargeBankPaymentRequest, ChargeData.class);
+    }
+
+    /**
+     * Accept a payment using a network token.
+     *
+     * @param newChargeNetworkToken parameter for creating payment with a network token
+     * @return ChargeData object details
+     * @throws ApiException
+     */
+    public ChargeData createWithNetworkToken(NewChargeNetworkToken newChargeNetworkToken) throws ApiException {
+        return executePostRequestWith(chargeApiBaseEndpoint + "/network_token", newChargeNetworkToken, ChargeData.class);
     }
 }

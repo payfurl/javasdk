@@ -11,19 +11,22 @@ public class BatchSearch {
     private final String description;
     private final Date addedAfter;
     private final Date addedBefore;
+    private final String status;
 
     @JsonCreator
     public BatchSearch(@JsonProperty("Limit") Integer limit,
                        @JsonProperty("Skip") Integer skip,
                        @JsonProperty("Description") String description,
                        @JsonProperty("AddedAfter") Date addedAfter,
-                       @JsonProperty("AddedBefore") Date addedBefore) {
+                       @JsonProperty("AddedBefore") Date addedBefore,
+                       @JsonProperty("Status") String status) {
 
         this.limit = limit;
         this.skip = skip;
         this.description = description;
         this.addedAfter = addedAfter;
         this.addedBefore = addedBefore;
+        this.status = status;
     }
 
     public Integer getLimit() {
@@ -46,6 +49,10 @@ public class BatchSearch {
         return addedBefore;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
         return "BatchSearch{" +
@@ -54,6 +61,7 @@ public class BatchSearch {
                 ", description='" + description + '\'' +
                 ", addedAfter=" + addedAfter +
                 ", addedBefore=" + addedBefore +
+                ", status='" + status + '\'' +
                 '}';
     }
 
@@ -63,6 +71,7 @@ public class BatchSearch {
         private String description;
         private Date addedAfter;
         private Date addedBefore;
+        private String status;
 
         public Builder withLimit(Integer limit) {
             this.limit = limit;
@@ -89,8 +98,13 @@ public class BatchSearch {
             return this;
         }
 
+        public Builder withStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
         public BatchSearch build() {
-            return new BatchSearch(limit, skip, description, addedAfter, addedBefore);
+            return new BatchSearch(limit, skip, description, addedAfter, addedBefore, status);
         }
     }
 }

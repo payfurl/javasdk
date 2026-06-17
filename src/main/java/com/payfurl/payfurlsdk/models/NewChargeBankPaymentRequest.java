@@ -22,6 +22,7 @@ public class NewChargeBankPaymentRequest {
     private final String email;
     private final String phone;
     private final boolean capture;
+    private final String ip;
     private final Initiator initiator;
     private final WebhookConfig webhook;
     private final Map<String, String> metadata;
@@ -45,6 +46,7 @@ public class NewChargeBankPaymentRequest {
                                        @JsonProperty("Email") String email,
                                        @JsonProperty("Phone") String phone,
                                        @JsonProperty("Capture") boolean capture,
+                                       @JsonProperty("Ip") String ip,
                                        @JsonProperty("Initiator") Initiator initiator,
                                        @JsonProperty("Webhook") WebhookConfig webhook,
                                        @JsonProperty("Metadata") Map<String, String> metadata,
@@ -65,6 +67,7 @@ public class NewChargeBankPaymentRequest {
         this.email = email;
         this.phone = phone;
         this.capture = capture;
+        this.ip = ip;
         this.initiator = initiator;
         this.webhook = webhook;
         this.metadata = metadata;
@@ -127,6 +130,10 @@ public class NewChargeBankPaymentRequest {
 
     public String getPhone() {
         return phone;
+    }
+
+    public String getIp() {
+        return ip;
     }
 
     public Initiator getInitiator() {
@@ -194,6 +201,7 @@ public class NewChargeBankPaymentRequest {
         private String email;
         private String phone;
         private boolean capture = true;
+        private String ip;
         private Initiator initiator;
         private WebhookConfig webhook;
         private Map<String, String> metadata;
@@ -266,6 +274,11 @@ public class NewChargeBankPaymentRequest {
             return this;
         }
 
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public Builder withCapture(boolean capture) {
             this.capture = capture;
             return this;
@@ -317,6 +330,7 @@ public class NewChargeBankPaymentRequest {
                     email,
                     phone,
                     capture,
+                    ip,
                     initiator,
                     webhook,
                     metadata,

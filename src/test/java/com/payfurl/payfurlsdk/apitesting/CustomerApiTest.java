@@ -4,12 +4,15 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.CustomerApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpMethod;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpRequest;
 import com.payfurl.payfurlsdk.models.Address;
 import com.payfurl.payfurlsdk.models.CardRequestInformation;
 import com.payfurl.payfurlsdk.models.CustomerData;
 import com.payfurl.payfurlsdk.models.CustomerList;
 import com.payfurl.payfurlsdk.models.CustomerSearch;
 import com.payfurl.payfurlsdk.models.NewCustomerCard;
+import com.payfurl.payfurlsdk.models.NewCustomerPayTo;
 import com.payfurl.payfurlsdk.models.NewCustomerProviderToken;
 import com.payfurl.payfurlsdk.models.NewCustomerToken;
 import com.payfurl.payfurlsdk.models.NewPayToAgreement;
@@ -18,6 +21,7 @@ import com.payfurl.payfurlsdk.models.NewPaymentMethodToken;
 import com.payfurl.payfurlsdk.models.PayIdDetails;
 import com.payfurl.payfurlsdk.models.PaymentMethodData;
 import com.payfurl.payfurlsdk.models.UpdateCustomer;
+import com.payfurl.payfurlsdk.models.WebhookConfig;
 import com.payfurl.payfurlsdk.models.BankPaymentInformation;
 import com.payfurl.payfurlsdk.models.NewCustomerBankPayment;
 import com.payfurl.payfurlsdk.models.NewPaymentMethodBankPayment;
@@ -547,6 +551,78 @@ public class CustomerApiTest {
 
             // then
             then(paymentMethodData.getPaymentMethodId()).isNotNull();
+        }
+    }
+
+    @Nested
+    @DisplayName("Given request wiring changes in Customer API")
+    class RequestWiringFlow {
+        @Test
+        @DisplayName("When createWithPayTo is called, Then use customer payto endpoint")
+        void testCreateWithPayToRequestWiring() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"CustomerId\":\"customer_123\"}");
+            CustomerApi unitCustomerApi = new CustomerApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitCustomerApi.createWithPayTo(new NewCustomerPayTo.Builder()
+                    .withPayToAgreement(new NewPayToAgreement.Builder()
+                            .withProviderId("provider_123")
+                            .withPayerName("Jane Doe")
+                            .withDescription("Subscription")
+                            .withMaximumAmount(500)
+                            .withPayerPayIdDetails(new PayIdDetails.Builder()
+                                    .withPayId("payto@example.com")
+                                    .withPayIdType("EMAIL")
+                                    .build())
+                            .withFallbackPaymentMethodId("fallback_payment_method_123")
+                            .withMetadata(METADATA)
+                            .withWebhook(new WebhookConfig.Builder()
+                                    .withUrl("https://notify.example.com/payto")
+                                    .withAuthorization("Bearer payto")
+                                    .build())
+                            .build())
+                    .withReference("customer-reference")
+                    .withEmail("payto@example.com")
+                    .build());
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.POST);
+            then(ApiTestSupport.resolvedUrl(request)).isEqualTo(ApiTestSupport.BASE_URI + "/customer/payto");
+            then(ApiTestSupport.bodyOf(request))
+                    .contains("customer-reference")
+                    .contains("payto@example.com")
+                    .contains("fallback_payment_method_123");
+        }
+
+        @Test
+        @DisplayName("When search is called with new fields, Then include customer sort and removal filters")
+        void testSearchIncludesNewQueryParameters() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"Limit\":10,\"Skip\":0,\"Count\":0,\"Customers\":[]}");
+            CustomerApi unitCustomerApi = new CustomerApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitCustomerApi.search(new CustomerSearch.Builder()
+                    .withSortBy("DateAdded")
+                    .withIncludeRemoved(true)
+                    .build());
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.GET);
+            then(request.getQueryParameters())
+                    .containsEntry("SortBy", "DateAdded")
+                    .containsEntry("IncludeRemoved", true);
+        }
+
+        @Test
+        @DisplayName("When deleteCustomer is called with gatewayDelete false, Then forward the flag")
+        void testDeleteCustomerWithGatewayDelete() throws ApiException {
+            ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"CustomerId\":\"customer_123\"}");
+            CustomerApi unitCustomerApi = new CustomerApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+            unitCustomerApi.deleteCustomer("customer_123", false);
+
+            HttpRequest request = httpClient.getLastRequest();
+            then(request.getHttpMethod()).isEqualTo(HttpMethod.DELETE);
+            then(ApiTestSupport.resolvedUrl(request)).isEqualTo(ApiTestSupport.BASE_URI + "/customer/customer_123?GatewayDelete=false");
+            then(request.getQueryParameters()).containsEntry("GatewayDelete", false);
         }
     }
 }

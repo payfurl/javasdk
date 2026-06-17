@@ -11,6 +11,7 @@ public class NewProvider {
     private final String name;
     private final Environment environment;
     private final Map<String, String> authenticationParameters;
+    private final Map<String, String> additionalParameters;
     private final String providerCountry;
     private final String currency;
     private final String threeDsProviderId;
@@ -20,6 +21,7 @@ public class NewProvider {
                        @JsonProperty("Name") String name,
                        @JsonProperty("Environment") Environment environment,
                        @JsonProperty("AuthenticationParameters") Map<String, String> authenticationParameters,
+                       @JsonProperty("AdditionalParameters") Map<String, String> additionalParameters,
                        @JsonProperty("ProviderCountry") String providerCountry,
                        @JsonProperty("Currency") String currency,
                        @JsonProperty("ThreeDsProviderId") String threeDsProviderId) {
@@ -27,6 +29,7 @@ public class NewProvider {
         this.name = name;
         this.environment = environment;
         this.authenticationParameters = authenticationParameters;
+        this.additionalParameters = additionalParameters;
         this.providerCountry = providerCountry;
         this.currency = currency;
         this.threeDsProviderId = threeDsProviderId;
@@ -48,6 +51,10 @@ public class NewProvider {
         return authenticationParameters;
     }
 
+    public Map<String, String> getAdditionalParameters() {
+        return additionalParameters;
+    }
+
     public String getProviderCountry() {
         return providerCountry;
     }
@@ -67,6 +74,7 @@ public class NewProvider {
                 ", name='" + name + '\'' +
                 ", environment='" + environment + '\'' +
                 ", authenticationParameters='" + authenticationParameters + '\'' +
+                ", additionalParameters='" + additionalParameters + '\'' +
                 ", providerCountry=" + providerCountry +
                 ", currency=" + currency +
                 ", threeDsProviderId=" + threeDsProviderId +
@@ -78,6 +86,7 @@ public class NewProvider {
         private String name;
         private Environment environment;
         private Map<String, String> authenticationParameters;
+        private Map<String, String> additionalParameters;
         private String providerCountry;
         private String currency;
         private String threeDsProviderId;
@@ -102,6 +111,11 @@ public class NewProvider {
             return this;
         }
 
+        public Builder withAdditionalParameters(Map<String, String> additionalParameters) {
+            this.additionalParameters = additionalParameters;
+            return this;
+        }
+
         public Builder withProviderCountry(String providerCountry) {
             this.providerCountry = providerCountry;
             return this;
@@ -118,7 +132,7 @@ public class NewProvider {
         }
 
         public NewProvider build() {
-            return new NewProvider(type, name, environment, authenticationParameters, providerCountry, currency, threeDsProviderId);
+            return new NewProvider(type, name, environment, authenticationParameters, additionalParameters, providerCountry, currency, threeDsProviderId);
         }
     }
 }

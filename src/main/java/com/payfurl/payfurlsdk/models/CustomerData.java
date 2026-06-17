@@ -14,6 +14,8 @@ public class CustomerData {
     private final String phone;
     private final Date dateAdded;
     private final PaymentMethodSummary defaultPaymentMethod;
+    private final String ip;
+    private final Date dateRemoved;
     private final Address address;
 
     @JsonCreator
@@ -25,6 +27,8 @@ public class CustomerData {
                         @JsonProperty("Phone") String phone,
                         @JsonProperty("DateAdded") Date dateAdded,
                         @JsonProperty("DefaultPaymentMethod") PaymentMethodSummary defaultPaymentMethod,
+                        @JsonProperty("Ip") String ip,
+                        @JsonProperty("DateRemoved") Date dateRemoved,
                         @JsonProperty("Address") Address address) {
         this.customerId = customerId;
         this.reference = reference;
@@ -34,6 +38,8 @@ public class CustomerData {
         this.phone = phone;
         this.dateAdded = dateAdded;
         this.defaultPaymentMethod = defaultPaymentMethod;
+        this.ip = ip;
+        this.dateRemoved = dateRemoved;
         this.address = address;
     }
 
@@ -69,6 +75,14 @@ public class CustomerData {
         return defaultPaymentMethod;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public Date getDateRemoved() {
+        return dateRemoved;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -81,6 +95,8 @@ public class CustomerData {
         private String email;
         private String phone;
         private Date dateAdded;
+        private String ip;
+        private Date dateRemoved;
         private Address address;
         private PaymentMethodSummary defaultPaymentMethod;
 
@@ -124,13 +140,23 @@ public class CustomerData {
             return this;
         }
 
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
+        public Builder withDateRemoved(Date dateRemoved) {
+            this.dateRemoved = dateRemoved;
+            return this;
+        }
+
         public Builder withAddress(Address address) {
             this.address = address;
             return this;
         }
 
         public CustomerData build() {
-            return new CustomerData(customerId, reference, firstName, lastName, email, phone, dateAdded, defaultPaymentMethod, address);
+            return new CustomerData(customerId, reference, firstName, lastName, email, phone, dateAdded, defaultPaymentMethod, ip, dateRemoved, address);
         }
     }
 }

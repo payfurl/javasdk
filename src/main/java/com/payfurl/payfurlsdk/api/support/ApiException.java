@@ -38,7 +38,7 @@ public class ApiException extends RuntimeException {
         this.gatewayMessage = null;
         this.code = UNKNOWN_ERROR;
         this.isRetryable = false;
-        this.type = ErrorLink.buildWith(UNKNOWN_ERROR.ordinal());
+        this.type = ErrorLink.buildWith(UNKNOWN_ERROR.getValue());
         this.httpCode = 500;
     }
 

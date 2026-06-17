@@ -13,6 +13,7 @@ public class NewProviderToken {
     private final Map<String, String> providerTokenData;
     private final Map<String, String> metadata;
     private final boolean verify;
+    private final String fallbackPaymentMethodId;
 
     @JsonCreator
     public NewProviderToken(@JsonProperty("ProviderId") String providerId,
@@ -20,13 +21,15 @@ public class NewProviderToken {
                             @JsonProperty("Email") String email,
                             @JsonProperty("ProviderTokenData") Map<String, String> providerTokenData,
                             @JsonProperty("Metadata") Map<String, String> metadata,
-                            @JsonProperty("Verify") boolean verify) {
+                            @JsonProperty("Verify") boolean verify,
+                            @JsonProperty("FallbackPaymentMethodId") String fallbackPaymentMethodId) {
         this.providerId = providerId;
         this.providerToken = providerToken;
         this.email = email;
         this.providerTokenData = providerTokenData;
         this.metadata = metadata;
         this.verify = verify;
+        this.fallbackPaymentMethodId = fallbackPaymentMethodId;
     }
 
     public String getProviderId() {
@@ -53,6 +56,10 @@ public class NewProviderToken {
         return verify;
     }
 
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
     public static class Builder {
         private String providerId;
         private String providerToken;
@@ -60,6 +67,7 @@ public class NewProviderToken {
         private Map<String, String> providerTokenData;
         private Map<String, String> metadata;
         private boolean verify;
+        private String fallbackPaymentMethodId;
 
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
@@ -91,8 +99,13 @@ public class NewProviderToken {
             return this;
         }
 
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
         public NewProviderToken build() {
-            return new NewProviderToken(providerId, providerToken, email, providerTokenData, metadata, verify);
+            return new NewProviderToken(providerId, providerToken, email, providerTokenData, metadata, verify, fallbackPaymentMethodId);
         }
     }
 }

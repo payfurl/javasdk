@@ -4,6 +4,8 @@ import com.payfurl.payfurlsdk.PayFurlClient;
 import com.payfurl.payfurlsdk.TestConfigProvider;
 import com.payfurl.payfurlsdk.api.BatchApi;
 import com.payfurl.payfurlsdk.api.support.ApiException;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpMethod;
+import com.payfurl.payfurlsdk.http.client.support.request.HttpRequest;
 import com.payfurl.payfurlsdk.models.WebhookConfig;
 import com.payfurl.payfurlsdk.models.Batch.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -109,6 +111,21 @@ public class BatchApiTest {
         // then
         assertThat(batchList.getCount()).isEqualTo(1);
         assertThat(batchList.getBatches().get(0).getDescription()).isEqualTo(description);
+    }
+
+    @Test
+    @DisplayName("When searchBatch request contains status, Then forward status query parameter")
+    void testSearchBatchWithStatusQueryParameter() throws ApiException {
+        ApiTestSupport.FakeHttpClient httpClient = new ApiTestSupport.FakeHttpClient("{\"Limit\":10,\"Skip\":0,\"Count\":0,\"Batches\":[]}");
+        BatchApi unitBatchApi = new BatchApi(ApiTestSupport.testConfiguration(), httpClient, ApiTestSupport.authHandlers());
+
+        unitBatchApi.searchBatch(new BatchSearch.Builder()
+                .withStatus("COMPLETED")
+                .build());
+
+        HttpRequest request = httpClient.getLastRequest();
+        assertThat(request.getHttpMethod()).isEqualTo(HttpMethod.GET);
+        assertThat(request.getQueryParameters()).containsEntry("Status", "COMPLETED");
     }
 
     private NewTransactionPaymentMethod getNewTransactionPaymentMethod(String description) {

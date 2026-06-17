@@ -89,6 +89,7 @@ public class PayFurlClient implements PayFurlClientSdk {
     private SubscriptionApi subscriptionApi;
     private WebhookSubscriptionApi webhookSubscriptionApi;
     private PaymentLinkApi paymentLinkApi;
+    private SettlementApi settlementApi;
 
     private static Optional<String> extractRegionFromKey(String key) {
         if (StringUtils.isEmpty(key)) {
@@ -152,6 +153,7 @@ public class PayFurlClient implements PayFurlClientSdk {
         this.subscriptionApi = new SubscriptionApi(this, this.httpClient, this.authHandlerMap);
         this.webhookSubscriptionApi = new WebhookSubscriptionApi(this, this.httpClient, this.authHandlerMap);
         this.paymentLinkApi = new PaymentLinkApi(this, this.httpClient, this.authHandlerMap);
+        this.settlementApi = new SettlementApi(this, this.httpClient, this.authHandlerMap);
     }
 
     public SecretKeyAuthHandler getSecretKeyAuthHandler() {
@@ -257,6 +259,11 @@ public class PayFurlClient implements PayFurlClientSdk {
     @Override
     public PaymentLinkApi getPaymentLinkApi() {
         return paymentLinkApi;
+    }
+
+    @Override
+    public SettlementApi getSettlementApi() {
+        return settlementApi;
     }
 
     @Override

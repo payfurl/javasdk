@@ -3,7 +3,6 @@ package com.payfurl.payfurlsdk.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
 import java.util.Map;
 
 public class NewPaymentMethodBankPayment {
@@ -13,20 +12,26 @@ public class NewPaymentMethodBankPayment {
     private final BankPaymentInformation bankPaymentInformation;
     private final boolean setDefault;
     private final Map<String, String> metadata;
+    private final String fallbackPaymentMethodId;
+    private final WebhookConfig webhook;
 
     @JsonCreator
     public NewPaymentMethodBankPayment(@JsonProperty("FirstName") String firstName,
-                           @JsonProperty("LastName") String lastName,
-                           @JsonProperty("ProviderId") String providerId,
-                           @JsonProperty("BankPaymentInformation") BankPaymentInformation bankPaymentInformation,
-                           @JsonProperty("SetDefault") boolean setDefault,
-                           @JsonProperty("Metadata") Map<String, String> metadata) {
+                                       @JsonProperty("LastName") String lastName,
+                                       @JsonProperty("ProviderId") String providerId,
+                                       @JsonProperty("BankPaymentInformation") BankPaymentInformation bankPaymentInformation,
+                                       @JsonProperty("SetDefault") boolean setDefault,
+                                       @JsonProperty("Metadata") Map<String, String> metadata,
+                                       @JsonProperty("FallbackPaymentMethodId") String fallbackPaymentMethodId,
+                                       @JsonProperty("Webhook") WebhookConfig webhook) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.providerId = providerId;
         this.bankPaymentInformation = bankPaymentInformation;
         this.setDefault = setDefault;
         this.metadata = metadata;
+        this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+        this.webhook = webhook;
     }
 
     public String getFirstName() {
@@ -53,6 +58,14 @@ public class NewPaymentMethodBankPayment {
         return metadata;
     }
 
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
     @Override
     public String toString() {
         return "NewPaymentMethodBankPayment{" +
@@ -72,6 +85,8 @@ public class NewPaymentMethodBankPayment {
         private BankPaymentInformation bankPaymentInformation;
         private boolean setDefault;
         private Map<String, String> metadata;
+        private String fallbackPaymentMethodId;
+        private WebhookConfig webhook;
 
         public Builder withFirstName(String firstName) {
             this.firstName = firstName;
@@ -103,8 +118,27 @@ public class NewPaymentMethodBankPayment {
             return this;
         }
 
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewPaymentMethodBankPayment build() {
-            return new NewPaymentMethodBankPayment(firstName, lastName, providerId, bankPaymentInformation, setDefault, metadata);
+            return new NewPaymentMethodBankPayment(
+                    firstName,
+                    lastName,
+                    providerId,
+                    bankPaymentInformation,
+                    setDefault,
+                    metadata,
+                    fallbackPaymentMethodId,
+                    webhook
+            );
         }
     }
 }

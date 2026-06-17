@@ -13,6 +13,7 @@ public class Provider {
     private final String name;
     private final Environment environment;
     private final Map<String, String> authenticationParameters;
+    private final Map<String, String> additionalParameters;
     private final String providerCountry;
     private final List<ProviderCostData> costData;
     private final List<ProviderVisibilityData> hideConfiguration;
@@ -22,14 +23,16 @@ public class Provider {
     private final String maxCapability;
     private final Boolean hasPartialRefund;
     private final ProviderInfo fallbackProvider;
+    private final Boolean hasThreeDsCapability;
 
 
     @JsonCreator
-    public Provider(@JsonProperty("ProvideId") String providerId,
+    public Provider(@JsonProperty("ProviderId") String providerId,
                     @JsonProperty("Type") String type,
                     @JsonProperty("Name") String name,
                     @JsonProperty("Environment") Environment environment,
                     @JsonProperty("AuthenticationParameters") Map<String, String> authenticationParameters,
+                    @JsonProperty("AdditionalParameters") Map<String, String> additionalParameters,
                     @JsonProperty("ProviderCountry") String providerCountry,
                     @JsonProperty("CostData") List<ProviderCostData> costData,
                     @JsonProperty("HideConfiguration") List<ProviderVisibilityData> hideConfiguration,
@@ -38,13 +41,15 @@ public class Provider {
                     @JsonProperty("Currency") String currency,
                     @JsonProperty("MaxCapability") String maxCapability,
                     @JsonProperty("HasPartialRefund") Boolean hasPartialRefund,
-                    @JsonProperty("FallbackProvider") ProviderInfo fallbackProvider) {
+                    @JsonProperty("FallbackProvider") ProviderInfo fallbackProvider,
+                    @JsonProperty("HasThreeDsCapability") Boolean hasThreeDsCapability) {
 
         this.providerId = providerId;
         this.type = type;
         this.name = name;
         this.environment = environment;
         this.authenticationParameters = authenticationParameters;
+        this.additionalParameters = additionalParameters;
         this.providerCountry = providerCountry;
         this.costData = costData;
         this.hideConfiguration = hideConfiguration;
@@ -54,6 +59,7 @@ public class Provider {
         this.maxCapability = maxCapability;
         this.hasPartialRefund = hasPartialRefund;
         this.fallbackProvider = fallbackProvider;
+        this.hasThreeDsCapability = hasThreeDsCapability;
     }
 
     public String getProviderId() {
@@ -74,6 +80,10 @@ public class Provider {
 
     public Map<String, String> getAuthenticationParameters() {
         return authenticationParameters;
+    }
+
+    public Map<String, String> getAdditionalParameters() {
+        return additionalParameters;
     }
 
     public String getProviderCountry() {
@@ -112,6 +122,10 @@ public class Provider {
         return fallbackProvider;
     }
 
+    public Boolean getHasThreeDsCapability() {
+        return hasThreeDsCapability;
+    }
+
     @Override
     public String toString() {
         return "Provider{" +
@@ -120,6 +134,7 @@ public class Provider {
                 ", name='" + name + '\'' +
                 ", environment='" + environment + '\'' +
                 ", authenticationParameters='" + authenticationParameters + '\'' +
+                ", additionalParameters='" + additionalParameters + '\'' +
                 ", providerCountry='" + providerCountry + '\'' +
                 ", costData='" + costData + '\'' +
                 ", hideConfiguration='" + hideConfiguration + '\'' +
@@ -129,6 +144,7 @@ public class Provider {
                 ", maxCapability='" + maxCapability + '\'' +
                 ", hasPartialRefund='" + hasPartialRefund + '\'' +
                 ", fallbackProvider='" + fallbackProvider + '\'' +
+                ", hasThreeDsCapability='" + hasThreeDsCapability + '\'' +
                 '}';
     }
 }

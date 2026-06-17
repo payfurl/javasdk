@@ -12,8 +12,13 @@ public class NewPaymentMethodCard {
     private final boolean vaultCard;
     private final Date vaultExpireDate;
     private final Integer vaultExpireSeconds;
+    private final String ip;
     private final boolean setDefault;
     private final Map<String, String> metadata;
+    private final String fallbackPaymentMethodId;
+    private final WebhookConfig webhook;
+    private final Boolean createNetworkToken;
+    private final boolean verify;
     private final boolean skipExpiryDateValidation;
 
     @JsonCreator
@@ -22,16 +27,26 @@ public class NewPaymentMethodCard {
                                 @JsonProperty("VaultCard") boolean vaultCard,
                                 @JsonProperty("VaultExpireDate") Date vaultExpireDate,
                                 @JsonProperty("VaultExpireSeconds") Integer vaultExpireSeconds,
+                                @JsonProperty("Ip") String ip,
                                 @JsonProperty("SetDefault") boolean setDefault,
                                 @JsonProperty("Metadata") Map<String, String> metadata,
+                                @JsonProperty("FallbackPaymentMethodId") String fallbackPaymentMethodId,
+                                @JsonProperty("Webhook") WebhookConfig webhook,
+                                @JsonProperty("CreateNetworkToken") Boolean createNetworkToken,
+                                @JsonProperty("Verify") boolean verify,
                                 @JsonProperty("SkipExpiryDateValidation") boolean skipExpiryDateValidation) {
         this.providerId = providerId;
         this.paymentInformation = paymentInformation;
         this.vaultCard = vaultCard;
         this.vaultExpireDate = vaultExpireDate;
         this.vaultExpireSeconds = vaultExpireSeconds;
+        this.ip = ip;
         this.setDefault = setDefault;
         this.metadata = metadata;
+        this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+        this.webhook = webhook;
+        this.createNetworkToken = createNetworkToken;
+        this.verify = verify;
         this.skipExpiryDateValidation = skipExpiryDateValidation;
     }
 
@@ -55,10 +70,30 @@ public class NewPaymentMethodCard {
         return vaultExpireSeconds;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
     public boolean getSetDefault() { return setDefault; }
 
     public Map<String, String> getMetadata() {
         return metadata;
+    }
+
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
+    public Boolean getCreateNetworkToken() {
+        return createNetworkToken;
+    }
+
+    public boolean getVerify() {
+        return verify;
     }
 
     public boolean getSkipExpiryDateValidation() { return skipExpiryDateValidation; }
@@ -71,8 +106,13 @@ public class NewPaymentMethodCard {
                 ", vaultCard=" + vaultCard +
                 ", vaultExpireDate='" + vaultExpireDate + '\'' +
                 ", vaultExpireSeconds=" + vaultExpireSeconds +
+                ", ip='" + ip + '\'' +
                 ", setDefault=" + setDefault +
                 ", metadata=" + metadata +
+                ", fallbackPaymentMethodId='" + fallbackPaymentMethodId + '\'' +
+                ", webhook=" + webhook +
+                ", createNetworkToken=" + createNetworkToken +
+                ", verify=" + verify +
                 ", skipExpiryDateValidation=" + skipExpiryDateValidation +
                 '}';
     }
@@ -83,8 +123,13 @@ public class NewPaymentMethodCard {
         private boolean vaultCard = false;
         private Date vaultExpireDate;
         private Integer vaultExpireSeconds;
+        private String ip;
         private boolean setDefault = false;
         private Map<String, String> metadata;
+        private String fallbackPaymentMethodId;
+        private WebhookConfig webhook;
+        private Boolean createNetworkToken;
+        private boolean verify = false;
         private boolean skipExpiryDateValidation = false;
 
         public Builder withProviderId(String providerId) {
@@ -112,6 +157,11 @@ public class NewPaymentMethodCard {
             return this;
         }
 
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public Builder withSetDefault(boolean setDefault) {
             this.setDefault = setDefault;
             return this;
@@ -122,13 +172,47 @@ public class NewPaymentMethodCard {
             return this;
         }
 
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
+        public Builder withCreateNetworkToken(Boolean createNetworkToken) {
+            this.createNetworkToken = createNetworkToken;
+            return this;
+        }
+
+        public Builder withVerify(boolean verify) {
+            this.verify = verify;
+            return this;
+        }
+
         public Builder withSkipExpiryDateValidation(boolean skipExpiryDateValidation) {
             this.skipExpiryDateValidation = skipExpiryDateValidation;
             return this;
         }
 
         public NewPaymentMethodCard build() {
-            return new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds, setDefault, metadata, skipExpiryDateValidation);
+            return new NewPaymentMethodCard(
+                    providerId,
+                    paymentInformation,
+                    vaultCard,
+                    vaultExpireDate,
+                    vaultExpireSeconds,
+                    ip,
+                    setDefault,
+                    metadata,
+                    fallbackPaymentMethodId,
+                    webhook,
+                    createNetworkToken,
+                    verify,
+                    skipExpiryDateValidation
+            );
         }
     }
 }
