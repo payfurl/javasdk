@@ -47,7 +47,7 @@ public class NewWebhookSubscription {
     public String toString() {
         return "NewWebhookSubscription{" +
                 "url='" + url + '\'' +
-                ", authorization='" + authorization + '\'' +
+                ", authorization='" + Mask.secret(authorization) + '\'' +
                 ", types=" + types +
                 '}';
     }

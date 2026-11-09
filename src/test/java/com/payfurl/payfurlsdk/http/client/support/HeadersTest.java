@@ -1,7 +1,5 @@
 package com.payfurl.payfurlsdk.http.client.support;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +45,7 @@ class HeadersTest {
     @BeforeEach
     void setUp() {
         headers = createHeadersFrom(
-                ImmutableMap.of(
+                mapOf(
                         KEY_1, VALUE_1,
                         KEY_2, VALUE_2
                 )
@@ -82,39 +80,53 @@ class HeadersTest {
 
         then(value).isEqualTo(VALUE_2);
         then(multimap).usingRecursiveComparison()
-                .isEqualTo(ImmutableMap.of(
-                        KEY_1, ImmutableList.of(VALUE_1),
-                        KEY_2, ImmutableList.of(VALUE_2, VALUE_3)));
+                .isEqualTo(mapOf(
+                        KEY_1, listOf(VALUE_1),
+                        KEY_2, listOf(VALUE_2, VALUE_3)));
     }
 
     @Test
     @DisplayName("Given prefilled headers When add for new entry with existing key and list is called Then headers should contain new value")
     void testAddWithList() {
-        headers.add(KEY_2, ImmutableList.of(VALUE_3, VALUE_1));
+        headers.add(KEY_2, listOf(VALUE_3, VALUE_1));
         String value = headers.value(KEY_2);
         Map<String, List<String>> multimap = headers.asMultimap();
 
         then(value).isEqualTo(VALUE_2);
         then(multimap).usingRecursiveComparison()
-                .isEqualTo(ImmutableMap.of(
-                        KEY_1, ImmutableList.of(VALUE_1),
-                        KEY_2, ImmutableList.of(VALUE_2, VALUE_3, VALUE_1)));
+                .isEqualTo(mapOf(
+                        KEY_1, listOf(VALUE_1),
+                        KEY_2, listOf(VALUE_2, VALUE_3, VALUE_1)));
     }
 
     @Test
     @DisplayName("Given existing headers When addAll is called with new headers Then headers should contain all values")
     void testAddAll() {
         Headers newHeaders = new Headers();
-        List<String> newValues = ImmutableList.of(VALUE_1, VALUE_2, VALUE_3);
+        List<String> newValues = listOf(VALUE_1, VALUE_2, VALUE_3);
         newHeaders.add(KEY_3, newValues);
         headers.addAll(newHeaders);
 
         Map<String, List<String>> multimap = headers.asMultimap();
 
         then(multimap).usingRecursiveComparison()
-                .isEqualTo(ImmutableMap.of(
-                        KEY_1, ImmutableList.of(VALUE_1),
-                        KEY_2, ImmutableList.of(VALUE_2),
+                .isEqualTo(mapOf(
+                        KEY_1, listOf(VALUE_1),
+                        KEY_2, listOf(VALUE_2),
                         KEY_3, newValues));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <K, V> java.util.Map<K, V> mapOf(Object... keysAndValues) {
+        java.util.Map<K, V> map = new java.util.LinkedHashMap<>();
+        for (int i = 0; i < keysAndValues.length; i += 2) {
+            map.put((K) keysAndValues[i], (V) keysAndValues[i + 1]);
+        }
+        return map;
+    }
+
+    @SafeVarargs
+    private static <T> java.util.List<T> listOf(T... values) {
+        return java.util.Arrays.asList(values);
     }
 }

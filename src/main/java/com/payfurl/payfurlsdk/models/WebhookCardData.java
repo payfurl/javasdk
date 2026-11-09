@@ -46,7 +46,7 @@ public class WebhookCardData {
     @Override
     public String toString() {
         return "WebhookCardData{" +
-                "cardNumber='" + cardNumber + '\'' +
+                "cardNumber='" + Mask.lastFour(cardNumber) + '\'' +
                 ", expiryDate='" + expiryDate + '\'' +
                 ", type='" + type + '\'' +
                 ", cardType='" + cardType + '\'' +

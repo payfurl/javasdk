@@ -29,6 +29,9 @@ public class NewChargeCardLeastCost {
     private final String lastName;
     private final Geolocation geolocation;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+
     @JsonCreator
     public NewChargeCardLeastCost(@JsonProperty("Amount") BigDecimal amount,
                                   @JsonProperty("Currency") String currency,
@@ -146,6 +149,11 @@ public class NewChargeCardLeastCost {
         return geolocation;
     }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCardLeastCost{" +
@@ -168,6 +176,7 @@ public class NewChargeCardLeastCost {
                 ", firstName=" + firstName +
                 ", lastName=" + lastName +
                 ", geolocation=" + geolocation +
+                ", ip=" + ip +
                 '}';
     }
 
@@ -191,6 +200,7 @@ public class NewChargeCardLeastCost {
         private String firstName;
         private String lastName;
         private Geolocation geolocation;
+        private String ip;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -287,8 +297,14 @@ public class NewChargeCardLeastCost {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public NewChargeCardLeastCost build() {
-            return new NewChargeCardLeastCost(
+            NewChargeCardLeastCost result = new NewChargeCardLeastCost(
                     amount,
                     currency,
                     reference,
@@ -308,6 +324,8 @@ public class NewChargeCardLeastCost {
                     firstName,
                     lastName,
                     geolocation);
+            result.ip = ip;
+            return result;
         }
     }
 }

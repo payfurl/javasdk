@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -20,6 +21,15 @@ public class NewCustomerCard {
     private final Integer vaultExpireSeconds;
     private final Map<String, String> metadata;
     private final boolean skipExpiryDateValidation;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private WebhookConfig webhook;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean createNetworkToken;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean verify;
 
     @JsonCreator
     public NewCustomerCard(@JsonProperty("Reference") String reference,
@@ -100,6 +110,26 @@ public class NewCustomerCard {
 
     public boolean getSkipExpiryDateValidation() { return skipExpiryDateValidation; }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
+    /** Where to send this payment method's webhooks. */
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
+    /** Whether to create a network token for the card; null leaves it to the account's settings. */
+    public Boolean getCreateNetworkToken() {
+        return createNetworkToken;
+    }
+
+    /** Whether to verify the card with the gateway before saving it; null means no. */
+    public Boolean getVerify() {
+        return verify;
+    }
+
     @Override
     public String toString() {
         return "NewCustomerCard{" +
@@ -116,6 +146,10 @@ public class NewCustomerCard {
                 ", vaultExpireSeconds=" + vaultExpireSeconds +
                 ", metadata=" + metadata +
                 ", skipExpiryDateValidation=" + skipExpiryDateValidation +
+                ", ip=" + ip +
+                ", webhook=" + webhook +
+                ", createNetworkToken=" + createNetworkToken +
+                ", verify=" + verify +
                 '}';
     }
 
@@ -133,6 +167,10 @@ public class NewCustomerCard {
         private Integer vaultExpireSeconds;
         private Map<String, String> metadata;
         private boolean skipExpiryDateValidation = false;
+        private String ip;
+        private WebhookConfig webhook;
+        private Boolean createNetworkToken;
+        private Boolean verify;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -199,8 +237,37 @@ public class NewCustomerCard {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
+        /** Where to send this payment method's webhooks. */
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
+        /** Whether to create a network token for the card; null leaves it to the account's settings. */
+        public Builder withCreateNetworkToken(Boolean createNetworkToken) {
+            this.createNetworkToken = createNetworkToken;
+            return this;
+        }
+
+        /** Whether to verify the card with the gateway before saving it; null means no. */
+        public Builder withVerify(Boolean verify) {
+            this.verify = verify;
+            return this;
+        }
+
         public NewCustomerCard build() {
-            return new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds, metadata, skipExpiryDateValidation);
+            NewCustomerCard result = new NewCustomerCard(reference, firstName, lastName, email, phone, providerId, paymentInformation, address, vaultCard, vaultExpireDate, vaultExpireSeconds, metadata, skipExpiryDateValidation);
+            result.ip = ip;
+            result.webhook = webhook;
+            result.createNetworkToken = createNetworkToken;
+            result.verify = verify;
+            return result;
         }
     }
 }

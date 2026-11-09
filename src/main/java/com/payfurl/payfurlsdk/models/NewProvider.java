@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -13,7 +14,9 @@ public class NewProvider {
     private final Map<String, String> authenticationParameters;
     private final String providerCountry;
     private final String currency;
-    private final String threeDsProviderId;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Map<String, String> additionalParameters;
 
     @JsonCreator
     public NewProvider(@JsonProperty("Type") String type,
@@ -21,15 +24,13 @@ public class NewProvider {
                        @JsonProperty("Environment") Environment environment,
                        @JsonProperty("AuthenticationParameters") Map<String, String> authenticationParameters,
                        @JsonProperty("ProviderCountry") String providerCountry,
-                       @JsonProperty("Currency") String currency,
-                       @JsonProperty("ThreeDsProviderId") String threeDsProviderId) {
+                       @JsonProperty("Currency") String currency) {
         this.type = type;
         this.name = name;
         this.environment = environment;
         this.authenticationParameters = authenticationParameters;
         this.providerCountry = providerCountry;
         this.currency = currency;
-        this.threeDsProviderId = threeDsProviderId;
     }
 
     public String getType() {
@@ -56,8 +57,9 @@ public class NewProvider {
         return currency;
     }
 
-    public String getThreeDsProviderId() {
-        return threeDsProviderId;
+    /** The provider's additional (non-secret) parameters. */
+    public Map<String, String> getAdditionalParameters() {
+        return additionalParameters;
     }
 
     @Override
@@ -66,10 +68,10 @@ public class NewProvider {
                 "type=" + type +
                 ", name='" + name + '\'' +
                 ", environment='" + environment + '\'' +
-                ", authenticationParameters='" + authenticationParameters + '\'' +
+                ", authenticationParameters='" + Mask.secretValues(authenticationParameters) + '\'' +
                 ", providerCountry=" + providerCountry +
                 ", currency=" + currency +
-                ", threeDsProviderId=" + threeDsProviderId +
+                ", additionalParameters=" + additionalParameters +
                 '}';
     }
 
@@ -80,7 +82,7 @@ public class NewProvider {
         private Map<String, String> authenticationParameters;
         private String providerCountry;
         private String currency;
-        private String threeDsProviderId;
+        private Map<String, String> additionalParameters;
 
         public Builder withType(String type) {
             this.type = type;
@@ -112,13 +114,16 @@ public class NewProvider {
             return this;
         }
 
-        public Builder withThreeDsProviderId(String threeDsProviderId) {
-            this.threeDsProviderId = threeDsProviderId;
+        /** The provider's additional (non-secret) parameters. */
+        public Builder withAdditionalParameters(Map<String, String> additionalParameters) {
+            this.additionalParameters = additionalParameters;
             return this;
         }
 
         public NewProvider build() {
-            return new NewProvider(type, name, environment, authenticationParameters, providerCountry, currency, threeDsProviderId);
+            NewProvider result = new NewProvider(type, name, environment, authenticationParameters, providerCountry, currency);
+            result.additionalParameters = additionalParameters;
+            return result;
         }
     }
 }

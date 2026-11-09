@@ -24,6 +24,11 @@ public class Provider {
     private final ProviderInfo fallbackProvider;
 
 
+    @JsonProperty("additionalParameters")
+    private Map<String, String> additionalParameters;
+    @JsonProperty("hasThreeDsCapability")
+    private Boolean hasThreeDsCapability;
+
     @JsonCreator
     public Provider(@JsonProperty("ProvideId") String providerId,
                     @JsonProperty("Type") String type,
@@ -112,6 +117,14 @@ public class Provider {
         return fallbackProvider;
     }
 
+    public Map<String, String> getAdditionalParameters() {
+        return additionalParameters;
+    }
+
+    public Boolean getHasThreeDsCapability() {
+        return hasThreeDsCapability;
+    }
+
     @Override
     public String toString() {
         return "Provider{" +
@@ -119,7 +132,7 @@ public class Provider {
                 ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 ", environment='" + environment + '\'' +
-                ", authenticationParameters='" + authenticationParameters + '\'' +
+                ", authenticationParameters='" + Mask.secretValues(authenticationParameters) + '\'' +
                 ", providerCountry='" + providerCountry + '\'' +
                 ", costData='" + costData + '\'' +
                 ", hideConfiguration='" + hideConfiguration + '\'' +
@@ -129,6 +142,8 @@ public class Provider {
                 ", maxCapability='" + maxCapability + '\'' +
                 ", hasPartialRefund='" + hasPartialRefund + '\'' +
                 ", fallbackProvider='" + fallbackProvider + '\'' +
+                ", additionalParameters=" + additionalParameters +
+                ", hasThreeDsCapability=" + hasThreeDsCapability +
                 '}';
     }
 }

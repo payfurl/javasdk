@@ -1,7 +1,11 @@
 package com.payfurl.payfurlsdk.api.support;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+
 public enum ErrorCode {
     NoError,
+    // A code the API adds later reads as UnknownError.
+    @JsonEnumDefaultValue
     UnknownError,
     InvalidAmount,
     InvalidAuthoriseDetails,

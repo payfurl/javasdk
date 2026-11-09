@@ -16,6 +16,8 @@ public class ApiException extends RuntimeException {
     private final Boolean isRetryable;
     private final String type;
     private final int httpCode;
+    private final String chargeId;
+    private final String traceId;
 
 
     public ApiException(ApiError apiError) {
@@ -28,6 +30,8 @@ public class ApiException extends RuntimeException {
         this.isRetryable = apiError.isRetryable();
         this.type = apiError.getType();
         this.httpCode = apiError.getHttpCode();
+        this.chargeId = apiError.getChargeId();
+        this.traceId = apiError.getTraceId();
     }
 
     public ApiException(IOException ioException) {
@@ -40,6 +44,8 @@ public class ApiException extends RuntimeException {
         this.isRetryable = false;
         this.type = ErrorLink.buildWith(UNKNOWN_ERROR.ordinal());
         this.httpCode = 500;
+        this.chargeId = null;
+        this.traceId = null;
     }
 
     @Override
@@ -77,5 +83,15 @@ public class ApiException extends RuntimeException {
 
     public int getHttpCode() {
         return httpCode;
+    }
+
+    /** The failed charge's ID, when a charge was declined. */
+    public String getChargeId() {
+        return chargeId;
+    }
+
+    /** The request's trace ID: quote it to payFURL support. */
+    public String getTraceId() {
+        return traceId;
     }
 }

@@ -30,6 +30,9 @@ public class NewChargeToken {
     private final String lastName;
     private final Geolocation geolocation;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+
     @JsonCreator
     public NewChargeToken(@JsonProperty("Amount") BigDecimal amount,
                           @JsonProperty("Currency") String currency,
@@ -101,6 +104,8 @@ public class NewChargeToken {
         return capture;
     }
 
+    /** Sent as the API's {@code Transfer}. */
+    @JsonProperty("Transfer")
     public CheckoutTransfer getCheckoutTransfer() {
         return checkoutTransfer;
     }
@@ -153,6 +158,11 @@ public class NewChargeToken {
         return geolocation;
     }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
     @Override
     public String toString() {
         return "NewChargeToken{" +
@@ -176,6 +186,7 @@ public class NewChargeToken {
                 ", firstName=" + firstName +
                 ", lastName=" + lastName +
                 ", geolocation=" + geolocation +
+                ", ip=" + ip +
                 '}';
     }
 
@@ -200,6 +211,7 @@ public class NewChargeToken {
         private String firstName;
         private String lastName;
         private Geolocation geolocation;
+        private String ip;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -301,8 +313,14 @@ public class NewChargeToken {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public NewChargeToken build() {
-            return new NewChargeToken(
+            NewChargeToken result = new NewChargeToken(
                     amount,
                     currency,
                     reference,
@@ -323,6 +341,8 @@ public class NewChargeToken {
                     firstName,
                     lastName,
                     geolocation);
+            result.ip = ip;
+            return result;
         }
     }
 }

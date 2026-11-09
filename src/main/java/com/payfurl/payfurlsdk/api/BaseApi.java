@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class BaseApi {
     private static final String SDK_VERSION_KEY = "{sdk-version}";
@@ -64,7 +65,8 @@ public class BaseApi {
             } catch (Exception e) {
                 throw new ApiException(new ApiError.Builder()
                         .withMessage(responseBody)
-                        .withIsRetryable(false)
+                        // No API error body (a load balancer's 502, say): worth retrying only if the server failed.
+                        .withIsRetryable(responseCode >= 500 || responseCode == 429)
                         .withCode(UNKNOWN_ERROR)
                         .withType(ErrorLink.buildWith(1))
                         .withHttpCode(responseCode)
@@ -126,30 +128,51 @@ public class BaseApi {
     }
 
     protected <T> T executeGetRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType) throws ApiException {
-        try {
-            HttpRequest request = createApiGetRequest(urlPath, queryParams);
-
-            HttpResponse response = getClientInstance().execute(request);
-
-            return getDataFrom(response, returnType);
-        } catch (InterruptedIOException interruptedIOException) {
-            throw new ApiException(ApiError.buildTimeoutError());
-        } catch (IOException exception) {
-            throw new ApiException(exception);
-        }
+        return executeGetWithRetries(() -> createApiGetRequest(urlPath, queryParams), returnType);
     }
 
     protected <T> T executeGetRequestWith(String urlPath, Map<String, Object> queryParams, Class<T> returnType, Headers headers) throws ApiException {
+        return executeGetWithRetries(() -> createApiGetRequest(urlPath, queryParams, headers), returnType);
+    }
+
+    /**
+     * A GET, retried with a doubling delay after a connection error, a timeout or an error the API marks retryable,
+     * up to {@link Configuration#getMaxRetries()} times. Only GETs: the API has no idempotency keys, so a POST, PUT
+     * or DELETE (a refund, a void) is never sent twice.
+     */
+    private <T> T executeGetWithRetries(Supplier<HttpRequest> request, Class<T> returnType) throws ApiException {
+        int maxRetries = Math.max(0, config.getMaxRetries());
+        for (int attempt = 0; ; attempt++) {
+            try {
+                HttpResponse response = getClientInstance().execute(request.get());
+                return getDataFrom(response, returnType);
+            } catch (ApiException apiException) {
+                if (attempt >= maxRetries || !Boolean.TRUE.equals(apiException.isRetryable())) {
+                    throw apiException;
+                }
+            } catch (InterruptedIOException interruptedIOException) {
+                if (attempt >= maxRetries) {
+                    throw new ApiException(ApiError.buildTimeoutError());
+                }
+            } catch (IOException exception) {
+                if (attempt >= maxRetries) {
+                    throw new ApiException(exception);
+                }
+            }
+            sleepBeforeRetry(attempt);
+        }
+    }
+
+    private void sleepBeforeRetry(int attempt) {
+        long delay = config.getRetryDelay() << Math.min(attempt, 10);
+        if (delay <= 0) {
+            return;
+        }
         try {
-            HttpRequest request = createApiGetRequest(urlPath, queryParams, headers);
-
-            HttpResponse response = getClientInstance().execute(request);
-
-            return getDataFrom(response, returnType);
-        } catch (InterruptedIOException interruptedIOException) {
-            throw new ApiException(ApiError.buildTimeoutError());
-        } catch (IOException exception) {
-            throw new ApiException(exception);
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ApiException(new InterruptedIOException("Interrupted while waiting to retry"));
         }
     }
 

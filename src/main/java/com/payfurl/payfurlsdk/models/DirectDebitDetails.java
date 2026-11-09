@@ -27,7 +27,7 @@ public class DirectDebitDetails {
     public String toString() {
         return "DirectDebitDetails{" +
                 "bsb='" + bsb + '\'' +
-                ", accountNumber='" + accountNumber + '\'' +
+                ", accountNumber='" + Mask.lastFour(accountNumber) + '\'' +
                 '}';
     }
 

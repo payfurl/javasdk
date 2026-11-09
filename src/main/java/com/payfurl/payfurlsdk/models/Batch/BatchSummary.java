@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 public class BatchSummary {
     private final String batchId;
@@ -13,6 +14,10 @@ public class BatchSummary {
     private final String status;
     private final BigDecimal progress;
     private final Date dateAdded;
+
+    private Integer success;
+    private Integer failure;
+    private Map<String, String> metadata;
 
     @JsonCreator
     public BatchSummary(@JsonProperty("BatchId") String batchId,
@@ -54,6 +59,20 @@ public class BatchSummary {
         return dateAdded;
     }
 
+    /** How many of the batch's transactions succeeded. */
+    public Integer getSuccess() {
+        return success;
+    }
+
+    /** How many of the batch's transactions failed. */
+    public Integer getFailure() {
+        return failure;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "BatchSummary{" +
@@ -63,6 +82,9 @@ public class BatchSummary {
                 ", status='" + status + '\'' +
                 ", progress=" + progress +
                 ", dateAdded=" + dateAdded +
+                ", success=" + success +
+                ", failure=" + failure +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -73,6 +95,9 @@ public class BatchSummary {
         private String status;
         private BigDecimal progress;
         private Date dateAdded;
+        private Integer success;
+        private Integer failure;
+        private Map<String, String> metadata;
 
         public Builder withBatchId(String batchId) {
             this.batchId = batchId;
@@ -104,8 +129,29 @@ public class BatchSummary {
             return this;
         }
 
+        /** How many of the batch's transactions succeeded. */
+        public Builder withSuccess(Integer success) {
+            this.success = success;
+            return this;
+        }
+
+        /** How many of the batch's transactions failed. */
+        public Builder withFailure(Integer failure) {
+            this.failure = failure;
+            return this;
+        }
+
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public BatchSummary build() {
-            return new BatchSummary(batchId, count, description, status, progress, dateAdded);
+            BatchSummary result = new BatchSummary(batchId, count, description, status, progress, dateAdded);
+            result.success = success;
+            result.failure = failure;
+            result.metadata = metadata;
+            return result;
         }
     }
 }

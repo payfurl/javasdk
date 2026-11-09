@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -16,6 +17,11 @@ public class NewCustomerBankPayment {
     private final BankPaymentInformation bankPaymentInformation;
     private final Address address;
     private final Map<String, String> metadata;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private WebhookConfig webhook;
 
     @JsonCreator
     public NewCustomerBankPayment(@JsonProperty("Reference") String reference,
@@ -74,6 +80,16 @@ public class NewCustomerBankPayment {
         return metadata;
     }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
+    /** Where to send this payment method's webhooks. */
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
     @Override
     public String toString() {
         return "NewCustomerBankPayment{" +
@@ -86,6 +102,8 @@ public class NewCustomerBankPayment {
                 ", bankPaymentInformation=" + bankPaymentInformation +
                 ", address=" + address +
                 ", metadata=" + metadata +
+                ", ip=" + ip +
+                ", webhook=" + webhook +
                 '}';
     }
 
@@ -99,6 +117,8 @@ public class NewCustomerBankPayment {
         private BankPaymentInformation bankPaymentInformation;
         private Address address;
         private Map<String, String> metadata;
+        private String ip;
+        private WebhookConfig webhook;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -145,8 +165,23 @@ public class NewCustomerBankPayment {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
+        /** Where to send this payment method's webhooks. */
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewCustomerBankPayment build() {
-            return new NewCustomerBankPayment(reference, firstName, lastName, email, phone, providerId, bankPaymentInformation, address, metadata);
+            NewCustomerBankPayment result = new NewCustomerBankPayment(reference, firstName, lastName, email, phone, providerId, bankPaymentInformation, address, metadata);
+            result.ip = ip;
+            result.webhook = webhook;
+            return result;
         }
     }
 }

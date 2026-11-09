@@ -30,6 +30,9 @@ public class NewChargeBankPaymentRequest {
     private final String threeDSNotificationUrl;
     private final Geolocation geolocation;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+
     @JsonCreator
     public NewChargeBankPaymentRequest(@JsonProperty("Amount") BigDecimal amount,
                                        @JsonProperty("Currency") String currency,
@@ -153,6 +156,11 @@ public class NewChargeBankPaymentRequest {
         return geolocation;
     }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
     @Override
     public String toString() {
         return "NewChargeBankPaymentRequest{" +
@@ -176,6 +184,7 @@ public class NewChargeBankPaymentRequest {
                 ", descriptor='" + descriptor + '\'' +
                 ", threeDSNotificationUrl='" + threeDSNotificationUrl + '\'' +
                 ", geolocation=" + geolocation +
+                ", ip=" + ip +
                 '}';
     }
 
@@ -200,6 +209,7 @@ public class NewChargeBankPaymentRequest {
         private String descriptor;
         private String threeDSNotificationUrl;
         private Geolocation geolocation;
+        private String ip;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -301,8 +311,14 @@ public class NewChargeBankPaymentRequest {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public NewChargeBankPaymentRequest build() {
-            return new NewChargeBankPaymentRequest(
+            NewChargeBankPaymentRequest result = new NewChargeBankPaymentRequest(
                     amount,
                     currency,
                     providerId,
@@ -323,6 +339,8 @@ public class NewChargeBankPaymentRequest {
                     descriptor,
                     threeDSNotificationUrl,
                     geolocation);
+            result.ip = ip;
+            return result;
         }
     }
 }

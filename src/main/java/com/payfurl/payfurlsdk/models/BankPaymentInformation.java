@@ -33,7 +33,7 @@ public class BankPaymentInformation {
     public String toString() {
         return "BankPaymentInformation{" +
                 "bankCode='" + bankCode + '\'' +
-                ", accountNumber='" + accountNumber + '\'' +
+                ", accountNumber='" + Mask.lastFour(accountNumber) + '\'' +
                 ", accountName='" + accountName + '\'' +
                 '}';
     }

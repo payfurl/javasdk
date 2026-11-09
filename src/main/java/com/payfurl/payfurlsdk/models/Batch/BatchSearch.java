@@ -12,6 +12,8 @@ public class BatchSearch {
     private final Date addedAfter;
     private final Date addedBefore;
 
+    private String status;
+
     @JsonCreator
     public BatchSearch(@JsonProperty("Limit") Integer limit,
                        @JsonProperty("Skip") Integer skip,
@@ -46,6 +48,10 @@ public class BatchSearch {
         return addedBefore;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
         return "BatchSearch{" +
@@ -54,6 +60,7 @@ public class BatchSearch {
                 ", description='" + description + '\'' +
                 ", addedAfter=" + addedAfter +
                 ", addedBefore=" + addedBefore +
+                ", status=" + status +
                 '}';
     }
 
@@ -63,6 +70,7 @@ public class BatchSearch {
         private String description;
         private Date addedAfter;
         private Date addedBefore;
+        private String status;
 
         public Builder withLimit(Integer limit) {
             this.limit = limit;
@@ -89,8 +97,15 @@ public class BatchSearch {
             return this;
         }
 
+        public Builder withStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
         public BatchSearch build() {
-            return new BatchSearch(limit, skip, description, addedAfter, addedBefore);
+            BatchSearch result = new BatchSearch(limit, skip, description, addedAfter, addedBefore);
+            result.status = status;
+            return result;
         }
     }
 }

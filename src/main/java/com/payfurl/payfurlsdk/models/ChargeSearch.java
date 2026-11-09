@@ -25,6 +25,10 @@ public class ChargeSearch {
     private final String cardNumber;
     private final String cardholder;
 
+    private String batchId;
+    private String subscriptionId;
+    private String sortOrder;
+
     @JsonCreator
     public ChargeSearch(@JsonProperty("PaymentMethodId") String paymentMethodId,
                         @JsonProperty("Reference") String reference,
@@ -135,6 +139,18 @@ public class ChargeSearch {
         return sortBy;
     }
 
+    public String getBatchId() {
+        return batchId;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
     @Override
     public String toString() {
         return "ChargeSearch{" +
@@ -150,11 +166,14 @@ public class ChargeSearch {
                 ", paymentType=" + paymentType +
                 ", cardType=" + cardType +
                 ", currency=" + currency +
-                ", cardNumber=" + cardNumber +
+                ", cardNumber=" + Mask.lastFour(cardNumber) +
                 ", cardholder=" + cardholder +
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", sortBy='" + sortBy + '\'' +
+                ", batchId=" + batchId +
+                ", subscriptionId=" + subscriptionId +
+                ", sortOrder=" + sortOrder +
                 '}';
     }
 
@@ -176,6 +195,9 @@ public class ChargeSearch {
         private Integer limit;
         private Integer skip;
         private String sortBy;
+        private String batchId;
+        private String subscriptionId;
+        private String sortOrder;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
@@ -262,8 +284,27 @@ public class ChargeSearch {
             return this;
         }
 
+        public Builder withBatchId(String batchId) {
+            this.batchId = batchId;
+            return this;
+        }
+
+        public Builder withSubscriptionId(String subscriptionId) {
+            this.subscriptionId = subscriptionId;
+            return this;
+        }
+
+        public Builder withSortOrder(String sortOrder) {
+            this.sortOrder = sortOrder;
+            return this;
+        }
+
         public ChargeSearch build() {
-            return new ChargeSearch(paymentMethodId, reference, amountGreaterThan, amountLessThan, customerId, status, addedAfter, addedBefore, providerId, paymentType, cardType, currency, cardNumber, cardholder, limit, skip, sortBy);
+            ChargeSearch result = new ChargeSearch(paymentMethodId, reference, amountGreaterThan, amountLessThan, customerId, status, addedAfter, addedBefore, providerId, paymentType, cardType, currency, cardNumber, cardholder, limit, skip, sortBy);
+            result.batchId = batchId;
+            result.subscriptionId = subscriptionId;
+            result.sortOrder = sortOrder;
+            return result;
         }
     }
 }

@@ -19,6 +19,11 @@ public class ApiError {
     private final String type;
     private int httpCode;
 
+    @JsonProperty("chargeId")
+    private String chargeId;
+    @JsonProperty("traceId")
+    private String traceId;
+
     @JsonCreator
     public ApiError(@JsonProperty("message") String message,
                     @JsonProperty("details") Map<String, String> details,
@@ -80,6 +85,16 @@ public class ApiError {
         this.httpCode = httpCode;
     }
 
+    /** The charge the error is about, when there is one. */
+    public String getChargeId() {
+        return chargeId;
+    }
+
+    /** The request's trace ID (also the x-request-id header): quote it to payFURL support. */
+    public String getTraceId() {
+        return traceId;
+    }
+
     @Override
     public String toString() {
         return "ApiError{" +
@@ -92,6 +107,8 @@ public class ApiError {
                 ", isRetryable='" + isRetryable + '\'' +
                 ", type='" + type + '\'' +
                 ", httpCode='" + httpCode + '\'' +
+                ", chargeId=" + chargeId +
+                ", traceId=" + traceId +
                 '}';
     }
 

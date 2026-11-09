@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -14,6 +15,11 @@ public class NewCustomerToken {
     private final String token;
     private final Address address;
     private final Map<String, String> metadata;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private WebhookConfig webhook;
 
     @JsonCreator
     public NewCustomerToken(@JsonProperty("Reference") String reference,
@@ -66,6 +72,16 @@ public class NewCustomerToken {
         return metadata;
     }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
+    /** Where to send this payment method's webhooks. */
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
     @Override
     public String toString() {
         return "NewCustomerToken{" +
@@ -77,6 +93,8 @@ public class NewCustomerToken {
                 ", address=" + address +
                 ", token='" + token + '\'' +
                 ", metadata=" + metadata +
+                ", ip=" + ip +
+                ", webhook=" + webhook +
                 '}';
     }
 
@@ -89,6 +107,8 @@ public class NewCustomerToken {
         private String token;
         private Address address;
         private Map<String, String> metadata;
+        private String ip;
+        private WebhookConfig webhook;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -130,8 +150,23 @@ public class NewCustomerToken {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
+        /** Where to send this payment method's webhooks. */
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewCustomerToken build() {
-            return new NewCustomerToken(reference, firstName, lastName, email, phone, address, token, metadata);
+            NewCustomerToken result = new NewCustomerToken(reference, firstName, lastName, email, phone, address, token, metadata);
+            result.ip = ip;
+            result.webhook = webhook;
+            return result;
         }
     }
 }

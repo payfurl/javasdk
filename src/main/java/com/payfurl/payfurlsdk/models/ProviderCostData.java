@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 public class ProviderCostData {
+    @JsonProperty("isInternationalCard")
     private final Boolean isInternationalCard;
     private final String cardScheme;
     private final BigDecimal transactionCost;
@@ -23,6 +24,7 @@ public class ProviderCostData {
         this.transactionPercentage = transactionPercentage;
     }
 
+    @JsonProperty("isInternationalCard")
     public Boolean getInternationalCard() {
         return isInternationalCard;
     }

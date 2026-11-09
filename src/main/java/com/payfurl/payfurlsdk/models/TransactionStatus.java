@@ -1,5 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+
 public enum TransactionStatus
 {
     PENDING,
@@ -9,5 +11,8 @@ public enum TransactionStatus
     REFUND,
     PENDING_CHECKOUT,
     AUTHORISE,
-    AUTHORISE_CANCELLED
+    AUTHORISE_CANCELLED,
+    /** A value this SDK version doesn't know: the API added it after this release. */
+    @JsonEnumDefaultValue
+    UNKNOWN
 }

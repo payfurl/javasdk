@@ -18,6 +18,9 @@ public class PaymentMethodSearch {
     private final String search;
 
 
+    private String sortOrder;
+    private Boolean includeRemoved;
+
     @JsonCreator
     public PaymentMethodSearch(@JsonProperty("PaymentType") String paymentType,
                                @JsonProperty("CardType") String cardType,
@@ -81,6 +84,15 @@ public class PaymentMethodSearch {
         return search;
     }
 
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    /** Whether to include removed payment methods. */
+    public Boolean getIncludeRemoved() {
+        return includeRemoved;
+    }
+
     @Override
     public String toString() {
         return "ChargeSearch{" +
@@ -94,6 +106,8 @@ public class PaymentMethodSearch {
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", search='" + search + '\'' +
+                ", sortOrder=" + sortOrder +
+                ", includeRemoved=" + includeRemoved +
                 '}';
     }
 
@@ -108,6 +122,8 @@ public class PaymentMethodSearch {
         private Integer limit;
         private Integer skip;
         private String search;
+        private String sortOrder;
+        private Boolean includeRemoved;
 
         public Builder withPaymentType(String paymentType) {
             this.paymentType = paymentType;
@@ -159,8 +175,22 @@ public class PaymentMethodSearch {
             return this;
         }
 
+        public Builder withSortOrder(String sortOrder) {
+            this.sortOrder = sortOrder;
+            return this;
+        }
+
+        /** Whether to include removed payment methods. */
+        public Builder withIncludeRemoved(Boolean includeRemoved) {
+            this.includeRemoved = includeRemoved;
+            return this;
+        }
+
         public PaymentMethodSearch build() {
-            return new PaymentMethodSearch(paymentType, cardType, providerId, customerId, sortBy, addedAfter, addedBefore, limit, skip, search);
+            PaymentMethodSearch result = new PaymentMethodSearch(paymentType, cardType, providerId, customerId, sortBy, addedAfter, addedBefore, limit, skip, search);
+            result.sortOrder = sortOrder;
+            result.includeRemoved = includeRemoved;
+            return result;
         }
     }
 }

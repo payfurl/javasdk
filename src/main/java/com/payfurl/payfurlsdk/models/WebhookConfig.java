@@ -26,7 +26,7 @@ public class WebhookConfig {
     public String toString() {
         return "WebhookConfig{" +
                 "url='" + url + '\'' +
-                ", authorization='" + authorization + '\'' +
+                ", authorization='" + Mask.secret(authorization) + '\'' +
                 '}';
     }
 

@@ -1,5 +1,6 @@
 package com.payfurl.payfurlsdk.models.PaymentLink;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
@@ -24,6 +25,9 @@ public class CreatePaymentLink {
     private final Integer limitPayments;
     private final Map<String, String> metadata;
 
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String invoiceId;
 
     public CreatePaymentLink(
             @JsonProperty("Title") String title,
@@ -133,6 +137,11 @@ public class CreatePaymentLink {
         return String.format("data:%s;base64,%s", contentType, Base64.getEncoder().encodeToString(imageBytes));
     }
 
+    /** The merchant's invoice the payment link pays. */
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
     @Override
     public String toString() {
         return "CreatePaymentLink{" +
@@ -147,6 +156,7 @@ public class CreatePaymentLink {
                 ", callToAction='" + callToAction + '\'' +
                 ", limitPayments=" + limitPayments +
                 ", metadata=" + metadata +
+                ", invoiceId=" + invoiceId +
                 '}';
     }
 
@@ -162,6 +172,7 @@ public class CreatePaymentLink {
         private CallToAction callToAction;
         private Integer limitPayments;
         private Map<String, String> metadata;
+        private String invoiceId;
 
         public Builder withTitle(String title) {
             this.title = title;
@@ -218,12 +229,20 @@ public class CreatePaymentLink {
             return this;
         }
 
+        /** The merchant's invoice the payment link pays. */
+        public Builder withInvoiceId(String invoiceId) {
+            this.invoiceId = invoiceId;
+            return this;
+        }
+
         public CreatePaymentLink build() {
-            return new CreatePaymentLink(
+            CreatePaymentLink result = new CreatePaymentLink(
                     title, amount, currency, allowedPaymentTypes,
                     description, image, confirmationMessage, redirectUrl,
                     callToAction, limitPayments, metadata
             );
+            result.invoiceId = invoiceId;
+            return result;
         }
     }
 }

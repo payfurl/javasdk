@@ -12,6 +12,11 @@ public class FailureData {
     public final String gatewayCode;
     public final String gatewayMessage;
 
+    @JsonProperty("errorCode")
+    private String errorCode;
+    @JsonProperty("isRetryable")
+    private Boolean isRetryable;
+
     @JsonCreator
     public FailureData(@JsonProperty("ProviderId") String providerId,
                        @JsonProperty("DateAttempted") Date dateAttempted,
@@ -45,6 +50,15 @@ public class FailureData {
         return gatewayMessage;
     }
 
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    /** Whether retrying the payment can succeed. */
+    public Boolean getIsRetryable() {
+        return isRetryable;
+    }
+
     @Override
     public String toString() {
         return "FailureData{" +
@@ -53,6 +67,8 @@ public class FailureData {
                 ", errorMessage='" + errorMessage + '\'' +
                 ", gatewayCode='" + gatewayCode + '\'' +
                 ", gatewayMessage='" + gatewayMessage + '\'' +
+                ", errorCode=" + errorCode +
+                ", isRetryable=" + isRetryable +
                 '}';
     }
 }

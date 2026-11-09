@@ -34,8 +34,8 @@ public class VaultDataWithPci extends VaultData {
     @Override
     public String toString() {
         return "VaultDataWithPci{" +
-                "cardNumber='" + cardNumber + '\'' +
-                ", ccv='" + ccv + '\'' +
+                "cardNumber='" + Mask.lastFour(cardNumber) + '\'' +
+                ", ccv='" + Mask.secret(ccv) + '\'' +
                 '}';
     }
 

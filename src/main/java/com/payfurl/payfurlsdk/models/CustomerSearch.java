@@ -16,6 +16,9 @@ public class CustomerSearch {
     private final Integer skip;
     private final String search;
 
+    private String sortBy;
+    private Boolean includeRemoved;
+
     @JsonCreator
     public CustomerSearch(@JsonProperty("PaymentMethodId") String paymentMethodId,
                           @JsonProperty("Reference") String reference,
@@ -73,6 +76,15 @@ public class CustomerSearch {
         return search;
     }
 
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    /** Whether to include removed customers. */
+    public Boolean getIncludeRemoved() {
+        return includeRemoved;
+    }
+
     @Override
     public String toString() {
         return "ChargeSearch{" +
@@ -85,6 +97,8 @@ public class CustomerSearch {
                 ", limit=" + limit +
                 ", skip=" + skip +
                 ", search='" + search + '\'' +
+                ", sortBy=" + sortBy +
+                ", includeRemoved=" + includeRemoved +
                 '}';
     }
 
@@ -98,6 +112,8 @@ public class CustomerSearch {
         private Integer limit;
         private Integer skip;
         private String search;
+        private String sortBy;
+        private Boolean includeRemoved;
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
@@ -144,8 +160,22 @@ public class CustomerSearch {
             return this;
         }
 
+        public Builder withSortBy(String sortBy) {
+            this.sortBy = sortBy;
+            return this;
+        }
+
+        /** Whether to include removed customers. */
+        public Builder withIncludeRemoved(Boolean includeRemoved) {
+            this.includeRemoved = includeRemoved;
+            return this;
+        }
+
         public CustomerSearch build() {
-            return new CustomerSearch(paymentMethodId, reference, customerId, email, addedAfter, addedBefore, limit, skip, search);
+            CustomerSearch result = new CustomerSearch(paymentMethodId, reference, customerId, email, addedAfter, addedBefore, limit, skip, search);
+            result.sortBy = sortBy;
+            result.includeRemoved = includeRemoved;
+            return result;
         }
     }
 }

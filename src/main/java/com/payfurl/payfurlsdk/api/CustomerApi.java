@@ -9,6 +9,7 @@ import com.payfurl.payfurlsdk.models.CustomerData;
 import com.payfurl.payfurlsdk.models.CustomerList;
 import com.payfurl.payfurlsdk.models.CustomerSearch;
 import com.payfurl.payfurlsdk.models.NewCustomerCard;
+import com.payfurl.payfurlsdk.models.NewCustomerPayTo;
 import com.payfurl.payfurlsdk.models.NewCustomerProviderToken;
 import com.payfurl.payfurlsdk.models.NewCustomerToken;
 import com.payfurl.payfurlsdk.models.NewPayToAgreement;
@@ -47,6 +48,17 @@ public class CustomerApi extends BaseApi {
     }
 
     /**
+     * Add a customer with a PayTo agreement
+     *
+     * @param newCustomerPayTo the agreement and the customer's details
+     * @return the new customer
+     * @throws ApiException
+     */
+    public CustomerData createWithPayTo(NewCustomerPayTo newCustomerPayTo) throws ApiException {
+        return executePostRequestWith(customerApiBaseEndpoint + "/payto", newCustomerPayTo, CustomerData.class);
+    }
+
+    /**
      * Add a customer using a payment token
      *
      * @param newCustomerToken
@@ -78,7 +90,7 @@ public class CustomerApi extends BaseApi {
      * @return
      * @throws ApiException
      */
-    public PaymentMethodData createWitPaymentMethodWithToken(String customerId, NewPaymentMethodToken newPaymentMethodToken) throws ApiException {
+    public PaymentMethodData createPaymentMethodWithToken(String customerId, NewPaymentMethodToken newPaymentMethodToken) throws ApiException {
         String urlPath = String.format("%s/%s/payment_method/token", customerApiBaseEndpoint, customerId);
         return executePostRequestWith(urlPath, newPaymentMethodToken, PaymentMethodData.class);
     }
@@ -91,7 +103,7 @@ public class CustomerApi extends BaseApi {
      * @return
      * @throws ApiException
      */
-    public PaymentMethodData createWitPaymentMethodWithPayTo(String customerId, NewPayToAgreement newPayToAgreement) throws ApiException {
+    public PaymentMethodData createPaymentMethodWithPayTo(String customerId, NewPayToAgreement newPayToAgreement) throws ApiException {
         String urlPath = String.format("%s/%s/payment_method/payto", customerApiBaseEndpoint, customerId);
         return executePostRequestWith(urlPath, newPayToAgreement, PaymentMethodData.class);
     }
@@ -126,6 +138,8 @@ public class CustomerApi extends BaseApi {
         queryParams.put("AddedAfter", searchData.getAddedAfter());
         queryParams.put("AddedBefore", searchData.getAddedBefore());
         queryParams.put("Search", searchData.getSearch());
+        queryParams.put("SortBy", searchData.getSortBy());
+        queryParams.put("IncludeRemoved", searchData.getIncludeRemoved());
 
         return executeGetRequestWith(customerApiBaseEndpoint, queryParams, CustomerList.class);
     }

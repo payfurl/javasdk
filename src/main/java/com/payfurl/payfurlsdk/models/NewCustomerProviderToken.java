@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -17,6 +18,13 @@ public class NewCustomerProviderToken {
     private final Map<String, String> providerTokenData;
     private final Map<String, String> metaData;
     private final Boolean verify;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private PaymentType type;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private WebhookConfig webhook;
 
     @JsonCreator
     public NewCustomerProviderToken(@JsonProperty("Reference") String reference,
@@ -62,6 +70,21 @@ public class NewCustomerProviderToken {
         return metaData;
     }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
+    /** What the provider token pays with, e.g. BANKPAYMENT; null lets the gateway decide. */
+    public PaymentType getType() {
+        return type;
+    }
+
+    /** Where to send this payment method's webhooks. */
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
     @Override
     public String toString() {
         return "NewCustomerProviderToken{" +
@@ -76,6 +99,9 @@ public class NewCustomerProviderToken {
                 ", address=" + address +
                 ", verify=" + verify +
                 ", metaData=" + metaData +
+                ", ip=" + ip +
+                ", type=" + type +
+                ", webhook=" + webhook +
                 '}';
     }
 
@@ -115,6 +141,9 @@ public class NewCustomerProviderToken {
         private Map<String, String> providerTokenData;
         private Map<String, String> metaData;
         private Boolean verify = false;
+        private String ip;
+        private PaymentType type;
+        private WebhookConfig webhook;
 
         public Builder withReference(String reference) {
             this.reference = reference;
@@ -171,8 +200,30 @@ public class NewCustomerProviderToken {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
+        /** What the provider token pays with, e.g. BANKPAYMENT; null lets the gateway decide. */
+        public Builder withType(PaymentType type) {
+            this.type = type;
+            return this;
+        }
+
+        /** Where to send this payment method's webhooks. */
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewCustomerProviderToken build() {
-            return new NewCustomerProviderToken(reference, firstName, lastName, email, phone, address, providerId, providerToken, providerTokenData, verify, metaData);
+            NewCustomerProviderToken result = new NewCustomerProviderToken(reference, firstName, lastName, email, phone, address, providerId, providerToken, providerTokenData, verify, metaData);
+            result.ip = ip;
+            result.type = type;
+            result.webhook = webhook;
+            return result;
         }
     }
 }

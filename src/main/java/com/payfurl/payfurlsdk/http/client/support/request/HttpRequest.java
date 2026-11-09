@@ -61,7 +61,7 @@ public class HttpRequest {
     public String toString() {
         return "HttpRequest{" +
                 "httpMethod=" + httpMethod +
-                ", headers=" + headers +
+                ", headers=" + (headers == null ? null : headers.asMultimap().keySet()) +
                 ", queryUrlBuilder=" + queryUrlBuilder +
                 ", parameters=" + parameters +
                 ", queryParameters=" + queryParameters +

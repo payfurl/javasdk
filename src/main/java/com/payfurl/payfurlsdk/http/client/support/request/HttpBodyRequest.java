@@ -24,8 +24,10 @@ public class HttpBodyRequest extends HttpRequest {
 
     @Override
     public String toString() {
+        // Not the body: it can hold card data.
         return "HttpBodyRequest{"
-                + "body=" + body
+                + "httpMethod=" + getHttpMethod()
+                + ", url=" + getQueryUrl()
                 + '}';
     }
 }

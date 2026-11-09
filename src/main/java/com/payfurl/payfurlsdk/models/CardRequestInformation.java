@@ -1,13 +1,21 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
 
 public class CardRequestInformation {
     private final String cardNumber;
     private final String expiryDate;
     private final String ccv;
     private final String cardHolder;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String threeDSServerTransID;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Map<String, String> externalThreeDsData;
 
     @JsonCreator
     public CardRequestInformation(@JsonProperty("CardNumber") String cardNumber,
@@ -36,13 +44,25 @@ public class CardRequestInformation {
         return cardHolder;
     }
 
+    /** The 3DS server transaction ID of a 3DS authentication done outside payFURL. */
+    public String getThreeDSServerTransID() {
+        return threeDSServerTransID;
+    }
+
+    /** 3DS authentication data from a 3DS server outside payFURL. */
+    public Map<String, String> getExternalThreeDsData() {
+        return externalThreeDsData;
+    }
+
     @Override
     public String toString() {
         return "CardRequestInformation{" +
-                "cardNumber='" + cardNumber + '\'' +
+                "cardNumber='" + Mask.lastFour(cardNumber) + '\'' +
                 ", expiryDate='" + expiryDate + '\'' +
-                ", ccv='" + ccv + '\'' +
+                ", ccv='" + Mask.secret(ccv) + '\'' +
                 ", cardHolder='" + cardHolder + '\'' +
+                ", threeDSServerTransID=" + threeDSServerTransID +
+                ", externalThreeDsData=" + externalThreeDsData +
                 '}';
     }
 
@@ -51,6 +71,8 @@ public class CardRequestInformation {
         private String expiryDate;
         private String ccv;
         private String cardHolder;
+        private String threeDSServerTransID;
+        private Map<String, String> externalThreeDsData;
 
         public Builder withCardNumber(String cardNumber) {
             this.cardNumber = cardNumber;
@@ -72,8 +94,23 @@ public class CardRequestInformation {
             return this;
         }
 
+        /** The 3DS server transaction ID of a 3DS authentication done outside payFURL. */
+        public Builder withThreeDSServerTransID(String threeDSServerTransID) {
+            this.threeDSServerTransID = threeDSServerTransID;
+            return this;
+        }
+
+        /** 3DS authentication data from a 3DS server outside payFURL. */
+        public Builder withExternalThreeDsData(Map<String, String> externalThreeDsData) {
+            this.externalThreeDsData = externalThreeDsData;
+            return this;
+        }
+
         public CardRequestInformation build() {
-            return new CardRequestInformation(cardNumber, expiryDate, ccv, cardHolder);
+            CardRequestInformation result = new CardRequestInformation(cardNumber, expiryDate, ccv, cardHolder);
+            result.threeDSServerTransID = threeDSServerTransID;
+            result.externalThreeDsData = externalThreeDsData;
+            return result;
         }
     }
 }
