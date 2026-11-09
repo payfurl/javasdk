@@ -5,75 +5,8 @@ batches, transfers, vaults, providers, tokens, disputes, settlements and webhook
 endpoints a secret key can call, plus `GET /info/providers`. The API itself, its fields and its error codes are
 documented at [docs.payfurl.com](https://docs.payfurl.com).
 
-What changed in each release: [CHANGELOG.md](CHANGELOG.md).
-
-## Upgrading from 1.0.x to 2.0
-
-**2.0.0 is a breaking release.** It removes methods and fields of 1.0.x, so code written for 1.0.x may not compile
-against it, and some calls behave differently. Nothing upgrades by itself: Maven and Gradle keep the version your
-build names. Versions now follow [semver](https://semver.org) (`2.0.0`, not `1.0.<date>`), and Maven and Gradle sort
-2.0.0 above every 1.0.x.
-
-To stay on 1.0.x for now, keep your version, or cap it below 2.0: `[1.0,2.0)` in Maven and Gradle.
-
-### Step 1: replace what was removed
-
-Change these and your code compiles again:
-
-| 1.0.x | 2.0 |
-| --- | --- |
-| `customerApi.createWitPaymentMethodWithToken(id, request)` | `customerApi.createPaymentMethodWithToken(id, request)` |
-| `customerApi.createWitPaymentMethodWithPayTo(id, request)` | `customerApi.createPaymentMethodWithPayTo(id, request)` |
-| `new InfoApi(...).GetProvidersInfo(amount, currency)` | `client.getInfoApi().getProvidersInfo(amount, currency)` |
-| `InfoApi.getInfo()`, `GetProviderInfo`, `GetProviderTokenInfo`, `GetDefaultFallbackProvider` (and the `Info`, `InfoProvider`, `ProviderData`, `ProviderInfoModel`, `ProviderCostDataModel`, `ProviderVisibilityDataModel` and `CurrencyInformationData` models) | Removed: their endpoints are not part of the public API. `getProvidersInfo` covers what a checkout needs; `getProviderApi()` manages providers |
-| `PayFurlClient.shutdown()` (static, closed the HTTP client every client in the JVM shared) | `client.close()` on the client you are done with, or try-with-resources |
-| `chargeData.getThreeDsServerTransId()`, `chargeData.threeDsServerTransId` | `chargeData.getPaymentInformation().getCardData().getThreeDSServerTransID()` |
-| `paymentData.getProviderType()`, `paymentData.providerType` | `chargeData.getProvider()` |
-| `getUserId()` / `withUserId` on `PaymentMethodData` and `TokenData`; `getSecretKey()` / `withSecretKey` on `PaymentLinkData`; `getThreeDsProviderId()` / `withThreeDsProviderId` on `NewProvider` and `UpdateProvider` | Removed: the API never sent or read them, so they were always null |
-| `PayToProviderOptions.getMinimumAmount()` | `getMaximumAmount()`: the API sends a maximum |
-| `new ChargeData(...)`, `new PaymentData(...)`, `new TokenData(...)`, `new PaymentMethodData(...)`, `new PaymentLinkData(...)`, `new NewProvider(...)`, `new UpdateProvider(...)` | Their constructors lost the removed field. Build requests with their `Builder`; in tests, deserialize responses from JSON |
-| A class implementing `PayFurlClientSdk` (a test double, say) | Also implement `getInfoApi()`, `getDisputeApi()`, `getSettlementApi()` and `getRootApi()` |
-
-Before and after:
-
-```java
-// 1.0.x
-PaymentMethodData card = payfurl.getCustomerApi().createWitPaymentMethodWithToken(customerId, request);
-String threeDs = charge.getThreeDsServerTransId();
-PayFurlClient.shutdown();
-
-// 2.0
-PaymentMethodData card = payfurl.getCustomerApi().createPaymentMethodWithToken(customerId, request);
-String threeDs = charge.getPaymentInformation().getCardData().getThreeDSServerTransID();
-payfurl.close();
-```
-
-### Step 2: check what behaves differently
-
-These compile unchanged; check whether your code relies on the old behaviour:
-
-- **Guava and commons-collections4 are gone from the SDK's dependencies.** If your code used them without declaring
-  them (they came through the SDK), add them to your own build.
-- **Jackson is 2.22** (was 2.12) and **commons-lang3 is 3.20** (was 3.14), which fixes their known CVEs. If your build
-  pins older versions, Maven's nearest-wins rule keeps yours: check `mvn dependency:tree`.
-- **`toString()` masks card data.** Card and bank account numbers print as their last four digits
-  (`************1111`), and CVVs, webhook `Authorization` values and provider credentials as `***`, so logging a
-  request no longer logs them. Code that parsed `toString()` output must read the getters.
-- **GETs are retried.** A GET that fails with a connection error, a timeout or an error the API marks retryable is
-  sent again, twice by default, after 0.5 and 1 second. Charges, refunds, voids and other writes are never retried.
-  `withHttpClientConfiguration(c -> c.maxRetries(0))` turns it off.
-- **Values the SDK does not know read as `UNKNOWN`.** A status the API adds later (a new `TransactionStatus`, say)
-  no longer fails the call, and an error code the SDK does not know is `ErrorCode.UnknownError`. A `switch` over an
-  SDK enum may want a `case UNKNOWN`.
-- **TLS.** Only a client built with `Environment.LOCAL` accepts an untrusted certificate. In 1.0.x, creating a
-  `LOCAL` client first turned off certificate checks for every client in the JVM.
-- **Data that was dropped is sent.** A refund's comment, `NewChargeToken`'s `CheckoutTransfer` and the search
-  date filters (`AddedAfter`, `AddedBefore`, now ISO-8601 in UTC) reach the API, so searches by date now filter.
-
-### Step 3: test
-
-Run your tests against 2.0.0 in sandbox before production: a charge, a refund with a comment, a search by date, and
-the error handling your code relies on.
+What changed in each release: [CHANGELOG.md](CHANGELOG.md). Upgrading from 1.0.x? 2.0 is a breaking release: see
+[Upgrading from 1.0.x to 2.0](#upgrading-from-10x-to-20).
 
 ## Install
 
@@ -93,7 +26,7 @@ Gradle:
 implementation 'com.payfurl:payfurlsdk:2.0.0'
 ```
 
-It runs on Java 8 or later; CI tests it on Java 8, 11, 17, 21 and 25. Its dependencies are Jackson 2
+It runs on Java 8 or later, and is tested on Java 8, 11, 17, 21 and 25. Its dependencies are Jackson 2
 (`jackson-databind`), OkHttp 4 and commons-lang3.
 
 ## Quick start
@@ -135,8 +68,8 @@ between threads. Clients share one connection pool.
 | `PRODUCTION` (the default) | https://api.payfurl.com | https://api-au.payfurl.com |
 | `SANDBOX` | https://sandbox-api.payfurl.com | https://sandbox-api-au.payfurl.com |
 
-The key's last part (`sectest...-au`) is its account's region. `DEVELOPMENT` and `LOCAL` are payFURL's own
-environments. `withBaseUrl("https://...")` sends requests to another URL, a proxy say; certificates are still
+The key's last part (`sectest...-au`) is its account's region. `DEVELOPMENT` and `LOCAL` are for payFURL's own use:
+don't use them. `withBaseUrl("https://...")` sends requests to another URL, a proxy say; certificates are still
 checked.
 
 ## The APIs
@@ -280,25 +213,78 @@ PayFurlClient payfurl = new PayFurlClient.Builder()
         .build();
 ```
 
-The SDK's own tests do the same: [MockApiTest](src/test/java/com/payfurl/payfurlsdk/support/MockApiTest.java).
+## Upgrading from 1.0.x to 2.0
 
-## Development
+**2.0.0 is a breaking release.** It removes methods and fields of 1.0.x, so code written for 1.0.x may not compile
+against it, and some calls behave differently. Nothing upgrades by itself: Maven and Gradle keep the version your
+build names. Versions now follow [semver](https://semver.org) (`2.0.0`, not `1.0.<date>`), and Maven and Gradle sort
+2.0.0 above every 1.0.x.
 
-You need [just](https://github.com/casey/just), a JDK (8 or later) and Maven:
+To stay on 1.0.x for now, keep your version, or cap it below 2.0: `[1.0,2.0)` in Maven and Gradle.
 
-```bash
-just test      # compile and the unit tests: what CI runs on every pull request
-just package   # the jar, into target/
+### Step 1: replace what was removed
+
+Change these and your code compiles again:
+
+| 1.0.x | 2.0 |
+| --- | --- |
+| `customerApi.createWitPaymentMethodWithToken(id, request)` | `customerApi.createPaymentMethodWithToken(id, request)` |
+| `customerApi.createWitPaymentMethodWithPayTo(id, request)` | `customerApi.createPaymentMethodWithPayTo(id, request)` |
+| `new InfoApi(...).GetProvidersInfo(amount, currency)` | `client.getInfoApi().getProvidersInfo(amount, currency)` |
+| `InfoApi.getInfo()`, `GetProviderInfo`, `GetProviderTokenInfo`, `GetDefaultFallbackProvider` (and the `Info`, `InfoProvider`, `ProviderData`, `ProviderInfoModel`, `ProviderCostDataModel`, `ProviderVisibilityDataModel` and `CurrencyInformationData` models) | Removed: their endpoints are not part of the public API. `getProvidersInfo` covers what a checkout needs; `getProviderApi()` manages providers |
+| `PayFurlClient.shutdown()` (static, closed the HTTP client every client in the JVM shared) | `client.close()` on the client you are done with, or try-with-resources |
+| `chargeData.getThreeDsServerTransId()`, `chargeData.threeDsServerTransId` | `chargeData.getPaymentInformation().getCardData().getThreeDSServerTransID()` |
+| `paymentData.getProviderType()`, `paymentData.providerType` | `chargeData.getProvider()` |
+| `getUserId()` / `withUserId` on `PaymentMethodData` and `TokenData`; `getSecretKey()` / `withSecretKey` on `PaymentLinkData`; `getThreeDsProviderId()` / `withThreeDsProviderId` on `NewProvider` and `UpdateProvider` | Removed: the API never sent or read them, so they were always null |
+| `PayToProviderOptions.getMinimumAmount()` | `getMaximumAmount()`: the API sends a maximum |
+| `new ChargeData(...)`, `new PaymentData(...)`, `new TokenData(...)`, `new PaymentMethodData(...)`, `new PaymentLinkData(...)`, `new NewProvider(...)`, `new UpdateProvider(...)` | Their constructors lost the removed field. Build requests with their `Builder`; in tests, deserialize responses from JSON |
+| A class implementing `PayFurlClientSdk` (a test double, say) | Also implement `getInfoApi()`, `getDisputeApi()`, `getSettlementApi()` and `getRootApi()` |
+
+Before and after:
+
+```java
+// 1.0.x
+PaymentMethodData card = payfurl.getCustomerApi().createWitPaymentMethodWithToken(customerId, request);
+String threeDs = charge.getThreeDsServerTransId();
+PayFurlClient.shutdown();
+
+// 2.0
+PaymentMethodData card = payfurl.getCustomerApi().createPaymentMethodWithToken(customerId, request);
+String threeDs = charge.getPaymentInformation().getCardData().getThreeDSServerTransID();
+payfurl.close();
 ```
 
-The unit tests never call an API. payFURL also runs integration tests against an API built from source before each
-release.
+### Step 2: check what behaves differently
 
-## Releasing
+These compile unchanged; check whether your code relies on the old behaviour:
 
-Add the version's section to [CHANGELOG.md](CHANGELOG.md), merge it to `main`, then push a tag `vX.Y.Z` on that
-commit. The release workflow runs the tests, publishes the signed jar to Maven Central with the tag's version, and
-creates the GitHub release from the changelog.
+- **Guava and commons-collections4 are gone from the SDK's dependencies.** If your code used them without declaring
+  them (they came through the SDK), add them to your own build.
+- **Jackson is 2.22** (was 2.12) and **commons-lang3 is 3.21** (was 3.14), which fixes their known CVEs. If your build
+  pins older versions, Maven's nearest-wins rule keeps yours: check `mvn dependency:tree`.
+- **`toString()` masks card data.** Card and bank account numbers print as their last four digits
+  (`************1111`), and CVVs, webhook `Authorization` values and provider credentials as `***`, so logging a
+  request no longer logs them. Code that parsed `toString()` output must read the getters.
+- **GETs are retried.** A GET that fails with a connection error, a timeout or an error the API marks retryable is
+  sent again, twice by default, after 0.5 and 1 second. Charges, refunds, voids and other writes are never retried.
+  `withHttpClientConfiguration(c -> c.maxRetries(0))` turns it off.
+- **Values the SDK does not know read as `UNKNOWN`.** A status the API adds later (a new `TransactionStatus`, say)
+  no longer fails the call, and an error code the SDK does not know is `ErrorCode.UnknownError`. A `switch` over an
+  SDK enum may want a `case UNKNOWN`.
+- **TLS.** Only a client built with `Environment.LOCAL` accepts an untrusted certificate. In 1.0.x, creating a
+  `LOCAL` client first turned off certificate checks for every client in the JVM.
+- **Data that was dropped is sent.** A refund's comment, `NewChargeToken`'s `CheckoutTransfer` and the search
+  date filters (`AddedAfter`, `AddedBefore`, now ISO-8601 in UTC) reach the API, so searches by date now filter.
+
+### Step 3: test
+
+Run your tests against 2.0.0 in sandbox before production: a charge, a refund with a comment, a search by date, and
+the error handling your code relies on.
+
+## Support
+
+Questions about the SDK or the API: [support@payfurl.com](mailto:support@payfurl.com). Bugs in the SDK: open an
+issue in this repository. To build it from source, run `mvn verify` with Java 8 or later; the tests run offline.
 
 ## License
 
