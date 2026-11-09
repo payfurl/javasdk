@@ -1,10 +1,12 @@
 package com.payfurl.payfurlsdk.models.Subscription;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 public class SubscriptionUpdate {
 
@@ -15,6 +17,9 @@ public class SubscriptionUpdate {
     private SubscriptionEnd endAfter;
     private SubscriptionRetryPolicy retry;
     private WebhookConfig webhook;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Map<String, String> metadata;
 
     @JsonCreator
     public SubscriptionUpdate(
@@ -62,6 +67,10 @@ public class SubscriptionUpdate {
         return webhook;
     }
 
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     @Override
     public String toString() {
         return "SubscriptionUpdate{" +
@@ -72,6 +81,7 @@ public class SubscriptionUpdate {
                 ", endAfter=" + endAfter + '\'' +
                 ", retry=" + retry + '\'' +
                 ", webhook=" + webhook +
+                ", metadata=" + metadata +
                 '}';
     }
 
@@ -83,9 +93,17 @@ public class SubscriptionUpdate {
         private SubscriptionEnd endAfter;
         private SubscriptionRetryPolicy retry;
         private WebhookConfig webhook;
+        private Map<String, String> metadata;
+
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
 
         public SubscriptionUpdate build() {
-            return new SubscriptionUpdate(amount, currency, interval, frequency, endAfter, retry, webhook);
+            SubscriptionUpdate result = new SubscriptionUpdate(amount, currency, interval, frequency, endAfter, retry, webhook);
+            result.metadata = metadata;
+            return result;
         }
 
         public Builder withAmount(BigDecimal amount) {

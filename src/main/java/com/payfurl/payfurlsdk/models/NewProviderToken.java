@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -13,6 +14,11 @@ public class NewProviderToken {
     private final Map<String, String> providerTokenData;
     private final Map<String, String> metadata;
     private final boolean verify;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private PaymentType type;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String fallbackPaymentMethodId;
 
     @JsonCreator
     public NewProviderToken(@JsonProperty("ProviderId") String providerId,
@@ -53,6 +59,16 @@ public class NewProviderToken {
         return verify;
     }
 
+    /** What the provider token pays with, e.g. BANKPAYMENT; null lets the gateway decide. */
+    public PaymentType getType() {
+        return type;
+    }
+
+    /** The payment method to charge when this one fails. */
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
     public static class Builder {
         private String providerId;
         private String providerToken;
@@ -60,6 +76,8 @@ public class NewProviderToken {
         private Map<String, String> providerTokenData;
         private Map<String, String> metadata;
         private boolean verify;
+        private PaymentType type;
+        private String fallbackPaymentMethodId;
 
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
@@ -91,8 +109,23 @@ public class NewProviderToken {
             return this;
         }
 
+        /** What the provider token pays with, e.g. BANKPAYMENT; null lets the gateway decide. */
+        public Builder withType(PaymentType type) {
+            this.type = type;
+            return this;
+        }
+
+        /** The payment method to charge when this one fails. */
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
         public NewProviderToken build() {
-            return new NewProviderToken(providerId, providerToken, email, providerTokenData, metadata, verify);
+            NewProviderToken result = new NewProviderToken(providerId, providerToken, email, providerTokenData, metadata, verify);
+            result.type = type;
+            result.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return result;
         }
     }
 }

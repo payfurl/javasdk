@@ -94,7 +94,7 @@ public class WebhookSubscriptionData {
                 "webhookSubscriptionId='" + webhookSubscriptionId + '\'' +
                 ", accountId='" + accountId + '\'' +
                 ", url='" + url + '\'' +
-                ", authorization='" + authorization + '\'' +
+                ", authorization='" + Mask.secret(authorization) + '\'' +
                 ", types=" + types +
                 ", createdDate=" + createdDate +
                 ", dateRemoved=" + dateRemoved +

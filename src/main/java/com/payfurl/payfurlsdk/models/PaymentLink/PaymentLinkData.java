@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models.PaymentLink;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +12,6 @@ public class PaymentLinkData {
     private final String paymentLinkId;
     private final Date dateAdded;
     private final String accountId;
-    private final String secretKey;
     private final String publicKey;
     private final String title;
     private final BigDecimal amount;
@@ -26,12 +26,14 @@ public class PaymentLinkData {
     private final Map<String, String> metadata;
 
 
+    private Integer countPayments;
+    private String invoiceId;
+
     public PaymentLinkData(
             @JsonProperty("Url") String url,
             @JsonProperty("PaymentLinkId") String paymentLinkId,
             @JsonProperty("DateAdded") Date dateAdded,
             @JsonProperty("AccountId") String accountId,
-            @JsonProperty("SecretKey") String secretKey,
             @JsonProperty("PublicKey") String publicKey,
             @JsonProperty("Title") String title,
             @JsonProperty("Amount") BigDecimal amount,
@@ -48,7 +50,6 @@ public class PaymentLinkData {
         this.paymentLinkId = paymentLinkId;
         this.dateAdded = dateAdded;
         this.accountId = accountId;
-        this.secretKey = secretKey;
         this.publicKey = publicKey;
         this.title = title;
         this.amount = amount;
@@ -77,10 +78,6 @@ public class PaymentLinkData {
 
     public String getAccountId() {
         return accountId;
-    }
-
-    public String getSecretKey() {
-        return secretKey;
     }
 
     public String getPublicKey() {
@@ -131,6 +128,15 @@ public class PaymentLinkData {
         return metadata;
     }
 
+    /** How many payments the link has taken. */
+    public Integer getCountPayments() {
+        return countPayments;
+    }
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
     @Override
     public String toString() {
         return "PaymentLinkData{" +
@@ -138,7 +144,6 @@ public class PaymentLinkData {
                 ", paymentLinkId='" + paymentLinkId + '\'' +
                 ", dateAdded=" + dateAdded +
                 ", accountId='" + accountId + '\'' +
-                ", secretKey='" + secretKey + '\'' +
                 ", publicKey='" + publicKey + '\'' +
                 ", title='" + title + '\'' +
                 ", amount=" + amount +
@@ -151,6 +156,8 @@ public class PaymentLinkData {
                 ", callToAction='" + callToAction + '\'' +
                 ", limitPayments=" + limitPayments +
                 ", metadata=" + metadata +
+                ", countPayments=" + countPayments +
+                ", invoiceId=" + invoiceId +
                 '}';
     }
 
@@ -159,7 +166,6 @@ public class PaymentLinkData {
         private String paymentLinkId;
         private Date dateAdded;
         private String accountId;
-        private String secretKey;
         private String publicKey;
         private String title;
         private BigDecimal amount;
@@ -172,6 +178,8 @@ public class PaymentLinkData {
         private String callToAction;
         private Integer limitPayments;
         private Map<String, String> metadata;
+        private Integer countPayments;
+        private String invoiceId;
 
         public Builder withUrl(String url) {
             this.url = url;
@@ -190,11 +198,6 @@ public class PaymentLinkData {
 
         public Builder withAccountId(String accountId) {
             this.accountId = accountId;
-            return this;
-        }
-
-        public Builder withSecretKey(String secretKey) {
-            this.secretKey = secretKey;
             return this;
         }
 
@@ -258,12 +261,26 @@ public class PaymentLinkData {
             return this;
         }
 
+        /** How many payments the link has taken. */
+        public Builder withCountPayments(Integer countPayments) {
+            this.countPayments = countPayments;
+            return this;
+        }
+
+        public Builder withInvoiceId(String invoiceId) {
+            this.invoiceId = invoiceId;
+            return this;
+        }
+
         public PaymentLinkData build() {
-            return new PaymentLinkData(
-                    url, paymentLinkId, dateAdded, accountId, secretKey, publicKey,
+            PaymentLinkData result = new PaymentLinkData(
+                    url, paymentLinkId, dateAdded, accountId, publicKey,
                     title, amount, currency, allowedPaymentTypes, description, image,
                     confirmationMessage, redirectUrl, callToAction, limitPayments, metadata
             );
+            result.countPayments = countPayments;
+            result.invoiceId = invoiceId;
+            return result;
         }
     }
 }

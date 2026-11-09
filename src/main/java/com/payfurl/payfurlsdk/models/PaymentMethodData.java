@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class PaymentMethodData {
     private final String paymentMethodId;
-    private final String userId;
     private final String customerId;
     private final String type;
     private final CardData card;
@@ -34,7 +33,6 @@ public class PaymentMethodData {
 
     @JsonCreator
     public PaymentMethodData(@JsonProperty("PaymentMethodId") String paymentMethodId,
-                             @JsonProperty("UserId") String userId,
                              @JsonProperty("CustomerId") String customerId,
                              @JsonProperty("Type") String type,
                              @JsonProperty("Card") CardData card,
@@ -58,7 +56,6 @@ public class PaymentMethodData {
                              @JsonProperty("FallbackPaymentMethodId") String fallbackPaymentMethodId,
                              @JsonProperty("Metadata") Map<String, String> metadata) {
         this.paymentMethodId = paymentMethodId;
-        this.userId = userId;
         this.customerId = customerId;
         this.type = type;
         this.card = card;
@@ -85,10 +82,6 @@ public class PaymentMethodData {
 
     public String getPaymentMethodId() {
         return paymentMethodId;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public String getCustomerId() {
@@ -181,7 +174,6 @@ public class PaymentMethodData {
 
     public static class Builder {
         private String paymentMethodId;
-        private String userId;
         private String customerId;
         private String type;
         private CardData card;
@@ -207,11 +199,6 @@ public class PaymentMethodData {
 
         public Builder withPaymentMethodId(String paymentMethodId) {
             this.paymentMethodId = paymentMethodId;
-            return this;
-        }
-
-        public Builder withUserId(String userId) {
-            this.userId = userId;
             return this;
         }
 
@@ -326,7 +313,7 @@ public class PaymentMethodData {
         }
 
         public PaymentMethodData build() {
-            return new PaymentMethodData(paymentMethodId, userId, customerId, type, card, bankPayment,
+            return new PaymentMethodData(paymentMethodId, customerId, type, card, bankPayment,
                     providerId, providerType, dateAdded, email, providerPaymentMethodId,
                     providerPaymentMethodData, customer, provider, payTo, networkToken,
                     vaultId, payToStatus, ip, dateRemoved, token, networkTokenId,

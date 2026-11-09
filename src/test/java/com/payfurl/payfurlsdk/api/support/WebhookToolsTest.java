@@ -30,4 +30,15 @@ class WebhookToolsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Request body is not from PayFURL");
     }
+
+    @Test
+    @DisplayName("A wrong, missing or empty signature is rejected")
+    void testRejectsBadSignatures() {
+        for (String signature : new String[]{"NouNAqBs+nXf14cNSttXJ1cqnjsZCgEZBr6DktVZLpA=", "", null, "not base64"}) {
+            Throwable throwable = catchThrowable(() -> WebhookTools.deserializeTransaction(TEST_SAMPLE_REQUEST_BODY, signature, TEST_WEBHOOK_SIGNATURE_KEY));
+            assertThat(throwable).as(String.valueOf(signature)).isInstanceOf(IllegalArgumentException.class);
+        }
+        assertThat(catchThrowable(() -> WebhookTools.deserializeTransaction(TEST_SAMPLE_REQUEST_BODY, TEST_PAYFURL_REQUEST_HEADER_SIGNATURE, "")))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }

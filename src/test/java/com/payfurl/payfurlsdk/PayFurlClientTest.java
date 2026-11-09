@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.BDDAssertions.then;
 
 class PayFurlClientTest {
-    private static final String SDK_VERSION = "2022.0.1";
     private static final String LOCAL_URL = "https://localhost:5001";
     private static final String SANDBOX_URL = "https://sandbox-api.payfurl.com";
     private static final String PRODUCTION_URL = "https://api.payfurl.com";
@@ -109,7 +108,8 @@ class PayFurlClientTest {
     @Test
     @DisplayName("Given PayFurlClient When getSdkVersion is called Then return sdk version")
     void testGetSdkVersion() {
-        then(dummyProdConfiguredClient.getSdkVersion()).isEqualTo(SDK_VERSION);
+        // The build's version, from payfurlsdk-version.properties (filtered by Maven).
+        then(dummyProdConfiguredClient.getSdkVersion()).isNotEmpty().doesNotStartWith("${").isNotEqualTo("unknown");
     }
 
     @Test

@@ -26,5 +26,13 @@ public interface PayFurlClientSdk extends Configuration {
 
     PaymentLinkApi getPaymentLinkApi();
 
+    InfoApi getInfoApi();
+
+    DisputeApi getDisputeApi();
+
+    SettlementApi getSettlementApi();
+
+    RootApi getRootApi();
+
     String getSdkVersion();
 }

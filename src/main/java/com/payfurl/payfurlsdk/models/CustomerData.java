@@ -16,6 +16,11 @@ public class CustomerData {
     private final PaymentMethodSummary defaultPaymentMethod;
     private final Address address;
 
+    @JsonProperty("ip")
+    private String ip;
+    @JsonProperty("dateRemoved")
+    private Date dateRemoved;
+
     @JsonCreator
     public CustomerData(@JsonProperty("CustomerId") String customerId,
                         @JsonProperty("Reference") String reference,
@@ -71,6 +76,14 @@ public class CustomerData {
 
     public Address getAddress() {
         return address;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public Date getDateRemoved() {
+        return dateRemoved;
     }
 
     public static class Builder {

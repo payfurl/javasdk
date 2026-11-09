@@ -1,8 +1,8 @@
 package com.payfurl.payfurlsdk.http.client.support;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,7 +45,9 @@ public class Headers {
             return;
         }
 
-        this.headers.put(headerName, Lists.newArrayList(value));
+        List<String> values = new ArrayList<>();
+        values.add(value);
+        this.headers.put(headerName, values);
     }
 
     public void add(String headerName, List<String> values) {

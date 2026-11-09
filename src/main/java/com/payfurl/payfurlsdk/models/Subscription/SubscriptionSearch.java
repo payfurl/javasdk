@@ -17,6 +17,8 @@ public class SubscriptionSearch {
     private final String status;
     private final String sortBy;
 
+    private String paymentMethodId;
+
     @JsonCreator
     public SubscriptionSearch(@JsonProperty("Limit") Integer limit,
                               @JsonProperty("Skip") Integer skip,
@@ -65,6 +67,10 @@ public class SubscriptionSearch {
 
     public String getSortBy() { return sortBy; }
 
+    public String getPaymentMethodId() {
+        return paymentMethodId;
+    }
+
     @Override
     public String toString() {
         return "BatchSearch{" +
@@ -77,6 +83,7 @@ public class SubscriptionSearch {
                 ", currency='" + currency + '\'' +
                 ", status='" + status + '\'' +
                 ", sortBy='" + sortBy + '\'' +
+                ", paymentMethodId=" + paymentMethodId +
                 '}';
     }
 
@@ -90,6 +97,7 @@ public class SubscriptionSearch {
         private String currency;
         private String status;
         private String sortBy;
+        private String paymentMethodId;
 
         public Builder withLimit(Integer limit) {
             this.limit = limit;
@@ -136,8 +144,15 @@ public class SubscriptionSearch {
             return this;
         }
 
+        public Builder withPaymentMethodId(String paymentMethodId) {
+            this.paymentMethodId = paymentMethodId;
+            return this;
+        }
+
         public SubscriptionSearch build() {
-            return new SubscriptionSearch(limit, skip, addedAfter, addedBefore, amountLessThan, amountGreaterThan, currency, status, sortBy);
+            SubscriptionSearch result = new SubscriptionSearch(limit, skip, addedAfter, addedBefore, amountLessThan, amountGreaterThan, currency, status, sortBy);
+            result.paymentMethodId = paymentMethodId;
+            return result;
         }
     }
 }

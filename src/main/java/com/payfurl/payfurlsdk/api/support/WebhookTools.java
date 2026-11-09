@@ -7,6 +7,7 @@ import com.payfurl.payfurlsdk.models.WebhookTransaction;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.Base64;
 
 public class WebhookTools {
@@ -33,6 +34,9 @@ public class WebhookTools {
     }
 
     private static boolean isFromPayFurl(String requestBody, String signatureHeader, String signatureKey) {
+        if (requestBody == null || signatureHeader == null || signatureKey == null || signatureKey.isEmpty()) {
+            return false;
+        }
         byte[] requestBytes = requestBody.getBytes(StandardCharsets.UTF_8);
         byte[] secret = signatureKey.getBytes(StandardCharsets.UTF_8);
 
@@ -43,8 +47,8 @@ public class WebhookTools {
 
             byte[] hash = hmac.doFinal(requestBytes);
 
-            String hashString = Base64.getEncoder().encodeToString(hash);
-            return hashString.equals(signatureHeader);
+            // Constant time, so the comparison doesn't tell an attacker how much of a forged signature is right.
+            return MessageDigest.isEqual(Base64.getEncoder().encode(hash), signatureHeader.trim().getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             return false;
         }

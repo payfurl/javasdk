@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class PayToProviderOptions {
     private String providerId;
-    private BigDecimal minimumAmount;
+    private BigDecimal maximumAmount;
     private String description;
 
     public String getProviderId() {
@@ -15,12 +15,13 @@ public class PayToProviderOptions {
         this.providerId = providerId;
     }
 
-    public BigDecimal getMinimumAmount() {
-        return minimumAmount;
+    /** The provider's PayTo maximum amount. */
+    public BigDecimal getMaximumAmount() {
+        return maximumAmount;
     }
 
-    public void setMinimumAmount(BigDecimal minimumAmount) {
-        this.minimumAmount = minimumAmount;
+    public void setMaximumAmount(BigDecimal maximumAmount) {
+        this.maximumAmount = maximumAmount;
     }
 
     public String getDescription() {

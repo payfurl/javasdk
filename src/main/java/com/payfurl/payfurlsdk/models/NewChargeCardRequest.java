@@ -30,6 +30,9 @@ public class NewChargeCardRequest {
     private final String lastName;
     private final Geolocation geolocation;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+
     @JsonCreator
     public NewChargeCardRequest(@JsonProperty("Amount") BigDecimal amount,
                                 @JsonProperty("Currency") String currency,
@@ -153,6 +156,11 @@ public class NewChargeCardRequest {
         return geolocation;
     }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
     @Override
     public String toString() {
         return "NewChargeCardRequest{" +
@@ -176,6 +184,7 @@ public class NewChargeCardRequest {
                 ", firstName=" + firstName +
                 ", lastName=" + lastName +
                 ", geolocation=" + geolocation +
+                ", ip=" + ip +
                 '}';
     }
 
@@ -200,6 +209,7 @@ public class NewChargeCardRequest {
         private String firstName;
         private String lastName;
         private Geolocation geolocation;
+        private String ip;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -301,8 +311,14 @@ public class NewChargeCardRequest {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public NewChargeCardRequest build() {
-            return new NewChargeCardRequest(
+            NewChargeCardRequest result = new NewChargeCardRequest(
                     amount,
                     currency,
                     providerId,
@@ -323,6 +339,8 @@ public class NewChargeCardRequest {
                     firstName,
                     lastName,
                     geolocation);
+            result.ip = ip;
+            return result;
         }
     }
 }

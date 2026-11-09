@@ -28,7 +28,6 @@ public class ChargeData {
     public final List<FailureData> failedAttempts;
     public final CustomerDataSummary customer;
     public final ProviderSummary provider;
-    public final String threeDsServerTransId;
     public final boolean threeDsVerified;
     public final BigDecimal authorisationAmount;
     private final Initiator initiator;
@@ -38,6 +37,11 @@ public class ChargeData {
     private final String paymentTokenId;
     private final String subscriptionId;
     private final Map<String, String> metadata;
+
+    @JsonProperty("ip")
+    private String ip;
+    @JsonProperty("ipInfo")
+    private GeolocationInfo ipInfo;
 
     @JsonCreator
     public ChargeData(@JsonProperty("ChargeId") String chargeId,
@@ -59,7 +63,6 @@ public class ChargeData {
                       @JsonProperty("FailedAttempts") List<FailureData> failedAttempts,
                       @JsonProperty("Customer") CustomerDataSummary customer,
                       @JsonProperty("Provider") ProviderSummary provider,
-                      @JsonProperty("ThreeDsServerTransId") String threeDsServerTransId,
                       @JsonProperty("ThreeDsVerified") boolean threeDsVerified,
                       @JsonProperty("AuthorisationAmount") BigDecimal authorisationAmount,
                       @JsonProperty("Initiator") Initiator initiator,
@@ -88,7 +91,6 @@ public class ChargeData {
         this.failedAttempts = failedAttempts;
         this.customer = customer;
         this.provider = provider;
-        this.threeDsServerTransId = threeDsServerTransId;
         this.threeDsVerified = threeDsVerified;
         this.authorisationAmount = authorisationAmount;
         this.initiator = initiator;
@@ -176,10 +178,6 @@ public class ChargeData {
         return provider;
     }
 
-    public String getThreeDsServerTransId() {
-        return threeDsServerTransId;
-    }
-
     public boolean isThreeDsVerified() {
         return threeDsVerified;
     }
@@ -216,6 +214,16 @@ public class ChargeData {
         return metadata;
     }
 
+    /** The payer's IP address the charge was made with. */
+    public String getIp() {
+        return ip;
+    }
+
+    /** Where the payer's IP address is, when payFURL could look it up. */
+    public GeolocationInfo getIpInfo() {
+        return ipInfo;
+    }
+
     @Override
     public String toString() {
         return "ChargeData{" +
@@ -238,7 +246,6 @@ public class ChargeData {
                 ", failedAttempts=" + failedAttempts +
                 ", customer=" + customer +
                 ", provider=" + provider +
-                ", threeDsServerTransId='" + threeDsServerTransId + '\'' +
                 ", threeDsVerified=" + threeDsVerified +
                 ", authorisationAmount=" + authorisationAmount +
                 ", initiator=" + initiator +
@@ -248,6 +255,8 @@ public class ChargeData {
                 ", paymentTokenId=" + paymentTokenId +
                 ", subscriptionId=" + subscriptionId +
                 ", metadata=" + metadata +
+                ", ip=" + ip +
+                ", ipInfo=" + ipInfo +
                 '}';
     }
 }

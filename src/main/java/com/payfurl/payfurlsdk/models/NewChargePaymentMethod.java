@@ -30,6 +30,9 @@ public class NewChargePaymentMethod {
     private final Geolocation geolocation;
     private final boolean recurring;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+
     @JsonCreator
     public NewChargePaymentMethod(@JsonProperty("Amount") BigDecimal amount,
                                   @JsonProperty("Currency") String currency,
@@ -153,6 +156,11 @@ public class NewChargePaymentMethod {
         return recurring;
     }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
     @Override
     public String toString() {
         return "NewChargePaymentMethod{" +
@@ -176,6 +184,7 @@ public class NewChargePaymentMethod {
                 ", lastName=" + lastName +
                 ", geolocation=" + geolocation +
                 ", recurring=" + recurring +
+                ", ip=" + ip +
                 '}';
     }
 
@@ -200,6 +209,7 @@ public class NewChargePaymentMethod {
         private String lastName;
         private Geolocation geolocation;
         private boolean recurring = false;
+        private String ip;
 
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
@@ -301,8 +311,14 @@ public class NewChargePaymentMethod {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
         public NewChargePaymentMethod build() {
-            return new NewChargePaymentMethod(
+            NewChargePaymentMethod result = new NewChargePaymentMethod(
                     amount,
                     currency,
                     reference,
@@ -323,6 +339,8 @@ public class NewChargePaymentMethod {
                     lastName,
                     geolocation,
                     recurring);
+            result.ip = ip;
+            return result;
         }
     }
 }

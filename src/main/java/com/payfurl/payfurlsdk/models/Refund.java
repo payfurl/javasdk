@@ -10,6 +10,9 @@ public class Refund {
     private final BigDecimal amount;
     private final Date dateAdded;
 
+    @JsonProperty("comment")
+    private String comment;
+
     @JsonCreator
     public Refund(@JsonProperty("Amount") BigDecimal amount,
                   @JsonProperty("DateAdded") Date dateAdded) {
@@ -25,11 +28,16 @@ public class Refund {
         return dateAdded;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
     @Override
     public String toString() {
         return "Refund{" +
                 "amount=" + amount +
                 ", dateAdded=" + dateAdded +
+                ", comment=" + comment +
                 '}';
     }
 }

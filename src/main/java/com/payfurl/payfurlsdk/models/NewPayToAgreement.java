@@ -1,7 +1,10 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
 
 public class NewPayToAgreement {
     private final String providerId;
@@ -11,6 +14,13 @@ public class NewPayToAgreement {
     private final Integer maximumAmount;
     private final String ip;
     private final boolean setDefault;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String fallbackPaymentMethodId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private WebhookConfig webhook;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Map<String, String> metadata;
 
     @JsonCreator
     public NewPayToAgreement(@JsonProperty("ProviderId") String providerId,
@@ -57,6 +67,20 @@ public class NewPayToAgreement {
         return setDefault;
     }
 
+    /** The payment method to charge when this one fails. */
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
+    /** Where to send this payment method's webhooks. */
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
     public static class Builder {
         private String providerId;
         private String payerName;
@@ -65,6 +89,9 @@ public class NewPayToAgreement {
         private Integer maximumAmount;
         private String ip;
         private boolean setDefault;
+        private String fallbackPaymentMethodId;
+        private WebhookConfig webhook;
+        private Map<String, String> metadata;
 
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
@@ -101,8 +128,29 @@ public class NewPayToAgreement {
             return this;
         }
 
+        /** The payment method to charge when this one fails. */
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
+        /** Where to send this payment method's webhooks. */
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
+        public Builder withMetadata(Map<String, String> metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public NewPayToAgreement build() {
-            return new NewPayToAgreement(providerId, payerName, payerPayIdDetails, description, maximumAmount, ip, setDefault);
+            NewPayToAgreement result = new NewPayToAgreement(providerId, payerName, payerPayIdDetails, description, maximumAmount, ip, setDefault);
+            result.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            result.webhook = webhook;
+            result.metadata = metadata;
+            return result;
         }
     }
 }

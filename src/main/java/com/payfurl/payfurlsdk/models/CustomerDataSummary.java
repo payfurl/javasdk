@@ -14,6 +14,9 @@ public class CustomerDataSummary {
     public final String phone;
     public final Date dateAdded;
 
+    @JsonProperty("dateRemoved")
+    private Date dateRemoved;
+
     @JsonCreator
     public CustomerDataSummary(@JsonProperty("CustomerId") String customerId,
                                @JsonProperty("Reference") String reference,
@@ -59,6 +62,10 @@ public class CustomerDataSummary {
         return dateAdded;
     }
 
+    public Date getDateRemoved() {
+        return dateRemoved;
+    }
+
     @Override
     public String toString() {
         return "CustomerDataSummary{" +
@@ -69,6 +76,7 @@ public class CustomerDataSummary {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", dateAdded=" + dateAdded +
+                ", dateRemoved=" + dateRemoved +
                 '}';
     }
 }

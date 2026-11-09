@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -11,19 +12,19 @@ public class UpdateProvider {
     private final Map<String, String> authenticationParameters;
     private final String providerCountry;
     private final String currency;
-    private final String threeDsProviderId;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Map<String, String> additionalParameters;
 
     @JsonCreator
     public UpdateProvider(@JsonProperty("Name") String name,
                           @JsonProperty("AuthenticationParameters") Map<String, String> authenticationParameters,
                           @JsonProperty("ProviderCountry") String providerCountry,
-                          @JsonProperty("Currency") String currency,
-                          @JsonProperty("ThreeDsProviderId") String threeDsProviderId) {
+                          @JsonProperty("Currency") String currency) {
         this.name = name;
         this.authenticationParameters = authenticationParameters;
         this.providerCountry = providerCountry;
         this.currency = currency;
-        this.threeDsProviderId = threeDsProviderId;
     }
 
     public String getName() {
@@ -42,18 +43,19 @@ public class UpdateProvider {
         return currency;
     }
 
-    public String getThreeDsProviderId() {
-        return threeDsProviderId;
+    /** The provider's additional (non-secret) parameters. */
+    public Map<String, String> getAdditionalParameters() {
+        return additionalParameters;
     }
 
     @Override
     public String toString() {
         return "UpdateProvider{" +
                 "name='" + name + '\'' +
-                ", authenticationParameters='" + authenticationParameters + '\'' +
+                ", authenticationParameters='" + Mask.secretValues(authenticationParameters) + '\'' +
                 ", providerCountry=" + providerCountry +
                 ", currency=" + currency +
-                ", threeDsProviderId=" + threeDsProviderId +
+                ", additionalParameters=" + additionalParameters +
                 '}';
     }
 
@@ -62,7 +64,7 @@ public class UpdateProvider {
         private Map<String, String> authenticationParameters;
         private String providerCountry;
         private String currency;
-        private String threeDsProviderId;
+        private Map<String, String> additionalParameters;
 
         public Builder withName(String name) {
             this.name = name;
@@ -84,13 +86,16 @@ public class UpdateProvider {
             return this;
         }
 
-        public Builder withThreeDsProviderId(String threeDsProviderId) {
-            this.threeDsProviderId = threeDsProviderId;
+        /** The provider's additional (non-secret) parameters. */
+        public Builder withAdditionalParameters(Map<String, String> additionalParameters) {
+            this.additionalParameters = additionalParameters;
             return this;
         }
 
         public UpdateProvider build() {
-            return new UpdateProvider(name, authenticationParameters, providerCountry, currency, threeDsProviderId);
+            UpdateProvider result = new UpdateProvider(name, authenticationParameters, providerCountry, currency);
+            result.additionalParameters = additionalParameters;
+            return result;
         }
     }
 }

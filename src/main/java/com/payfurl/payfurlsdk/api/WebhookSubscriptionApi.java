@@ -24,7 +24,7 @@ public class WebhookSubscriptionApi extends BaseApi {
     }
 
     public WebhookSubscriptionData createWebhookSubscription(NewWebhookSubscription data) throws ApiException {
-        return executePostRequestWith(webhookSubscriptionApiBaseEndpoint + "/", data, WebhookSubscriptionData.class);
+        return executePostRequestWith(webhookSubscriptionApiBaseEndpoint, data, WebhookSubscriptionData.class);
     }
 
     public WebhookSubscriptionData getWebhookSubscription(String webhookSubscriptionId) throws ApiException {

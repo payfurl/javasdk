@@ -40,6 +40,7 @@ public class SubscriptionApi extends BaseApi {
         queryParameters.put("Currency", search.getCurrency());
         queryParameters.put("Status", search.getStatus());
         queryParameters.put("SortBy", search.getSortBy());
+        queryParameters.put("PaymentMethodId", search.getPaymentMethodId());
 
         return executeGetRequestWith(subscriptionApiBaseEndpoint, queryParameters, SubscriptionList.class);
     }

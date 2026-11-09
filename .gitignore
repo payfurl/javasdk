@@ -25,3 +25,4 @@ appsettings.json
 .vscode/settings.json
 pom_.xml
 .gitconfig
+.flattened-pom.xml

@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -13,6 +14,11 @@ public class NewPaymentMethodBankPayment {
     private final BankPaymentInformation bankPaymentInformation;
     private final boolean setDefault;
     private final Map<String, String> metadata;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String fallbackPaymentMethodId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private WebhookConfig webhook;
 
     @JsonCreator
     public NewPaymentMethodBankPayment(@JsonProperty("FirstName") String firstName,
@@ -53,6 +59,16 @@ public class NewPaymentMethodBankPayment {
         return metadata;
     }
 
+    /** The payment method to charge when this one fails. */
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
+    /** Where to send this payment method's webhooks. */
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
     @Override
     public String toString() {
         return "NewPaymentMethodBankPayment{" +
@@ -62,6 +78,8 @@ public class NewPaymentMethodBankPayment {
                 ", bankPaymentInformation=" + bankPaymentInformation +
                 ", setDefault=" + setDefault +
                 ", metadata=" + metadata +
+                ", fallbackPaymentMethodId=" + fallbackPaymentMethodId +
+                ", webhook=" + webhook +
                 '}';
     }
 
@@ -72,6 +90,8 @@ public class NewPaymentMethodBankPayment {
         private BankPaymentInformation bankPaymentInformation;
         private boolean setDefault;
         private Map<String, String> metadata;
+        private String fallbackPaymentMethodId;
+        private WebhookConfig webhook;
 
         public Builder withFirstName(String firstName) {
             this.firstName = firstName;
@@ -103,8 +123,23 @@ public class NewPaymentMethodBankPayment {
             return this;
         }
 
+        /** The payment method to charge when this one fails. */
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
+        /** Where to send this payment method's webhooks. */
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
         public NewPaymentMethodBankPayment build() {
-            return new NewPaymentMethodBankPayment(firstName, lastName, providerId, bankPaymentInformation, setDefault, metadata);
+            NewPaymentMethodBankPayment result = new NewPaymentMethodBankPayment(firstName, lastName, providerId, bankPaymentInformation, setDefault, metadata);
+            result.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            result.webhook = webhook;
+            return result;
         }
     }
 }

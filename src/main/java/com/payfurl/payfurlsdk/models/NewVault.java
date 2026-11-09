@@ -41,8 +41,8 @@ public class NewVault {
     @Override
     public String toString() {
         return "NewVault{" +
-                "cardNumber='" + cardNumber + '\'' +
-                ", ccv='" + ccv + '\'' +
+                "cardNumber='" + Mask.lastFour(cardNumber) + '\'' +
+                ", ccv='" + Mask.secret(ccv) + '\'' +
                 ", expireDate=" + expireDate +
                 ", expireSeconds=" + expireSeconds +
                 '}';

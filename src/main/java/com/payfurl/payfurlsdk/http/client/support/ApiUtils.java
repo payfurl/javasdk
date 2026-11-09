@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Preconditions;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +19,9 @@ public class ApiUtils {
     private static final Pattern ABSOLUTE_URL_VALIDATION_PATTERN = Pattern.compile("^(https?://[^/]+)");
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+            // A value the API adds to an enum later reads as that enum's UNKNOWN instead of failing the response.
+            .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE, true);
 
     static {
         OBJECT_MAPPER.configOverride(BigDecimal.class).setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
@@ -43,9 +45,9 @@ public class ApiUtils {
 
     public static void appendUrlWithQueryParameters(StringBuilder queryBuilder,
                                                     Map<String, Object> parameters) {
-        Preconditions.checkNotNull(queryBuilder);
+        Objects.requireNonNull(queryBuilder);
 
-        if (MapUtils.isEmpty(parameters)) {
+        if (parameters == null || parameters.isEmpty()) {
             return;
         }
 
@@ -69,13 +71,27 @@ public class ApiUtils {
 
             areParamsPresent = true;
             String key = entry.getKey();
-            String keyValuePair = String.format("%s=%s&", key, tryUrlEncode(value.toString(), false));
+            String keyValuePair = String.format("%s=%s&", key, tryUrlEncode(toQueryValue(value), false));
             objBuilder.append(keyValuePair);
         }
 
         if (areParamsPresent) {
             objBuilder.setLength(objBuilder.length() - 1);
         }
+    }
+
+    /**
+     * A query value as the API's binders read it: a date as ISO-8601 in UTC ({@code 2026-11-07T10:15:30Z}), a decimal
+     * without an exponent ({@code 1000}, not {@code 1E+3}).
+     */
+    static String toQueryValue(Object value) {
+        if (value instanceof Date) {
+            return ((Date) value).toInstant().toString();
+        }
+        if (value instanceof BigDecimal) {
+            return ((BigDecimal) value).toPlainString();
+        }
+        return value.toString();
     }
 
     public static String cleanUrl(StringBuilder urlBuilder) {

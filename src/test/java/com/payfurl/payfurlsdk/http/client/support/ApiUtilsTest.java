@@ -1,7 +1,6 @@
 package com.payfurl.payfurlsdk.http.client.support;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.collect.ImmutableMap;
 import com.payfurl.payfurlsdk.models.CardData;
 import com.payfurl.payfurlsdk.models.IinData;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +19,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 class ApiUtilsTest {
     private static final String SAMPLE_URL_PART = "url";
     private static final String SAMPLE_SERIALIZED_STRING =
-            "{\"cardNumber\":\"11111\",\"expiryDate\":\"2022-12-22\",\"cardholder\":\"cardHolder\",\"type\":\"type\",\"iinData\":{\"scheme\":\"scheme\",\"country\":\"country\",\"issuer\":\"issuer\",\"countryCode\":\"countryCode\",\"cardType\":\"cardType\"}}";
+            "{\"cardNumber\":\"11111\",\"expiryDate\":\"2022-12-22\",\"cardholder\":\"cardHolder\",\"type\":\"type\",\"iinData\":{\"scheme\":\"scheme\",\"country\":\"country\",\"issuer\":\"issuer\",\"countryCode\":\"countryCode\",\"cardType\":\"cardType\"},\"cardType\":null,\"cardIin\":null,\"ccvCheck\":null,\"threeDSServerTransID\":null}";
     private static final String PAYFURL_URL_PART = "payfurl.com";
     private static final String PAYFURL_COM_URL = String.format("https://%s.com", PAYFURL_URL_PART);
     private static final String PAYFURL_COM_URL_WITH_FORWARD_SLASH = String.format("https://%s.com/", PAYFURL_URL_PART);
@@ -69,25 +68,25 @@ class ApiUtilsTest {
         return Stream.of(
                 Arguments.of("Query params with one key-value is passed",
                         SAMPLE_URL_PART,
-                        ImmutableMap.of("k1", "v1"),
+                        mapOf("k1", "v1"),
                         String.format("%s?%s=%s", SAMPLE_URL_PART, "k1", "v1")
                 ),
 
                 Arguments.of("No query params are passed",
                         SAMPLE_URL_PART,
-                        ImmutableMap.of(),
+                        mapOf(),
                         SAMPLE_URL_PART
                 ),
 
                 Arguments.of("No query params and no URL part are passed",
                         StringUtils.EMPTY,
-                        ImmutableMap.of(),
+                        mapOf(),
                         StringUtils.EMPTY
                 ),
 
                 Arguments.of("Query params with two different key-value are passed",
                         SAMPLE_URL_PART,
-                        ImmutableMap.of(
+                        mapOf(
                                 "k1", "v1",
                                 "k2", 25
                         ),
@@ -153,5 +152,19 @@ class ApiUtilsTest {
         ApiUtils.appendUrlWithQueryParameters(queryBuilder, queryParams);
 
         then(queryBuilder.toString()).isEqualTo(expectedFullUrl);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <K, V> java.util.Map<K, V> mapOf(Object... keysAndValues) {
+        java.util.Map<K, V> map = new java.util.LinkedHashMap<>();
+        for (int i = 0; i < keysAndValues.length; i += 2) {
+            map.put((K) keysAndValues[i], (V) keysAndValues[i + 1]);
+        }
+        return map;
+    }
+
+    @SafeVarargs
+    private static <T> java.util.List<T> listOf(T... values) {
+        return java.util.Arrays.asList(values);
     }
 }

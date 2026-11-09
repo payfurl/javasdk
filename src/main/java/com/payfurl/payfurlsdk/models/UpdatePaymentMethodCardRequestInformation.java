@@ -1,11 +1,15 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UpdatePaymentMethodCardRequestInformation {
     public final String expiryDate;
     public final String cardholder;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String cardNumber;
 
     @JsonCreator
     public UpdatePaymentMethodCardRequestInformation(@JsonProperty("ExpiryDate") String expiryDate,
@@ -22,17 +26,24 @@ public class UpdatePaymentMethodCardRequestInformation {
         return cardholder;
     }
 
+    /** A new card number for the payment method. */
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
     @Override
     public String toString() {
         return "UpdatePaymentMethodCardRequestInformation{" +
                 ", expiryDate='" + expiryDate + '\'' +
                 ", cardholder='" + cardholder + '\'' +
+                ", cardNumber=" + Mask.lastFour(cardNumber) +
                 '}';
     }
     
     public static class Builder {
         private String expiryDate;
         private String cardholder;
+        private String cardNumber;
 
         public Builder withExpiryDate(String expiryDate) {
             this.expiryDate = expiryDate;
@@ -44,8 +55,16 @@ public class UpdatePaymentMethodCardRequestInformation {
             return this;
         }
         
+        /** A new card number for the payment method. */
+        public Builder withCardNumber(String cardNumber) {
+            this.cardNumber = cardNumber;
+            return this;
+        }
+
         public UpdatePaymentMethodCardRequestInformation build() {
-            return new UpdatePaymentMethodCardRequestInformation(expiryDate, cardholder);
+            UpdatePaymentMethodCardRequestInformation result = new UpdatePaymentMethodCardRequestInformation(expiryDate, cardholder);
+            result.cardNumber = cardNumber;
+            return result;
         }
     }
 }

@@ -10,6 +10,15 @@ public class CardData {
     public final String type;
     public final IinData iinData;
 
+    @JsonProperty("cardType")
+    private String cardType;
+    @JsonProperty("cardIin")
+    private String cardIin;
+    @JsonProperty("ccvCheck")
+    private Boolean ccvCheck;
+    @JsonProperty("threeDSServerTransID")
+    private String threeDSServerTransID;
+
     @JsonCreator
     public CardData(@JsonProperty("CardNumber") String cardNumber,
                     @JsonProperty("ExpiryDate") String expiryDate,
@@ -43,14 +52,34 @@ public class CardData {
         return iinData;
     }
 
+    public String getCardType() {
+        return cardType;
+    }
+
+    public String getCardIin() {
+        return cardIin;
+    }
+
+    public Boolean getCcvCheck() {
+        return ccvCheck;
+    }
+
+    public String getThreeDSServerTransID() {
+        return threeDSServerTransID;
+    }
+
     @Override
     public String toString() {
         return "CardData{" +
-                "cardNumber='" + cardNumber + '\'' +
+                "cardNumber='" + Mask.lastFour(cardNumber) + '\'' +
                 ", expiryDate='" + expiryDate + '\'' +
                 ", cardholder='" + cardholder + '\'' +
                 ", type='" + type + '\'' +
                 ", iinData='" + iinData + '\'' +
+                ", cardType=" + cardType +
+                ", cardIin=" + cardIin +
+                ", ccvCheck=" + ccvCheck +
+                ", threeDSServerTransID=" + threeDSServerTransID +
                 '}';
     }
 }

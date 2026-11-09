@@ -12,6 +12,7 @@ import com.payfurl.payfurlsdk.models.NewChargeCapture;
 import com.payfurl.payfurlsdk.models.NewChargeCardLeastCost;
 import com.payfurl.payfurlsdk.models.NewChargeCardRequest;
 import com.payfurl.payfurlsdk.models.NewChargeCustomer;
+import com.payfurl.payfurlsdk.models.NewChargeNetworkToken;
 import com.payfurl.payfurlsdk.models.NewChargePaymentMethod;
 import com.payfurl.payfurlsdk.models.NewChargeToken;
 import com.payfurl.payfurlsdk.models.NewRefund;
@@ -122,6 +123,9 @@ public class ChargeApi extends BaseApi {
         queryParameters.put("AddedAfter", searchData.getAddedAfter());
         queryParameters.put("AddedBefore", searchData.getAddedBefore());
         queryParameters.put("SortBy", searchData.getSortBy());
+        queryParameters.put("SortOrder", searchData.getSortOrder());
+        queryParameters.put("BatchId", searchData.getBatchId());
+        queryParameters.put("SubscriptionId", searchData.getSubscriptionId());
 
         return executeGetRequestWith(chargeApiBaseEndpoint, queryParameters, ChargeList.class);
     }
@@ -136,6 +140,7 @@ public class ChargeApi extends BaseApi {
     public ChargeData refund(NewRefund newRefund) throws ApiException {
         Map<String, Object> queryParameters = new HashMap<>();
         queryParameters.put("amount", newRefund.getRefundAmount());
+        queryParameters.put("comment", newRefund.getComment());
         return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + newRefund.getChargeId(), queryParameters, ChargeData.class);
     }
 
@@ -160,6 +165,17 @@ public class ChargeApi extends BaseApi {
      */
     public ChargeData voidCharge(String chargeId) throws ApiException {
         return executeDeleteRequestWith(chargeApiBaseEndpoint + "/" + chargeId + "/void", null, ChargeData.class);
+    }
+
+    /**
+     * Accept a payment with a network token (a scheme token and its cryptogram)
+     *
+     * @param newChargeNetworkToken the network token, amount and currency
+     * @return ChargeData object details
+     * @throws ApiException
+     */
+    public ChargeData createWithNetworkToken(NewChargeNetworkToken newChargeNetworkToken) throws ApiException {
+        return executePostRequestWith(chargeApiBaseEndpoint + "/network_token", newChargeNetworkToken, ChargeData.class);
     }
 
     /**

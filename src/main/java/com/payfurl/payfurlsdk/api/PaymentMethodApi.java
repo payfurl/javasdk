@@ -35,6 +35,17 @@ public class PaymentMethodApi extends BaseApi {
     }
 
     /**
+     * Add a payment method with a PayTo agreement
+     *
+     * @param newPayToAgreement the agreement
+     * @return the new payment method
+     * @throws ApiException
+     */
+    public PaymentMethodData createPaymentMethodWithPayTo(NewPayToAgreement newPayToAgreement) throws ApiException {
+        return executePostRequestWith(paymentMethodApiBaseEndpoint + "/payto", newPayToAgreement, PaymentMethodData.class);
+    }
+
+    /**
      * Add a payment method using a card
      *
      * @param newPaymentMethodCard
@@ -113,6 +124,8 @@ public class PaymentMethodApi extends BaseApi {
         queryParams.put("PaymentType", searchData.getPaymentType());
         queryParams.put("CardType", searchData.getCardType());
         queryParams.put("SortBy", searchData.getSortBy());
+        queryParams.put("SortOrder", searchData.getSortOrder());
+        queryParams.put("IncludeRemoved", searchData.getIncludeRemoved());
 
         return executeGetRequestWith(paymentMethodApiBaseEndpoint, queryParams, PaymentMethodList.class);
     }

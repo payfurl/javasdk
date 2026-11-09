@@ -1,6 +1,7 @@
 package com.payfurl.payfurlsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -15,6 +16,17 @@ public class NewPaymentMethodCard {
     private final boolean setDefault;
     private final Map<String, String> metadata;
     private final boolean skipExpiryDateValidation;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String ip;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String fallbackPaymentMethodId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private WebhookConfig webhook;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean createNetworkToken;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean verify;
 
     @JsonCreator
     public NewPaymentMethodCard(@JsonProperty("ProviderId") String providerId,
@@ -63,6 +75,31 @@ public class NewPaymentMethodCard {
 
     public boolean getSkipExpiryDateValidation() { return skipExpiryDateValidation; }
 
+    /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+    public String getIp() {
+        return ip;
+    }
+
+    /** The payment method to charge when this one fails. */
+    public String getFallbackPaymentMethodId() {
+        return fallbackPaymentMethodId;
+    }
+
+    /** Where to send this payment method's webhooks. */
+    public WebhookConfig getWebhook() {
+        return webhook;
+    }
+
+    /** Whether to create a network token for the card; null leaves it to the account's settings. */
+    public Boolean getCreateNetworkToken() {
+        return createNetworkToken;
+    }
+
+    /** Whether to verify the card with the gateway before saving it; null means no. */
+    public Boolean getVerify() {
+        return verify;
+    }
+
     @Override
     public String toString() {
         return "NewPaymentMethodCard{" +
@@ -74,6 +111,11 @@ public class NewPaymentMethodCard {
                 ", setDefault=" + setDefault +
                 ", metadata=" + metadata +
                 ", skipExpiryDateValidation=" + skipExpiryDateValidation +
+                ", ip=" + ip +
+                ", fallbackPaymentMethodId=" + fallbackPaymentMethodId +
+                ", webhook=" + webhook +
+                ", createNetworkToken=" + createNetworkToken +
+                ", verify=" + verify +
                 '}';
     }
 
@@ -86,6 +128,11 @@ public class NewPaymentMethodCard {
         private boolean setDefault = false;
         private Map<String, String> metadata;
         private boolean skipExpiryDateValidation = false;
+        private String ip;
+        private String fallbackPaymentMethodId;
+        private WebhookConfig webhook;
+        private Boolean createNetworkToken;
+        private Boolean verify;
 
         public Builder withProviderId(String providerId) {
             this.providerId = providerId;
@@ -127,8 +174,44 @@ public class NewPaymentMethodCard {
             return this;
         }
 
+        /** The payer's IP address (IPv4 or IPv6), used for fraud checks. */
+        public Builder withIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
+        /** The payment method to charge when this one fails. */
+        public Builder withFallbackPaymentMethodId(String fallbackPaymentMethodId) {
+            this.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            return this;
+        }
+
+        /** Where to send this payment method's webhooks. */
+        public Builder withWebhook(WebhookConfig webhook) {
+            this.webhook = webhook;
+            return this;
+        }
+
+        /** Whether to create a network token for the card; null leaves it to the account's settings. */
+        public Builder withCreateNetworkToken(Boolean createNetworkToken) {
+            this.createNetworkToken = createNetworkToken;
+            return this;
+        }
+
+        /** Whether to verify the card with the gateway before saving it; null means no. */
+        public Builder withVerify(Boolean verify) {
+            this.verify = verify;
+            return this;
+        }
+
         public NewPaymentMethodCard build() {
-            return new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds, setDefault, metadata, skipExpiryDateValidation);
+            NewPaymentMethodCard result = new NewPaymentMethodCard(providerId, paymentInformation, vaultCard, vaultExpireDate, vaultExpireSeconds, setDefault, metadata, skipExpiryDateValidation);
+            result.ip = ip;
+            result.fallbackPaymentMethodId = fallbackPaymentMethodId;
+            result.webhook = webhook;
+            result.createNetworkToken = createNetworkToken;
+            result.verify = verify;
+            return result;
         }
     }
 }

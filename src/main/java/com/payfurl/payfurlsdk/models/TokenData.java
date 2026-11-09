@@ -9,7 +9,6 @@ import java.util.Map;
 public class TokenData {
 
     private final String tokenId;
-    private final String userId;
     private final CardData card;
     private final ProviderSummary provider;
     private final Date dateAdded;
@@ -17,9 +16,13 @@ public class TokenData {
     private final String payToStatus;
     private final Map<String, String> metadata;
 
+    @JsonProperty("accountId")
+    private String accountId;
+    @JsonProperty("clickToPay")
+    private ClickToPayData clickToPay;
+
     @JsonCreator
     public TokenData(@JsonProperty("TokenId") String tokenId,
-                     @JsonProperty("UserId") String userId,
                      @JsonProperty("Card") CardData card,
                      @JsonProperty("Provider") ProviderSummary provider,
                      @JsonProperty("DateAdded") Date dateAdded,
@@ -27,7 +30,6 @@ public class TokenData {
                      @JsonProperty("PayToStatus") String payToStatus,
                      @JsonProperty("Metadata") Map<String, String> metadata) {
         this.tokenId = tokenId;
-        this.userId = userId;
         this.card = card;
         this.provider = provider;
         this.dateAdded = dateAdded;
@@ -38,10 +40,6 @@ public class TokenData {
 
     public String getTokenId() {
         return tokenId;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public CardData getCard() {
@@ -68,23 +66,32 @@ public class TokenData {
         return metadata;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    /** The Click to Pay card and billing address, for a Click to Pay token. */
+    public ClickToPayData getClickToPay() {
+        return clickToPay;
+    }
+
     @Override
     public String toString() {
         return "TokenData{" +
                 "tokenId=" + tokenId +
-                ", userId=" + userId +
                 ", card=" + card +
                 ", provider=" + provider +
                 ", dateAdded=" + dateAdded +
                 ", dateUsed=" + dateUsed +
                 ", payToStatus=" + payToStatus +
                 ", metadata=" + metadata +
+                ", accountId=" + accountId +
+                ", clickToPay=" + clickToPay +
                 '}';
     }
 
     public static class Builder {
         private String tokenId;
-        private String userId;
         private CardData card;
         private ProviderSummary provider;
         private Date dateAdded;
@@ -94,11 +101,6 @@ public class TokenData {
 
         public Builder withTokenId(String tokenId) {
             this.tokenId = tokenId;
-            return this;
-        }
-
-        public Builder withUserId(String userId) {
-            this.userId = userId;
             return this;
         }
 
@@ -133,7 +135,7 @@ public class TokenData {
         }
 
         public TokenData build() {
-            return new TokenData(tokenId, userId, card, provider, dateAdded, dateUsed, payToStatus, metadata);
+            return new TokenData(tokenId, card, provider, dateAdded, dateUsed, payToStatus, metadata);
         }
     }
 }
