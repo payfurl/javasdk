@@ -7,7 +7,7 @@ Maven Central's version history and the merged pull requests.
 
 ## [Unreleased]
 
-## [2.0.0] - UNRELEASED
+## [2.0.0] - 2026-11-09
 
 **Breaking.** Methods and fields of 1.0.x are removed (below), and some calls behave differently. The README's
 [Upgrading from 1.0.x to 2.0](README.md#upgrading-from-10x-to-20) maps every removed member to its replacement and
@@ -23,7 +23,7 @@ lists the behaviour changes. Nothing upgrades by itself: a build that names 1.0.
   them. An HTTP request's `toString()` no longer prints its body or its header values (the secret key).
 - Webhook signatures are compared in constant time (`MessageDigest.isEqual`); a missing signature or key is a
   failed check.
-- Jackson 2.22.4 (was 2.12.7; CVE-2022-42003, CVE-2022-42004, CVE-2025-52999) and commons-lang3 3.20.0 (was 3.14.0;
+- Jackson 2.22.4 (was 2.12.7; CVE-2022-42003, CVE-2022-42004, CVE-2025-52999) and commons-lang3 3.21.0 (was 3.14.0;
   CVE-2025-48924).
 
 ### Fixed
@@ -77,10 +77,9 @@ lists the behaviour changes. Nothing upgrades by itself: a build that names 1.0.
 
 ### Changed
 
-- Java 8 stays the floor; the build compiles against Java 8's API on any newer JDK.
+- Java 8 is still the minimum.
 - The SDK no longer depends on Guava or commons-collections4.
-- Versions follow semver: 2.0.0, not `1.0.<date>`. The version comes from the build, and releases are published
-  from a `vX.Y.Z` git tag.
+- Versions follow semver: 2.0.0, not `1.0.<date>`. Releases are tagged `vX.Y.Z` on GitHub.
 
 ### Removed
 
@@ -97,12 +96,10 @@ lists the behaviour changes. Nothing upgrades by itself: a build that names 1.0.
   `PaymentLinkData.secretKey`, `threeDsProviderId` on `NewProvider` and `UpdateProvider`, and
   `PayToProviderOptions`' minimum amount (use `getMaximumAmount()`). The constructors of these models lost the
   parameter.
-- The tests that called payFURL's development environment: unit tests against a local mock server replace them,
-  and payFURL runs the integration tests against an API built from source.
 
 ## 1.0.x - 2022-12-18 to 2026-05-12
 
-Versions were named `1.0.<release date>` and published by hand; none was tagged. Each line names the releases and
+Versions were named `1.0.<release date>` and were not tagged. Each line names the releases and
 the pull requests in them, written back from Maven Central's version history.
 
 - 1.0.20260512: dependency updates (#94).
